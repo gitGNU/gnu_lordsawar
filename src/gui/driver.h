@@ -112,7 +112,7 @@ class Driver: public sigc::trackable
     void get_default(int num_players, GameParameters &g);
     void serve (GameScenario *game_scenario);
     void remotely_serve (GameScenario *game_scenario, Profile *p);
-    void on_client_sits_down_in_headless_server_game(Player *p, Glib::ustring nick);
+    void on_client_sits_down_in_headless_server_game();
   
     void on_could_not_bind_to_port_for_headless_server(int port);
     void on_could_not_bind_to_port (int port);
@@ -120,16 +120,16 @@ class Driver: public sigc::trackable
     void advertise_game(GameScenario *game_scenario, Profile *p);
     void on_connected_to_gamelist_server_for_advertising(GameScenario *game_scenario, Profile *p);
 
-    void on_advertising_response_received(Glib::ustring scenario_id, Glib::ustring err);
+    void on_advertising_response_received(Glib::ustring scenario_id);
     void unadvertise_game(Glib::ustring scenario_id, Profile *p);
     void on_connected_to_gamelist_server_for_advertising_removal(Glib::ustring scenario_id);
-    void on_advertising_removal_response_received(Glib::ustring scenario_id, Glib::ustring err);
+    void on_advertising_removal_response_received();
 
     void on_advertised_game_round_ends(GameScenario *game_scenario, Profile *p);
 
     void on_connected_to_gamehost_server_for_hosting_request (GameScenario *game_scenario);
-    void on_got_game_host_response(Glib::ustring scenario_id, Glib::ustring err, GameScenario *game_scenario);
-    void on_remote_game_hosted(Glib::ustring scenario_id, guint32 port, Glib::ustring err);
+    void on_got_game_host_response(Glib::ustring err, GameScenario *game_scenario);
+    void on_remote_game_hosted(guint32 port, Glib::ustring err);
     void on_could_not_connect_to_gamehost_server();
 };
 

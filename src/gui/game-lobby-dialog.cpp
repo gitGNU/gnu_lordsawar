@@ -119,13 +119,13 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
 	(sigc::mem_fun(*this, &GameLobbyDialog::on_show_options_clicked));
 
     game_station->remote_player_moved.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn));
+      (sigc::hide(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn)));
     game_station->remote_player_starts_move.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_starts_turn));
+      (sigc::hide(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_starts_turn)));
     game_station->local_player_moved.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_local_player_ends_turn));
+      (sigc::hide(sigc::mem_fun(*this, &GameLobbyDialog::on_local_player_ends_turn)));
     game_station->local_player_starts_move.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_local_player_starts_turn));
+      (sigc::hide(sigc::mem_fun(*this, &GameLobbyDialog::on_local_player_starts_turn)));
     game_station->remote_participant_joins.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_joins));
     game_station->remote_participant_departs.connect
@@ -133,7 +133,7 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
     game_station->player_sits.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_player_sits));
     game_station->player_stands.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_stands));
+      (sigc::hide(sigc::mem_fun(*this, &GameLobbyDialog::on_player_stands)));
     game_station->player_changes_name.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_player_changes_name));
     game_station->player_changes_type.connect
@@ -141,7 +141,7 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
     game_station->remote_player_named.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
     game_station->chat_message_received.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
+      (sigc::hide<0>(sigc::mem_fun(*this, &GameLobbyDialog::on_chatted)));
     game_station->playerlist_reorder_received.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_reorder_playerlist));
     game_station->round_begins.connect
@@ -600,7 +600,7 @@ void GameLobbyDialog::on_player_sits(Player *p, Glib::ustring nickname)
     }
 }
 
-void GameLobbyDialog::on_player_stands(Player *p, Glib::ustring nickname)
+void GameLobbyDialog::on_player_stands(Player *p)
 {
   if (!p)
     return;
@@ -620,7 +620,7 @@ void GameLobbyDialog::on_player_stands(Player *p, Glib::ustring nickname)
     }
 }
 
-void GameLobbyDialog::on_local_player_ends_turn(Player *p)
+void GameLobbyDialog::on_local_player_ends_turn()
 {
   update_turn_indicator();
   update_scenario_details();
@@ -650,19 +650,19 @@ void GameLobbyDialog::update_turn_indicator()
     }
 }
 
-void GameLobbyDialog::on_remote_player_starts_turn(Player *p)
+void GameLobbyDialog::on_remote_player_starts_turn()
 {
   update_turn_indicator();
   update_scenario_details();
 }
 
-void GameLobbyDialog::on_local_player_starts_turn(Player *p)
+void GameLobbyDialog::on_local_player_starts_turn()
 {
   update_turn_indicator();
   update_scenario_details();
 }
 
-void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
+void GameLobbyDialog::on_remote_player_ends_turn()
 {
   if (GameServer::getInstance()->isListening() == false)
     {
@@ -740,7 +740,7 @@ void GameLobbyDialog::on_chat_key_pressed(GdkEventKey *event)
   return;
 }
 
-void GameLobbyDialog::on_chatted(Glib::ustring nickname, Glib::ustring message)
+void GameLobbyDialog::on_chatted(Glib::ustring message)
 {
   Glib::ustring new_text;
   new_text = chat_textview->get_buffer()->get_text() + "\n" + message;

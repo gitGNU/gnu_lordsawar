@@ -45,7 +45,7 @@ Glib::ustring small_none = N_("no small shield set");
 Glib::ustring medium_none = N_("no medium shield set");
 Glib::ustring large_none = N_("no large shield set");
 
-ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
+ShieldSetWindow::ShieldSetWindow(Glib::ustring load_filename)
 {
   needs_saving = false;
   d_shieldset = NULL;
@@ -108,7 +108,7 @@ ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filenam
     xml->get_widget ("large_image", large_image);
 
     window->signal_delete_event().connect(
-	sigc::mem_fun(*this, &ShieldSetWindow::on_delete_event));
+	sigc::hide(sigc::mem_fun(*this, &ShieldSetWindow::on_delete_event)));
 
     shields_list = Gtk::ListStore::create(shields_columns);
     shields_treeview->set_model(shields_list);
@@ -193,10 +193,9 @@ void ShieldSetWindow::hide()
   window->hide();
 }
 
-bool ShieldSetWindow::on_delete_event(GdkEventAny *e)
+bool ShieldSetWindow::on_delete_event()
 {
   hide();
-
   return true;
 }
 
@@ -482,7 +481,7 @@ void ShieldSetWindow::show_shield(ShieldStyle *ss, Shield *s, Gtk::Image *image)
      broken);
   if (!broken)
     {
-      PixMask *i = ImageCache::applyMask(h[0], h[1], s->getColor(), false);
+      PixMask *i = ImageCache::applyMask(h[0], h[1], s->getColor());
       if (i)
         {
           image->property_pixbuf() = i->to_pixbuf();

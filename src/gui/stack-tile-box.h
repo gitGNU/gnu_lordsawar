@@ -74,7 +74,7 @@ class StackTileBox: public Gtk::Box
     void pad_image(Gtk::Image *image);
     void fill_in_group_info (StackTile *stile, Stack *s);
     void on_army_toggled(StackArmyButton *toggle, Stack *stack, Army *army);
-    void on_stack_toggled(StackArmyButton *radio, Stack *stack);
+    void on_stack_toggled(Stack *stack);
     void on_group_toggled(Gtk::ToggleButton *toggle);
     void reset_army_buttons();
 

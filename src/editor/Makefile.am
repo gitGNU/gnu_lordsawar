@@ -121,7 +121,7 @@ localedir = $(datadir)/locale
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 
-AM_CXXFLAGS = -Wall -Wshadow
+AM_CXXFLAGS = -Wall -Wshadow -Wextra -pedantic
 AM_CPPFLAGS = $(GTKMM_CFLAGS) \
 	      $(XMLPP_CFLAGS) \
     $(XSLT_CFLAGS) \

@@ -52,7 +52,7 @@ class GameScenario: public GameScenarioOptions
         enum PlayMode 
 	  {
 	    HOTSEAT = 0, 
-	    NETWORKED = 1,
+	    NETWORKED = 1
 	  };
 
 	static Glib::ustring playModeToString(const GameScenario::PlayMode mode);

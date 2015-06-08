@@ -32,7 +32,7 @@ class Shield;
 class ShieldSetWindow: public sigc::trackable
 {
  public:
-    ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filename = "");
+    ShieldSetWindow(Glib::ustring load_filename = "");
     ~ShieldSetWindow();
 
     void show();
@@ -84,7 +84,7 @@ class ShieldSetWindow: public sigc::trackable
     void on_save_as_activated();
     void on_validate_shieldset_activated();
     void on_quit_activated();
-    bool on_delete_event(GdkEventAny *e);
+    bool on_delete_event();
     bool on_window_closed(GdkEventAny*);
     void on_edit_shieldset_info_activated();
     void on_edit_copy_shields_activated();

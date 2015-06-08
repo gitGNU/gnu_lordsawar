@@ -61,7 +61,7 @@ ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
   report_notebook->set_current_page(type);
   switch_conn = 
     report_notebook->signal_switch_page().connect
-    (sigc::mem_fun(*this, &ReportDialog::on_switch_page));
+    (sigc::hide<0>(sigc::mem_fun(*this, &ReportDialog::on_switch_page)));
 
   armies_list = Gtk::ListStore::create(armies_columns);
   xml->get_widget("treeview", armies_treeview);
@@ -161,7 +161,7 @@ void ReportDialog::on_vector_map_changed(Cairo::RefPtr<Cairo::Surface> map)
     }
 }
 
-void ReportDialog::on_switch_page(Gtk::Widget *page, guint number)
+void ReportDialog::on_switch_page(guint number)
 {
   switch (number)
     {

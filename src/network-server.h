@@ -52,7 +52,7 @@ public:
   sigc::signal<void, int> port_in_use;
   
   // private callback
-  bool gotClientConnection(const Glib::RefPtr<Gio::SocketConnection>& c, const Glib::RefPtr<Glib::Object>& source_object);
+  bool gotClientConnection(const Glib::RefPtr<Gio::SocketConnection>& c);
 
 private:
   void onConnectionLost(NetworkConnection *conn);

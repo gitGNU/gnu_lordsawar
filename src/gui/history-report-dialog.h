@@ -86,9 +86,9 @@ class HistoryReportDialog: public LwDialog
 
     void addHistoryEvent(NetworkHistory *event);
     void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);
-    void on_turn_changed(Gtk::Scale *scale);
+    void on_turn_changed();
     void fill_in_turn_info(guint32 turn);
-    void on_switch_page(Gtk::Widget *page, guint number);
+    void on_switch_page();
     void update_window_title();
 };
 

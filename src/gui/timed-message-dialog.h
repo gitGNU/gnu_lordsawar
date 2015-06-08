@@ -38,7 +38,7 @@ class TimedMessageDialog: public sigc::trackable
     Gtk::MessageDialog *window;
     Glib::RefPtr<Glib::MainLoop> main_loop;
     bool tick();
-    void on_response(int id);
+    void on_response();
     int d_timeout;
     int d_timer_count;
     int d_grace;

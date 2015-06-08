@@ -42,7 +42,8 @@ Shieldset::Shieldset(guint32 id, Glib::ustring name)
 }
 
 Shieldset::Shieldset(const Shieldset& s)
- : Set(s), d_small_height(s.d_small_height), d_small_width(s.d_small_width),
+ : std::list<Shield*>(), sigc::trackable(s), Set(s), 
+    d_small_height(s.d_small_height), d_small_width(s.d_small_width),
     d_medium_height(s.d_medium_height), d_medium_width(s.d_medium_width),
     d_large_height(s.d_large_height), d_large_width(s.d_large_width)
 {

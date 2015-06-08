@@ -105,69 +105,117 @@ void NetworkPlayer::endTurn()
 
 void NetworkPlayer::invadeCity(City* c)
 {
+  if (c)
+    {
+      ;
+    }
   assert(false);
 }
 bool NetworkPlayer::chooseHero(HeroProto *hero, City *city, int gold)
 {
+  if (hero || city || gold)
+    {
+      ;
+    }
   assert(false);
   return true;
 }
 
 Reward *NetworkPlayer::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
 {
+  if (ruin || sage || stack)
+    {
+      ;
+    }
   assert(false);
   return NULL;
 }
 
 void NetworkPlayer::heroGainsLevel(Hero * a)
 {
+  if (a)
+    {
+      ;
+    }
   assert(false);
 }
 
 bool NetworkPlayer::chooseTreachery (Stack *stack, Player *player, Vector <int> pos)
 {
+  if (stack || player || pos != Vector<int>(-1,-1))
+    {
+      ;
+    }
   assert(false);
   return true;
 }
 
 Army::Stat NetworkPlayer::chooseStat(Hero *hero)
 {
+  if (hero)
+    {
+      ;
+    }
   assert(false);
   return Army::STRENGTH;
 }
 
 bool NetworkPlayer::chooseQuest(Hero *hero)
 {
+  if (hero)
+    {
+      ;
+    }
   assert(false);
   return true;
 }
 
 bool NetworkPlayer::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   assert (false);
   return true;
 }
 
 bool NetworkPlayer::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   assert (false);
   return true;
 }
 
 bool NetworkPlayer::computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   assert (false);
   return true;
 }
 
 bool NetworkPlayer::computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   assert (false);
   return true;
 }
 
 bool NetworkPlayer::computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || quest || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   assert (false);
   return true;
 }
@@ -491,6 +539,10 @@ void NetworkPlayer::decodeActionRaze(const Action_Raze *action)
 
 void NetworkPlayer::decodeActionUpgrade(const Action_Upgrade *action)
 {
+  if (action)
+    {
+      ;
+    }
   // doesn't exist, not handled
   assert(false);
 }
@@ -620,6 +672,10 @@ void NetworkPlayer::decodeActionFightOrder(const Action_FightOrder *action)
 
 void NetworkPlayer::decodeActionResign(const Action_Resign *action)
 {
+  if (action)
+    {
+      ;
+    }
   std::list<History*> history;
   doResign(history);
   clearHistorylist(history);
@@ -710,12 +766,20 @@ void NetworkPlayer::decodeActionDiplomacyProposal(const Action_DiplomacyProposal
 
 void NetworkPlayer::decodeActionDiplomacyScore(const Action_DiplomacyScore *action)
 {
+  if (action)
+    {
+      ;
+    }
   Player *player = Playerlist::getInstance()->getPlayer(action->getOpponentId());
   alterDiplomaticRelationshipScore(player, action->getAmountChange());
 }
 
 void NetworkPlayer::decodeActionEndTurn(const Action_EndTurn *action)
 {
+  if (action)
+    {
+      ;
+    }
   debug ("ending turn!!");
   ending_turn.emit();
 }
@@ -747,16 +811,28 @@ void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
 
 void NetworkPlayer::decodeActionRenamePlayer(const Action_RenamePlayer *action)
 {
+  if (action)
+    {
+      ;
+    }
   doRename(action->getName());
 }
 
 void NetworkPlayer::decodeActionCityTooPoorToProduce(const Action_CityTooPoorToProduce *action)
 {
+  if (action)
+    {
+      ;
+    }
   //this action is only used for reporting purposes.
 }
 
 void NetworkPlayer::decodeActionInitTurn(const Action_InitTurn*action)
 {
+  if (action)
+    {
+      ;
+    }
   debug ("remote: dumping " << d_actions.size() << " actions");
   for (std::list<Action*>::iterator i = d_actions.begin(); i != d_actions.end(); i++)
     {
@@ -844,6 +920,10 @@ void NetworkPlayer::decodeActionStackOrder(const Action_ReorderArmies* action)
 
 void NetworkPlayer::decodeActionStacksReset(const Action_ResetStacks *action)
 {
+  if (action)
+    {
+      ;
+    }
   Player *p = Playerlist::getInstance()->getPlayer(action->getPlayerId());
   if (!p)
     {
@@ -860,16 +940,28 @@ void NetworkPlayer::decodeActionStacksReset(const Action_ResetStacks *action)
 
 void NetworkPlayer::decodeActionRuinsReset(const Action_ResetRuins *action)
 {
+  if (action)
+    {
+      ;
+    }
   doRuinsReset();
 }
 
 void NetworkPlayer::decodeActionCollectTaxesAndPayUpkeep(const Action_CollectTaxesAndPayUpkeep *action)
 {
+  if (action)
+    {
+      ;
+    }
   doCollectTaxesAndPayUpkeep();
 }
 
 void NetworkPlayer::decodeActionKillPlayer(const Action_Kill *action)
 {
+  if (action)
+    {
+      ;
+    }
   if (isDead() == false)
     {
       doKill();
@@ -935,6 +1027,10 @@ void NetworkPlayer::decodeActionSelectStack(const Action_SelectStack *action)
 
 void NetworkPlayer::decodeActionDeselectStack(const Action_DeselectStack *action)
 {
+  if (action)
+    {
+      ;
+    }
   doStackDeselect();
   supdatingStack.emit(0);
 }

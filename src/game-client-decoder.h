@@ -95,8 +95,7 @@ protected:
 protected:
   void gotActions(const Glib::ustring &payload);
   void gotHistories(const Glib::ustring &payload);
-  int decodeActions(std::list<NetworkAction*> actions,
-		    Player *player);
+  int decodeActions(std::list<NetworkAction*> actions);
   int decodeHistories(std::list<NetworkHistory*> histories);
 
 };

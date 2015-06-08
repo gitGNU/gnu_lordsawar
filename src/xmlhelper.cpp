@@ -401,7 +401,7 @@ bool XML_Helper::getData(Gdk::RGBA & data, Glib::ustring name)
     if (retval == -1)
       return false;
     buf[14] = '\0';
-    int red = 0, green = 0, blue = 0;
+    unsigned int red = 0, green = 0, blue = 0;
     if (buf[0] == '#')
       {
 	char hash;
@@ -413,11 +413,10 @@ bool XML_Helper::getData(Gdk::RGBA & data, Glib::ustring name)
     else
       {
 	//must look like "123 255 000"
-	retval = sscanf(value.c_str(), "%d%d%d", &red, &green, &blue);
+	retval = sscanf(value.c_str(), "%u%u%u", &red, &green, &blue);
 	if (retval != 3)
 	  return false;
-	if (red > 255 || red < 0 || green > 255 || green < 0 || 
-	    blue > 255 || blue < 0)
+	if (red > 255 || green > 255 || blue > 255)
 	  return false;
       }
     data.set_rgba((float)red / 255.0, (float)green / 255.0,
@@ -811,11 +810,19 @@ void XML_Helper::on_characters(const Glib::ustring& text)
 
 void XML_Helper::on_fatal_error (const Glib::ustring & text)
 {
+  if (text != "")
+    {
+      ;
+    }
   d_failed = true;
 }
 
 void XML_Helper::on_error (const Glib::ustring & text)
 {
+  if (text != "")
+    {
+      ;
+    }
   d_failed = true;
 }
 

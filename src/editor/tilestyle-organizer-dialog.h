@@ -86,9 +86,9 @@ class TileStyleOrganizerDialog: public LwEditorDialog
     void on_category_selected();
     void add_tilestyle(Glib::RefPtr<Gtk::ListStore> list, TileStyle *tilestyle);
     void on_category_drag_data_get(const Glib::RefPtr<Gdk::DragContext> &drag_context,
-                                   Gtk::SelectionData &data, guint info, guint time);
+                                   Gtk::SelectionData &data);
     void on_unsorted_drag_data_get(const Glib::RefPtr<Gdk::DragContext> &drag_context,
-                                   Gtk::SelectionData &data, guint info, guint time);
+                                   Gtk::SelectionData &data);
     std::list<TileStyle*> get_selected_unsorted_tilestyles();
     std::list<TileStyle*> get_selected_category_tilestyles();
     int get_selected_category();
@@ -99,7 +99,7 @@ class TileStyleOrganizerDialog: public LwEditorDialog
     void on_category_tilestyle_activated(const Gtk::TreeModel::Path &path);
     void on_unsorted_tilestyle_activated(const Gtk::TreeModel::Path &path);
 
-    void on_drag_begin(const Glib::RefPtr<Gdk::DragContext> &c, Gtk::IconView *i);
+    void on_drag_begin(Gtk::IconView *i);
     std::list<TileStyle*> selected_category_tilestyles;
     void on_selection_made(Gtk::IconView *iconview);
     Glib::TimeVal time_of_last_selection;

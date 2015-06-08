@@ -68,7 +68,8 @@ bool ProdSlotlist::load(Glib::ustring tag, XML_Helper *helper)
 }
 
 ProdSlotlist::ProdSlotlist(const ProdSlotlist& c)
-    :d_active_production_slot(c.d_active_production_slot), 
+    :std::vector<ProdSlot*>(), 
+    d_active_production_slot(c.d_active_production_slot), 
     d_duration(c.d_duration)
 {
   for (std::vector<ProdSlot*>::const_iterator it = c.begin(); 
@@ -204,6 +205,10 @@ void ProdSlotlist::removeProductionBase(int idx)
 
 bool ProdSlotlist::hasProductionBase(int type, guint32 set) const
 {
+  if (set)
+    {
+      ;
+    }
   if (type < 0)
     return false;
   for (unsigned int i = 0; i < size(); i++)

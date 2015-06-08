@@ -44,7 +44,7 @@ void NetworkServer::startListening(int port)
 {
   server = Gio::SocketService::create();
 
-  server->signal_incoming().connect(sigc::mem_fun(*this, &NetworkServer::gotClientConnection));
+  server->signal_incoming().connect(sigc::hide(sigc::mem_fun(*this, &NetworkServer::gotClientConnection)));
   try 
     {
       server->add_inet_port (port);
@@ -71,7 +71,7 @@ void NetworkServer::sendFile(void *c, int type, const Glib::ustring &payload)
   conn->sendFile(type, payload);
 }
 
-bool NetworkServer::gotClientConnection(const Glib::RefPtr<Gio::SocketConnection>& c, const Glib::RefPtr<Glib::Object>& source_object)
+bool NetworkServer::gotClientConnection(const Glib::RefPtr<Gio::SocketConnection>& c)
 {
   if (c) 
     {

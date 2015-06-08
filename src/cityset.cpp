@@ -66,7 +66,7 @@ Cityset::Cityset(guint32 id, Glib::ustring name)
 }
 
 Cityset::Cityset(const Cityset& c)
- : Set(c), d_cities_filename(c.d_cities_filename), 
+ : sigc::trackable(c), Set(c), d_cities_filename(c.d_cities_filename), 
     d_razedcities_filename(c.d_razedcities_filename),
     d_port_filename(c.d_port_filename), 
     d_signpost_filename(c.d_signpost_filename),

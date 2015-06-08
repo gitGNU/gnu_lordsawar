@@ -106,9 +106,9 @@ void GamehostServer::start(int port)
   network_server->got_message.connect
     (sigc::mem_fun(this, &GamehostServer::onGotMessage));
   network_server->connection_lost.connect
-    (sigc::mem_fun(this, &GamehostServer::onConnectionLost));
+    (sigc::hide(sigc::mem_fun(this, &GamehostServer::onConnectionLost)));
   network_server->connection_made.connect
-    (sigc::mem_fun(this, &GamehostServer::onConnectionMade));
+    (sigc::hide(sigc::mem_fun(this, &GamehostServer::onConnectionMade)));
 
   network_server->startListening(port);
 
@@ -165,11 +165,11 @@ void GamehostServer::on_connected_to_gamelist_server_for_advertising_removal(Gli
 {
   GamelistClient *gsc = GamelistClient::getInstance();
   gsc->received_advertising_removal_response.connect
-    (sigc::mem_fun(*this, &GamehostServer::on_advertising_removal_response_received));
+    (sigc::hide(sigc::hide(sigc::mem_fun(*this, &GamehostServer::on_advertising_removal_response_received))));
   gsc->request_advertising_removal(scenario_id);
 }
     
-void GamehostServer::on_advertising_removal_response_received(Glib::ustring scenario_id, Glib::ustring err)
+void GamehostServer::on_advertising_removal_response_received()
 {
   GamelistClient::deleteInstance();
   return;
@@ -290,12 +290,11 @@ void GamehostServer::on_connected_to_gamelist_server_for_advertising(HostedGame 
   RecentlyPlayedNetworkedGame *g = 
     new RecentlyPlayedNetworkedGame(*game->getAdvertisedGame());
   gsc->received_advertising_response.connect
-    (sigc::mem_fun(*this, &GamehostServer::on_advertising_response_received));
+    (sigc::hide(sigc::hide(sigc::mem_fun(*this, &GamehostServer::on_advertising_response_received))));
   gsc->request_advertising(g);
 }
 
-void GamehostServer::on_advertising_response_received(Glib::ustring scenario_id, 
-                                                      Glib::ustring err)
+void GamehostServer::on_advertising_response_received()
 {
   GamelistClient::deleteInstance();
   return;
@@ -480,7 +479,7 @@ bool GamehostServer::onGotMessage(void *conn, int type, Glib::ustring payload)
   return true;
 }
 
-void GamehostServer::onConnectionMade(void *conn)
+void GamehostServer::onConnectionMade()
 {
   debug("connection made");
   Gamelist::getInstance()->pruneGames();
@@ -488,7 +487,7 @@ void GamehostServer::onConnectionMade(void *conn)
   cleanup_old_profiles_awaiting_maps();
 }
 
-void GamehostServer::onConnectionLost(void *conn)
+void GamehostServer::onConnectionLost()
 {
   debug("connection lost");
 }

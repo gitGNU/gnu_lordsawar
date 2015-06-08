@@ -143,61 +143,100 @@ void AI_Dummy::heroGainsLevel(Hero * a)
 
 bool AI_Dummy::chooseHero(HeroProto *hero, City *city, int gold)
 {
+  if (hero || city || gold)
+    {
+      ;
+    }
   //neutral players never accept heroes.
   return false;
 }
         
 Reward *AI_Dummy::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
 {
+  if (ruin || stack)
+    {
+      ;
+    }
   //neutrals don't search ruins, but let's not return null.
   return sage->front();
 }
 
 bool AI_Dummy::chooseTreachery (Stack *stack, Player *player, Vector <int> pos)
 {
+  if (stack || player || pos != Vector<int>(-1,-1))
+    {
+      ;
+    }
   //neutrals don't leave the castle.
-  bool performTreachery = true;
-  return performTreachery;
+  return true;
 }
 
 Army::Stat AI_Dummy::chooseStat(Hero *hero)
 {
+  if (hero)
+    {
+      ;
+    }
   //neutrals don't have heroes.
   return Army::STRENGTH;
 }
 
 bool AI_Dummy::chooseQuest(Hero *hero)
 {
+  if (hero)
+    {
+      ;
+    }
   //neutrals don't have heroes.
   return true;
 }
 
 bool AI_Dummy::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   //neutrals don't have heroes.
   return true;
 }
 
 bool AI_Dummy::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   //neutrals don't have heroes.
   return true;
 }
 
 bool AI_Dummy::computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   //neutral army units don't go afield.
   return true;
 }
 
 bool AI_Dummy::computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   //neutrals don't have heroes
   return true;
 }
 
 bool AI_Dummy::computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || quest || dest != Vector<int>(0,0) || moves || turns)
+    {
+      ;
+    }
   //neutrals don't have heroes
   return true;
 }

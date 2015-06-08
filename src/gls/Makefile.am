@@ -58,7 +58,7 @@ localedir = $(datadir)/locale
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 
-AM_CXXFLAGS = -Wall -Wshadow -DPO_PATH=\"$(prefix)/share/locale/\"
+AM_CXXFLAGS = -Wall -Wshadow -Wextra -pedantic -DPO_PATH=\"$(prefix)/share/locale/\"
 AM_CPPFLAGS = \
     $(SDL_CFLAGS) \
     $(LIBSIGC_CFLAGS) \

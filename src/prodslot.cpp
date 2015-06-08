@@ -80,4 +80,4 @@ void ProdSlot::clear()
   if (d_armyprodbase) 
     delete d_armyprodbase; 
   d_armyprodbase = NULL;
-};
+}

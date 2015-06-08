@@ -75,9 +75,10 @@ class Maptile
          * @param x                The x position of the tile.
          * @param y                The y position of the tile.
          * @param type             The terrain type (index in the tileset).
-	 * @param tileStyle        The look of this tile to use.
+         *
+         * no tilestyle is set.
          */
-        Maptile(int x, int y, guint32 type, TileStyle *tileStyle);
+        Maptile(int x, int y, guint32 type);
 
 	//! Slower constructor.
         /** 
@@ -86,9 +87,10 @@ class Maptile
          * @param x                The x position of the tile.
          * @param y                The y position of the tile.
          * @param type             The terrain type enumeration Tile::Type.
-	 * @param tileStyle        The look of this tile to use.
+         *
+         * no tilestyle is set.
          */
-        Maptile(int x, int y, Tile::Type type, TileStyle *tileStyle);
+        Maptile(int x, int y, Tile::Type type);
 
 	//! Destructor.
         ~Maptile();

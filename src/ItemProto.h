@@ -95,14 +95,14 @@ class ItemProto: public Renamable
           //! Coerce a neutral city into flying your flag.
           PERSUADE_NEUTRALS = 0x00400000,
           //! Take the stack to a tile outside of a given city.
-          TELEPORT_TO_CITY  = 0x00800000,
+          TELEPORT_TO_CITY  = 0x00800000
         };
 
         enum UsableItems {
           USABLE = STEAL_GOLD | SINK_SHIPS | PICK_UP_BAGS | ADD_2MP_STACK
             | BANISH_WORMS | BURN_BRIDGE | CAPTURE_KEEPER | SUMMON_MONSTER
             | DISEASE_CITY | RAISE_DEFENDERS | PERSUADE_NEUTRALS |
-            TELEPORT_TO_CITY,
+            TELEPORT_TO_CITY
         };
 
 

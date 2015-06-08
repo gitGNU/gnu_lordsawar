@@ -36,7 +36,8 @@ Shield::Shield(XML_Helper* helper)
 }
 
 Shield::Shield(const Shield& s)
-: d_owner(s.d_owner), d_color(s.d_color)
+: std::list<ShieldStyle*>(), sigc::trackable(s), d_owner(s.d_owner), 
+    d_color(s.d_color)
 {
   for (const_iterator it = s.begin(); it != s.end(); it++)
     push_back(new ShieldStyle(*(*it)));

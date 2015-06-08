@@ -237,7 +237,9 @@ Glib::ustring History_StartTurn::dump() const
 
 bool History_StartTurn::doSave(XML_Helper* helper) const
 {
-  return true;
+  if (helper)
+    return true;
+  return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -634,7 +636,9 @@ Glib::ustring History_PlayerVanquished::dump() const
 
 bool History_PlayerVanquished::doSave(XML_Helper* helper) const
 {
-  return true;
+  if (helper)
+    return true;
+  return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -778,7 +782,9 @@ Glib::ustring History_EndTurn::dump() const
 
 bool History_EndTurn::doSave(XML_Helper* helper) const
 {
-  return true;
+  if (helper)
+    return true;
+  return false;
 }
 
 //-----------------------------------------------------------------------------

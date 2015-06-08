@@ -26,7 +26,7 @@
 class NewProfileDialog: public LwDialog
 {
  public:
-    NewProfileDialog(Gtk::Window &parent, Glib::ustring network_game_nickname);
+    NewProfileDialog(Gtk::Window &parent);
     ~NewProfileDialog() {};
 
     Glib::ustring getNickname() {return String::utrim(nick_entry->get_text());}

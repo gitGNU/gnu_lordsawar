@@ -281,7 +281,7 @@ class Reward_Allies: public Reward
         static const ArmyProto* randomArmyAlly();
 
 	//! A static method that returns a number of allies between 1 and 8.
-	static const guint32 getRandomAmountOfAllies();
+	static guint32 getRandomAmountOfAllies();
 
 	//! A static method for adding allies to the game map.
 	/**

@@ -37,11 +37,11 @@ TimedMessageDialog::TimedMessageDialog(Gtk::Window &parent, Glib::ustring messag
   //window.reset(&dialog);
   window->set_message(message);
   window->signal_response().connect
-       (sigc::mem_fun(*this, &TimedMessageDialog::on_response));
+       (sigc::hide(sigc::mem_fun(*this, &TimedMessageDialog::on_response)));
   window->set_transient_for(parent);
 }
 
-void TimedMessageDialog::on_response(int id)
+void TimedMessageDialog::on_response()
 {
   window->hide();
   main_loop->quit();

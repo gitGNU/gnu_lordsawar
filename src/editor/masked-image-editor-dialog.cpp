@@ -128,8 +128,7 @@ void MaskedImageEditorDialog::show_image(Glib::ustring filename)
       if (d_shieldset == NULL)
         d_shieldset = Shieldsetlist::getInstance()->get(1);
       Gdk::RGBA colour = d_shieldset->getColor(i);
-      PixMask *army_image = ImageCache::applyMask(half[0],  half[1],
-						     colour, false);
+      PixMask *army_image = ImageCache::applyMask(half[0],  half[1], colour);
       image->property_pixbuf() = army_image->to_pixbuf();
       delete army_image;
     }

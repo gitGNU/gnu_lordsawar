@@ -52,7 +52,7 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
           TILESET,
           CITYSET,
           SHIELDSET,
-          GAMESCENARIO,
+          GAMESCENARIO
         };
 
         //! upgrade common files.

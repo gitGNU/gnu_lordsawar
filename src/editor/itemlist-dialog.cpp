@@ -68,8 +68,8 @@ ItemlistDialog::ItemlistDialog(Gtk::Window &parent)
     disease_armies_percent_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ItemlistDialog::on_disease_armies_percent_changed));
     disease_armies_percent_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, 
-                     &ItemlistDialog::on_disease_armies_percent_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, 
+                     &ItemlistDialog::on_disease_armies_percent_text_changed))));
 
     xml->get_widget("raise_defenders_checkbutton", raise_defenders_checkbutton);
     raise_defenders_checkbutton->signal_toggled().connect(
@@ -81,7 +81,7 @@ ItemlistDialog::ItemlistDialog(Gtk::Window &parent)
     num_defenders_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ItemlistDialog::on_num_defenders_changed));
     num_defenders_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &ItemlistDialog::on_num_defenders_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ItemlistDialog::on_num_defenders_text_changed))));
     xml->get_widget("persuade_neutral_city_checkbutton", 
                     persuade_neutral_city_checkbutton);
     persuade_neutral_city_checkbutton->signal_toggled().connect(
@@ -168,12 +168,12 @@ ItemlistDialog::ItemlistDialog(Gtk::Window &parent)
     steal_percent_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ItemlistDialog::on_steal_percent_changed));
     steal_percent_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &ItemlistDialog::on_steal_percent_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ItemlistDialog::on_steal_percent_text_changed))));
     xml->get_widget("add_mp_spinbutton", add_mp_spinbutton);
     add_mp_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ItemlistDialog::on_add_mp_changed));
     add_mp_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &ItemlistDialog::on_add_mp_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ItemlistDialog::on_add_mp_text_changed))));
 
     items_treeview->get_selection()->signal_changed().connect
       (sigc::mem_fun(*this, &ItemlistDialog::on_item_selected));
@@ -598,7 +598,7 @@ void ItemlistDialog::on_steal_percent_changed()
     d_item->setPercentGoldToSteal(steal_percent_spinbutton->get_value());
 }
 
-void ItemlistDialog::on_steal_percent_text_changed(const Glib::ustring &s, int *p)
+void ItemlistDialog::on_steal_percent_text_changed()
 {
   steal_percent_spinbutton->set_value(atoi(steal_percent_spinbutton->get_text().c_str()));
   on_steal_percent_changed();
@@ -613,7 +613,7 @@ void ItemlistDialog::on_disease_armies_percent_changed()
       (disease_armies_percent_spinbutton->get_value());
 }
 
-void ItemlistDialog::on_disease_armies_percent_text_changed(const Glib::ustring &s, int *p)
+void ItemlistDialog::on_disease_armies_percent_text_changed()
 {
   disease_armies_percent_spinbutton->set_value(atoi(disease_armies_percent_spinbutton->get_text().c_str()));
   on_disease_armies_percent_changed();
@@ -627,7 +627,7 @@ void ItemlistDialog::on_add_mp_changed()
     d_item->setMovementPointsToAdd (add_mp_spinbutton->get_value());
 }
 
-void ItemlistDialog::on_add_mp_text_changed(const Glib::ustring &s, int *p)
+void ItemlistDialog::on_add_mp_text_changed()
 {
   add_mp_spinbutton->set_value(atoi(add_mp_spinbutton->get_text().c_str()));
   on_add_mp_changed();
@@ -641,7 +641,7 @@ void ItemlistDialog::on_num_defenders_changed()
     d_item->setNumberOfArmiesToRaise(num_defenders_spinbutton->get_value());
 }
 
-void ItemlistDialog::on_num_defenders_text_changed(const Glib::ustring &s, int *p)
+void ItemlistDialog::on_num_defenders_text_changed()
 {
   num_defenders_spinbutton->set_value(atoi(num_defenders_spinbutton->get_text().c_str()));
   on_num_defenders_changed();

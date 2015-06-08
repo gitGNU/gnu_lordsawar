@@ -68,17 +68,12 @@ class FightWindow: public sigc::trackable
     int round;
     actions_type::iterator action_iterator;
     
-    // determine the max no. of rows in each column
-    int compute_max_rows(const armies_type &attackers,
-			 const armies_type &defenders);
-    
     // add an army to the window
     void add_army(Army *army, int initial_hp,
                   std::vector<Gtk::HBox *> &hboxes,
-		  Gtk::VBox *vbox,
-		  int current_no, int max_rows);
+		  Gtk::VBox *vbox, int current_no);
 
-    void on_key_release_event(GdkEventKey* event);
+    void on_key_release_event();
 
     bool do_round();
     bool d_quick;

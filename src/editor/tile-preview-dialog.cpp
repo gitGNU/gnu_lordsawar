@@ -304,7 +304,7 @@ bool TilePreviewDialog::on_mouse_button_event(GdkEventButton *e)
 bool TilePreviewDialog::on_mouse_motion_event(GdkEventMotion *e)
 {
   static guint prev = 0;
-  guint delta = e->time - prev;
+  gint delta = e->time - prev;
   if (delta > 40 || delta < 0)
     {
       (*current_scene)->mouse_motion_event(to_input_event(e));

@@ -160,7 +160,7 @@ bool Reward_Allies::save(XML_Helper* helper) const
   return retval;
 }
 	
-const guint32 Reward_Allies::getRandomAmountOfAllies()
+guint32 Reward_Allies::getRandomAmountOfAllies()
 {
   int percent = rand() % 100;
   if (percent < 30)

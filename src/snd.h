@@ -23,9 +23,11 @@
 #include <map>
 #include <vector>
 #include <sigc++/trackable.h>
-#include <gstreamermm/playbin2.h>
 
 class XML_Helper;
+namespace Gst{
+class Message;
+}
 
 //! A helper struct to represent a single item in the sound configuration file.
 struct MusicItem
@@ -121,9 +123,8 @@ class Snd : public sigc::trackable
 
         /** Stops playing of background music
           * 
-          * @param fade     if set to true, fade out.
           */
-        void disableBackground(bool fade=true);
+        void disableBackground();
 
         //! Activates the next background piece
         void nextPiece();
@@ -153,9 +154,6 @@ class Snd : public sigc::trackable
         std::map<Glib::ustring, MusicItem*> d_musicMap;
         std::vector<Glib::ustring> d_bgMap;  // shallow copy of background pieces
 
-        // currently playing background and foreground piece
-        Glib::RefPtr<Gst::PlayBin2> back;
-        Glib::RefPtr<Gst::PlayBin2> effect;
 
         // how many more times we have to loop an effect.
         gint32 d_nloops;
@@ -166,9 +164,11 @@ class Snd : public sigc::trackable
         // if set to true, play background music
         bool d_background;
 
+        struct Impl;
+        Impl *impl;
         // callbacks
 
-        bool on_bus_message(const Glib::RefPtr<Gst::Bus> &bus, const Glib::RefPtr<Gst::Message> & msg, Glib::RefPtr<Gst::Element> playbin);
+        bool on_bus_message(const Glib::RefPtr<Gst::Message> & msg, guint32 source);
         bool on_effect_fade (double step);
 
         // static instanton pointer

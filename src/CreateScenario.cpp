@@ -94,7 +94,7 @@ CreateScenario::CreateScenario(int width, int height)
     setHeight(height);
 
     d_generator = new MapGenerator();
-    d_generator->progress.connect (sigc::mem_fun(*this, &CreateScenario::on_progress));
+    d_generator->progress.connect (sigc::hide(sigc::hide(sigc::mem_fun(*this, &CreateScenario::on_progress))));
 }
 
 CreateScenario::~CreateScenario()
@@ -108,7 +108,7 @@ CreateScenario::~CreateScenario()
         delete d_scenario;
 }
 
-void CreateScenario::on_progress(double percent, Glib::ustring description)
+void CreateScenario::on_progress()
 {
   progress.emit();
 }

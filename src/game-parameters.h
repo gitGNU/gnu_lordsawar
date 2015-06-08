@@ -81,7 +81,7 @@ public:
     enum QuickStartPolicy {
       NO_QUICK_START = 0,
       EVENLY_DIVIDED = 1,
-      AI_HEAD_START = 2,
+      AI_HEAD_START = 2
     };
     QuickStartPolicy quick_start;
     bool cusp_of_war;

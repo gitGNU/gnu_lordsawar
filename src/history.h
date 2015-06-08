@@ -87,7 +87,7 @@ class History
           //! The player has been told of the location of a hidden ruin.
           HERO_REWARD_RUIN = 21,
           //! The player has used an item
-          USE_ITEM = 22,
+          USE_ITEM = 22
         };
 	static Glib::ustring historyTypeToString(const History::Type type);
 	static History::Type historyTypeFromString(const Glib::ustring str);

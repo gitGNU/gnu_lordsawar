@@ -133,7 +133,7 @@ StackTileBox::~StackTileBox()
     delete army_info_tip;
 }
 
-void StackTileBox::on_stack_toggled(StackArmyButton *radio, Stack *stack)
+void StackTileBox::on_stack_toggled(Stack *stack)
 {
   if (d_inhibit || d_inhibit_group_toggle)
     return;
@@ -236,7 +236,7 @@ void StackTileBox::show_stack(StackTile *s)
           stack_conn[count] = 
             button->stack_clicked.connect
             (sigc::bind(sigc::mem_fun(*this, &StackTileBox::on_stack_toggled),
-                        button, *j));
+                        *j));
           count++;
         }
 

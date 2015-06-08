@@ -197,7 +197,7 @@ void CityWindow::update_toggle_picture(int slot)
       pic =
         gc->getCircledArmyPic (as, type, player, NULL, false,
                                slot == city->getActiveProductionSlot() ? 
-                               player->getId(): Shield::NEUTRAL, 
+                               player->getId(): int(Shield::NEUTRAL), 
                                true)->to_pixbuf();
     }
   Gtk::Image *image = new Gtk::Image();

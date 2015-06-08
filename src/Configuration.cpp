@@ -102,7 +102,7 @@ bool Configuration::loadConfigurationFile(Glib::ustring fileName)
         //parse the file
         XML_Helper helper(fileName.c_str(), std::ios::in);
         helper.registerTag(d_tag,
-	    sigc::mem_fun(*this, &Configuration::parseConfiguration));
+	    sigc::hide<0>(sigc::mem_fun(*this, &Configuration::parseConfiguration)));
     
         bool ret = false;
         try {
@@ -190,7 +190,7 @@ bool Configuration::saveConfigurationFile(Glib::ustring filename)
 
 // parse the configuration file and set the variables
 
-bool Configuration::parseConfiguration(Glib::ustring tag, XML_Helper* helper)
+bool Configuration::parseConfiguration(XML_Helper* helper)
 {
     debug("parseConfiguration()");
     

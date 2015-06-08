@@ -79,13 +79,13 @@ private:
   std::list<Glib::ustring> members;
 
   bool onGotMessage(void *conn, int type, Glib::ustring message);
-  void onConnectionLost(void *conn);
-  void onConnectionMade(void *conn);
+  void onConnectionLost();
+  void onConnectionMade();
   sigc::connection on_timer_registered(Timing::timer_slot s, int msecs_interval);
   void on_connected_to_gamelist_server_for_advertising_removal(Glib::ustring scenario_id);
-  void on_advertising_removal_response_received(Glib::ustring scenario_id, Glib::ustring err);
+  void on_advertising_removal_response_received();
   void on_connected_to_gamelist_server_for_advertising(HostedGame *game);
-  void on_advertising_response_received(Glib::ustring scenario_id, Glib::ustring err);
+  void on_advertising_response_received();
   void on_child_setup();
   bool loadProfile(Glib::ustring tag, XML_Helper *helper, Profile **profile);
 

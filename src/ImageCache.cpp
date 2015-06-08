@@ -1245,11 +1245,10 @@ PixMask* ImageCache::getSmallTempleImage()
 
 PixMask* ImageCache::applyMask(PixMask* image, PixMask* mask, const Player* p)
 {
-  return applyMask(image, mask, p->getColor(),
-		   Playerlist::getInstance()->getNeutral()->getId() == p->getId());
+  return applyMask(image, mask, p->getColor());
 }
 
-PixMask* ImageCache::applyMask(PixMask* image, PixMask* mask, Gdk::RGBA colour, bool isNeutral)
+PixMask* ImageCache::applyMask(PixMask* image, PixMask* mask, Gdk::RGBA colour)
 {
   int width = image->get_width();
   int height = image->get_height();
@@ -1891,7 +1890,7 @@ PixMask *ShieldPixMaskCacheItem::generate(ShieldPixMaskCacheItem i)
                                                             i.type, i.colour);
   Gdk::RGBA colour = 
     Shieldsetlist::getInstance()->getColor(i.shieldset, i.colour);
-  return ImageCache::applyMask(sh->getImage(), sh->getMask(), colour, i.colour == Shield::NEUTRAL);
+  return ImageCache::applyMask(sh->getImage(), sh->getMask(), colour);
 }
 
 int ShieldPixMaskCacheItem::comp(const ShieldPixMaskCacheItem item) const

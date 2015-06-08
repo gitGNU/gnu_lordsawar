@@ -210,7 +210,9 @@ void PreferencesDialog::run(Game *game)
 		delete old_player;
 	      }
 	    else //computer, no change
-	      ;
+              {
+                ;
+              }
 	  }
       }
     dialog->hide();

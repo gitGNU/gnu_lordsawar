@@ -1460,7 +1460,7 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 	  if (d_terrain[y*d_width + x] == Tile::MOUNTAIN)
 	    {
 	      d_terrain[y*d_width +x] = Tile::HILLS;
-	      Maptile *t = new Maptile(x, y, Tile::HILLS, NULL);
+	      Maptile *t = new Maptile(x, y, Tile::HILLS);
 	      gm->setTile(x, y, t);
 	      calculateBlockedAvenue(x, y);
 	    }

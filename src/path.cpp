@@ -46,7 +46,8 @@ Path::Path()
 }
 
 Path::Path(const Path& p)
- : d_bonus(p.d_bonus), d_moves_exhausted_at_point(p.d_moves_exhausted_at_point)
+ : std::list<Vector<int> >(), d_bonus(p.d_bonus), 
+    d_moves_exhausted_at_point(p.d_moves_exhausted_at_point)
 {
   for (const_iterator it = p.begin(); it != p.end(); it++)
     push_back(Vector<int>((*it).x, (*it).y));

@@ -185,7 +185,7 @@ class GameWindow: public sigc::trackable
     Game* game;
     GameButtonBox *game_button_box;
     
-    bool on_delete_event(GdkEventAny *e);
+    bool on_delete_event();
 
     bool on_bigmap_mouse_button_event(GdkEventButton *e);
     bool on_bigmap_mouse_motion_event(GdkEventMotion *e);
@@ -248,8 +248,8 @@ class GameWindow: public sigc::trackable
     void on_sidebar_stats_changed(SidebarStats s);
     void on_progress_status_changed(Glib::ustring status);
     void on_progress_changed();
-    void on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle r);
-    void on_smallmap_slid(Rectangle view);
+    void on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map);
+    void on_smallmap_slid();
     void on_bigmap_cursor_changed(ImageCache::CursorType cursor);
     void on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map);
     void on_stack_info_changed(Stack *s);
@@ -266,7 +266,7 @@ class GameWindow: public sigc::trackable
     bool on_hero_offers_service(Player *player, HeroProto *hero, City *city, int gold);
     bool on_enemy_offers_surrender(int numEnemies);
     void on_surrender_answered (bool accepted);
-    bool on_stack_considers_treachery (Stack *stack, Player *them, Vector<int> pos);
+    bool on_stack_considers_treachery (Player *them);
     bool on_temple_searched(Hero *hero, Temple *temple, int blessCount);
     void on_quest_assigned(Hero *hero, Quest *quest);
     CityDefeatedAction on_city_defeated(City *city, int gold);
@@ -286,12 +286,12 @@ class GameWindow: public sigc::trackable
     void on_player_died(Player *player);
     void on_advice_asked(float percent);
     void on_gold_stolen(Player *victim, guint32 gold_pieces);
-    void on_ships_sunk(Player *victim, guint32 num_armies);
+    void on_ships_sunk(guint32 num_armies);
     void on_bags_picked_up(Hero *hero, guint32 num_bags);
     void on_worms_killed(Hero *hero, Glib::ustring army_type_name, guint32 num_worms_killed);
-    void on_city_diseased(Hero *hero, Glib::ustring city_name, guint32 num_armies_killed);
-    void on_city_defended(Hero *hero, Glib::ustring city_name, Glib::ustring army_name, guint32 num_armies);
-    void on_city_persuaded(Hero *hero, Glib::ustring city_name, guint32 num_armies);
+    void on_city_diseased(Glib::ustring city_name, guint32 num_armies_killed);
+    void on_city_defended(Glib::ustring city_name, Glib::ustring army_name, guint32 num_armies);
+    void on_city_persuaded(Glib::ustring city_name, guint32 num_armies);
     void on_stack_teleported(Hero *hero, Glib::ustring city_name);
     void on_bridge_burned(Hero *hero);
     void on_keeper_captured(Hero *hero, Ruin*, Glib::ustring monster_name);
@@ -325,7 +325,7 @@ class GameWindow: public sigc::trackable
 
     Player *game_winner;
     void give_some_cheese(Player *game_winner);
-    void on_ui_form_factor_changed(guint32 factor);
+    void on_ui_form_factor_changed();
 
 public:
     bool d_quick_fights; //do we speed up fights for this player's turn?

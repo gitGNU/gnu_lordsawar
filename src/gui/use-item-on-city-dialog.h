@@ -46,7 +46,7 @@ class UseItemOnCityDialog: public LwDialog
     
     void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);
 
-    void on_city_selected(City *city);
+    void on_city_selected();
 
     bool on_map_mouse_button_event(GdkEventButton *e);
 };

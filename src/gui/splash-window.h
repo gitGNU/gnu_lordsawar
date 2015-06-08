@@ -65,7 +65,7 @@ class SplashWindow: public sigc::trackable
     Gtk::VBox *button_box; //crash button box
     Gtk::HBox *main_box; //crash button box
 	    
-    bool on_delete_event(GdkEventAny *e);
+    bool on_delete_event();
   
     Glib::ustring network_game_nickname;
     

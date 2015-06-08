@@ -67,7 +67,7 @@ class ArmyBase
           //! Provides a +2 strength to army units in the hills.
 	  ADD2STRINHILLS     = 0x00008000, 
 	  //! Negates 2 strength points from an enemy Stack during a Fight.
-	  SUB2ENEMYSTACK     = 0x00010000, 
+	  SUB2ENEMYSTACK     = 0x00010000
         };
         
 	//! Various kinds of statistics that an instance of Army unit has.
@@ -91,7 +91,7 @@ class ArmyBase
 	  //! If the Army unit is in a boat or not.
 	  SHIP = 8,
 	  //! If the Army unit is having it's movement doubled/tripled or not.
-	  MOVES_MULTIPLIER = 9,
+	  MOVES_MULTIPLIER = 9
         };
 
 	//! Copy constructor.

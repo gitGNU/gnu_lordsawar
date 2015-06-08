@@ -135,7 +135,7 @@ void GhsClientTool::on_got_unhost_response(Glib::ustring id, Glib::ustring err)
     Gtk::Main::quit();
 }
 
-void GhsClientTool::on_got_host_game_response(Glib::ustring scenario_id, Glib::ustring err, Glib::ustring file)
+void GhsClientTool::on_got_host_game_response(Glib::ustring err, Glib::ustring file)
 {
   request_count--;
   if (err != "")
@@ -147,11 +147,11 @@ void GhsClientTool::on_got_host_game_response(Glib::ustring scenario_id, Glib::u
     }
   GamehostClient *ghc = GamehostClient::getInstance();
   ghc->received_map_response.connect
-    (sigc::mem_fun(*this, &GhsClientTool::on_game_hosted));
+    (sigc::hide<0>(sigc::mem_fun(*this, &GhsClientTool::on_game_hosted)));
   ghc->send_map_file(file);
 }
 
-void GhsClientTool::on_game_hosted(Glib::ustring scenario_id, guint32 port, Glib::ustring err)
+void GhsClientTool::on_game_hosted(guint32 port, Glib::ustring err)
 {
   request_count--;
   if (err != "")
@@ -199,7 +199,7 @@ void GhsClientTool::on_connected()
     {
       request_count++;
       gamehostclient->received_host_response.connect
-        (sigc::bind(sigc::mem_fun(*this, &GhsClientTool::on_got_host_game_response), d_file_to_host));
+        (sigc::bind(sigc::hide<0>(sigc::mem_fun(*this, &GhsClientTool::on_got_host_game_response)), d_file_to_host));
       bool broken = false;
       Glib::ustring n, com, id;
       guint32 p, c;

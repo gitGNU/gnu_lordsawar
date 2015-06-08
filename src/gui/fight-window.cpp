@@ -46,7 +46,7 @@ FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
     xml->get_widget("window", window);
     window->set_transient_for(parent);
     
-    window->signal_key_release_event().connect_notify(sigc::mem_fun(*this, &FightWindow::on_key_release_event));
+    window->signal_key_release_event().connect_notify(sigc::hide(sigc::mem_fun(*this, &FightWindow::on_key_release_event)));
 
     Gtk::VBox *attacker_close_vbox;
     Gtk::VBox *defender_close_vbox;
@@ -59,8 +59,6 @@ FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
     Fight::orderArmies (fight.getAttackers(), attackers);
     Fight::orderArmies (fight.getDefenders(), defenders);
 
-    int rows = compute_max_rows(attackers, defenders);
-    
     // add the armies
     std::vector<Gtk::HBox *> close_hboxes;
     int close;
@@ -71,7 +69,7 @@ FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
     for (armies_type::iterator i = attackers.begin(); i != attackers.end(); ++i)
     {
       add_army(*i, initial_hps[(*i)->getId()],
-               close_hboxes, attacker_close_vbox, close++, rows);
+               close_hboxes, attacker_close_vbox, close++);
     }
 
     close_hboxes.clear();
@@ -81,7 +79,7 @@ FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
     for (armies_type::iterator i = defenders.begin(); i != defenders.end(); ++i)
     {
 	add_army(*i, initial_hps[(*i)->getId()],
-                 close_hboxes, defender_close_vbox, close++, rows);
+                 close_hboxes, defender_close_vbox, close++);
     }
     
     // fill in shield pictures
@@ -105,7 +103,7 @@ FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
       Configuration::s_displayFightRoundDelayFast; //milliseconds
     normal_round_speed = 
       Configuration::s_displayFightRoundDelaySlow; //milliseconds
-    Snd::getInstance()->disableBackground(true);
+    Snd::getInstance()->disableBackground();
     Snd::getInstance()->play("battle", -1, true);
 }
 
@@ -138,80 +136,9 @@ void FightWindow::run(bool *quick)
       *quick = d_quick;
 }
 
-int FightWindow::compute_max_rows(const armies_type &attackers,
-				  const armies_type &defenders)
-{
-    assert(!attackers.empty() || !defenders.empty());
-    
-    if (attackers.size() > defenders.size())
-      return (attackers.size() / max_cols) + 
-              (attackers.size() % max_cols == 0 ? 0 : 1);
-    else
-      return (defenders.size() / max_cols) + 
-              (defenders.size() % max_cols == 0 ? 0 : 1);
-    // Find out how to distribute the close range and long range attackers and
-    // defenders, assuming that close range units are put in front.
-
-    std::vector<int> counts(2, 0);
-
-    // count the number of melee/ranged units
-    for (armies_type::const_iterator i = attackers.begin(), end = attackers.end();
-	 i != end; ++i)
-    {
-        ++counts[0];
-    }
-
-    for (armies_type::const_iterator i = defenders.begin(), end = defenders.end();
-	 i != end; ++i)
-    {
-        ++counts[1];
-    }
-
-    // now find the max number of rows
-    std::vector<int> heights(counts.begin(), counts.end());
-    std::vector<int> widths(2, 0);
-    for (int i = 0; i < 2; ++i)
-	if (counts[i] > 0)
-	    widths[i] = 1;
-
-    double const wanted_ratio = 4.0 / 3;
-    double old_dist = 10000;
-    int old_height = *std::max_element(heights.begin(), heights.end());
-    while (true) {
-	int width = std::accumulate(widths.begin(), widths.end(), 0);
-	int height = *std::max_element(heights.begin(), heights.end());
-	double ratio = double(width) / height;
-	double dist = std::abs(wanted_ratio - ratio);
-	if (dist >= old_dist)
-	    break;		// we passed the optimal point
-	else
-	{
-	    old_dist = dist;
-	    old_height = height;
-	    
-	    // compute new heights and widths
-	    int max_height = height - 1;
-	    if (max_height < 1)
-		break;
-	    
-	    for (int i = 0; i < 2; ++i)
-		if (heights[i] > max_height)
-		{
-		    heights[i] = max_height;
-		    // round the division up
-		    widths[i] = (counts[i] + max_height - 1) / max_height;
-		}
-	}
-    }
-
-    // use old because the algorithm goes one step too far before it stops
-    return old_height;
-}
-
 void FightWindow::add_army(Army *army, int initial_hp,
 			   std::vector<Gtk::HBox *> &hboxes,
-			   Gtk::VBox *vbox,
-			   int current_no, int max_rows)
+			   Gtk::VBox *vbox, int current_no)
 {
     Gtk::VBox *army_box;
     Gtk::Image *army_image;
@@ -328,7 +255,7 @@ bool FightWindow::do_round()
     
   return Timing::STOP;
 }
-void FightWindow::on_key_release_event(GdkEventKey* event)
+void FightWindow::on_key_release_event()
 {
     Timing::instance().register_timer(
 	sigc::mem_fun(this, &FightWindow::do_round), fast_round_speed);

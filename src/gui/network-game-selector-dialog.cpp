@@ -59,7 +59,7 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profil
     recent_treeview->set_headers_visible(true);
     recent_treeview->get_selection()->signal_changed().connect
           (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_recent_game_selected));
-    recent_treeview->signal_row_activated().connect(sigc::mem_fun(this, &NetworkGameSelectorDialog::on_recent_game_activated));
+    recent_treeview->signal_row_activated().connect(sigc::hide(sigc::hide(sigc::mem_fun(this, &NetworkGameSelectorDialog::on_recent_game_activated))));
     
     RecentlyPlayedGameList *rpgl = RecentlyPlayedGameList::getInstance();
     rpgl->pruneGames();
@@ -98,7 +98,7 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profil
         (Configuration::s_gamelist_server_hostname, 
          Configuration::s_gamelist_server_port, profile);
     }
-    games_treeview->signal_row_activated().connect(sigc::mem_fun(this, &NetworkGameSelectorDialog::on_hosted_game_activated));
+    games_treeview->signal_row_activated().connect(sigc::hide(sigc::hide(sigc::mem_fun(this, &NetworkGameSelectorDialog::on_hosted_game_activated))));
   notebook->set_current_page(1);
 }
 
@@ -263,12 +263,12 @@ void NetworkGameSelectorDialog::on_refresh_clicked()
   on_connected_to_gamelist_server();
 }
 
-void NetworkGameSelectorDialog::on_recent_game_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column)
+void NetworkGameSelectorDialog::on_recent_game_activated()
 {
   connect_button->activate();
 }
 
-void NetworkGameSelectorDialog::on_hosted_game_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column)
+void NetworkGameSelectorDialog::on_hosted_game_activated()
 {
   connect_button->activate();
 }

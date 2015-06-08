@@ -56,8 +56,7 @@ class MapRenderer
 		    Cairo::RefPtr<Cairo::Context> context);
 
 	void render_tile(Vector<int> draw, Vector<int> tile,
-			 Cairo::RefPtr<Cairo::Surface> surface, 
-			 Cairo::RefPtr<Cairo::Context> context);
+			 Cairo::RefPtr<Cairo::Surface> surface);
 
 	//! Save all of the map tiles as one big image (bmp file).
 	bool saveAsBitmap(Glib::ustring filename);

@@ -71,7 +71,7 @@ class ReportDialog: public LwDialog
     void on_army_map_changed(Cairo::RefPtr<Cairo::Surface> map);
     void on_city_map_changed(Cairo::RefPtr<Cairo::Surface> map);
     void on_vector_map_changed(Cairo::RefPtr<Cairo::Surface> map);
-    void on_switch_page(Gtk::Widget *page, guint number);
+    void on_switch_page(guint number);
 
     Gtk::TreeView *armies_treeview;
 

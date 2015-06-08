@@ -32,7 +32,7 @@
 class TileSetWindow: public sigc::trackable
 {
  public:
-    TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename = "");
+    TileSetWindow(Glib::ustring load_filename = "");
     ~TileSetWindow();
 
     void show();
@@ -130,7 +130,7 @@ class TileSetWindow: public sigc::trackable
     TileStyleSet * get_selected_tilestyleset ();
     TileStyle * get_selected_tilestyle ();
 
-    bool on_delete_event(GdkEventAny *e);
+    bool on_delete_event();
 
     void update_tile_panel();
     void update_tilestyleset_panel();
@@ -146,7 +146,7 @@ class TileSetWindow: public sigc::trackable
     void on_save_as_activated();
     void on_validate_tileset_activated();
     void on_quit_activated();
-    bool on_window_closed(GdkEventAny *);
+    bool on_window_closed();
     bool quit();
     void on_edit_tileset_info_activated();
     void on_army_unit_selector_activated();

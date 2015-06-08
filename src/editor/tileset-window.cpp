@@ -47,7 +47,7 @@
 #include "tileset-smallmap-building-colors-dialog.h"
 #include "GameMap.h"
 
-TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
+TileSetWindow::TileSetWindow(Glib::ustring load_filename)
 {
   needs_saving = false;
   inhibit_needs_saving = false;
@@ -58,7 +58,7 @@ TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
     window->signal_delete_event().connect
-      (sigc::mem_fun(*this, &TileSetWindow::on_window_closed));
+      (sigc::hide(sigc::mem_fun(*this, &TileSetWindow::on_window_closed)));
 
     xml->get_widget("tiles_treeview", tiles_treeview);
     xml->get_widget("tile_name_entry", tile_name_entry);
@@ -202,7 +202,7 @@ TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     xml->get_widget("tilestyle_image", tilestyle_image);
 
     window->signal_delete_event().connect
-      (sigc::mem_fun(*this, &TileSetWindow::on_delete_event));
+      (sigc::hide(sigc::mem_fun(*this, &TileSetWindow::on_delete_event)));
 
     tiles_list = Gtk::ListStore::create(tiles_columns);
     tiles_treeview->set_model(tiles_list);
@@ -446,10 +446,9 @@ void TileSetWindow::hide()
   window->hide();
 }
 
-bool TileSetWindow::on_delete_event(GdkEventAny *e)
+bool TileSetWindow::on_delete_event()
 {
   hide();
-
   return true;
 }
 
@@ -695,7 +694,7 @@ bool TileSetWindow::quit()
   return true;
 }
 
-bool TileSetWindow::on_window_closed(GdkEventAny *event)
+bool TileSetWindow::on_window_closed()
 {
   return !quit();
 }
@@ -1009,8 +1008,7 @@ void TileSetWindow::fill_tile_smallmap(Tile *tile)
 	    shadowed = true;
 	  else if (j == 32 - 1)
 	    shadowed = true;
-	  OverviewMap::draw_terrain_tile (tile_smallmap_surface,
-					  tile_smallmap_surface_gc,
+	  OverviewMap::draw_terrain_tile (tile_smallmap_surface_gc,
 					  tile->getSmallTile()->getPattern(),
 					  tile->getSmallTile()->getColor(),
 					  tile->getSmallTile()->getSecondColor(),

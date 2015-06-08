@@ -137,13 +137,20 @@ City * QuestCitySack::chooseToSack(Player *p)
 
 void QuestCitySack::armyDied(Army *a, bool heroIsCulprit)
 {
-  ;
+  if (a || heroIsCulprit)
+    {
+      ;
+    }
   //this quest does nothing when an army dies
 }
 
 void QuestCitySack::cityAction(City *c, CityDefeatedAction action, 
 			       bool heroIsCulprit, int gold)
 {
+  if (gold)
+    {
+      ;
+    }
   if (isPendingDeletion())
     return;
   Hero *h = getHero();

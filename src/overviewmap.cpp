@@ -88,6 +88,10 @@ bool OverviewMap::isShadowed(Tile::Type type, int i, int j)
 static int 
 prand(int i, int j)
 {
+  if (i || j)
+    {
+      ;
+    }
   return (rand () % 3);
 }
 
@@ -121,8 +125,9 @@ void OverviewMap::choose_surface(bool front, Cairo::RefPtr<Cairo::Surface> &surf
       surf = static_surface;
     }
 }
+
 void
-OverviewMap::draw_pixel(Cairo::RefPtr<Cairo::Surface> surf, Cairo::RefPtr<Cairo::Context> gc, int x, int y, const Gdk::RGBA color)
+OverviewMap::draw_pixel(Cairo::RefPtr<Cairo::Context> gc, int x, int y, const Gdk::RGBA color)
 {
   gc->set_source_rgba(color.get_red(), color.get_green(), color.get_blue(), color.get_alpha());
   gc->rectangle(x, y, 1, 1);
@@ -187,8 +192,7 @@ OverviewMap::draw_rect(bool front, int x, int y, int width, int height, const Gd
       gc->stroke();
 }
 
-void OverviewMap::draw_terrain_tile(Cairo::RefPtr<Cairo::Surface> surf,
-				    Cairo::RefPtr<Cairo::Context> gc,
+void OverviewMap::draw_terrain_tile(Cairo::RefPtr<Cairo::Context> gc,
 				    SmallTile::Pattern pattern,
 				    Gdk::RGBA first, 
 				    Gdk::RGBA second,
@@ -199,109 +203,109 @@ void OverviewMap::draw_terrain_tile(Cairo::RefPtr<Cairo::Surface> surf,
   switch (pattern)
     {
       case SmallTile::SOLID:
-        draw_pixel(surf, gc, i, j, first);
+        draw_pixel(gc, i, j, first);
         break;
       case SmallTile::STIPPLED:
         {
           if ((i+j) % 2 == 0)
-            draw_pixel(surf, gc, i, j, first);
+            draw_pixel(gc, i, j, first);
           else
-            draw_pixel(surf, gc, i, j, second);
+            draw_pixel(gc, i, j, second);
         }
         break;
       case SmallTile::RANDOMIZED:
         {
           int num = prand(i, j) % 3;
           if (num == 0)
-            draw_pixel(surf, gc, i, j, first);
+            draw_pixel(gc, i, j, first);
           else if (num == 1)
-            draw_pixel(surf, gc, i, j, second);
+            draw_pixel(gc, i, j, second);
           else
-            draw_pixel(surf, gc, i, j, third);
+            draw_pixel(gc, i, j, third);
         }
         break;
       case SmallTile::DIAGONAL:
         {
           int num = drand(i, j) % 3;
           if (num == 0)
-            draw_pixel(surf, gc, i, j, first);
+            draw_pixel(gc, i, j, first);
           else if (num == 1)
-            draw_pixel(surf, gc, i, j, second);
+            draw_pixel(gc, i, j, second);
           else
-            draw_pixel(surf, gc, i, j, third);
+            draw_pixel(gc, i, j, third);
         }
         break;
       case SmallTile::CROSSHATCH:
         {
           int num = crand(i, j) % 3;
           if (num == 0)
-            draw_pixel(surf, gc, i, j, first);
+            draw_pixel(gc, i, j, first);
           else if (num == 1)
-            draw_pixel(surf, gc , i, j, second);
+            draw_pixel(gc , i, j, second);
           else
-            draw_pixel(surf, gc, i, j, third);
+            draw_pixel(gc, i, j, third);
         }
         break;
       case SmallTile::SUNKEN:
         if (shadowed == false)
-          draw_pixel(surf, gc, i, j, first);
+          draw_pixel(gc, i, j, first);
         else
           {
-            draw_pixel(surf, gc, i, j, second);
+            draw_pixel(gc, i, j, second);
           }
         break;
       case SmallTile::SUNKEN_STRIPED:
         if (shadowed == false)
 	  {
 	    if (j % 2 == 0)
-	      draw_pixel(surf, gc, i, j, first);
+	      draw_pixel(gc, i, j, first);
 	    else
-	      draw_pixel(surf, gc, i, j, third);
+	      draw_pixel(gc, i, j, third);
 	  }
         else
           {
-            draw_pixel(surf, gc, i, j, second);
+            draw_pixel(gc, i, j, second);
           }
         break;
       case SmallTile::TABLECLOTH:
           {
             if (i % 4 == 0 && j % 4 == 0)
-              draw_pixel(surf, gc, i, j, first);
+              draw_pixel(gc, i, j, first);
             else if (i % 4 == 0 && j % 4 == 1)
-              draw_pixel(surf, gc, i, j, second);
+              draw_pixel(gc, i, j, second);
             else if (i % 4 == 0 && j % 4 == 2)
-              draw_pixel(surf, gc, i, j, first);
+              draw_pixel(gc, i, j, first);
             else if (i % 4 == 0 && j % 4 == 3)
-              draw_pixel(surf, gc, i, j, second);
+              draw_pixel(gc, i, j, second);
             else if (i % 4 == 1 && j % 4 == 0)
-              draw_pixel(surf, gc, i, j, second);
+              draw_pixel(gc, i, j, second);
             else if (i % 4 == 1 && j % 4 == 1)
-              draw_pixel(surf, gc, i, j, third);
+              draw_pixel(gc, i, j, third);
             else if (i % 4 == 1 && j % 4 == 2)
-              draw_pixel(surf, gc, i, j, second);
+              draw_pixel(gc, i, j, second);
             else if (i % 4 == 1 && j % 4 == 3)
-              draw_pixel(surf, gc, i, j, third);
+              draw_pixel(gc, i, j, third);
             else if (i % 4 == 2 && j % 4 == 0)
-              draw_pixel(surf, gc, i, j, first);
+              draw_pixel(gc, i, j, first);
             else if (i % 4 == 2 && j % 4 == 1)
-              draw_pixel(surf, gc, i, j, second);
+              draw_pixel(gc, i, j, second);
             else if (i % 4 == 2 && j % 4 == 2)
-              draw_pixel(surf, gc, i, j, first);
+              draw_pixel(gc, i, j, first);
             else if (i % 4 == 2 && j % 4 == 3)
-              draw_pixel(surf, gc, i, j, second);
+              draw_pixel(gc, i, j, second);
             else if (i % 4 == 3 && j % 4 == 0)
-              draw_pixel(surf, gc, i, j, second);
+              draw_pixel(gc, i, j, second);
             else if (i % 4 == 3 && j % 4 == 1)
-              draw_pixel(surf, gc, i, j, third);
+              draw_pixel(gc, i, j, third);
             else if (i % 4 == 3 && j % 4 == 2)
-              draw_pixel(surf, gc, i, j, second);
+              draw_pixel(gc, i, j, second);
             else if (i % 4 == 3 && j % 4 == 3)
-              draw_pixel(surf, gc, i, j, third);
+              draw_pixel(gc, i, j, third);
           }
         break;
       case SmallTile::SUNKEN_RADIAL:
         if (shadowed == true)
-          draw_pixel(surf, gc, i, j, third);
+          draw_pixel(gc, i, j, third);
         break;
     }
 }
@@ -309,7 +313,7 @@ void OverviewMap::draw_terrain_tile(Cairo::RefPtr<Cairo::Surface> surf,
 void OverviewMap::draw_terrain_tile(Maptile *t, int i, int j)
 {
   bool shadowed = isShadowed(t->getType(), i, j);
-  draw_terrain_tile (static_surface, static_surface_gc, t->getPattern(), 
+  draw_terrain_tile (static_surface_gc, t->getPattern(), 
 		     t->getColor(), 
 		     t->getSecondColor(), 
 		     t->getThirdColor(),
@@ -475,7 +479,7 @@ void OverviewMap::draw_terrain_tiles(Rectangle r)
           Maptile *mtile = getTile(x,y);
 
           if (mtile->isRoadTerrain())
-            draw_pixel(static_surface, static_surface_gc, i, j, rd);
+            draw_pixel(static_surface_gc, i, j, rd);
           else
             draw_terrain_tile (mtile, i, j);
         }

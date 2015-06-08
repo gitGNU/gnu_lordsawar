@@ -38,8 +38,7 @@ GameClientDecoder::~GameClientDecoder()
 {
 }
 
-int GameClientDecoder::decodeActions(std::list<NetworkAction*> actions,
-				     Player *player)
+int GameClientDecoder::decodeActions(std::list<NetworkAction*> actions)
 {
   int count = 0;
   for (std::list<NetworkAction *>::iterator i = actions.begin(),
@@ -49,8 +48,6 @@ int GameClientDecoder::decodeActions(std::list<NetworkAction*> actions,
     Glib::ustring desc = action->toString();
     
     Player *p = action->getOwner();
-    //if (p != player && player)
-      //continue;
     std::cerr << String::ucompose(_("decoding action: %1"), desc);
     NetworkPlayer *np = static_cast<NetworkPlayer *>(p);
 
@@ -86,7 +83,7 @@ void GameClientDecoder::gotActions(const Glib::ustring &payload)
   helper.registerTag(NetworkAction::d_tag, sigc::mem_fun(loader, &ActionLoader::loadAction));
   helper.parseXML();
 
-  decodeActions(loader.actions, Playerlist::getActiveplayer());
+  decodeActions(loader.actions);
 }
 
 int GameClientDecoder::decodeHistories(std::list<NetworkHistory *> histories)

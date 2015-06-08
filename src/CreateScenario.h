@@ -202,7 +202,7 @@ class CreateScenario : public CreateScenarioRandomize
 	//players do not have to pay for more armies.
 	void getCityDifficulty (int difficulty, int *number_of_armies_factor);
 
-	void on_progress(double percent, Glib::ustring description);
+	void on_progress();
 
         //data
         //for map creation

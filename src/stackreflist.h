@@ -52,7 +52,7 @@ public:
     StackReflist::iterator eraseStack(StackReflist::iterator it);
     StackReflist::iterator eraseStack(StackReflist::iterator it, guint32 id);
 
-    void changeOwnership(Player *old_owner, Player *new_owner);
+    void changeOwnership(Player *new_owner);
 
     bool getIdOfStack(Stack *stack, guint32 &id);
 private:

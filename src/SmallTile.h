@@ -108,7 +108,7 @@ oeeeeeee
 	   */
 	  SUNKEN_STRIPED = 7,
 
-          SUNKEN_RADIAL = 8,
+          SUNKEN_RADIAL = 8
 	};
                     
 

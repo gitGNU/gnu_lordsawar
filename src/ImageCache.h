@@ -115,7 +115,7 @@ class ImageCache
       STACK_DESELECT,
       DIPLOMACY_NEW_PROPOSALS,
       STACK_SEARCH,
-      END_TURN,
+      END_TURN
     };
   enum ArrowType
     {
@@ -408,7 +408,7 @@ class ImageCache
         PixMask* getWaypointImage(guint32 type);
 
 	static PixMask* applyMask(PixMask* image, PixMask* mask, const Player* p);
-	static PixMask* applyMask(PixMask* image, PixMask* mask, Gdk::RGBA colour, bool isNeutral);
+	static PixMask* applyMask(PixMask* image, PixMask* mask, Gdk::RGBA colour);
 
 	static PixMask* greyOut(PixMask* image);
 

@@ -22,11 +22,7 @@
 #include <glibmm.h>
 #include <iostream>
 #include <sigc++/functors/mem_fun.h>
-#include <gstreamermm/playbin2.h>
-#include <gstreamermm/fakesink.h>
-#include <gstreamermm/bus.h>
-#include <gstreamermm/message.h>
-#include <gstreamermm/elementfactory.h>
+#include <gstreamermm.h>
 #include "snd.h"
 #include "File.h"
 #include "Configuration.h"
@@ -37,6 +33,12 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
+struct Snd::Impl
+{
+  // currently playing background and foreground piece
+  Glib::RefPtr<Gst::PlayBin2> back;
+  Glib::RefPtr<Gst::PlayBin2> effect;
+};
 
 Snd* Snd::s_instance = 0;
 
@@ -58,7 +60,7 @@ void Snd::deleteInstance()
 }
 
 Snd::Snd()
-    :d_nloops(1), d_broken(false), d_background(false)
+    :d_nloops(1), d_broken(false), d_background(false), impl(new Impl())
 {
     debug("Snd constructor")
 
@@ -72,10 +74,10 @@ Snd::Snd()
 	return;
     }
 
-    back = Gst::PlayBin2::create();
-    effect = Gst::PlayBin2::create();
-    effect->get_bus()->add_watch(sigc::bind(sigc::mem_fun(*this, &Snd::on_bus_message), effect));
-    back->get_bus()->add_watch(sigc::bind(sigc::mem_fun(*this, &Snd::on_bus_message), back));
+    impl->back = Gst::PlayBin2::create();
+    impl->effect = Gst::PlayBin2::create();
+    impl->effect->get_bus()->add_watch(sigc::bind(sigc::hide<0>(sigc::mem_fun(*this, &Snd::on_bus_message)), 0));
+    impl->back->get_bus()->add_watch(sigc::bind(sigc::hide<0>(sigc::mem_fun(*this, &Snd::on_bus_message)), 1));
     debug("Music list contains " <<d_musicMap.size <<" entries.")
     debug("background list has " <<d_bgMap.size <<" entries.")
 }
@@ -84,7 +86,7 @@ Snd::~Snd()
 {
     debug("Snd destructor")
     halt(false);
-    disableBackground(false);
+    disableBackground();
     
     // remove all music pieces
     std::map<Glib::ustring, MusicItem*>::iterator it;
@@ -99,8 +101,8 @@ bool Snd::setMusic(bool enable, int volume)
 
     Configuration::s_musicenable = enable;
     Configuration::s_musicvolume = volume;
-    effect->property_volume() = (double)Configuration::s_musicvolume/128.0;
-    back->property_volume() = (double)Configuration::s_musicvolume/128.0;
+    impl->effect->property_volume() = (double)Configuration::s_musicvolume/128.0;
+    impl->back->property_volume() = (double)Configuration::s_musicvolume/128.0;
 
     return true;
 }
@@ -126,38 +128,38 @@ bool Snd::play(Glib::ustring piece, int nloops, bool fade)
     return false;
 
   d_nloops = nloops;
-  effect->set_state(Gst::STATE_NULL);
-  effect->property_uri() = 
+  impl->effect->set_state(Gst::STATE_NULL);
+  impl->effect->property_uri() = 
     Glib::filename_to_uri(File::getMusicFile(d_musicMap[piece]->file));
-  effect->property_video_sink() = Gst::FakeSink::create();
-  effect->property_audio_sink() = Gst::ElementFactory::create_element("autoaudiosink", "output");
+  impl->effect->property_video_sink() = Gst::FakeSink::create();
+  impl->effect->property_audio_sink() = Gst::ElementFactory::create_element("autoaudiosink", "output");
   if (fade)
     {
-      effect->property_volume() = 0.0;
+      impl->effect->property_volume() = 0.0;
       Timing::instance().register_timer
         (sigc::bind(sigc::mem_fun(this, &Snd::on_effect_fade), 0.01), 100);
     }
   else
-    effect->property_volume() = (double)Configuration::s_musicvolume/128.0;
-  effect->set_state(Gst::STATE_PLAYING);
+    impl->effect->property_volume() = (double)Configuration::s_musicvolume/128.0;
+  impl->effect->set_state(Gst::STATE_PLAYING);
 
   return true;
 }
 
-bool Snd::on_bus_message(const Glib::RefPtr<Gst::Bus> &bus, const Glib::RefPtr<Gst::Message> & msg, Glib::RefPtr<Gst::Element> playbin)
+bool Snd::on_bus_message(const Glib::RefPtr<Gst::Message> & msg, guint32 source)
 {
   switch (msg->get_message_type())
     {
     case Gst::MESSAGE_EOS:
-      if (playbin == effect)
+      if (source == 0)
         {
           if (d_nloops > 0)
             d_nloops--;
           if (d_nloops == 0)
             return TRUE;
-          playbin->seek(Gst::FORMAT_TIME, Gst::SEEK_FLAG_FLUSH, 0);
+          impl->effect->seek(Gst::FORMAT_TIME, Gst::SEEK_FLAG_FLUSH, 0);
         }
-      else if (playbin == back)
+      else if (source == 1)
         {
           nextPiece();
         }
@@ -173,7 +175,7 @@ bool Snd::halt(bool fade)
   debug("stopping music")
 
   if (fade == false)
-    effect->set_state(Gst::STATE_NULL);
+    impl->effect->set_state(Gst::STATE_NULL);
   else
     Timing::instance().register_timer
       (sigc::bind(sigc::mem_fun(this, &Snd::on_effect_fade), -0.02), 100);
@@ -182,30 +184,30 @@ bool Snd::halt(bool fade)
 
 bool Snd::on_effect_fade(double step)
 {
-  double volume = effect->property_volume();
+  double volume = impl->effect->property_volume();
   double max = (double)Configuration::s_musicvolume/128.0;
   if (step < 0)
     {
       if (volume > std::abs(step))
-        effect->property_volume() = (volume + step);
+        impl->effect->property_volume() = (volume + step);
       else
-        effect->property_volume() = 0.0;
+        impl->effect->property_volume() = 0.0;
     }
   else if (step > 0)
     {
       if (volume < max-step)
-        effect->property_volume() = (volume + step);
+        impl->effect->property_volume() = (volume + step);
       else
-        effect->property_volume() = max;
+        impl->effect->property_volume() = max;
     }
-  if (step < 0 && effect->property_volume() <= 0.0)
+  if (step < 0 && impl->effect->property_volume() <= 0.0)
     {
-      effect->property_volume() = 0.0;
+      impl->effect->property_volume() = 0.0;
       return Timing::STOP;
     }
-  if (step > 0 && effect->property_volume() >= max)
+  if (step > 0 && impl->effect->property_volume() >= max)
     {
-      effect->property_volume() = max;
+      impl->effect->property_volume() = max;
       return Timing::STOP;
     }
   return Timing::CONTINUE;
@@ -218,12 +220,12 @@ void Snd::enableBackground()
     nextPiece();
 }
 
-void Snd::disableBackground(bool fade)
+void Snd::disableBackground()
 {
     debug("disabling background music")
     d_background = false;
 
-  back->set_state(Gst::STATE_NULL);
+  impl->back->set_state(Gst::STATE_NULL);
 }
 
 void Snd::nextPiece()
@@ -238,13 +240,13 @@ void Snd::nextPiece()
         int i = rand() % d_bgMap.size();
         if (!File::exists(File::getMusicFile(d_musicMap[d_bgMap[i]]->file)))
             continue;
-        back->set_state(Gst::STATE_NULL);
-        back->property_uri() = 
+        impl->back->set_state(Gst::STATE_NULL);
+        impl->back->property_uri() = 
           Glib::filename_to_uri(File::getMusicFile(d_musicMap[d_bgMap[i]]->file));
-        back->property_video_sink() = Gst::FakeSink::create();
-        back->property_audio_sink() = Gst::ElementFactory::create_element("autoaudiosink", "output");
-        back->property_volume() = (double)Configuration::s_musicvolume/128.0;
-        back->set_state(Gst::STATE_PLAYING);
+        impl->back->property_video_sink() = Gst::FakeSink::create();
+        impl->back->property_audio_sink() = Gst::ElementFactory::create_element("autoaudiosink", "output");
+        impl->back->property_volume() = (double)Configuration::s_musicvolume/128.0;
+        impl->back->set_state(Gst::STATE_PLAYING);
         break;
       }
 }
@@ -278,6 +280,6 @@ bool Snd::loadMusic(Glib::ustring tag, XML_Helper* helper)
         
 void Snd::updateVolume()
 {
-  effect->property_volume() = (double)Configuration::s_musicvolume/128.0;
-  back->property_volume() = (double)Configuration::s_musicvolume/128.0;
+  impl->effect->property_volume() = (double)Configuration::s_musicvolume/128.0;
+  impl->back->property_volume() = (double)Configuration::s_musicvolume/128.0;
 }

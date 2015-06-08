@@ -32,7 +32,7 @@
 class ArmySetWindow: public sigc::trackable
 {
  public:
-    ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename = "");
+    ArmySetWindow(Glib::ustring load_filename = "");
     ~ArmySetWindow();
     
     void show();
@@ -135,7 +135,7 @@ class ArmySetWindow: public sigc::trackable
     Glib::RefPtr<Gtk::ListStore> armies_list;
     bool inhibit_scrolldown;
 
-    bool on_delete_event(GdkEventAny *e);
+    bool on_delete_event();
 
     void addArmyType(guint32 army_type);
     void update_army_panel();
@@ -164,23 +164,23 @@ class ArmySetWindow: public sigc::trackable
     void on_description_changed();
     void on_image_changed(Gtk::Button *button, Gtk::Image *image, Shield::Colour c);
     void on_production_changed();
-    void on_production_text_changed(const Glib::ustring &s, int* p);
+    void on_production_text_changed();
     void on_cost_changed();
-    void on_cost_text_changed(const Glib::ustring &s, int* p);
+    void on_cost_text_changed();
     void on_new_cost_changed();
-    void on_new_cost_text_changed(const Glib::ustring &s, int* p);
+    void on_new_cost_text_changed();
     void on_upkeep_changed();
-    void on_upkeep_text_changed(const Glib::ustring &s, int* p);
+    void on_upkeep_text_changed();
     void on_strength_changed();
-    void on_strength_text_changed(const Glib::ustring &s, int* p);
+    void on_strength_text_changed();
     void on_moves_changed();
-    void on_moves_text_changed(const Glib::ustring &s, int* p);
+    void on_moves_text_changed();
     void on_exp_changed();
-    void on_exp_text_changed(const Glib::ustring &s, int* p);
+    void on_exp_text_changed();
     void on_sight_changed();
-    void on_sight_text_changed(const Glib::ustring &s, int* p);
+    void on_sight_text_changed();
     void on_id_changed();
-    void on_id_text_changed(const Glib::ustring &s, int* p);
+    void on_id_text_changed();
     void on_gender_none_toggled();
     void on_gender_male_toggled();
     void on_gender_female_toggled();

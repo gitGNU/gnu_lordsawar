@@ -142,7 +142,7 @@ namespace UBoxPrivate
   Composition::stringify<Glib::RefPtr<Gdk::Pixbuf> >(Glib::RefPtr<Gdk::Pixbuf> obj)
   {
     char buf[32];
-    snprintf(buf, sizeof(buf), "Gdk::Pixbuf %p", obj->gobj());
+    snprintf(buf, sizeof(buf), "Gdk::Pixbuf %p", (void*)obj->gobj());
     return buf;
   }
   

@@ -66,7 +66,7 @@ class NewNetworkGameDialog: public LwDialog
   void on_profile_selected();
   void on_client_radiobutton_toggled();
   void on_remote_checkbutton_toggled();
-  void on_profile_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
+  void on_profile_activated();
 };
 
 #endif

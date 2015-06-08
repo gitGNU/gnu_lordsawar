@@ -122,9 +122,9 @@ Player::Player(Glib::ustring name, guint32 armyset, Gdk::RGBA color, int width,
 }
 
 Player::Player(const Player& player)
-    :d_color(player.d_color), d_name(player.d_name), d_armyset(player.d_armyset),
-    d_gold(player.d_gold), d_dead(player.d_dead), d_immortal(player.d_immortal),
-    d_type(player.d_type), d_id(player.d_id), 
+    :sigc::trackable(player), d_color(player.d_color), d_name(player.d_name), 
+    d_armyset(player.d_armyset), d_gold(player.d_gold), d_dead(player.d_dead),
+    d_immortal(player.d_immortal), d_type(player.d_type), d_id(player.d_id), 
     d_fight_order(player.d_fight_order), d_upkeep(player.d_upkeep), 
     d_income(player.d_income), d_observable(player.d_observable),
     surrendered(player.surrendered),abort_requested(player.abort_requested)
@@ -1482,6 +1482,10 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
 
 int Player::doStackVisitTemple(Stack *s, Temple *t)
 {
+  if (t)
+    {
+      ;
+    }
   // you have your stack blessed (+1 strength)
   int count = s->bless();
 
@@ -1501,6 +1505,10 @@ int Player::stackVisitTemple(Stack* s, Temple* t)
 
 Quest* Player::doHeroGetQuest(Hero *hero, Temple* t, bool except_raze)
 {
+  if (t)
+    {
+      ;
+    }
   QuestsManager *qm = QuestsManager::getInstance();
 
   std::vector<Quest*> quests = qm->getPlayerQuests(Playerlist::getActiveplayer());
@@ -2238,76 +2246,82 @@ guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
                                  std::vector<guint32>& culprits,
                                  std::list<History*> &history)
 {
-    guint32 count = 0;
-    Player *owner = NULL;
-    if (stacks.empty() == false)
+  guint32 count = 0;
+  Player *owner = NULL;
+  if (stacks.empty() == false)
     {
-        owner = (*stacks.begin())->getOwner();
-        debug("Owner = " << owner);
-        if (owner)
-            debug("Owner of the stacks: " << owner->getName()
-                  << ", his stacklist = " << owner->getStacklist());
-    }
-    for (unsigned int i = 0; i < culprits.size(); i++)
-        debug("Culprit: " << culprits[i]);
-
-    tallyDeadArmyTriumphs(stacks);
-    handleDeadHeroes(stacks, history);
-    handleDeadArmiesForQuests(stacks, culprits);
-
-    std::list<Stack*>::iterator it;
-    for (it = stacks.begin(); it != stacks.end(); )
-    {
-        debug("Stack: " << (*it))
-        if ((*it))
-          debug("Stack id: " << (*it)->getId());
-        for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end();)
+      owner = (*stacks.begin())->getOwner();
+      debug("Owner = " << owner);
+      if (owner)
         {
-            debug("Army: " << (*sit) << " " << (*sit)->getId())
+          debug("Owner of the stacks: " << owner->getName()
+                << ", his stacklist = " << owner->getStacklist());
+        }
+    }
+  for (unsigned int i = 0; i < culprits.size(); i++)
+    debug("Culprit: " << culprits[i]);
+
+  tallyDeadArmyTriumphs(stacks);
+  handleDeadHeroes(stacks, history);
+  handleDeadArmiesForQuests(stacks, culprits);
+
+  std::list<Stack*>::iterator it;
+  for (it = stacks.begin(); it != stacks.end(); )
+    {
+      debug("Stack: " << (*it))
+        if ((*it))
+          {
+            debug("Stack id: " << (*it)->getId());
+          }
+      for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end();)
+        {
+          debug("Army: " << (*sit) << " " << (*sit)->getId())
             if ((*sit)->getHP() <= 0)
-            {
+              {
                 debug("Dead Army: " << (*sit)->getName())
 
-                count++;
-		sit = (*it)->flErase(sit);
-		continue;
-	    }
+                  count++;
+                sit = (*it)->flErase(sit);
+                continue;
+              }
 
-	    sit++;
-	}
+          sit++;
+        }
 
-	debug("Is stack empty?")
+      debug("Is stack empty?")
 
-	  if ((*it)->empty())
-	    {
-	      if (owner)
-		{
-		  debug("Yes, removing this stack from the owner's stacklist");
-		  bool found = owner->deleteStack(*it);
-                  if (found == false)
-                    {
-                      printf("couldn't find stack id %d for player %d\n", (*it)->getId(), owner->getId());
-                      printf("is it in our own stacklist?");
-                      Stack *a = getStacklist()->getStackById((*it)->getId());
-                      if  (a)
-                        printf(" yes\n");
-                      else
-                        printf(" no\n");
-                    }
-		  assert (found == true);
-		}
-	      else // there is no owner - like for the ruin's occupants
-		debug("No owner for this stack - do stacklist too");
+        if ((*it)->empty())
+          {
+            if (owner)
+              {
+                debug("Yes, removing this stack from the owner's stacklist");
+                bool found = owner->deleteStack(*it);
+                if (found == false)
+                  {
+                    printf("couldn't find stack id %d for player %d\n", (*it)->getId(), owner->getId());
+                    printf("is it in our own stacklist?");
+                    Stack *a = getStacklist()->getStackById((*it)->getId());
+                    if  (a)
+                      printf(" yes\n");
+                    else
+                      printf(" no\n");
+                  }
+                assert (found == true);
+              }
+            else // there is no owner - like for the ruin's occupants
+              {
+                debug("No owner for this stack - do stacklist too");
+              }
 
-	      debug("Removing from the vector too (the vector had "
-		    << stacks.size() << " left)");
-	      it = stacks.erase(it);
-	    }
-	  else
-	    it++;
+            debug("Removing from the vector too (the vector had "
+                  << stacks.size() << " left)");
+            it = stacks.erase(it);
+          }
+        else
+          it++;
     }
-    debug("after removeDead: num stacks = " << stacks.size());
-    return count;
+  debug("after removeDead: num stacks = " << stacks.size());
+  return count;
 }
 
 void Player::doHeroGainsLevel(Hero *hero, Army::Stat stat)
@@ -3307,7 +3321,9 @@ void Player::AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
 	  bool vectored = AI_maybeVector(c, safe_mp, min_defenders, enemy_city, 
 					 &vector_city);
 	  if (vectored)
-	    debug("begin vectoring from " << c->getName() <<" to " << vector_city->getName() << "!\n");
+            {
+              debug("begin vectoring from " << c->getName() <<" to " << vector_city->getName() << "!\n");
+            }
 	}
     }
 }
@@ -3371,9 +3387,6 @@ bool Player::vectoredUnitArrives(VectoredUnit *unit)
                                        unit->getPos()));
   Stack *stack = NULL;
   Army *army = doVectoredUnitArrives(unit, stack);
-  printf("it landed in stack %p\n", stack);
-  if (stack)
-    printf("it landed in stack %d\n", stack->getId());
   if (!army)
     {
       printf("this was supposed to be impossible because of operations on the vectoredunitlist after the city is conquered.\n");

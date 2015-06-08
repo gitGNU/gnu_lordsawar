@@ -42,6 +42,7 @@ Backpack::Backpack(XML_Helper* helper)
 }
 
 Backpack::Backpack(const Backpack& backpack)
+ : std::list<Item*>()
 {
   for (const_iterator it = backpack.begin(); it != backpack.end(); it++)
     push_back(new Item(**it));

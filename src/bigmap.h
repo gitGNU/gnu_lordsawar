@@ -113,19 +113,19 @@ class BigMap: public sigc::trackable
     Vector<int> tile_to_buffer_pos(Vector<int> tile);
     Vector<int> get_view_pos_from_view();
     void draw_buffer();  
-    void blit_object(const Location &obj, Vector<int> tile, PixMask* image, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc);
+    void blit_object(const Location &obj, Vector<int> tile, PixMask* image, Cairo::RefPtr<Cairo::Surface> surface);
 
     virtual void after_draw() { }
 
  protected:
-    void draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc);
+    void draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface);
  private:
-    void draw_buffer(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context);
-    void draw_buffer_tiles(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context);
+    void draw_buffer(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface);
+    void draw_buffer_tiles(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface);
 
-    void draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context);
+    void draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> surface);
     Cairo::RefPtr<Cairo::Surface> magnify(Cairo::RefPtr<Cairo::Surface> orig);
-    void clip_viewable_buffer(Cairo::RefPtr<Cairo::Surface> pixmap, Cairo::RefPtr<Cairo::Context> gc, Vector<int> pos, Cairo::RefPtr<Cairo::Surface> out);
+    void clip_viewable_buffer(Cairo::RefPtr<Cairo::Surface> pixmap, Vector<int> pos, Cairo::RefPtr<Cairo::Surface> out);
 };
 
 #endif

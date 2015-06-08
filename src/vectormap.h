@@ -56,7 +56,7 @@ public:
 	//! Only depict vectoring that involves the selected city.
 	SHOW_ORIGIN_CITY_VECTORING,
 	//! Depict vectoring for all City objects that the Player owns.
-	SHOW_ALL_VECTORING,
+	SHOW_ALL_VECTORING
       };
 
     //! The different effects that a mouse click can have on a VectorMap.
@@ -72,7 +72,7 @@ public:
 	 * vector to the newly selected city.  This makes the newly clicked 
 	 * City object the selected city..
 	 */
-	CLICK_CHANGES_DESTINATION,
+	CLICK_CHANGES_DESTINATION
       };
 
     //! Default constructor.

@@ -93,7 +93,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	  //! If the Army unit is having it's movement doubled/tripled or not.
 	  MOVES_MULTIPLIER = 9,
           //! If SHIP, then this is how strong the army is on a boat.
-          BOAT_STRENGTH = 10,
+          BOAT_STRENGTH = 10
         };
 
 	//! Copy constructor. 

@@ -239,7 +239,7 @@ GameMap::GameMap(XML_Helper* helper)
             //the chars now hold the ascii representation of the numbers, which
             //we don't want
             type -= '0';
-            d_map[j*s_width + i] = new Maptile(i, j, type, NULL);
+            d_map[j*s_width + i] = new Maptile(i, j, type);
         }
     }
 
@@ -289,7 +289,7 @@ bool GameMap::fill(MapGenerator* generator)
         {
             int index = tileset->getIndex(terrain[j*width + i]);
 	    if (index != -1)
-	      d_map[j*s_width + i] = new Maptile(i, j, (guint32)index, NULL);
+	      d_map[j*s_width + i] = new Maptile(i, j, (guint32)index);
         }
 
     applyTileStyles(0, 0, height, width, true);
@@ -300,7 +300,7 @@ bool GameMap::fill(guint32 type)
 {
   for (int i = 0; i < s_width; i++)
     for (int j = 0; j < s_height; j++)
-      d_map[j*s_width + i] = new Maptile(i, j, type, NULL);
+      d_map[j*s_width + i] = new Maptile(i, j, type);
 
   applyTileStyles(0, 0, s_height, s_width, false);
   return true;
@@ -892,7 +892,7 @@ void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy,
 		//downgrade it
 		int idx = tileset->getIndex(outtype);
 		if (idx != -1)
-		  setTile(j, i, new Maptile (j, i, (guint32)idx, NULL));
+		  setTile(j, i, new Maptile (j, i, (guint32)idx));
 	      }
 	  }
       }
@@ -965,7 +965,7 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
                           Maptile::Building b =
                             getTile(j+J, i+I)->getBuilding();
                           setTile(j+J, i+I,
-                                  new Maptile (j+J, i+I, (guint32)idx, NULL));
+                                  new Maptile (j+J, i+I, (guint32)idx));
                           if (b)
                             setBuilding(Vector<int>(j+J,i+I), b);
                         }
@@ -974,7 +974,7 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 		    {
 		    // water has priority here, there was some work done to conenct bodies of water
 		    // so don't break those connections.
-		      setTile(j, i, new Maptile (j, i, (guint32)idx, NULL));
+		      setTile(j, i, new Maptile (j, i, (guint32)idx));
 		    }
 		}
       }

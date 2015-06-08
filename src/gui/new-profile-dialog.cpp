@@ -22,7 +22,7 @@
 
 #include "new-profile-dialog.h"
 
-NewProfileDialog::NewProfileDialog(Gtk::Window &parent, Glib::ustring network_game_nickname)
+NewProfileDialog::NewProfileDialog(Gtk::Window &parent)
  : LwDialog(parent, "new-profile-dialog.ui")
 {
   xml->get_widget("accept_button", accept_button);

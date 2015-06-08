@@ -139,13 +139,20 @@ City* QuestCityRaze::chooseToRaze(Player *p)
 
 void QuestCityRaze::armyDied(Army *a, bool heroIsCulprit)
 {
-  ;
+  if (a || heroIsCulprit)
+    {
+      ;
+    }
   //this quest does nothing when an army dies
 }
 
 void QuestCityRaze::cityAction(City *c, CityDefeatedAction action, 
 			       bool heroIsCulprit, int gold)
 {
+  if (gold)
+    {
+      ;
+    }
   if (isPendingDeletion())
     return;
   Hero *h = getHero();

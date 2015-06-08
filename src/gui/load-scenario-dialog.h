@@ -62,7 +62,7 @@ class LoadScenarioDialog: public LwDialog
     void on_add_scenario_clicked();
     void on_remove_scenario_clicked();
     int copy_file (Glib::ustring from, Glib::ustring to);
-    void on_scenario_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
+    void on_scenario_activated();
 };
 
 #endif

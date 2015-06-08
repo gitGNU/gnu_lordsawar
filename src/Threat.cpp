@@ -190,5 +190,5 @@ void Threat::changeOwnership(Player *old_owner, Player *new_owner)
     if (getOwner() == old_owner)
       setOwner(new_owner);
     if (d_stacks)
-      d_stacks->changeOwnership(old_owner, new_owner);
+      d_stacks->changeOwnership(new_owner);
 }

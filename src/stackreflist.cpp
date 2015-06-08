@@ -112,7 +112,7 @@ guint32 StackReflist::countArmies() const
   return count;
 }
 
-void StackReflist::changeOwnership(Player *old_player, Player *new_player)
+void StackReflist::changeOwnership(Player *new_player)
 {
   for (IdMap::iterator it = d_id.begin(); it != d_id.end(); it++)
     {

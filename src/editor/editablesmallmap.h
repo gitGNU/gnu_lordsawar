@@ -40,7 +40,7 @@ public:
 	TEMPLE, 
 	ERASE, 
         PICK_NEW_ROAD_START,
-        PICK_NEW_ROAD_FINISH,
+        PICK_NEW_ROAD_FINISH
     };
 
     //! Default constructor.  Make a new EditableSmallMap.

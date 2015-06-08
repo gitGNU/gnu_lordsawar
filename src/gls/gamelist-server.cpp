@@ -96,9 +96,9 @@ void GamelistServer::start(int port)
   network_server->got_message.connect
     (sigc::mem_fun(this, &GamelistServer::onGotMessage));
   network_server->connection_lost.connect
-    (sigc::mem_fun(this, &GamelistServer::onConnectionLost));
+    (sigc::hide(sigc::mem_fun(this, &GamelistServer::onConnectionLost)));
   network_server->connection_made.connect
-    (sigc::mem_fun(this, &GamelistServer::onConnectionMade));
+    (sigc::hide(sigc::mem_fun(this, &GamelistServer::onConnectionMade)));
 
   network_server->startListening(port);
 
@@ -208,14 +208,14 @@ bool GamelistServer::onGotMessage(void *conn, int type, Glib::ustring payload)
   return true;
 }
 
-void GamelistServer::onConnectionMade(void *conn)
+void GamelistServer::onConnectionMade()
 {
   debug("connection made");
   Gamelist::getInstance()->pruneGames();
   Gamelist::getInstance()->pingGames();
 }
 
-void GamelistServer::onConnectionLost(void *conn)
+void GamelistServer::onConnectionLost()
 {
   debug("connection lost");
 }

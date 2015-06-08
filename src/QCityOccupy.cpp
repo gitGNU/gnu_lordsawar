@@ -140,13 +140,20 @@ City * QuestCityOccupy::chooseToOccupy(Player *p)
 	 
 void QuestCityOccupy::armyDied(Army *a, bool heroIsCulprit)
 {
-  ;
+  if (a || heroIsCulprit)
+    {
+      ;
+    }
   //this quest does nothing when an army dies
 }
 
 void QuestCityOccupy::cityAction(City *c, CityDefeatedAction action, 
 				 bool heroIsCulprit, int gold)
 {
+  if (gold)
+    {
+      ;
+    }
   if (isPendingDeletion())
     return;
   Hero *h = getHero();

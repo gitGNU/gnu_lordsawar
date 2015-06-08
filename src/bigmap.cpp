@@ -133,7 +133,7 @@ void BigMap::set_view(Rectangle new_view)
     d_renderer = new MapRenderer(buffer);
 }
 
-void BigMap::clip_viewable_buffer(Cairo::RefPtr<Cairo::Surface> pixmap, Cairo::RefPtr<Cairo::Context> gc, Vector<int> pos, Cairo::RefPtr<Cairo::Surface> out)
+void BigMap::clip_viewable_buffer(Cairo::RefPtr<Cairo::Surface> pixmap, Vector<int> pos, Cairo::RefPtr<Cairo::Surface> out)
 {
   Cairo::RefPtr<Cairo::Context> out_gc = Cairo::Context::create(out);
   out_gc->rectangle(0, 0, image.get_width(), image.get_height());
@@ -177,11 +177,11 @@ void BigMap::draw(Player *player, bool redraw_buffer)
 	if (magnified_buffer == true)
 	  magnified_buffer.clear();
 	magnified_buffer = magnify(buffer);
-	clip_viewable_buffer(magnified_buffer, buffer_gc, p, outgoing);
+	clip_viewable_buffer(magnified_buffer, p, outgoing);
       }
     else
       {
-	clip_viewable_buffer(buffer, buffer_gc, p, outgoing);
+	clip_viewable_buffer(buffer, p, outgoing);
       }
 
     if (blank_screen)
@@ -304,7 +304,7 @@ MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
     return m;
 }
 
-void BigMap::blit_object(const Location &obj, Vector<int> tile, PixMask *im, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc)
+void BigMap::blit_object(const Location &obj, Vector<int> tile, PixMask *im, Cairo::RefPtr<Cairo::Surface> surface)
 {
   Vector<int> diff = tile - obj.getPos();
   int tilesize = GameMap::getInstance()->getTileSize();
@@ -312,7 +312,7 @@ void BigMap::blit_object(const Location &obj, Vector<int> tile, PixMask *im, Cai
   im->blit(diff, tilesize, surface, p);
 }
 
-void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc)
+void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface)
 {
   //this routine is for drawing the active stack.
   //for all other stacks see ImageCache::draw_tile_pic
@@ -387,7 +387,7 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::
 
 void BigMap::draw_buffer()
 {
-  draw_buffer (buffer_view, buffer, buffer_gc);
+  draw_buffer (buffer_view, buffer);
     
   //the idea here is that we want to show what happens when an AI-owned
   //stack moves through our area.  in lieu of that, we just block everything
@@ -421,15 +421,14 @@ bool BigMap::saveAsBitmap(Glib::ustring filename)
   
   bool orig_grid = d_grid_toggled;
   d_grid_toggled = false;
-  draw_buffer(Rectangle (0, 0, GameMap::getWidth(), GameMap::getHeight()), surf,
-	      Cairo::Context::create(surf));
+  draw_buffer(Rectangle (0, 0, GameMap::getWidth(), GameMap::getHeight()), surf);
   d_grid_toggled = orig_grid;
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(surf, 0, 0, width, height);
   pixbuf->save (filename, "png");
   return true;
 }
 
-void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context)
+void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> surface)
 {
   guint32 tilesize = GameMap::getInstance()->getTileSize();
   Player *viewing = Playerlist::getViewingplayer();
@@ -597,17 +596,17 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> su
   pixmask->blit(surface, tile_to_buffer_pos(tile));
 }
 
-void BigMap::draw_buffer_tiles(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context)
+void BigMap::draw_buffer_tiles(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface)
 {
   for (int i = map_view.x; i < map_view.x + map_view.w; i++)
     for (int j = map_view.y; j < map_view.y + map_view.h; j++)
       if (i < GameMap::getWidth() && j < GameMap::getHeight())
-	draw_buffer_tile(Vector<int>(i,j), surface, context);
+	draw_buffer_tile(Vector<int>(i,j), surface);
 }
 
-void BigMap::draw_buffer(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context)
+void BigMap::draw_buffer(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface)
 {
-  draw_buffer_tiles(map_view, surface, context);
+  draw_buffer_tiles(map_view, surface);
 }
 
 //here we want to magnify the entire buffer, not a subset

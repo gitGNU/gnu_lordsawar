@@ -139,7 +139,7 @@ class Action
                 STACK_PARK = 45,
                 STACK_UNPARK = 46,
                 STACK_SELECT = 47,
-                STACK_DESELECT = 48,
+                STACK_DESELECT = 48
         };
 	static Glib::ustring actionTypeToString(Action::Type type);
 	static Action::Type actionTypeFromString(Glib::ustring str);
@@ -309,7 +309,7 @@ class Action_Disband: public Action
  * The purpose of the Action_Fight class is to record the results of a
  * fight between two Players.
  */
-class Action_Fight : public Action, public sigc::trackable
+class Action_Fight : public Action
 {
     public:
 	//! Make a new fight action.
@@ -344,7 +344,7 @@ class Action_Fight : public Action, public sigc::trackable
         bool is_army_id_in_stacks(guint32 id, std::list<guint32> stack_ids) const;
         bool stack_ids_to_stacks(std::list<guint32> stack_ids, std::list<Stack*> &stacks, guint32 &stack_id) const;
 
-        bool loadItem(Glib::ustring tag, XML_Helper* helper);
+        bool loadItem(XML_Helper* helper);
 };
 
 //-----------------------------------------------------------------------------

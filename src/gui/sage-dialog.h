@@ -32,7 +32,7 @@
 class SageDialog: public LwDialog
 {
  public:
-    SageDialog(Gtk::Window &parent, Sage *sage, Player *player, Hero *hero, Ruin *r);
+    SageDialog(Gtk::Window &parent, Sage *sage, Hero *hero, Ruin *r);
     ~SageDialog();
 
     void hide();

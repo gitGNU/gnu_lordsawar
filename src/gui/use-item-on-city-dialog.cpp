@@ -37,8 +37,7 @@ UseItemOnCityDialog::UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Typ
   citymap = new SelectCityMap(type);
   citymap->map_changed.connect(
                                sigc::mem_fun(this, &UseItemOnCityDialog::on_map_changed));
-  citymap->city_selected.connect(
-                                 sigc::mem_fun(this, &UseItemOnCityDialog::on_city_selected));
+  citymap->city_selected.connect(sigc::hide(sigc::mem_fun(this, &UseItemOnCityDialog::on_city_selected)));
 
   Gtk::EventBox *map_eventbox;
   xml->get_widget("map_eventbox", map_eventbox);
@@ -93,7 +92,7 @@ void UseItemOnCityDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
   map_image->property_pixbuf() = pixbuf;
 }
 
-void UseItemOnCityDialog::on_city_selected(City *city)
+void UseItemOnCityDialog::on_city_selected()
 {
   continue_button->set_sensitive(true);
 }

@@ -134,14 +134,14 @@ class Configuration : public sigc::trackable
         enum SavingPolicy {
 	  NO_SAVING = 0,
 	  WRITE_UNNUMBERED_AUTOSAVE_FILE = 1,
-	  WRITE_NUMBERED_AUTOSAVE_FILE = 2,
+	  WRITE_NUMBERED_AUTOSAVE_FILE = 2
 	};
 	static Configuration::SavingPolicy savingPolicyFromString(const Glib::ustring str);
 	static Glib::ustring savingPolicyToString(const Configuration::SavingPolicy policy);
         enum UiFormFactor {
 	  UI_FORM_FACTOR_NETBOOK = 0,
 	  UI_FORM_FACTOR_DESKTOP = 1,
-	  UI_FORM_FACTOR_LARGE_SCREEN = 2,
+	  UI_FORM_FACTOR_LARGE_SCREEN = 2
 	};
 	static Configuration::UiFormFactor uiFormFactorFromString(const Glib::ustring str);
 	static Glib::ustring uiFormFactorToString(const Configuration::UiFormFactor factor);
@@ -159,7 +159,7 @@ class Configuration : public sigc::trackable
           * See the XML_Helper documentation for an explanation what the
           * callback is good for.
           */
-        bool parseConfiguration(Glib::ustring tag, XML_Helper* helper);
+        bool parseConfiguration(XML_Helper* helper);
 
         static Glib::ustring s_filename;
 };

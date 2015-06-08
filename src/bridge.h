@@ -38,7 +38,7 @@ class Bridge: public Location
 	    CONNECTS_TO_EAST = 0,
 	    CONNECTS_TO_NORTH = 1,
 	    CONNECTS_TO_WEST = 2,
-	    CONNECTS_TO_SOUTH = 3,
+	    CONNECTS_TO_SOUTH = 3
 	  };
 	static Glib::ustring bridgeTypeToString(const Bridge::Type type);
 	static Bridge::Type bridgeTypeFromString(const Glib::ustring str);

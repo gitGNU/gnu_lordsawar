@@ -109,12 +109,12 @@ class MainWindow: public sigc::trackable
     
     GdkEventButton *button_event;
 
-    bool on_delete_event(GdkEventAny *e);
+    bool on_delete_event();
 
     bool on_bigmap_mouse_button_event(GdkEventButton *e);
     bool on_bigmap_mouse_motion_event(GdkEventMotion *e);
-    bool on_bigmap_key_event(GdkEventKey *e);
-    bool on_bigmap_leave_event(GdkEventCrossing *e);
+    bool on_bigmap_key_event();
+    bool on_bigmap_leave_event();
 
     bool on_smallmap_mouse_button_event(GdkEventButton *e);
     bool on_smallmap_mouse_motion_event(GdkEventMotion *e);
@@ -221,7 +221,7 @@ class MainWindow: public sigc::trackable
     void randomize_ruin(Ruin *ruin);
 
     // map callbacks
-    void on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle r);
+    void on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map);
     void on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map);
     void on_smallmap_water_changed();
     void on_objects_selected(std::vector<UniquelyIdentified *> objects);
@@ -231,8 +231,8 @@ class MainWindow: public sigc::trackable
 
     void auto_select_appropriate_pointer();
 
-    bool on_bigmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr);
-    bool on_smallmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr);
+    bool on_bigmap_exposed();
+    bool on_smallmap_exposed();
     void on_bigmap_surface_changed(Gtk::Allocation box);
     void on_save_as_activated(Gtk::FileChooserDialog *chooser);
     bool on_bigmap_scrolled(GdkEventScroll* event);

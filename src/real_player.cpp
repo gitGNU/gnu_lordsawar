@@ -89,12 +89,20 @@ void RealPlayer::endTurn()
 
 void RealPlayer::invadeCity(City* c)
 {
+  if (c)
+    {
+      ;
+    }
     // For the realplayer, this function doesn't do a lot. However, an AI
     // player has to decide here what to do (occupy, raze, pillage)
 }
 
 bool RealPlayer::chooseHero(HeroProto *hero, City* c, int gold)
 {
+  if (hero || c || gold)
+    {
+      ;
+    }
     // For the realplayer, this function doesn't do a lot. However, an AI
     // player has to decide here what to do (accept/deny hero)
     return false;
@@ -102,6 +110,10 @@ bool RealPlayer::chooseHero(HeroProto *hero, City* c, int gold)
 
 Reward *RealPlayer::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
 {
+  if (ruin || sage || stack)
+    {
+      ;
+    }
     // For the realplayer, this function doesn't do a lot. However, an AI
     // player has to decide here what to do (pick a reward from sage)
     return NULL;
@@ -109,6 +121,10 @@ Reward *RealPlayer::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
 
 bool RealPlayer::chooseTreachery (Stack *stack, Player *player, Vector <int> pos)
 {
+  if (stack || player || pos != Vector<int>(-1,-1))
+    {
+      ;
+    }
     // For the realplayer, this function doesn't do a lot. However, an AI
     // player has to decide here what to do (fight a friend or not)
   return true;
@@ -116,6 +132,10 @@ bool RealPlayer::chooseTreachery (Stack *stack, Player *player, Vector <int> pos
 
 Army::Stat RealPlayer::chooseStat(Hero *hero)
 {
+  if (hero)
+    {
+      ;
+    }
     // For the realplayer, this function doesn't do a lot. However, an AI
     // player has to decide here what to do (pick strength/moves/sight stat)
   return Army::STRENGTH;
@@ -123,6 +143,10 @@ Army::Stat RealPlayer::chooseStat(Hero *hero)
 
 bool RealPlayer::chooseQuest(Hero *hero)
 {
+  if (hero)
+    {
+      ;
+    }
   //we decide interactively with the gui, not by this method.
   // For the realplayer, this function doesn't do a lot. However, an AI
   // player has to decide here what to do (get a quest for the hero or not)
@@ -139,30 +163,50 @@ void RealPlayer::heroGainsLevel(Hero* a)
 
 bool RealPlayer::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   //this decision callback is only for computer players
   return true;
 }
 
 bool RealPlayer::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   //this decision callback is only for computer players
   return true;
 }
 
 bool RealPlayer::computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   //this decision callback is only for computer players
   return true;
 }
 
 bool RealPlayer::computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   //this decision callback is only for computer players
   return true;
 }
 
 bool RealPlayer::computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || quest || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   //this decision callback is only for computer players
   return true;
 }

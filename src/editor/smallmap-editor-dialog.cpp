@@ -36,12 +36,12 @@ SmallmapEditorDialog::SmallmapEditorDialog(Gtk::Window &parent)
 {
     xml->get_widget("smallmap_image", smallmap_image);
     smallmap_image->signal_event().connect
-      (sigc::mem_fun(*this, &SmallmapEditorDialog::on_smallmap_exposed));
+      (sigc::hide(sigc::mem_fun(*this, &SmallmapEditorDialog::on_smallmap_exposed)));
 
 
     smallmap = new EditableSmallMap();
     smallmap->map_changed.connect(
-	sigc::mem_fun(this, &SmallmapEditorDialog::on_map_changed));
+	sigc::hide(sigc::mem_fun(this, &SmallmapEditorDialog::on_map_changed)));
     smallmap->road_start_placed.connect
       (sigc::mem_fun(this, &SmallmapEditorDialog::on_road_start_placed));
     smallmap->road_finish_placed.connect
@@ -102,8 +102,7 @@ bool SmallmapEditorDialog::run()
     return d_needs_saving;
 }
 
-void SmallmapEditorDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map,
-                                          Gdk::Rectangle r)
+void SmallmapEditorDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
     Gdk::Pixbuf::create(map, 0, 0, 
@@ -316,7 +315,7 @@ Tile::Type SmallmapEditorDialog::get_terrain()
     return terrain;
 }
 
-bool SmallmapEditorDialog::on_smallmap_exposed(GdkEvent *event)
+bool SmallmapEditorDialog::on_smallmap_exposed()
 {
   Glib::RefPtr<Gdk::Window> window = smallmap_image->get_window();
   if (window)

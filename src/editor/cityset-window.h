@@ -30,7 +30,7 @@
 class CitySetWindow: public sigc::trackable
 {
  public:
-    CitySetWindow(Gtk::Window *parent, Glib::ustring load_filename = "");
+    CitySetWindow(Glib::ustring load_filename = "");
     ~CitySetWindow();
 
     Gtk::Window &get_window() { return *window; }
@@ -64,7 +64,7 @@ class CitySetWindow: public sigc::trackable
     Gtk::SpinButton *temple_tile_width_spinbutton;
     Gtk::Alignment *cityset_alignment;
 
-    bool on_delete_event(GdkEventAny *e);
+    bool on_delete_event();
 
     void update_cityset_panel();
     void update_cityset_menuitems();
@@ -84,11 +84,11 @@ class CitySetWindow: public sigc::trackable
     void on_edit_cityset_info_activated();
     void on_help_about_activated();
     void on_city_tile_width_changed();
-    void on_city_tile_width_text_changed(const Glib::ustring &s, int* p);
+    void on_city_tile_width_text_changed();
     void on_ruin_tile_width_changed();
-    void on_ruin_tile_width_text_changed(const Glib::ustring &s, int* p);
+    void on_ruin_tile_width_text_changed();
     void on_temple_tile_width_changed();
-    void on_temple_tile_width_text_changed(const Glib::ustring &s, int* p);
+    void on_temple_tile_width_text_changed();
     void on_change_citypics_clicked();
     void on_change_razedcitypics_clicked();
     void on_change_portpic_clicked();

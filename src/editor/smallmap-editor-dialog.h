@@ -67,7 +67,7 @@ class SmallmapEditorDialog: public LwEditorDialog
 
     std::vector<TerrainItem> terrain_items;
 
-    void on_map_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle rect);
+    void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);
     bool on_map_mouse_button_event(GdkEventButton *e);
     bool on_map_mouse_motion_event(GdkEventMotion *e);
     void on_road_start_toggled();
@@ -76,7 +76,7 @@ class SmallmapEditorDialog: public LwEditorDialog
     void on_clear_points_clicked();
     void on_terrain_radiobutton_toggled();
     void on_pointer_radiobutton_toggled();
-    bool on_smallmap_exposed(GdkEvent *event);
+    bool on_smallmap_exposed();
     void on_road_start_placed(Vector<int> pos);
     void on_road_finish_placed(Vector<int> pos);
     void on_road_can_be_created(bool create_road);

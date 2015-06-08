@@ -30,7 +30,7 @@
 #include "playerlist.h"
 #include "Item.h"
 
-SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Player *player, Hero *h, Ruin *r)
+SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Hero *h, Ruin *r)
  : LwDialog(parent, "sage-dialog.ui")
 {
     ruin = r;

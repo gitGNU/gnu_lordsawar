@@ -105,14 +105,14 @@ MainWindow::MainWindow(Glib::ustring load_filename)
     window->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
     window->signal_delete_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_delete_event));
+	sigc::hide(sigc::mem_fun(*this, &MainWindow::on_delete_event)));
 
     // the map image
     xml->get_widget("bigmap_image", bigmap_image);
     //bigmap_drawingarea->set_double_buffered(false);
     //bigmap_drawingarea->set_app_paintable(true);
     bigmap_image->signal_draw().connect
-      (sigc::mem_fun(*this, &MainWindow::on_bigmap_exposed));
+      (sigc::hide(sigc::mem_fun(*this, &MainWindow::on_bigmap_exposed)));
     bigmap_image->signal_size_allocate().connect
       (sigc::mem_fun(*this, &MainWindow::on_bigmap_surface_changed));
     xml->get_widget("bigmap_eventbox", bigmap_eventbox);
@@ -129,14 +129,14 @@ MainWindow::MainWindow(Glib::ustring load_filename)
     bigmap_eventbox->signal_motion_notify_event().connect(
 	sigc::mem_fun(*this, &MainWindow::on_bigmap_mouse_motion_event));
     bigmap_eventbox->signal_key_press_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_bigmap_key_event));
+	sigc::hide(sigc::mem_fun(*this, &MainWindow::on_bigmap_key_event)));
     bigmap_eventbox->signal_leave_notify_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_bigmap_leave_event));
+	sigc::hide(sigc::mem_fun(*this, &MainWindow::on_bigmap_leave_event)));
     bigmap_eventbox->signal_scroll_event().connect
       (sigc::mem_fun(*this, &MainWindow::on_bigmap_scrolled));
     xml->get_widget("smallmap_image", smallmap_image);
     smallmap_image->signal_draw().connect
-      (sigc::mem_fun(*this, &MainWindow::on_smallmap_exposed));
+      (sigc::hide(sigc::mem_fun(*this, &MainWindow::on_smallmap_exposed)));
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
@@ -409,7 +409,7 @@ void MainWindow::on_bigmap_surface_changed(Gtk::Allocation box)
   last_box = box;
 }
 
-bool MainWindow::on_bigmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr)
+bool MainWindow::on_bigmap_exposed()
 {
   return true;
   Cairo::RefPtr<Cairo::Surface> surface = bigmap->get_surface();
@@ -419,7 +419,7 @@ bool MainWindow::on_bigmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr)
   return true;
 }
 
-bool MainWindow::on_smallmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr)
+bool MainWindow::on_smallmap_exposed()
 {
   return true;
   Cairo::RefPtr<Cairo::Surface> surface = smallmap->get_surface();
@@ -442,7 +442,7 @@ void MainWindow::hide()
     window->hide();
 }
 
-bool MainWindow::on_delete_event(GdkEventAny *e)
+bool MainWindow::on_delete_event()
 {
   if (window->property_sensitive() == false)
     return true;
@@ -714,7 +714,7 @@ bool MainWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
   static guint prev = 0;
   if (bigmap)
     {
-      guint delta = e->time - prev;
+      gint delta = e->time - prev;
       if (delta > 40 || delta < 0)
 	{
 	  bigmap->mouse_motion_event(to_input_event(e));
@@ -725,12 +725,12 @@ bool MainWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
     return true;
 }
 
-bool MainWindow::on_bigmap_key_event(GdkEventKey *e)
+bool MainWindow::on_bigmap_key_event()
 {
     return true;
 }
 
-bool MainWindow::on_bigmap_leave_event(GdkEventCrossing *e)
+bool MainWindow::on_bigmap_leave_event()
 {
     if (bigmap)
       bigmap->mouse_leave_event();
@@ -753,7 +753,7 @@ bool MainWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
   static guint prev = 0;
   if (smallmap)
     {
-      guint delta = e->time - prev;
+      gint delta = e->time - prev;
       if (delta > 100 || delta < 0)
 	{
 	  smallmap->mouse_motion_event(to_input_event(e));
@@ -1020,7 +1020,7 @@ void MainWindow::on_edit_shieldset_activated()
 {
   Gtk::Main *kit = Gtk::Main::instance();;
   ShieldSetWindow *shieldset_window = new ShieldSetWindow
-    (window, GameMap::getShieldset()->getConfigurationFile());
+    (GameMap::getShieldset()->getConfigurationFile());
   shieldset_window->get_window().property_transient_for() = window;
   shieldset_window->shieldset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_shieldset_saved));
@@ -1051,7 +1051,7 @@ void MainWindow::on_edit_armyset_activated()
   Armyset *armyset = Armysetlist::getInstance()->get(army_set_id);
   Glib::ustring file = armyset->getConfigurationFile();
  
-  ArmySetWindow* armyset_window = new ArmySetWindow (window, file);
+  ArmySetWindow* armyset_window = new ArmySetWindow (file);
   armyset_window->get_window().property_transient_for() = window;
   armyset_window->armyset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_armyset_saved));
@@ -1081,7 +1081,7 @@ void MainWindow::on_edit_cityset_activated()
   Gtk::Main *kit = Gtk::Main::instance();;
   Cityset *cityset = GameMap::getCityset();
   Glib::ustring file = cityset->getConfigurationFile();
-  CitySetWindow* cityset_window = new CitySetWindow (window, file);
+  CitySetWindow* cityset_window = new CitySetWindow (file);
   cityset_window->get_window().property_transient_for() = window;
   cityset_window->cityset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_cityset_saved));
@@ -1122,7 +1122,7 @@ void MainWindow::on_edit_tileset_activated()
   Gtk::Main *kit = Gtk::Main::instance();;
   Tileset *tileset = GameMap::getTileset();
   Glib::ustring file = tileset->getConfigurationFile();
-  TileSetWindow* tileset_window = new TileSetWindow (window, file);
+  TileSetWindow* tileset_window = new TileSetWindow (file);
   tileset_window->get_window().property_transient_for() = window;
   tileset_window->tileset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_tileset_saved));
@@ -1369,7 +1369,7 @@ void MainWindow::on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map)
   bigmap_image->property_pixbuf() = pixbuf;
 }
 
-void MainWindow::on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle r)
+void MainWindow::on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
     Gdk::Pixbuf::create(map, 0, 0, 
@@ -1385,7 +1385,7 @@ void MainWindow::init_maps()
     smallmap =new SmallMap;
     smallmap->resize();
     smallmap->map_changed.connect(
-	sigc::mem_fun(this, &MainWindow::on_smallmap_changed));
+	sigc::hide(sigc::mem_fun(this, &MainWindow::on_smallmap_changed)));
 
     // init the bigmap
     if (bigmap)

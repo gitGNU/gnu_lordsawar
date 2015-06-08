@@ -42,6 +42,7 @@ ShieldStyle::~ShieldStyle()
 }
 
 ShieldStyle::ShieldStyle(const ShieldStyle &s)
+ : sigc::trackable(s)
 {
   d_type = s.d_type;
   d_image_name = s.d_image_name;

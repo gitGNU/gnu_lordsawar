@@ -164,12 +164,12 @@ class GameLobbyDialog: public LwDialog
                     const Glib::ustring &name, Player *player);
     void on_player_selected();
     void update_buttons();
-    void on_remote_player_ends_turn(Player *p);
-    void on_remote_player_starts_turn(Player *p);
+    void on_remote_player_ends_turn();
+    void on_remote_player_starts_turn();
 
     void on_remote_participant_joins(Glib::ustring nickname);
     void on_remote_participant_departs(Glib::ustring nickname);
-    void on_player_stands(Player *p, Glib::ustring nickname);
+    void on_player_stands(Player *p);
     void on_player_sits(Player *p, Glib::ustring nickname);
     void on_player_changes_name(Player *p, Glib::ustring name);
     void on_player_changes_type(Player *p, int type);
@@ -181,12 +181,12 @@ class GameLobbyDialog: public LwDialog
     void on_name_changed(Gtk::CellEditable *editable, const Glib::ustring &path);
 
     void on_chat_key_pressed(GdkEventKey *event);
-    void on_chatted(Glib::ustring nickname, Glib::ustring message);
+    void on_chatted(Glib::ustring message);
 
     void on_reorder_playerlist();
 
-    void on_local_player_ends_turn(Player *p);
-    void on_local_player_starts_turn(Player *p);
+    void on_local_player_ends_turn();
+    void on_local_player_starts_turn();
     void on_play_message_received();
 
     void on_nickname_changed(Glib::ustring old_name, Glib::ustring new_name);

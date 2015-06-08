@@ -37,7 +37,7 @@ FightOrderEditorDialog::FightOrderEditorDialog(Gtk::Window &parent)
   armies_treeview->append_column("", armies_columns.image);
   armies_treeview->append_column("", armies_columns.name);
   armies_treeview->set_reorderable(true);
-  armies_treeview->signal_drag_end().connect(sigc::mem_fun(this, &FightOrderEditorDialog::on_army_reordered));
+  armies_treeview->signal_drag_end().connect(sigc::hide(sigc::mem_fun(this, &FightOrderEditorDialog::on_army_reordered)));
   fill_armies(Playerlist::getActiveplayer());
 
   player_combobox = new Gtk::ComboBoxText;
@@ -131,7 +131,7 @@ void FightOrderEditorDialog::fill_armies(Player *player)
     addArmyType(*it, player);
 }
 
-void FightOrderEditorDialog::on_army_reordered (const Glib::RefPtr<Gdk::DragContext>& context)
+void FightOrderEditorDialog::on_army_reordered ()
 {
   Player *player = get_selected_player();
   std::list<guint32> fight_order;

@@ -181,10 +181,10 @@ void Driver::serve (GameScenario *game_scenario)
   game_server->notifyClientsGameMayBeginNow();
   Game *game = new Game(game_scenario, next_turn);
   if (game)
-    game_server->player_sits.connect(sigc::mem_fun(this, &Driver::on_client_sits_down_in_headless_server_game));
+    game_server->player_sits.connect(sigc::hide(sigc::hide(sigc::mem_fun(this, &Driver::on_client_sits_down_in_headless_server_game))));
 }
 
-void Driver::on_client_sits_down_in_headless_server_game(Player *p, Glib::ustring nick)
+void Driver::on_client_sits_down_in_headless_server_game()
 {
   static unsigned int count;
   count++;
@@ -505,12 +505,11 @@ void Driver::on_connected_to_gamelist_server_for_advertising(GameScenario *game_
     new RecentlyPlayedNetworkedGame(game_scenario, p);
   g->setNumberOfPlayers(Playerlist::getInstance()->countPlayersAlive());
   gsc->received_advertising_response.connect
-    (sigc::mem_fun(*this, &Driver::on_advertising_response_received));
+    (sigc::hide(sigc::mem_fun(*this, &Driver::on_advertising_response_received)));
   gsc->request_advertising(g);
 }
 
-void Driver::on_advertising_response_received(Glib::ustring scenario_id, 
-                                              Glib::ustring err)
+void Driver::on_advertising_response_received(Glib::ustring scenario_id)
 {
   d_advertised_scenario_id = scenario_id;
   return;
@@ -546,11 +545,11 @@ void Driver::on_could_not_connect_to_gamehost_server()
 void Driver::on_connected_to_gamehost_server_for_hosting_request (GameScenario *game_scenario)
 {
   GamehostClient *ghc = GamehostClient::getInstance();
-  ghc->received_host_response.connect(sigc::bind(sigc::mem_fun(*this, &Driver::on_got_game_host_response), game_scenario));
+  ghc->received_host_response.connect(sigc::bind(sigc::hide<0>(sigc::mem_fun(*this, &Driver::on_got_game_host_response)), game_scenario));
   ghc->request_game_host (game_scenario->getId());
 }
 
-void Driver::on_got_game_host_response(Glib::ustring scenario_id, Glib::ustring err, GameScenario *game_scenario)
+void Driver::on_got_game_host_response(Glib::ustring err, GameScenario *game_scenario)
 {
   if (err != "")
     {
@@ -566,7 +565,7 @@ void Driver::on_got_game_host_response(Glib::ustring scenario_id, Glib::ustring 
       return;
     }
   GamehostClient *ghc = GamehostClient::getInstance();
-  ghc->received_map_response.connect(sigc::mem_fun(*this, &Driver::on_remote_game_hosted));
+  ghc->received_map_response.connect(sigc::hide<0>(sigc::mem_fun(*this, &Driver::on_remote_game_hosted)));
   if (download_window)
     delete download_window;
   download_window = new NewNetworkGameDownloadWindow(_("Uploading."));
@@ -576,7 +575,7 @@ void Driver::on_got_game_host_response(Glib::ustring scenario_id, Glib::ustring 
   ghc->send_map(game_scenario);
 }
 
-void Driver::on_remote_game_hosted(Glib::ustring scenario_id, guint32 port, Glib::ustring err)
+void Driver::on_remote_game_hosted(guint32 port, Glib::ustring err)
 {
   upload_heartbeat_conn.disconnect();
   if (download_window)
@@ -1284,12 +1283,11 @@ void Driver::on_connected_to_gamelist_server_for_advertising_removal(Glib::ustri
 {
   GamelistClient *gsc = GamelistClient::getInstance();
   gsc->received_advertising_removal_response.connect
-    (sigc::mem_fun(*this, &Driver::on_advertising_removal_response_received));
+    (sigc::hide(sigc::hide(sigc::mem_fun(*this, &Driver::on_advertising_removal_response_received))));
   gsc->request_advertising_removal(scenario_id);
 }
 
-void Driver::on_advertising_removal_response_received(Glib::ustring scenario_id, 
-                                                      Glib::ustring err)
+void Driver::on_advertising_removal_response_received()
 {
   d_advertised_scenario_id = "";
   return;

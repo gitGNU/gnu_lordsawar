@@ -78,7 +78,7 @@ Tileset::Tileset(guint32 id, Glib::ustring name)
 }
 
 Tileset::Tileset (const Tileset& t)
-  : Set(t)
+  : sigc::trackable(t), std::vector<Tile*>(), Set(t)
 {
   d_large_selector = t.d_large_selector;
   d_small_selector = t.d_small_selector;

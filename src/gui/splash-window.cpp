@@ -50,7 +50,7 @@ SplashWindow::SplashWindow()
     window->signal_draw().connect
       (sigc::mem_fun(*this, &SplashWindow::on_draw));
     window->signal_delete_event().connect
-      (sigc::mem_fun(*this, &SplashWindow::on_delete_event));
+      (sigc::hide(sigc::mem_fun(*this, &SplashWindow::on_delete_event)));
     
 
     xml->get_widget("load_game_button", load_game_button);
@@ -143,10 +143,9 @@ void SplashWindow::hide()
     window->hide();
 }
 
-bool SplashWindow::on_delete_event(GdkEventAny *e)
+bool SplashWindow::on_delete_event()
 {
     quit_requested.emit();
-
     return true;
 }
 

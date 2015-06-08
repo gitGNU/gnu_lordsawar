@@ -47,7 +47,7 @@ class Road: public Location
 	  CONNECTS_WEST = 11,
 	  CONNECTS_NORTH = 12,
 	  CONNECTS_EAST = 13,
-	  CONNECTS_SOUTH = 14,
+	  CONNECTS_SOUTH = 14
 	};
 
 	//! Default constructor.

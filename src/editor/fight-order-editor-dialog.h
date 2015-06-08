@@ -59,7 +59,7 @@ class FightOrderEditorDialog: public LwEditorDialog
     void on_player_changed();
     Player* get_selected_player();
     void fill_armies(Player *player);
-    void on_army_reordered (const Glib::RefPtr<Gdk::DragContext>& context);
+    void on_army_reordered ();
 };
 
 #endif

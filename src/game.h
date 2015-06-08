@@ -208,8 +208,8 @@ class Game
     bool maybeTreachery(Stack *stack, Player *them, Vector<int> pos);
 
     // bigmap callbacks
-    void on_stack_selected(Stack* s);
-    void on_stack_grouped_or_ungrouped(Stack *s);
+    void on_stack_selected();
+    void on_stack_grouped_or_ungrouped();
     void on_city_visted (City* c);
     void on_ruin_queried (Ruin* r, bool brief);
     void on_temple_queried (Temple* t, bool brief);
@@ -228,8 +228,8 @@ class Game
     void invading_city(City* city, int gold);
     void init_turn_for_player(Player* p);
     void on_player_died(Player *p);
-    bool stack_searches_ruin(Ruin *ruin, Stack *stack);
-    bool stack_searches_temple(Temple *temple, Stack *stack);
+    bool stack_searches_ruin(Stack *stack);
+    bool stack_searches_temple(Stack *stack);
     void on_use_item(Item *item);
     void on_ruinfight_started(Stack *attacker, Stack *defender);
     void on_ruinfight_finished(Fight::Result result);
@@ -253,12 +253,12 @@ class Game
     void select_active_stack();
     bool recruitHero(HeroProto *hero, City *city, int gold);
 
-    void on_stack_grouped(Stack *stack, bool grouped);
+    void on_stack_grouped(Stack *stack);
     void stack_arrives_on_tile(Stack *stack, Vector<int> tile);
     void stack_leaves_tile(Stack *stack, Vector<int> tile);
     void on_stack_halted(Stack *stack);
     void on_stack_stopped();
-    void on_stack_starts_moving(Stack *stack);
+    void on_stack_starts_moving();
 
     bool ask_if_treachery(Stack *stack, Player *them, Vector<int> pos);
 

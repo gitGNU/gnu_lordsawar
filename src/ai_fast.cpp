@@ -793,17 +793,28 @@ bool AI_Fast::computerTurn()
 
 bool AI_Fast::chooseTreachery (Stack *stack, Player *player, Vector <int> pos)
 {
-  bool performTreachery = true;
-  return performTreachery;
+  if (stack || player || pos != Vector<int>(-1,-1))
+    {
+      ;
+    }
+  return true;
 }
 
 bool AI_Fast::chooseHero(HeroProto *hero, City *city, int gold)
 {
+  if (hero || city || gold)
+    {
+      ;
+    }
   return true;
 }
 
 Reward *AI_Fast::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
 {
+  if (ruin || stack)
+    {
+      ;
+    }
   //always pick the money.
   for (Sage::iterator it = sage->begin(); it != sage->end(); it++)
     if ((*it)->getType() == Reward::GOLD)
@@ -813,16 +824,28 @@ Reward *AI_Fast::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
 
 Army::Stat AI_Fast::chooseStat(Hero *hero)
 {
+  if (hero)
+    {
+      ;
+    }
   return Army::STRENGTH;
 }
 
 bool AI_Fast::chooseQuest(Hero *hero)
 {
+  if (hero)
+    {
+      ;
+    }
   return true;
 }
 
 bool AI_Fast::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (turns)
+    {
+      ;
+    }
   if (stack->getPos() == dest)
     return true;
   if (moves < stack->getMoves() + 15)
@@ -833,6 +856,10 @@ bool AI_Fast::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 mo
 
 bool AI_Fast::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (turns)
+    {
+      ;
+    }
   if (stack->getPos() == dest)
     return true;
   if (moves < stack->getMoves() + 7)
@@ -843,6 +870,10 @@ bool AI_Fast::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 mo
 
 bool AI_Fast::computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (turns)
+    {
+      ;
+    }
   if (stack->isOnCity() == true)
     return false;
   if (stack->getPos() == dest)
@@ -855,6 +886,10 @@ bool AI_Fast::computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> des
 
 bool AI_Fast::computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (turns)
+    {
+      ;
+    }
   if (stack->isOnCity() == true)
     return false;
   if (stack->getPos() == dest)
@@ -867,6 +902,10 @@ bool AI_Fast::computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, 
 
 bool AI_Fast::computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<int> dest, guint32 moves, guint32 turns)
 {
+  if (stack || quest || dest != Vector<int>(-1,-1) || moves || turns)
+    {
+      ;
+    }
   return true;
 }
 // End of file

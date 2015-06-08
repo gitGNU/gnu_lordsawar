@@ -45,7 +45,7 @@
 #include "playerlist.h"
 
 
-ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
+ArmySetWindow::ArmySetWindow(Glib::ustring load_filename)
 {
   needs_saving = false;
   inhibit_needs_saving = false;
@@ -123,49 +123,49 @@ ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     production_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_production_changed));
     production_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_production_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_production_text_changed))));
     xml->get_widget("cost_spinbutton", cost_spinbutton);
     cost_spinbutton->set_range(double(MIN_COST_FOR_ARMY_UNITS), 
 			       double(MAX_COST_FOR_ARMY_UNITS));
     cost_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_cost_changed));
     cost_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_cost_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_cost_text_changed))));
     xml->get_widget("new_cost_spinbutton", new_cost_spinbutton);
     new_cost_spinbutton->set_range(double(MIN_NEW_COST_FOR_ARMY_UNITS), 
 				   double(MAX_NEW_COST_FOR_ARMY_UNITS));
     new_cost_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_new_cost_changed));
     new_cost_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_new_cost_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_new_cost_text_changed))));
     xml->get_widget("upkeep_spinbutton", upkeep_spinbutton);
     upkeep_spinbutton->set_range (double(MIN_UPKEEP_FOR_ARMY_UNITS), 
 				  double(MAX_UPKEEP_FOR_ARMY_UNITS));
     upkeep_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_upkeep_changed));
     upkeep_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_upkeep_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_upkeep_text_changed))));
     xml->get_widget("strength_spinbutton", strength_spinbutton);
     strength_spinbutton->set_range (double(MIN_STRENGTH_FOR_ARMY_UNITS), 
 				    double(MAX_STRENGTH_FOR_ARMY_UNITS));
     strength_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_strength_changed));
     strength_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_strength_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_strength_text_changed))));
     xml->get_widget("moves_spinbutton", moves_spinbutton);
     moves_spinbutton->set_range(double(MIN_MOVES_FOR_ARMY_UNITS), 
 				double(MAX_MOVES_FOR_ARMY_UNITS));
     moves_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_moves_changed));
     moves_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_moves_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_moves_text_changed))));
     xml->get_widget("exp_spinbutton", exp_spinbutton);
     exp_spinbutton->set_range(double(MIN_EXP_FOR_ARMY_UNITS), 
 			      double(MAX_EXP_FOR_ARMY_UNITS));
     exp_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_exp_changed));
     exp_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_exp_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_exp_text_changed))));
     xml->get_widget("gender_none_radiobutton", gender_none_radiobutton);
     gender_none_radiobutton->signal_toggled().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_gender_none_toggled));
@@ -187,13 +187,13 @@ ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     sight_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_sight_changed));
     sight_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_sight_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_sight_text_changed))));
     xml->get_widget("id_spinbutton", id_spinbutton);
     id_spinbutton->set_range(0, 1000);
     id_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_id_changed));
     id_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_id_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_id_text_changed))));
     xml->get_widget("move_forests_checkbutton", move_forests_checkbutton);
     move_forests_checkbutton->signal_toggled().connect
       (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_movebonus_toggled),
@@ -325,7 +325,7 @@ ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
        (sigc::mem_fun(this, &ArmySetWindow::on_help_about_activated));
 
     window->signal_delete_event().connect(
-	sigc::mem_fun(*this, &ArmySetWindow::on_delete_event));
+	sigc::hide(sigc::mem_fun(*this, &ArmySetWindow::on_delete_event)));
 
     armies_list = Gtk::ListStore::create(armies_columns);
     armies_treeview->set_model(armies_list);
@@ -482,7 +482,7 @@ void ArmySetWindow::hide()
   window->hide();
 }
 
-bool ArmySetWindow::on_delete_event(GdkEventAny *e)
+bool ArmySetWindow::on_delete_event()
 {
   hide();
   return true;
@@ -905,8 +905,7 @@ void ArmySetWindow::fill_army_image(Gtk::Button *button, Gtk::Image *image, Shie
           army->instantiateImages(d_armyset->getTileSize(), c, filename, 
                                   broken);
           PixMask *army_image = ImageCache::applyMask(army->getImage(c), 
-                                                         army->getMask(c), 
-                                                         colour, false);
+                                                      army->getMask(c), colour);
           image->property_pixbuf() = army_image->to_pixbuf();
           delete army_image;
           File::erase(filename);
@@ -1075,7 +1074,7 @@ void ArmySetWindow::on_image_changed(Gtk::Button *button, Gtk::Image *image, Shi
 
                   PixMask *army_image = ImageCache::applyMask(a->getImage(c), 
                                                               a->getMask(c), 
-                                                              colour, false);
+                                                              colour);
                   image->property_pixbuf() = army_image->to_pixbuf();
                   delete army_image;
 
@@ -1096,7 +1095,7 @@ void ArmySetWindow::on_image_changed(Gtk::Button *button, Gtk::Image *image, Shi
     }
 }
 
-void ArmySetWindow::on_production_text_changed(const Glib::ustring &s, int* p)
+void ArmySetWindow::on_production_text_changed()
 {
   production_spinbutton->set_value(atoi(production_spinbutton->get_text().c_str()));
   on_production_changed();
@@ -1127,7 +1126,7 @@ void ArmySetWindow::on_production_changed()
     }
 }
 
-void ArmySetWindow::on_cost_text_changed(const Glib::ustring &s, int* p)
+void ArmySetWindow::on_cost_text_changed()
 {
   cost_spinbutton->set_value(atoi(cost_spinbutton->get_text().c_str()));
   on_cost_changed();
@@ -1156,8 +1155,7 @@ void ArmySetWindow::on_cost_changed()
     }
 }
 
-
-void ArmySetWindow::on_new_cost_text_changed(const Glib::ustring &s, int* p)
+void ArmySetWindow::on_new_cost_text_changed()
 {
   new_cost_spinbutton->set_value(atoi(new_cost_spinbutton->get_text().c_str()));
   on_new_cost_changed();
@@ -1181,7 +1179,7 @@ void ArmySetWindow::on_new_cost_changed()
     }
 }
 
-void ArmySetWindow::on_upkeep_text_changed(const Glib::ustring &s, int* p)
+void ArmySetWindow::on_upkeep_text_changed()
 {
   upkeep_spinbutton->set_value(atoi(upkeep_spinbutton->get_text().c_str()));
   on_upkeep_changed();
@@ -1210,7 +1208,7 @@ void ArmySetWindow::on_upkeep_changed()
     }
 }
 
-void ArmySetWindow::on_strength_text_changed(const Glib::ustring &s, int* p)
+void ArmySetWindow::on_strength_text_changed()
 {
   strength_spinbutton->set_value(atoi(strength_spinbutton->get_text().c_str()));
   on_strength_changed();
@@ -1239,7 +1237,7 @@ void ArmySetWindow::on_strength_changed()
     }
 }
 
-void ArmySetWindow::on_moves_text_changed(const Glib::ustring &s, int* p)
+void ArmySetWindow::on_moves_text_changed()
 {
   moves_spinbutton->set_value(atoi(moves_spinbutton->get_text().c_str()));
   on_moves_changed();
@@ -1268,7 +1266,7 @@ void ArmySetWindow::on_moves_changed()
     }
 }
 
-void ArmySetWindow::on_exp_text_changed(const Glib::ustring &s, int* p)
+void ArmySetWindow::on_exp_text_changed()
 {
   exp_spinbutton->set_value(atoi(exp_spinbutton->get_text().c_str()));
   on_exp_changed();
@@ -1292,7 +1290,7 @@ void ArmySetWindow::on_exp_changed()
     }
 }
 
-void ArmySetWindow::on_sight_text_changed(const Glib::ustring &s, int* p)
+void ArmySetWindow::on_sight_text_changed()
 {
   sight_spinbutton->set_value(atoi(sight_spinbutton->get_text().c_str()));
   on_sight_changed();
@@ -1316,7 +1314,7 @@ void ArmySetWindow::on_sight_changed()
     }
 }
 
-void ArmySetWindow::on_id_text_changed(const Glib::ustring &s, int* p)
+void ArmySetWindow::on_id_text_changed()
 {
   id_spinbutton->set_value(atoi(id_spinbutton->get_text().c_str()));
   on_sight_changed();
@@ -1657,8 +1655,7 @@ void ArmySetWindow::on_make_same_clicked()
           Gdk::RGBA colour = Shieldsetlist::getInstance()->getColor(1, s);
           a->instantiateImages(d_armyset->getTileSize(), s, white_filename, broken);
           PixMask *army_image = ImageCache::applyMask(a->getImage(s), 
-                                                      a->getMask(s), 
-                                                      colour, false);
+                                                      a->getMask(s), colour);
           images[i]->property_pixbuf() = army_image->to_pixbuf();
           delete army_image;
         }

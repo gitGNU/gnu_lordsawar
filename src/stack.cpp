@@ -61,8 +61,8 @@ Stack::Stack(guint32 id, Player* player, Vector<int> pos)
 }
 
 Stack::Stack(const Stack& s, bool uniq)
-    : UniquelyIdentified(s), Movable(s), Ownable(s), 
-    d_defending(s.d_defending), d_parked(s.d_parked), 
+    : UniquelyIdentified(s), Movable(s), Ownable(s), std::list<Army*>(),
+    sigc::trackable(s), d_defending(s.d_defending), d_parked(s.d_parked), 
     d_deleting(false)
 {
   d_unique = uniq;
@@ -772,6 +772,10 @@ bool Stack::canJoin(const Stack *stack) const
 //take the weakest units where their strengths add up to strength.
 std::list<guint32> Stack::determineArmiesByStrength(bool strongest, float strength) const
 {
+  if (strongest)
+    {
+      ;
+    }
   std::list<guint32> armies;
   float remaining = strength; 
   Stack *stack = new Stack(*this);

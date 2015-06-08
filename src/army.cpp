@@ -41,15 +41,15 @@ Glib::ustring Army::d_tag = "army";
 sigc::signal<void, Army*> Army::sdying;
 
 Army::Army(const Army& a, Player* p)
-    :ArmyBase(a), UniquelyIdentified(a), Ownable(p), d_type_id(a.d_type_id), 
-    d_armyset(a.d_armyset), d_max_hp(a.d_max_hp),
-     d_max_moves_multiplier(a.d_max_moves_multiplier),
-     d_max_moves_rest_bonus(a.d_max_moves_rest_bonus),
-     d_ship(a.d_ship), d_hp(a.d_hp), d_moves(a.d_moves), d_xp(a.d_xp),
-     d_level(a.d_level), d_battles_number(a.d_battles_number), 
-     d_number_hashit(a.d_number_hashit), 
-     d_number_hasbeenhit(a.d_number_hasbeenhit), 
-     d_visitedTemples(a.d_visitedTemples)
+    : ArmyBase(a), UniquelyIdentified(a), Ownable(p), sigc::trackable(a),
+    d_type_id(a.d_type_id), d_armyset(a.d_armyset), d_max_hp(a.d_max_hp),
+    d_max_moves_multiplier(a.d_max_moves_multiplier),
+    d_max_moves_rest_bonus(a.d_max_moves_rest_bonus),
+    d_ship(a.d_ship), d_hp(a.d_hp), d_moves(a.d_moves), d_xp(a.d_xp),
+    d_level(a.d_level), d_battles_number(a.d_battles_number), 
+    d_number_hashit(a.d_number_hashit), 
+    d_number_hasbeenhit(a.d_number_hasbeenhit), 
+    d_visitedTemples(a.d_visitedTemples)
 {
   for(int i = 0; i < 3; i++)
     d_medal_bonus[i] = a.d_medal_bonus[i];
@@ -416,7 +416,9 @@ void Army::setFortified (bool f)
   else if (getFortified() == false && f == true)
     d_army_bonus |= Army::FORTIFY;
   else if (getFortified() == false && f == false)
-    ; // do nothing
+    {
+      ; // do nothing
+    }
 }
 
 //! get the fortify flag for this army

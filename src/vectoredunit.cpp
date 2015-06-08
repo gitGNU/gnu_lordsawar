@@ -39,8 +39,8 @@ VectoredUnit::VectoredUnit(Vector<int> pos, Vector<int> dest, ArmyProdBase *army
 }
 
 VectoredUnit::VectoredUnit(const VectoredUnit& v)
-    :Ownable(v), LocationBox(v), d_destination(v.d_destination),
-     d_duration(v.d_duration)
+    :Ownable(v), LocationBox(v), sigc::trackable(v),
+    d_destination(v.d_destination), d_duration(v.d_duration)
 {
   if (v.d_army)
     d_army = new ArmyProdBase(*v.d_army);

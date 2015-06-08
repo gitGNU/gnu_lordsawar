@@ -123,15 +123,14 @@ class OverviewMap : public sigc::trackable
     Cairo::RefPtr<Cairo::Surface> get_surface();
 
 
-    static void draw_terrain_tile (Cairo::RefPtr<Cairo::Surface> surf,
-				Cairo::RefPtr<Cairo::Context> gc,
+    static void draw_terrain_tile (Cairo::RefPtr<Cairo::Context> gc,
 				SmallTile::Pattern pattern,
 				Gdk::RGBA first, 
 				Gdk::RGBA second,
 				Gdk::RGBA third,
 				int i, int j, bool shadowed);
 
-    static void draw_pixel(Cairo::RefPtr<Cairo::Surface> surf, Cairo::RefPtr<Cairo::Context> gc, int x, int y, const Gdk::RGBA color);
+    static void draw_pixel(Cairo::RefPtr<Cairo::Context> gc, int x, int y, const Gdk::RGBA color);
 
 
     void draw_filled_rect(int x, int y, int width, int height, const Gdk::RGBA color);

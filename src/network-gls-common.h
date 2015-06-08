@@ -34,7 +34,7 @@ enum GlsMessageType
   GLS_MESSAGE_REQUEST_RELOAD = 10, //from client
   GLS_MESSAGE_RELOADED = 11, //from server
   GLS_MESSAGE_COULD_NOT_RELOAD = 12, //from server
-  GLS_MESSAGE_REQUEST_TERMINATION = 13, //from client
+  GLS_MESSAGE_REQUEST_TERMINATION = 13 //from client
 };
 
 #endif

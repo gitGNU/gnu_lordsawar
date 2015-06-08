@@ -137,7 +137,7 @@ GameWindow::GameWindow()
     w->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     
     w->signal_delete_event().connect
-      (sigc::mem_fun(*this, &GameWindow::on_delete_event));
+      (sigc::hide(sigc::mem_fun(*this, &GameWindow::on_delete_event)));
 
     xml->get_widget("menubar", menubar);
     xml->get_widget("bigmap_image", bigmap_image);
@@ -544,10 +544,10 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
      (sigc::mem_fun(*this, &GameWindow::on_bigmap_changed)));
   connections.push_back
     (game->smallmap_changed.connect
-     (sigc::mem_fun(*this, &GameWindow::on_smallmap_changed)));
+     (sigc::hide(sigc::mem_fun(*this, &GameWindow::on_smallmap_changed))));
   connections.push_back
     (game->get_smallmap().view_slid.connect
-     (sigc::mem_fun(*this, &GameWindow::on_smallmap_slid)));
+     (sigc::hide(sigc::mem_fun(*this, &GameWindow::on_smallmap_slid))));
   connections.push_back
     (game->stack_info_changed.connect
      (sigc::mem_fun(*status_box, &StatusBox::on_stack_info_changed)));
@@ -589,7 +589,7 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
      (sigc::mem_fun(*this, &GameWindow::on_surrender_answered)));
   connections.push_back
     (game->stack_considers_treachery.connect
-     (sigc::mem_fun(*this, &GameWindow::on_stack_considers_treachery)));
+     (sigc::hide(sigc::hide<0>(sigc::mem_fun(*this, &GameWindow::on_stack_considers_treachery)))));
   connections.push_back
     (game->temple_searched.connect
      (sigc::mem_fun(*this, &GameWindow::on_temple_searched)));
@@ -643,7 +643,7 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
      (sigc::mem_fun(*this, &GameWindow::on_advice_asked)));
   connections.push_back
     (game->sunk_ships.connect
-     (sigc::mem_fun(*this, &GameWindow::on_ships_sunk)));
+     (sigc::hide<0>(sigc::mem_fun(*this, &GameWindow::on_ships_sunk))));
   connections.push_back
     (game->bags_picked_up.connect
      (sigc::mem_fun(*this, &GameWindow::on_bags_picked_up)));
@@ -679,13 +679,13 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
      (sigc::mem_fun(*this, &GameWindow::on_select_city_to_use_item_on)));
   connections.push_back
     (game->city_diseased.connect
-     (sigc::mem_fun(*this, &GameWindow::on_city_diseased)));
+     (sigc::hide<0>(sigc::mem_fun(*this, &GameWindow::on_city_diseased))));
   connections.push_back
     (game->city_defended.connect
-     (sigc::mem_fun(*this, &GameWindow::on_city_defended)));
+     (sigc::hide<0>(sigc::mem_fun(*this, &GameWindow::on_city_defended))));
   connections.push_back
     (game->city_persuaded.connect
-     (sigc::mem_fun(*this, &GameWindow::on_city_persuaded)));
+     (sigc::hide<0>(sigc::mem_fun(*this, &GameWindow::on_city_persuaded))));
   connections.push_back
     (game->stack_teleported.connect
      (sigc::mem_fun(*this, &GameWindow::on_stack_teleported)));
@@ -749,7 +749,7 @@ void GameWindow::on_group_stack_toggled(bool lock)
   game->get_bigmap().set_input_locked(lock);
 }
 
-bool GameWindow::on_delete_event(GdkEventAny *e)
+bool GameWindow::on_delete_event()
 {
   on_quit_activated();
 
@@ -772,7 +772,7 @@ bool GameWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
   static guint prev = 0;
   if (game)
     {
-      guint delta = e->time - prev;
+      gint delta = e->time - prev;
       if (delta > 40 || delta < 0)
 	{
 	  game->get_bigmap().mouse_motion_event(to_input_event(e));
@@ -817,7 +817,7 @@ bool GameWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
   static guint prev = 0;
   if (game)
     {
-      guint delta = e->time - prev;
+      gint delta = e->time - prev;
       if (delta > 100 || delta < 0)
 	{
 	  game->get_smallmap().mouse_motion_event(to_input_event(e));
@@ -1203,7 +1203,7 @@ void GameWindow::on_preferences_activated()
   if (game->getScenario()->getPlayMode() == GameScenario::NETWORKED)
     readonly = true;
   PreferencesDialog d(*window, readonly);
-  d.ui_form_factor_changed.connect(sigc::mem_fun(this, &GameWindow::on_ui_form_factor_changed));
+  d.ui_form_factor_changed.connect(sigc::hide(sigc::mem_fun(this, &GameWindow::on_ui_form_factor_changed)));
   d.run(game);
   d.hide();
   game->get_bigmap().set_control_key_down (false);
@@ -1211,7 +1211,7 @@ void GameWindow::on_preferences_activated()
     game->end_turn();
 }
 
-void GameWindow::on_ui_form_factor_changed(guint32 factor)
+void GameWindow::on_ui_form_factor_changed()
 {
   if (game_button_box)
     {
@@ -1571,7 +1571,7 @@ void GameWindow::on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map)
   //enabling this makes dragging the smallmap freeze
 }
 
-void GameWindow::on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle r)
+void GameWindow::on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
   Cairo::RefPtr<Cairo::Context> cr = Cairo::Context::create(map);
   double x1, x2, y1, y2;
@@ -1589,10 +1589,9 @@ void GameWindow::on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rec
   smallmap_image->property_pixbuf() = pixbuf;
 }
 
-void GameWindow::on_smallmap_slid(Rectangle view)
+void GameWindow::on_smallmap_slid ()
 {
-  on_smallmap_changed(game->get_smallmap().get_surface(),
-		      Gdk::Rectangle(view.x, view.y, view.w, view.h));
+  on_smallmap_changed(game->get_smallmap().get_surface());
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 }
 
@@ -1691,8 +1690,7 @@ void GameWindow::hide_map_tip()
 
 Reward* GameWindow::on_sage_visited (Ruin *ruin, Sage *sage, Stack *stack)
 {
-  SageDialog d(*window, sage, stack->getFirstHero()->getOwner(), 
-	       static_cast<Hero*>(stack->getFirstHero()), ruin);
+  SageDialog d(*window, sage, static_cast<Hero*>(stack->getFirstHero()), ruin);
   Reward *reward = d.run();
   d.hide();
   return reward;
@@ -1850,8 +1848,7 @@ void GameWindow::on_surrender_answered (bool accepted)
     }
 }
 
-bool GameWindow::on_stack_considers_treachery (Stack *stack, 
-					       Player *them, Vector<int> pos)
+bool GameWindow::on_stack_considers_treachery (Player *them)
 {
   LwDialog dialog(*window, "treachery-dialog.ui");
   Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
@@ -2840,7 +2837,7 @@ void GameWindow::on_gold_stolen(Player *victim, guint32 gold_pieces)
   return;
 }
 
-void GameWindow::on_ships_sunk(Player *victim, guint32 num_armies)
+void GameWindow::on_ships_sunk(guint32 num_armies)
 {
   Glib::ustring s = 
     String::ucompose(ngettext("%1 army unit was sunk to the watery depths!",
@@ -2881,7 +2878,7 @@ void GameWindow::on_keeper_captured(Hero *hero, Ruin *ruin, Glib::ustring name)
   return;
 }
 
-void GameWindow::on_city_diseased(Hero *hero, Glib::ustring name, guint32 num_armies)
+void GameWindow::on_city_diseased(Glib::ustring name, guint32 num_armies)
 {
   Glib::ustring s = 
     String::ucompose(ngettext("%1 unit in %2 have perished!",
@@ -2892,7 +2889,7 @@ void GameWindow::on_city_diseased(Hero *hero, Glib::ustring name, guint32 num_ar
   return;
 }
 
-void GameWindow::on_city_defended(Hero *hero, Glib::ustring city_name, Glib::ustring army_name, guint32 num_armies)
+void GameWindow::on_city_defended(Glib::ustring city_name, Glib::ustring army_name, guint32 num_armies)
 {
   Glib::ustring s = 
     String::ucompose(ngettext("%1 unit of %2 have been raised in %3!",
@@ -2903,7 +2900,7 @@ void GameWindow::on_city_defended(Hero *hero, Glib::ustring city_name, Glib::ust
   return;
 }
 
-void GameWindow::on_city_persuaded(Hero *hero, Glib::ustring city_name, guint32 num_armies)
+void GameWindow::on_city_persuaded(Glib::ustring city_name, guint32 num_armies)
 {
   if (game)
     game->redraw();

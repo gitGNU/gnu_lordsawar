@@ -385,6 +385,10 @@ void QuestsManager::deactivateQuest(guint32 heroId)
 
 void QuestsManager::cleanup(Player::Type type)
 {
+  if (type)
+    {
+      ;
+    }
   debug("QuestsManager: cleanup!");
 
   std::list<Quest *>::iterator it = d_inactive_quests.begin();

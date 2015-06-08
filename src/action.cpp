@@ -492,7 +492,8 @@ Action_Fight::Action_Fight(XML_Helper* helper)
     std::istringstream si;
     int ival = -1;
 
-    helper->registerTag(Item::d_tag, sigc::mem_fun(this, &Action_Fight::loadItem));
+    helper->registerTag(Item::d_tag, 
+                        sigc::hide<0>(sigc::mem_fun(this, &Action_Fight::loadItem)));
 
     // get attacking and defending stacks
     helper->getData(s, "attackers");
@@ -607,7 +608,7 @@ bool Action_Fight::is_army_id_in_stacks(guint32 id, std::list<guint32> stack_ids
     return false;
 }
 
-bool Action_Fight::loadItem(Glib::ustring tag, XML_Helper* helper)
+bool Action_Fight::loadItem(XML_Helper* helper)
 {
     FightItem item;
     
@@ -1411,9 +1412,9 @@ Glib::ustring Action_Resign::dump() const
 
 bool Action_Resign::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  return retval;
+  if (helper)
+    return true;
+  return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -1758,9 +1759,9 @@ Glib::ustring Action_EndTurn::dump() const
 
 bool Action_EndTurn::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  return retval;
+  if (helper)
+    return true;
+  return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -1949,9 +1950,9 @@ Glib::ustring Action_InitTurn::dump() const
 
 bool Action_InitTurn::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  return retval;
+  if (helper)
+    return true;
+  return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -2180,8 +2181,9 @@ Glib::ustring Action_ResetRuins::dump() const
 
 bool Action_ResetRuins::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-  return retval;
+  if (helper)
+    return true;
+  return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -2209,8 +2211,9 @@ Glib::ustring Action_CollectTaxesAndPayUpkeep::dump() const
 
 bool Action_CollectTaxesAndPayUpkeep::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-  return retval;
+  if (helper)
+    return true;
+  return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -2238,8 +2241,9 @@ Glib::ustring Action_Kill::dump() const
 
 bool Action_Kill::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-  return retval;
+  if (helper)
+    return true;
+  return false;
 }
 
 //-----------------------------------------------------------------------------
@@ -2412,7 +2416,9 @@ Glib::ustring Action_DeselectStack::dump() const
 
 bool Action_DeselectStack::doSave(XML_Helper* helper) const
 {
-  return true;
+  if (helper)
+    return true;
+  return false;
 }
 
 Glib::ustring Action::actionTypeToString(Action::Type type)

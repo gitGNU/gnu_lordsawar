@@ -102,7 +102,7 @@ void Game::addPlayer(Player *p)
 	 (sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit)));
       connections[p->getId()].push_back
 	(p->smovingStack.connect
-	 (sigc::mem_fun(this, &Game::on_stack_starts_moving)));
+	 (sigc::hide(sigc::mem_fun(this, &Game::on_stack_starts_moving))));
       connections[p->getId()].push_back
 	(p->sstoppingStack.connect
 	 (sigc::mem_fun(this, &Game::on_stack_stopped)));
@@ -111,7 +111,7 @@ void Game::addPlayer(Player *p)
 	 (sigc::mem_fun(this, &Game::on_stack_halted)));
       connections[p->getId()].push_back
 	(p->getStacklist()->sgrouped.connect
-	 (sigc::mem_fun(this, &Game::on_stack_grouped)));
+	 (sigc::hide(sigc::mem_fun(this, &Game::on_stack_grouped))));
       connections[p->getId()].push_back
 	(p->stole_gold.connect
 	 (sigc::mem_fun(stole_gold, &sigc::signal<void, Player*, 
@@ -165,10 +165,10 @@ void Game::addPlayer(Player *p)
     (p->srecruitingHero.connect(sigc::mem_fun(this, &Game::recruitHero)));
   connections[p->getId()].push_back
     (p->svisitingTemple.connect
-     (sigc::mem_fun(this, &Game::stack_searches_temple)));
+     (sigc::hide<0>(sigc::mem_fun(this, &Game::stack_searches_temple))));
   connections[p->getId()].push_back
     (p->ssearchingRuin.connect
-     (sigc::mem_fun(this, &Game::stack_searches_ruin)));
+     (sigc::hide<0>(sigc::mem_fun(this, &Game::stack_searches_ruin))));
   connections[p->getId()].push_back
     (p->getStacklist()->snewpos.connect
      (sigc::mem_fun(this, &Game::stack_arrives_on_tile)));
@@ -213,7 +213,7 @@ void Game::addPlayer(Player *p)
     unlock_inputs();
 }
 
-void Game::on_stack_starts_moving(Stack *stack)
+void Game::on_stack_starts_moving()
 {
   if (Playerlist::getActiveplayer()->getType() == Player::HUMAN)
     lock_inputs();
@@ -234,7 +234,8 @@ void Game::on_stack_halted(Stack *stack)
   bigmap->reset_path_calculator(stack);
   //tell gamebigmap that a stack just stopped
 }
-void Game::on_stack_grouped(Stack *stack, bool grouped)
+
+void Game::on_stack_grouped(Stack *stack)
 {
   bigmap->reset_path_calculator(stack);
   //tell gamebigmap that we just grouped/ungrouped a stack.
@@ -255,9 +256,9 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 		  GameScenario::s_see_opponents_stacks, 
 		  GameScenario::s_military_advisor));
     bigmap->stack_selected.connect(
-	sigc::mem_fun(this, &Game::on_stack_selected));
+	sigc::hide(sigc::mem_fun(this, &Game::on_stack_selected)));
     bigmap->stack_grouped_or_ungrouped.connect(
-	sigc::mem_fun(this, &Game::on_stack_grouped_or_ungrouped));
+	sigc::hide(sigc::mem_fun(this, &Game::on_stack_grouped_or_ungrouped)));
     bigmap->path_set.connect(
 	sigc::mem_fun(this, &Game::update_control_panel));
     bigmap->city_visited.connect(
@@ -773,14 +774,14 @@ void Game::newMedalArmy(Army* a, int medaltype)
   update_stack_info();
 }
 
-void Game::on_stack_grouped_or_ungrouped(Stack *s)
+void Game::on_stack_grouped_or_ungrouped()
 {
   //this only happens when we double-click on a stack on the bigmap.
   update_stack_info();
   update_control_panel();
 }
 
-void Game::on_stack_selected(Stack* s)
+void Game::on_stack_selected()
 {
   update_stack_info();
   update_control_panel();
@@ -1481,14 +1482,14 @@ void Game::stack_leaves_tile(Stack *stack, Vector<int> tile)
     {
       if (stack == NULL)
 	{
-	  printf("stack is %p\n", stack);
+	  printf("stack is %p\n", (void*)stack);
 	  printf("WTFFF!!!!!!!!!!!!!!!!!!!!\n");
 	  return;
 	}
     }
 }
-    
-bool Game::stack_searches_ruin(Ruin *ruin, Stack *stack)
+
+bool Game::stack_searches_ruin(Stack *stack)
 {
   bool stack_died = false;
   bool hero_got_quest = false;
@@ -1496,7 +1497,7 @@ bool Game::stack_searches_ruin(Ruin *ruin, Stack *stack)
   return stack_died;
 }
     
-bool Game::stack_searches_temple(Temple *temple, Stack *stack)
+bool Game::stack_searches_temple(Stack *stack)
 {
   bool stack_died = false;
   bool hero_got_quest = false;

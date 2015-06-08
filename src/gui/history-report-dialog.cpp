@@ -56,13 +56,12 @@ HistoryReportDialog::HistoryReportDialog(Gtk::Window &parent, Player *p, History
   turn_scale->set_value(past_citylists.size());
 
   turn_scale->signal_value_changed().connect
-    (sigc::bind(sigc::mem_fun(this, &HistoryReportDialog::on_turn_changed),
-		turn_scale));
+    (sigc::mem_fun(this, &HistoryReportDialog::on_turn_changed));
 
   xml->get_widget("history_notebook", history_notebook);
   history_notebook->set_current_page(type);
   history_notebook->signal_switch_page().connect(
-	sigc::mem_fun(*this, &HistoryReportDialog::on_switch_page));
+	sigc::hide(sigc::hide(sigc::mem_fun(*this, &HistoryReportDialog::on_switch_page))));
 
   xml->get_widget("city_label", city_label);
   xml->get_widget("ruin_label", ruin_label);
@@ -352,7 +351,7 @@ void HistoryReportDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
   map_image->property_pixbuf() = pixbuf;
 }
 
-void HistoryReportDialog::on_turn_changed(Gtk::Scale *scale)
+void HistoryReportDialog::on_turn_changed()
 {
   //tell the historymap to show another set of cities
   guint32 turn = (guint32)turn_scale->get_value();
@@ -498,7 +497,7 @@ void HistoryReportDialog::fill_in_turn_info(guint32 turn)
   winner_label->set_text(s);
 }
 
-void HistoryReportDialog::on_switch_page(Gtk::Widget *page, guint number)
+void HistoryReportDialog::on_switch_page()
 {
   update_window_title();
 }

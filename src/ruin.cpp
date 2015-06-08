@@ -45,7 +45,7 @@ Ruin::Ruin(Vector<int> pos, guint32 width, Glib::ustring name, int type, Stack* 
 }
 
 Ruin::Ruin(const Ruin& ruin)
-    :NamedLocation(ruin), d_searched(ruin.d_searched), 
+    :NamedLocation(ruin), sigc::trackable(ruin), d_searched(ruin.d_searched), 
     d_type(ruin.d_type), d_occupant(ruin.d_occupant), d_hidden(ruin.d_hidden), 
     d_owner(ruin.d_owner), d_sage(ruin.d_sage), d_reward(ruin.d_reward)
 {

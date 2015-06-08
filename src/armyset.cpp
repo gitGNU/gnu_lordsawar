@@ -68,8 +68,8 @@ Armyset::Armyset(XML_Helper *helper, Glib::ustring directory)
 }
 
 Armyset::Armyset(const Armyset& a)
- : Set(a), d_ship(0), d_shipmask(0), d_standard(0), 
-    d_standard_mask(0), d_bag(0)
+ : std::list<ArmyProto*>(), sigc::trackable(a), Set(a), d_ship(0), 
+    d_shipmask(0), d_standard(0), d_standard_mask(0), d_bag(0)
 {
 
   if (a.d_ship)

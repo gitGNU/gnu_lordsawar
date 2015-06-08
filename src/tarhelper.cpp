@@ -138,7 +138,7 @@ bool Tar_Helper::saveFile(Tar_Helper *t, Glib::ustring filename, Glib::ustring d
   else
     b = destfile;
   struct archive_entry *entry = archive_entry_new();
-  dump_file_entry (in.t, filename, entry, b, out.t);
+  dump_file_entry (filename, entry, b, out.t);
   archive_entry_free (entry);
 
   out.Close();
@@ -328,7 +328,7 @@ bool Tar_Helper::removeFile(Glib::ustring filename)
   return replaceFile(filename, "");
 }
 
-int Tar_Helper::dump_file_entry (struct archive *in, Glib::ustring filename, struct archive_entry *entry, Glib::ustring nameinarchive, struct archive *out)
+int Tar_Helper::dump_file_entry (Glib::ustring filename, struct archive_entry *entry, Glib::ustring nameinarchive, struct archive *out)
 {
     struct stat st;
     stat(filename.c_str(), &st);
@@ -377,7 +377,7 @@ bool Tar_Helper::replaceFile(Glib::ustring filename, Glib::ustring newfilename)
               newfilename != "")
             {
               //hey it's the one we want to replace
-              dump_file_entry (in.t, newfilename, in_entry, 
+              dump_file_entry (newfilename, in_entry, 
                                File::get_basename(newfilename, true), out.t);
             }
           else

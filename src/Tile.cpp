@@ -40,7 +40,8 @@ Tile::Tile(Tile::Type type, Glib::ustring name, guint32 moves, SmallTile*small)
 }
 
 Tile::Tile(const Tile &t)
- : d_name(t.d_name), d_moves(t.d_moves), d_type(t.d_type)
+ : std::list<TileStyleSet*>(), d_name(t.d_name), d_moves(t.d_moves), 
+    d_type(t.d_type)
 {
   d_smalltile = new SmallTile (*t.d_smalltile);
   for (Tile::const_iterator i = t.begin(); i != t.end(); ++i)

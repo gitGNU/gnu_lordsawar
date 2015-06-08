@@ -33,7 +33,7 @@ TileStyleSet::TileStyleSet()
 }
 
 TileStyleSet::TileStyleSet(const TileStyleSet &t)
-  : d_name(t.d_name)
+  : sigc::trackable(t), std::vector<TileStyle*>(), d_name(t.d_name)
 {
   for (TileStyleSet::const_iterator i = t.begin(); i != t.end(); ++i)
     push_back(new TileStyle(*(*i)));

@@ -262,7 +262,7 @@ ooooooo
            */
 	  BOTTOMLEFTTOTOPRIGHTDIAGONAL = 15,
 	  OTHER = 16,
-          UNKNOWN = 17,
+          UNKNOWN = 17
 	};
 
 	//! Default constructor.

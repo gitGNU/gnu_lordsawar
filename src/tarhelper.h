@@ -68,7 +68,7 @@ public:
     static void clean_tmp_dir(Glib::ustring filename);
     static void reopen(Tar_Helper *t);
     static int dump_entry(struct archive *in, struct archive_entry *entry, struct archive *out);
-    static int dump_file_entry(struct archive *in, Glib::ustring filename, struct archive_entry *entry, Glib::ustring nameinarchive, struct archive *out);
+    static int dump_file_entry(Glib::ustring filename, struct archive_entry *entry, Glib::ustring nameinarchive, struct archive *out);
 private:
 
     // DATA

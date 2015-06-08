@@ -62,7 +62,7 @@ class Tile : public std::list<TileStyleSet*>
 	  //! Very hilly terrain, generally not passable except by flight.
 	  MOUNTAIN = 8, 
 	  //! Marshy terrain.
-	  SWAMP = 16,
+	  SWAMP = 16
 	};
 
 	//! Default constructor.

@@ -53,8 +53,7 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 }
 
 void MapRenderer::render_tile(Vector<int> draw, Vector<int> tile,
-			      Cairo::RefPtr<Cairo::Surface> surface, 
-			      Cairo::RefPtr<Cairo::Context> context)
+			      Cairo::RefPtr<Cairo::Surface> surface)
 {
   Player *p = Playerlist::getActiveplayer();
   if (p->getFogMap()->isCompletelyObscuredFogTile(tile) == true)
@@ -119,7 +118,7 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 	    }
 	    else {
 	      render_tile(Vector<int>(drawX,drawY), Vector<int>(tileX,tileY),
-			  surface, context);
+			  surface);
 	    }
 	    
             drawX += tilesize;

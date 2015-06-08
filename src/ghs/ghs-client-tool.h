@@ -53,8 +53,8 @@ private:
   void on_got_reload_response(Glib::ustring err);
   void on_got_unhost_response(Glib::ustring id, Glib::ustring err);
 
-  void on_got_host_game_response(Glib::ustring scenario_id, Glib::ustring err, Glib::ustring file);
-  void on_game_hosted(Glib::ustring scenario_id, guint32 port, Glib::ustring err);
+  void on_got_host_game_response(Glib::ustring err, Glib::ustring file);
+  void on_game_hosted(guint32 port, Glib::ustring err);
   void on_could_not_connect();
   void on_connected();
   void on_connection_lost();

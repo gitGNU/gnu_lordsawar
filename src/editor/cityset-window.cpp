@@ -45,7 +45,7 @@
 #include "GameMap.h"
 
 
-CitySetWindow::CitySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
+CitySetWindow::CitySetWindow(Glib::ustring load_filename)
 {
   needs_saving = false;
   d_cityset = NULL;
@@ -87,23 +87,23 @@ CitySetWindow::CitySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     city_tile_width_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &CitySetWindow::on_city_tile_width_changed));
     city_tile_width_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &CitySetWindow::on_city_tile_width_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &CitySetWindow::on_city_tile_width_text_changed))));
     xml->get_widget("ruin_tile_width_spinbutton", ruin_tile_width_spinbutton);
     ruin_tile_width_spinbutton->set_range (1, 4);
     ruin_tile_width_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &CitySetWindow::on_ruin_tile_width_changed));
     ruin_tile_width_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &CitySetWindow::on_ruin_tile_width_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &CitySetWindow::on_ruin_tile_width_text_changed))));
     xml->get_widget("temple_tile_width_spinbutton", 
 		    temple_tile_width_spinbutton);
     temple_tile_width_spinbutton->set_range (1, 4);
     temple_tile_width_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &CitySetWindow::on_temple_tile_width_changed));
     temple_tile_width_spinbutton->signal_insert_text().connect
-      (sigc::mem_fun(this, &CitySetWindow::on_temple_tile_width_text_changed));
+      (sigc::hide(sigc::hide(sigc::mem_fun(this, &CitySetWindow::on_temple_tile_width_text_changed))));
 
     window->signal_delete_event().connect
-      (sigc::mem_fun(*this, &CitySetWindow::on_delete_event));
+      (sigc::hide(sigc::mem_fun(*this, &CitySetWindow::on_delete_event)));
     xml->get_widget("change_citypics_button", change_citypics_button);
     change_citypics_button->signal_clicked().connect(
 	sigc::mem_fun(this, &CitySetWindow::on_change_citypics_clicked));
@@ -228,10 +228,9 @@ void CitySetWindow::hide()
   window->hide();
 }
 
-bool CitySetWindow::on_delete_event(GdkEventAny *e)
+bool CitySetWindow::on_delete_event()
 {
   hide();
-
   return true;
 }
 
@@ -560,7 +559,7 @@ void CitySetWindow::on_quit_activated()
   quit();
 }
 
-void CitySetWindow::on_city_tile_width_text_changed(const Glib::ustring &s, int* p)
+void CitySetWindow::on_city_tile_width_text_changed()
 {
   city_tile_width_spinbutton->set_value(atoi(city_tile_width_spinbutton->get_text().c_str()));
   on_city_tile_width_changed();
@@ -575,7 +574,7 @@ void CitySetWindow::on_city_tile_width_changed()
   update_window_title();
 }
 
-void CitySetWindow::on_ruin_tile_width_text_changed(const Glib::ustring &s, int* p)
+void CitySetWindow::on_ruin_tile_width_text_changed()
 {
   ruin_tile_width_spinbutton->set_value(atoi(ruin_tile_width_spinbutton->get_text().c_str()));
   on_ruin_tile_width_changed();
@@ -590,7 +589,7 @@ void CitySetWindow::on_ruin_tile_width_changed()
   update_window_title();
 }
 
-void CitySetWindow::on_temple_tile_width_text_changed(const Glib::ustring &s, int* p)
+void CitySetWindow::on_temple_tile_width_text_changed()
 {
   temple_tile_width_spinbutton->set_value(atoi(temple_tile_width_spinbutton->get_text().c_str()));
   on_temple_tile_width_changed();

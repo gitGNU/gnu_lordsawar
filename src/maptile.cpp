@@ -26,10 +26,10 @@
 #include "army.h"
 #include "GameMap.h"
 
-Maptile::Maptile(int x, int y, guint32 index, TileStyle *tileStyle)
+Maptile::Maptile(int x, int y, guint32 index)
     :d_index(index), d_building(NONE) 
 {
-    d_tileStyle = tileStyle;
+    d_tileStyle = NULL;
     d_backpack = new MapBackpack(Vector<int>(x,y));
     d_stacktile = new StackTile(Vector<int>(x,y));
     Tileset *ts = GameMap::getTileset();
@@ -39,8 +39,9 @@ Maptile::Maptile(int x, int y, guint32 index, TileStyle *tileStyle)
     d_smalltile = new SmallTile(*tile->getSmallTile());
 }
 
-Maptile::Maptile(int x, int y, Tile::Type type, TileStyle *tileStyle)
+Maptile::Maptile(int x, int y, Tile::Type type)
 {
+    d_tileStyle = NULL;
     d_building = NONE;
     Tileset *ts = GameMap::getTileset();
     int idx = ts->getIndex(type);
