@@ -89,6 +89,7 @@
 #include "smallmap-editor-dialog.h"
 #include "RenamableLocation.h"
 #include "fight-order-editor-dialog.h"
+#include "road-editor-tip.h"
 
 MainWindow::MainWindow(Glib::ustring load_filename)
 {
@@ -98,6 +99,7 @@ MainWindow::MainWindow(Glib::ustring load_filename)
   game_scenario = NULL;
   d_create_scenario_names = NULL;
   needs_saving = false;
+  road_editor_tip = NULL;
   Glib::RefPtr<Gtk::Builder> xml = 
     BuilderCache::get("editor/main-window.ui");
 
@@ -712,6 +714,8 @@ bool MainWindow::on_bigmap_mouse_button_event(GdkEventButton *e)
 bool MainWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
 {
   static guint prev = 0;
+  if (road_editor_tip)
+    return true;
   if (bigmap)
     {
       gint delta = e->time - prev;
@@ -1454,6 +1458,8 @@ void MainWindow::on_objects_selected(std::vector<UniquelyIdentified *> objects)
 		s = _("Signpost");
 	    else if (dynamic_cast<Temple *>(*i))
 		s = _("Temple");
+	    else if (dynamic_cast<Road*>(*i))
+		s = _("Road");
 	    else if (dynamic_cast<MapBackpack*>(*i))
 		s = _("Bag");
 	    
@@ -1528,6 +1534,14 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 
 	// we might have changed something visible
 	redraw();
+    }
+    else if (Road *rd = dynamic_cast<Road*>(object))
+    {
+      if (road_editor_tip)
+        delete road_editor_tip;
+      MapTipPosition mpos = bigmap->map_tip_position(rd->getPos());
+      road_editor_tip = new RoadEditorTip(bigmap_image, mpos, rd);
+      road_editor_tip->road_picked.connect(sigc::mem_fun(this, &MainWindow::on_road_edited));
     }
     else if (MapBackpack *b = dynamic_cast<MapBackpack*>(object))
       {
@@ -1939,4 +1953,14 @@ bool MainWindow::on_bigmap_scrolled(GdkEventScroll* event)
   if (bigmap)
     return bigmap->scroll(event);
   return true;
+}
+
+void MainWindow::on_road_edited(Vector<int> pos, int type)
+{
+  needs_saving = true;
+  delete road_editor_tip;
+  road_editor_tip = NULL;
+  Road *road = new Road (pos, Road::Type(type));
+  GameMap::getInstance()->putRoad(road, false);
+  redraw();
 }

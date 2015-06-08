@@ -1139,6 +1139,9 @@ class GameMap: public sigc::trackable
          *
          * @param t A pointer to the Road tile to add to the map.
          *
+         * @param smooth whether or not surrounding road types should be
+         * changed to align.
+         *
          * The road type is calculated and changed according to the other road
          * and bridge tiles nearby.
          *
@@ -1153,7 +1156,7 @@ class GameMap: public sigc::trackable
          *
          * @return Always returns True.
          */
-	bool putRoad(Road *r);
+	bool putRoad(Road *r, bool smooth=true);
 
         /** Drop a new Road tile at the given position on the map.
          *

@@ -97,7 +97,8 @@ lordsawar_editor_SOURCES = \
 	backpack-editor-dialog.cpp backpack-editor-dialog.h \
 	hero-editor-dialog.cpp hero-editor-dialog.h \
 	editor-splash-window.cpp editor-splash-window.h \
-	fight-order-editor-dialog.cpp fight-order-editor-dialog.h
+	fight-order-editor-dialog.cpp fight-order-editor-dialog.h \
+	road-editor-tip.cpp road-editor-tip.h
 	
 lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \

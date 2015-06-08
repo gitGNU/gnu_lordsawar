@@ -553,6 +553,8 @@ void EditorBigMap::bring_up_details()
     seq.push_back(s);
   if (Temple* t = GameMap::getTemple(tile))
     seq.push_back(t);
+  if (Road* rd = GameMap::getRoad(tile))
+    seq.push_back(rd);
   MapBackpack *b = GameMap::getInstance()->getTile(tile)->getBackpack();
   if (b->empty() == false)
     seq.push_back(b);
@@ -698,8 +700,14 @@ void EditorBigMap::after_draw()
 	    break;
 
 	  case ROAD:
-	    pic = ImageCache::getInstance()->getRoadPic(CreateScenario::calculateRoadType(*i));
-	    pic->blit(buffer, pos);
+              {
+                Road *r = GameMap::getRoad(*i);
+                if (r)
+                  pic = ImageCache::getInstance()->getRoadPic(r->getType());
+                else
+                  pic = ImageCache::getInstance()->getRoadPic(CreateScenario::calculateRoadType(*i));
+                pic->blit(buffer, pos);
+              }
 	    break;
 	  case PORT:
 	    pic = ImageCache::getInstance()->getPortPic();

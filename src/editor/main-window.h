@@ -35,6 +35,7 @@ class CreateScenarioRandomize;
 class City;
 class Signpost;
 class Ruin;
+class RoadEditorTip;
 
 #include "UniquelyIdentified.h"
 
@@ -248,10 +249,12 @@ class MainWindow: public sigc::trackable
     void on_player_toggled(PlayerItem item);
     void update_window_title();
     void on_bag_selected(Vector<int> pos);
+    void on_road_edited(Vector<int> pos, int new_type);
 
     int d_width;
     int d_height;
     Glib::ustring d_load_filename;// filename given on the command line.
+    RoadEditorTip *road_editor_tip;
     
 };
 

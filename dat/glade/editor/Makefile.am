@@ -41,7 +41,8 @@ tilestyle-organizer-dialog.ui \
 shieldset-window.ui \
 smallmap-editor-dialog.ui \
 editor-splash-window.ui \
-fight-order-editor-dialog.ui
+fight-order-editor-dialog.ui \
+road-editor-tip.ui
 
 EXTRA_DIST = $(glade_DATA) \
 README

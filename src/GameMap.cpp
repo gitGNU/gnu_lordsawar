@@ -1846,13 +1846,15 @@ bool GameMap::putNewRoad(Vector<int> tile)
     return false;
 }
 
-bool GameMap::putRoad(Road *r)
+bool GameMap::putRoad(Road *r, bool smooth)
 {
   if (containsWater(r->getArea()))
     putTerrain(r->getArea(), Tile::GRASS);
   Roadlist::getInstance()->add(r);
   setBuilding(r->getPos(), Maptile::ROAD);
 
+  if (smooth == false)
+    return true;
   // now reconfigure all roads in the surroundings
   Vector<int> tile = r->getPos();
   for (int x = tile.x - 1; x <= tile.x + 1; ++x)
