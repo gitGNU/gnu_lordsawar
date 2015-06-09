@@ -1,10 +1,6 @@
 Armysets are in here. Each armyset consists of a set of army descriptions, a
 name, a size and a unique(!!) id.
 
-Furthermore, each armyset contains an image (40*(#armies) x 40 currently) and
-a mask to map player colors. The mask has to be an image with indexed palette;
-For the colors to be used, see the comments in player.cpp (function
-Player::initPalette).
 Mask and image files need to have the same name as the armyset description file
 and have to be .png files.
 
@@ -12,6 +8,7 @@ The currently used indexes are:
 
 1 - default 
 2 - big default 
+3 - duel
 
-All indexes above 2 are free as of now.
+All indexes above 3 are free as of now.
 

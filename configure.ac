@@ -167,6 +167,7 @@ AC_CONFIG_FILES([
         dat/army/Makefile 
         dat/army/default/Makefile 
         dat/army/bigdefault/Makefile 
+        dat/army/duel/Makefile 
         dat/tilesets/Makefile
         dat/tilesets/default/Makefile
         dat/tilesets/bigdefault/Makefile
@@ -189,6 +190,7 @@ AC_CONFIG_FILES([
         dat/various/xslt/Makefile
         dat/map/Makefile 
         dat/map/dol/Makefile 
+        dat/map/duel/Makefile 
         dat/music/Makefile
         dat/glade/Makefile
         dat/glade/editor/Makefile
