@@ -6,6 +6,7 @@
  * Version 1.0.4.
  *
  * Copyright (c) 2002, 03, 04 Ole Laursen <olau@hardworking.dk>.
+ * Copyright (C) 2015 Ben Asselstine
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License

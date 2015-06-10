@@ -1,5 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl This is useful to force using autoreconf 2.5.x
+dnl Copyright (C) 2015 Ben Asselstine
+dnl This file is licensed under the terms of the GNU GPL version 3 or later.
 AC_PREREQ(2.59)
 AC_INIT([lordsawar], [0.3.0-pre3], [lordsawar-discuss@nongnu.org], [lordsawar])
 AC_CONFIG_SRCDIR([config.h.in])

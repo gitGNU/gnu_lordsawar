@@ -8,7 +8,7 @@
  * Copyright (c) 2002, 03, 04 Ole Laursen <olau@hardworking.dk>.
  * modified from String::ucompose by Ole.
  * Changed by Ben Asselstine to create HBoxes instead.
- * Copyright (C) 2009, 2014 Ben Asselstine
+ * Copyright (C) 2009, 2014, 2015 Ben Asselstine
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License

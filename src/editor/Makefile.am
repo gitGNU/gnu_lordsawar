@@ -1,5 +1,5 @@
 #   Copyright (C) 2007, 2008 Ole Laursen
-#   Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+#   Copyright (C) 2007, 2008, 2009, 2010, 2015 Ben Asselstine
 #   Copyright (C) 2008 Barry deFreese
 # 
 #   This program is free software; you can redistribute it and/or modify

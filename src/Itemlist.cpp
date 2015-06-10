@@ -1,5 +1,5 @@
 // Copyright (C) 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2011, 2014 Ben Asselstine
+// Copyright (C) 2007, 2008, 2011, 2014, 2015 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
