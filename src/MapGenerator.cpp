@@ -25,8 +25,6 @@
 #include <math.h>  
 #include <set>
 
-//#include <boost/foreach.hpp>
-
 #include "MapGenerator.h"
 #include "army.h"
 #include "GameMap.h"
@@ -683,7 +681,7 @@ void MapGenerator::makeRivers()
         }
 
         // find shortest distances between areas
-        std::vector<std::vector<std::pair<float, std::pair<Vector<int>, Vector<int> > > > > distances; // I would prefer boost::tuple, but oh well...
+        std::vector<std::vector<std::pair<float, std::pair<Vector<int>, Vector<int> > > > > distances;
         distances.resize(how_many+2);
         for(int h = 0; h < how_many+2; ++h)
         {

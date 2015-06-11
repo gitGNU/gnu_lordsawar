@@ -20,11 +20,10 @@
 #define GUI_MAIN_H
 
 #include <sigc++/trackable.h>
-#include <boost/noncopyable.hpp>
 
 // initialize the GUI and run the main loop; only one instance is ever
 // constructed so Main::instance is a convenience for retrieving it
-class Main: public sigc::trackable, public boost::noncopyable
+class Main: public sigc::trackable
 {
  public:
     Main(int &argc, char **&argv);

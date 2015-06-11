@@ -116,39 +116,6 @@ if test x$use_opts = xno; then
     CXXFLAGS=-g
 fi
 
-
-AC_DEFUN([AC_CHOOSE_BOOST],[
-    am_boost_dir_default=ifelse([$1], , /usr/include, $1)
-    BOOST_CPPFLAGS=''
-    AC_ARG_WITH(boost_includedir,
-                AS_HELP_STRING([--with-boost-includedir=DIR],
-                               [Use Boost library installed at specified path (default /usr/include)]),
-                [am_boost_dir=$withval],
-                [am_boost_dir=$am_boost_dir_default])
-
-    AC_MSG_CHECKING([for boost directory])
-    if test -d $am_boost_dir/boost; then
-        AC_MSG_RESULT([$am_boost_dir/boost])
-        BOOST_CPPFLAGS="-I$am_boost_dir"
-        old_CPPFLAGS=$CPPFLAGS
-        CPPFLAGS="$CPPFLAGS $BOOST_CPPFLAGS"
-        AC_LANG_PUSH(C++)
-        AC_CHECK_HEADERS([boost/version.hpp],
-                         [ifelse([$2], , :, [$2])],
-                         [ifelse([$3], , :, [$3])])
-        AC_LANG_POP(C++)
-        CPPFLAGS=$old_CPPFLAGS
-        AC_SUBST(BOOST_CPPFLAGS)
-    else
-        AC_MSG_RESULT([not found])
-        AC_MSG_ERROR([*** Can't find directory $am_boost_dir/boost])
-        ifelse([$3], , :, [$3])
-    fi
-])
-
-AC_CHOOSE_BOOST(,,[AC_MSG_ERROR([*** Boost library not found! Install it.])])
-
-
 dnl ...and finally a workaround to get the absolute data path
 if test x$prefix = xNONE; then
     prefix="/usr/local"

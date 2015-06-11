@@ -14,11 +14,10 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
-#include <boost/noncopyable.hpp>
 #include "game-parameters.h"
 #include <gtkmm.h>
 
-class NewNetworkGameDownloadWindow : public Gtk::Window, boost::noncopyable
+class NewNetworkGameDownloadWindow : public Gtk::Window
 {
   public:
     NewNetworkGameDownloadWindow(Glib::ustring title = "");
