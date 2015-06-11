@@ -35,10 +35,6 @@ AC_SUBST([gppver])
 
 AC_PROG_LIBTOOL
 
-PKG_CHECK_MODULES(GSTREAMER, gstreamermm-0.10)
-AC_SUBST(GSTREAMER_CFLAGS)
-AC_SUBST(GSTREAMER_LIBS)
-
 dnl check for libxml and libxslt
 PKG_CHECK_MODULES(XSLT, [libxslt >= 1.1.20])
 AC_SUBST(XSLT_CFLAGS)
@@ -99,6 +95,17 @@ AC_ARG_ENABLE(ghs,
             [  --enable-ghs     compile game host server (default=yes)],
             use_ghs="$enableval", use_ghs="yes")
 AM_CONDITIONAL([WANT_GHS], [test $use_ghs = "yes"])
+
+use_sound=1
+AC_ARG_ENABLE(sound, [  --enable-sound         Enable or disable sound usage (default on)],
+                use_sound="$enableval", use_sound="yes")
+
+if test $use_sound = yes; then
+PKG_CHECK_MODULES(GSTREAMER, gstreamermm-0.10)
+AC_SUBST(GSTREAMER_CFLAGS)
+AC_SUBST(GSTREAMER_LIBS)
+AC_DEFINE([LW_SOUND], 1, [enables sound])
+fi
 
 dnl ...the standard screen resolution...
 AC_ARG_WITH(resolution,
@@ -182,6 +189,7 @@ echo " Installation location : $prefix"
 echo " Editor compilation    : $use_editor"
 echo " Game-list Server      : $use_gls"
 echo " Game-host Server      : $use_ghs"
+echo " Enable Sounds         : $use_sound"
 echo ""
 echo "Extra Options:"
 echo " Compiler Optimizations: $use_opts"

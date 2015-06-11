@@ -84,6 +84,7 @@ liblwgui_la_LIBADD = @LTLIBOBJS@
 
 AM_CPPFLAGS = \
    $(GTKMM_CFLAGS) \
+   $(XMLPP_CFLAGS) \
    $(GSTREAMER_CFLAGS) \
    -I$(top_srcdir)/src
 

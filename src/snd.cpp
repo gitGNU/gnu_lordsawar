@@ -22,7 +22,6 @@
 #include <glibmm.h>
 #include <iostream>
 #include <sigc++/functors/mem_fun.h>
-#include <gstreamermm.h>
 #include "snd.h"
 #include "File.h"
 #include "Configuration.h"
@@ -30,14 +29,21 @@
 #include "xmlhelper.h"
 #include "timing.h"
 
+#ifdef LW_SOUND
+#include <gstreamermm.h>
+#endif
+
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 struct Snd::Impl
 {
+#ifdef LW_SOUND
   // currently playing background and foreground piece
   Glib::RefPtr<Gst::PlayBin2> back;
   Glib::RefPtr<Gst::PlayBin2> effect;
+#endif
+  int placeholder;
 };
 
 Snd* Snd::s_instance = 0;
@@ -74,10 +80,12 @@ Snd::Snd()
 	return;
     }
 
+#ifdef LW_SOUND
     impl->back = Gst::PlayBin2::create();
     impl->effect = Gst::PlayBin2::create();
     impl->effect->get_bus()->add_watch(sigc::bind(sigc::hide<0>(sigc::mem_fun(*this, &Snd::on_bus_message)), 0));
     impl->back->get_bus()->add_watch(sigc::bind(sigc::hide<0>(sigc::mem_fun(*this, &Snd::on_bus_message)), 1));
+#endif
     debug("Music list contains " <<d_musicMap.size <<" entries.")
     debug("background list has " <<d_bgMap.size <<" entries.")
 }
@@ -101,8 +109,10 @@ bool Snd::setMusic(bool enable, int volume)
 
     Configuration::s_musicenable = enable;
     Configuration::s_musicvolume = volume;
+#ifdef LW_SOUND
     impl->effect->property_volume() = (double)Configuration::s_musicvolume/128.0;
     impl->back->property_volume() = (double)Configuration::s_musicvolume/128.0;
+#endif
 
     return true;
 }
@@ -127,6 +137,7 @@ bool Snd::play(Glib::ustring piece, int nloops, bool fade)
   if (d_musicMap[piece] == 0)
     return false;
 
+#ifdef LW_SOUND
   d_nloops = nloops;
   impl->effect->set_state(Gst::STATE_NULL);
   impl->effect->property_uri() = 
@@ -143,11 +154,13 @@ bool Snd::play(Glib::ustring piece, int nloops, bool fade)
     impl->effect->property_volume() = (double)Configuration::s_musicvolume/128.0;
   impl->effect->set_state(Gst::STATE_PLAYING);
 
+#endif
   return true;
 }
 
 bool Snd::on_bus_message(const Glib::RefPtr<Gst::Message> & msg, guint32 source)
 {
+#ifdef LW_SOUND
   switch (msg->get_message_type())
     {
     case Gst::MESSAGE_EOS:
@@ -167,6 +180,7 @@ bool Snd::on_bus_message(const Glib::RefPtr<Gst::Message> & msg, guint32 source)
     default:
       break;
     }
+#endif
   return true;
 }
   
@@ -174,16 +188,19 @@ bool Snd::halt(bool fade)
 {
   debug("stopping music")
 
+#ifdef LW_SOUND
   if (fade == false)
     impl->effect->set_state(Gst::STATE_NULL);
   else
     Timing::instance().register_timer
       (sigc::bind(sigc::mem_fun(this, &Snd::on_effect_fade), -0.02), 100);
+#endif
   return true;
 }
 
 bool Snd::on_effect_fade(double step)
 {
+#ifdef LW_SOUND
   double volume = impl->effect->property_volume();
   double max = (double)Configuration::s_musicvolume/128.0;
   if (step < 0)
@@ -210,6 +227,7 @@ bool Snd::on_effect_fade(double step)
       impl->effect->property_volume() = max;
       return Timing::STOP;
     }
+#endif
   return Timing::CONTINUE;
 }
 
@@ -225,7 +243,9 @@ void Snd::disableBackground()
     debug("disabling background music")
     d_background = false;
 
+#ifdef LW_SOUND
   impl->back->set_state(Gst::STATE_NULL);
+#endif
 }
 
 void Snd::nextPiece()
@@ -234,6 +254,7 @@ void Snd::nextPiece()
     if (!d_background || !isMusicEnabled())
         return;
 
+#ifdef LW_SOUND
     // select a random music piece from the list of background pieces
     while (!d_bgMap.empty())
       {
@@ -249,6 +270,7 @@ void Snd::nextPiece()
         impl->back->set_state(Gst::STATE_PLAYING);
         break;
       }
+#endif
 }
 
 bool Snd::loadMusic(Glib::ustring tag, XML_Helper* helper)
@@ -280,6 +302,8 @@ bool Snd::loadMusic(Glib::ustring tag, XML_Helper* helper)
         
 void Snd::updateVolume()
 {
+#ifdef LW_SOUND
   impl->effect->property_volume() = (double)Configuration::s_musicvolume/128.0;
   impl->back->property_volume() = (double)Configuration::s_musicvolume/128.0;
+#endif
 }

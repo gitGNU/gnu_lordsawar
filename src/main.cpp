@@ -24,7 +24,10 @@
 
 #include <iostream>
 #include <time.h>
+
+#ifdef LW_SOUND
 #include <gstreamermm/init.h>
+#endif
 
 #include "Configuration.h"
 #include "File.h"
@@ -195,7 +198,9 @@ int main(int argc, char* argv[])
   BuilderCache::getInstance();
 
 
+#ifdef LW_SOUND
   Gst::init(argc, argv);
+#endif
   kit.start_main_loop();
 
   return EXIT_SUCCESS;
