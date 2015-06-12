@@ -246,6 +246,7 @@ Glib::ustring File::get_basename(Glib::ustring path, bool keep_ext)
   file = file.substr(0, npos - 1);
   return file;
 }
+
 //copy_file taken from ardour-2.0rc2, gplv2+.
 bool File::copy (Glib::ustring from, Glib::ustring to)
 {
@@ -341,7 +342,14 @@ void File::erase(Glib::ustring filename)
   if (File::exists(filename))
     {
       Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(filename);
-      file->remove();
+      try 
+        {
+          file->remove();
+        } 
+      catch (const Glib::Error &ex) 
+        {
+          std::cerr << ex.what() << " " << filename << std::endl;
+        }
     }
 }
 
