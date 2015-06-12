@@ -94,7 +94,7 @@ bool Path::save(XML_Helper* helper) const
     }
 
     retval &= helper->openTag(Path::d_tag);
-    retval &= helper->saveData("size", size());
+    retval &= helper->saveData("size", (guint32) size());
     retval &= helper->saveData("moves_exhausted_at_point", 
                                d_moves_exhausted_at_point);
     retval &= helper->saveData("x", sx.str());
