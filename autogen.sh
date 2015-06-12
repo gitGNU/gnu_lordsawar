@@ -4,4 +4,5 @@ autoreconf --verbose --install --force --symlink
 gettextize -f
 #echo "Running intltoolize"
 intltoolize --copy --force --automake
+automake --add-missing
 echo "Now type './configure' to prepare LordsAWar! for compilation."
