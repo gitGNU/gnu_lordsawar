@@ -33,6 +33,10 @@
 // README.compose for more details.
 //
 
+/*
+ * the ucompose routines have been neutred to use Glib::ustring::ucompose.
+ * they seem to work fine.
+ */
 #ifndef STRING_UCOMPOSE_HPP
 #define STRING_UCOMPOSE_HPP
 
@@ -244,27 +248,21 @@ namespace String
   template <typename T1>
   inline Glib::ustring ucompose(const Glib::ustring &fmt, const T1 &o1)
   {
-    UStringPrivate::Composition c(fmt);
-    c.arg(o1);
-    return c.str();
+    return Glib::ustring::compose(fmt, o1);
   }
 
   template <typename T1, typename T2>
   inline Glib::ustring ucompose(const Glib::ustring &fmt,
 				const T1 &o1, const T2 &o2)
   {
-    UStringPrivate::Composition c(fmt);
-    c.arg(o1).arg(o2);
-    return c.str();
+    return Glib::ustring::compose(fmt, o1, o2);
   }
 
   template <typename T1, typename T2, typename T3>
   inline Glib::ustring ucompose(const Glib::ustring &fmt,
 				const T1 &o1, const T2 &o2, const T3 &o3)
   {
-    UStringPrivate::Composition c(fmt);
-    c.arg(o1).arg(o2).arg(o3);
-    return c.str();
+    return Glib::ustring::compose(fmt, o1, o2, o3);
   }
 
   template <typename T1, typename T2, typename T3, typename T4>
@@ -272,9 +270,7 @@ namespace String
 				const T1 &o1, const T2 &o2, const T3 &o3,
 				const T4 &o4)
   {
-    UStringPrivate::Composition c(fmt);
-    c.arg(o1).arg(o2).arg(o3).arg(o4);
-    return c.str();
+    return Glib::ustring::compose(fmt, o1, o2, o3, o4);
   }
 
   template <typename T1, typename T2, typename T3, typename T4, typename T5>
@@ -282,9 +278,7 @@ namespace String
 				const T1 &o1, const T2 &o2, const T3 &o3,
 				const T4 &o4, const T5 &o5)
   {
-    UStringPrivate::Composition c(fmt);
-    c.arg(o1).arg(o2).arg(o3).arg(o4).arg(o5);
-    return c.str();
+    return Glib::ustring::compose(fmt, o1, o2, o3, o4, o5);
   }
 
   template <typename T1, typename T2, typename T3, typename T4, typename T5,
@@ -293,9 +287,7 @@ namespace String
 				const T1 &o1, const T2 &o2, const T3 &o3,
 				const T4 &o4, const T5 &o5, const T6 &o6)
   {
-    UStringPrivate::Composition c(fmt);
-    c.arg(o1).arg(o2).arg(o3).arg(o4).arg(o5).arg(o6);
-    return c.str();
+    return Glib::ustring::compose(fmt, o1, o2, o3, o4, o5, o6);
   }
 
   template <typename T1, typename T2, typename T3, typename T4, typename T5,
@@ -305,9 +297,7 @@ namespace String
 				const T4 &o4, const T5 &o5, const T6 &o6,
 				const T7 &o7)
   {
-    UStringPrivate::Composition c(fmt);
-    c.arg(o1).arg(o2).arg(o3).arg(o4).arg(o5).arg(o6).arg(o7);
-    return c.str();
+    return Glib::ustring::compose(fmt, o1, o2, o3, o4, o5, o6, o7);
   }
 
   inline Glib::ustring utrim(Glib::ustring str) 
