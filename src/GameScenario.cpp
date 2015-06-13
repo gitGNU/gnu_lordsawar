@@ -559,7 +559,7 @@ GameScenario::~GameScenario()
   if (Configuration::s_autosave_policy == 1 && 
       inhibit_autosave_removal == false)
     {
-      Glib::ustring filename = File::getSavePath() + "autosave" + SAVE_EXT;
+      Glib::ustring filename = File::getSaveFile("autosave" + SAVE_EXT);
       File::erase(filename);
     }
   clean_tmp_dir();
@@ -849,16 +849,16 @@ bool GameScenario::autoSave()
   // As a more enhanced version: autosave to a temporary file, then rename
   // the file. Avoids screwing up the autosave if something goes wrong
   // (and we have a savefile for debugging)
-  if (!saveGame(File::getSavePath() + "tmp" + SAVE_EXT))
+  if (!saveGame(File::getSaveFile("tmp" + SAVE_EXT)))
     {
       std::cerr<< "Autosave failed.\n";
       return false;
     }
-  if (rename(Glib::ustring(File::getSavePath() + "tmp" + SAVE_EXT).c_str(),
-	     Glib::ustring(File::getSavePath() + filename).c_str()))
+  if (rename(File::getSaveFile("tmp" + SAVE_EXT).c_str(),
+	     File::getSaveFile(filename).c_str()))
     {
       char* err = strerror(errno);
-      std::cerr << String::ucompose(_("Error! can't rename the temporary file `%1' to the autosave file `%2'.  %3"), File::getSavePath() + "tmp" + SAVE_EXT, File::getSavePath() + filename, err) << std::endl;
+      std::cerr << String::ucompose(_("Error! can't rename the temporary file `%1' to the autosave file `%2'.  %3"), File::getSaveFile("tmp" + SAVE_EXT), File::getSaveFile(filename), err) << std::endl;
       return false;
     }
   return true;

@@ -75,14 +75,14 @@ SplashWindow::SplashWindow()
     if (Configuration::s_autosave_policy == 1)
       {
   
-	Glib::ustring filename = File::getSavePath() + "autosave" + SAVE_EXT;
+	Glib::ustring filename = File::getSaveFile("autosave" + SAVE_EXT);
 	FILE *fileptr = fopen (filename.c_str(), "r");
 	if (fileptr)
 	  {
 	    bool broken = false;
 	    fclose (fileptr);
 	    GameScenario::PlayMode mode = 
-	      GameScenario::loadPlayMode(File::getSavePath() + "autosave" + SAVE_EXT,
+	      GameScenario::loadPlayMode(File::getSaveFile("autosave" + SAVE_EXT),
 					 broken);
 	    if (mode == GameScenario::HOTSEAT && broken == false)
 	      {
@@ -93,7 +93,7 @@ SplashWindow::SplashWindow()
 		button_box->reorder_child(*crash_button, 0);
 	      }
             else if (broken == true)
-              File::erase (File::getSavePath() + "autosave" + SAVE_EXT);
+              File::erase (File::getSaveFile("autosave" + SAVE_EXT));
 	  }
       }
 
@@ -156,7 +156,7 @@ void SplashWindow::on_quit_clicked()
 void SplashWindow::on_rescue_crashed_game_clicked()
 {
   delete crash_button;
-  Glib::ustring filename = File::getSavePath() + "autosave" + SAVE_EXT;
+  Glib::ustring filename = File::getSaveFile("autosave" + SAVE_EXT);
   load_requested.emit(filename);
 }
 

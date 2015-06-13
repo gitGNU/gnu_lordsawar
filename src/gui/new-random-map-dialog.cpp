@@ -552,8 +552,7 @@ Glib::ustring NewRandomMapDialog::create_and_dump_scenario(const Glib::ustring &
     creator.setTurnmode(false);
 
   // now create the map and dump the created map
-  Glib::ustring path = File::getSavePath();
-  path += file;
+  Glib::ustring path = File::getSaveFile(file);
 
   if (pulse)
     //creator.progress.connect(sigc::mem_fun(this, &NewRandomMapDialog::pulse));

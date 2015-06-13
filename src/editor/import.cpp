@@ -1364,8 +1364,8 @@ open_armyset_file (Glib::ustring directory, Glib::ustring name)
           //WL2 deluxe
           std::string upname = name;
           std::transform(upname.begin(), upname.end(), upname.begin(), ::toupper);
-          armyset_file = File::add_slash_if_necessary (directory) + 
-            "../../ARMY/" + name +"/" + n;
+          armyset_file = 
+            Glib::build_filename (directory, "..", "..", "ARMY", name, n);
           a = fopen (armyset_file.c_str(), "rb");
         }
     }

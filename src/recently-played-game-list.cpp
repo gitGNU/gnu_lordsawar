@@ -305,12 +305,12 @@ void RecentlyPlayedGameList::removeAllNetworkedGames()
 
 bool RecentlyPlayedGameList::load()
 {
-  return loadFromFile(File::getSavePath() + "/" + RECENTLY_PLAYED_LIST);
+  return loadFromFile(File::getSaveFile(RECENTLY_PLAYED_LIST));
 }
 
 bool RecentlyPlayedGameList::save() const
 {
-  return saveToFile(File::getSavePath() + "/" + RECENTLY_PLAYED_LIST);
+  return saveToFile(File::getSaveFile(RECENTLY_PLAYED_LIST));
 }
 
 bool RecentlyPlayedGameList::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)

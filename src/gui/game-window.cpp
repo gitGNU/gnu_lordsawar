@@ -867,7 +867,7 @@ void GameWindow::on_load_game_activated()
     {
       Glib::ustring filename = chooser.get_filename();
       current_save_filename = filename;
-      if (filename ==  (File::getSavePath() + "autosave" + SAVE_EXT))
+      if (filename == File::getSaveFile("autosave" + SAVE_EXT))
 	game->inhibitAutosaveRemoval(true);
       d_load_filename = filename;
       stop_game("load-game");

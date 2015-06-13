@@ -179,8 +179,7 @@ gssize NetworkConnection::on_payload_received(gssize len)
   if (type == MESSAGE_TYPE_SENDING_MAP)
     {
       Glib::ustring file = "clientnetwork" + SAVE_EXT;
-      Glib::ustring path = File::getSavePath();
-      path += file;
+      Glib::ustring path = File::getSaveFile(file);
 
       FILE *fp = fopen (path.c_str(), "wb");
       fwrite (payload + MESSAGE_PREAMBLE_EXTRA_BYTES, 1, 
