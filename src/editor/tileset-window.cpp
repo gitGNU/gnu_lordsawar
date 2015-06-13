@@ -53,10 +53,10 @@ TileSetWindow::TileSetWindow(Glib::ustring load_filename)
   inhibit_needs_saving = false;
   d_tileset = NULL;
     Glib::RefPtr<Gtk::Builder> xml = 
-      BuilderCache::get("editor/tileset-window.ui");
+      BuilderCache::editor_get("tileset-window.ui");
 
     xml->get_widget("window", window);
-    window->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+    window->set_icon_from_file(File::getVariousFile("tileset_icon.png"));
     window->signal_delete_event().connect
       (sigc::hide(sigc::mem_fun(*this, &TileSetWindow::on_window_closed)));
 
@@ -571,14 +571,14 @@ void TileSetWindow::on_save_as_activated()
       File::create_dir(tmpdir);
       d_tileset->setName(copy->getName());
       File::copy(d_tileset->getConfigurationFile(), 
-                 tmpdir + "/" + copy->getBaseName() + Tileset::file_extension);
+                 File::getTempFile(tmpdir, copy->getBaseName() + Tileset::file_extension));
       d_tileset->setBaseName(copy->getBaseName());
       d_tileset->setDirectory(tmpdir);
       d_tileset->setId(copy->getId());
           
       current_save_filename = copy->getConfigurationFile();
       bool ok = Tilesetlist::getInstance()->addToPersonalCollection(d_tileset, new_basename, new_id);
-      File::erase(tmpdir + "/" + copy->getBaseName() + Tileset::file_extension);
+      File::erase(File::getTempFile (tmpdir, copy->getBaseName() + Tileset::file_extension));
       File::erase_dir(tmpdir);
       if (ok)
         {
@@ -722,11 +722,11 @@ void TileSetWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(File::getMiscFile("glade/about-dialog.ui"));
+    = Gtk::Builder::create_from_file(File::getGladeFile("about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(*window);
-  dialog->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+  dialog->set_icon_from_file(File::getVariousFile("tileset_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
   dialog->set_logo(ImageCache::loadMiscImage("tileset_icon.png")->to_pixbuf());

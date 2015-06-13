@@ -34,7 +34,7 @@ RoadEditorTip::RoadEditorTip(Gtk::Widget *target, MapTipPosition mpos, Road *r)
 {
   road = r;
   Glib::RefPtr<Gtk::Builder> xml = 
-    BuilderCache::get("editor/road-editor-tip.ui");
+    BuilderCache::editor_get("road-editor-tip.ui");
 
   xml->get_widget("window", window);
   xml->get_widget("button_box", button_box);

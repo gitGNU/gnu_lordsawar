@@ -134,7 +134,7 @@ GameWindow::GameWindow()
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
     window = w;
-    w->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+    w->set_icon_from_file(File::getVariousFile("castle_icon.png"));
     
     w->signal_delete_event().connect
       (sigc::hide(sigc::mem_fun(*this, &GameWindow::on_delete_event)));
@@ -1439,11 +1439,10 @@ void GameWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file
-    (File::getMiscFile("/glade/about-dialog.ui"));
+    = Gtk::Builder::create_from_file (File::getGladeFile("about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
-  dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+  dialog->set_icon_from_file(File::getVariousFile("castle_icon.png"));
   dialog->set_version(PACKAGE_VERSION);
   dialog->set_logo(ImageCache::loadMiscImage("castle_icon.png")->to_pixbuf());
   dialog->set_transient_for(*window);
@@ -1784,9 +1783,9 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
   Gtk::Image *image;
   xml->get_widget("image", image);
   if (result == Fight::ATTACKER_WON)
-    image->property_file() = File::getMiscFile("various/ruin_2.png");
+    image->property_file() = File::getVariousFile("ruin_2.png");
   else
-    image->property_file() = File::getMiscFile("various/ruin_1.png");
+    image->property_file() = File::getVariousFile("ruin_1.png");
   image->show();
 
   dialog.run_and_hide();
@@ -2033,7 +2032,7 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
   Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Image *image;
   xml->get_widget("city_image", image);
-  image->property_file() = File::getMiscFile("various/city_occupied.png");
+  image->property_file() = File::getVariousFile("city_occupied.png");
   image->show();
 
   Gtk::Label *label;
@@ -2383,7 +2382,7 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
       Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
       Gtk::Image *image;
       xml->get_widget("image", image);
-      image->property_file() = File::getMiscFile("various/ship.png");
+      image->property_file() = File::getVariousFile("ship.png");
 
       Gtk::Label *label;
       xml->get_widget("label", label);

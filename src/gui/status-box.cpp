@@ -92,17 +92,17 @@ StatusBox::StatusBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk::Builder
   xml->get_widget("progress_status_label", progress_status_label);
   xml->get_widget("cities_stats_image", cities_stats_image);
   cities_stats_image->property_pixbuf() = 
-    Gdk::Pixbuf::create_from_file(File::getMiscFile("various/smallcity.png"));
+    Gdk::Pixbuf::create_from_file(File::getVariousFile("smallcity.png"));
 
   xml->get_widget("gold_stats_image", gold_stats_image);
   gold_stats_image->property_pixbuf() = 
-    Gdk::Pixbuf::create_from_file(File::getMiscFile("various/smalltreasury.png"));
+    Gdk::Pixbuf::create_from_file(File::getVariousFile("smalltreasury.png"));
   xml->get_widget("income_stats_image", income_stats_image);
   income_stats_image->property_pixbuf() = 
-    Gdk::Pixbuf::create_from_file(File::getMiscFile("various/smallincome.png"));
+    Gdk::Pixbuf::create_from_file(File::getVariousFile("smallincome.png"));
   xml->get_widget("upkeep_stats_image", upkeep_stats_image);
   upkeep_stats_image->property_pixbuf() =
-    Gdk::Pixbuf::create_from_file(File::getMiscFile("various/smallupkeep.png"));
+    Gdk::Pixbuf::create_from_file(File::getVariousFile("smallupkeep.png"));
 
   xml->get_widget("cities_stats_label", cities_stats_label);
   xml->get_widget("gold_stats_label", gold_stats_label);

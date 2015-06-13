@@ -87,7 +87,7 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
 
   if (mode & std::ios::in)
     {
-      tmpoutdir = String::ucompose("%1/%2.%3/", Glib::get_tmp_dir(), File::get_basename(file,true), getpid());
+      tmpoutdir = File::getTarTempDir(File::get_basename(file,true));
       File::create_dir(tmpoutdir);
     }
   else
@@ -402,8 +402,6 @@ bool Tar_Helper::replaceFile(Glib::ustring filename, Glib::ustring newfilename)
 
 void Tar_Helper::clean_tmp_dir(Glib::ustring filename)
 {
-  Glib::ustring tmpoutdir = 
-    String::ucompose("%1/%2.%3/", Glib::get_tmp_dir(), 
-                     File::get_basename(filename, true), getpid());
+  Glib::ustring tmpoutdir = File::getTarTempDir (File::get_basename(filename, true));
   File::clean_dir(tmpoutdir);
 }

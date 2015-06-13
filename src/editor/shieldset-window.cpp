@@ -50,10 +50,10 @@ ShieldSetWindow::ShieldSetWindow(Glib::ustring load_filename)
   needs_saving = false;
   d_shieldset = NULL;
     Glib::RefPtr<Gtk::Builder> xml = 
-      BuilderCache::get("editor/shieldset-window.ui");
+      BuilderCache::editor_get("shieldset-window.ui");
 
     xml->get_widget("window", window);
-    window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+    window->set_icon_from_file(File::getVariousFile("castle_icon.png"));
     window->signal_delete_event().connect
       (sigc::mem_fun(*this, &ShieldSetWindow::on_window_closed));
 
@@ -345,14 +345,14 @@ void ShieldSetWindow::on_save_as_activated()
       File::create_dir(tmpdir);
       d_shieldset->setName(copy->getName());
       File::copy(d_shieldset->getConfigurationFile(), 
-                 tmpdir + "/" + copy->getBaseName() + Shieldset::file_extension);
+                 File::getTempFile (tmpdir, copy->getBaseName() + Shieldset::file_extension));
       d_shieldset->setBaseName(copy->getBaseName());
       d_shieldset->setDirectory(tmpdir);
       d_shieldset->setId(copy->getId());
           
       current_save_filename = copy->getConfigurationFile();
       bool ok = Shieldsetlist::getInstance()->addToPersonalCollection(d_shieldset, new_basename, new_id);
-      File::erase(tmpdir + "/" + copy->getBaseName() + Shieldset::file_extension);
+      File::erase(File::getTempFile (tmpdir, copy->getBaseName() + Shieldset::file_extension));
       File::erase_dir(tmpdir);
       if (ok)
         {
@@ -449,11 +449,11 @@ void ShieldSetWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(File::getMiscFile("glade/about-dialog.ui"));
+    = Gtk::Builder::create_from_file(File::getGladeFile("about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(*window);
-  dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+  dialog->set_icon_from_file(File::getVariousFile("castle_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
   dialog->set_logo(ImageCache::loadMiscImage("castle_icon.png")->to_pixbuf());

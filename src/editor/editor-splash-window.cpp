@@ -34,7 +34,7 @@
 EditorSplashWindow::EditorSplashWindow()
 {
     Glib::RefPtr<Gtk::Builder> xml = 
-      BuilderCache::get("editor/editor-splash-window.ui");
+      BuilderCache::editor_get("editor-splash-window.ui");
 
     xml->get_widget("window", window);
     xml->get_widget("progressbar", progressbar);

@@ -79,8 +79,8 @@ guint32 Configuration::s_ui_form_factor = Configuration::UI_FORM_FACTOR_DESKTOP;
 
 Configuration::Configuration()
 {
-  configuration_file_path = Glib::get_home_dir() + "/.lordsawarrc";
-  s_savePath = Glib::get_home_dir() + Glib::ustring("/.lordsawar/");
+  configuration_file_path = File::getHomeFile (".lordsawarrc");
+  s_savePath = File::add_slash_if_necessary (File::getHomeFile(".lordsawar"));
 
     char *s = setlocale(LC_ALL, "");
     if (s)

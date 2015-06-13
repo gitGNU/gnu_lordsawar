@@ -25,7 +25,7 @@
 
 LwEditorDialog::LwEditorDialog(Gtk::Window &parent, Glib::ustring file)
 {
-  xml = BuilderCache::get("editor/" + file);
+  xml = BuilderCache::editor_get(file);
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(parent);
   dialog->property_gravity() = Gdk::GRAVITY_STATIC;

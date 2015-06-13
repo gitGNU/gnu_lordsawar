@@ -65,9 +65,9 @@ CityInfoTip::CityInfoTip(Gtk::Widget *target, MapTipPosition mpos, const City *c
     right_shield_image->property_pixbuf() = 
       gc->getShieldPic(1, city->getOwner())->to_pixbuf();
     income_image->property_file() = 
-      File::getMiscFile("various/smallincome.png");
+      File::getVariousFile("smallincome.png");
     defense_image->property_file() = 
-      File::getMiscFile("various/smalldefense.png");
+      File::getVariousFile("smalldefense.png");
     income_label->set_markup(String::ucompose("<b>%1</b>",
 					      city->getGold()));
     defense_label->set_markup(String::ucompose("<b>%1</b>",

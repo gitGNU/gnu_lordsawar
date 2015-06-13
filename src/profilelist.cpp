@@ -48,7 +48,7 @@ Profilelist* Profilelist::getInstance()
 
 bool Profilelist::save() const
 {
-  return saveToFile(File::getSavePath() + "/" + PROFILE_LIST);
+  return saveToFile(File::getSaveFile(PROFILE_LIST));
 }
 
 bool Profilelist::saveToFile(Glib::ustring filename) const
@@ -62,7 +62,7 @@ bool Profilelist::saveToFile(Glib::ustring filename) const
 
 bool Profilelist::load()
 {
-  return loadFromFile(File::getSavePath() + "/" + PROFILE_LIST);
+  return loadFromFile(File::getSaveFile (PROFILE_LIST));
 }
 
 bool Profilelist::loadFromFile(Glib::ustring filename)

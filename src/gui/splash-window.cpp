@@ -46,7 +46,7 @@ SplashWindow::SplashWindow()
     Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("splash-window.ui");
 
     xml->get_widget("window", window);
-    window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+    window->set_icon_from_file(File::getVariousFile("castle_icon.png"));
     window->signal_draw().connect
       (sigc::mem_fun(*this, &SplashWindow::on_draw));
     window->signal_delete_event().connect
@@ -99,8 +99,7 @@ SplashWindow::SplashWindow()
 
     //set the window size.
     bool broken = false;
-    bg = PixMask::create
-      (File::getMiscFile("/various/splash_screen.jpg"), broken);
+    bg = PixMask::create (File::getVariousFile("splash_screen.jpg"), broken);
     if (broken == false)
       {
         int decorations = 24 * 3;

@@ -105,10 +105,10 @@ void HeroOfferDialog::on_toggled()
 {
   if (male_radiobutton->get_active())
     hero_image->property_pixbuf() = 
-      Gdk::Pixbuf::create_from_file(File::getMiscFile("various/recruit_male.png"));
+      Gdk::Pixbuf::create_from_file(File::getVariousFile("recruit_male.png"));
   else
     hero_image->property_pixbuf() =
-      Gdk::Pixbuf::create_from_file(File::getMiscFile("various/recruit_female.png"));
+      Gdk::Pixbuf::create_from_file(File::getVariousFile("recruit_female.png"));
 
 }
 

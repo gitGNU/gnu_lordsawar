@@ -85,15 +85,34 @@ Glib::ustring File::add_ext_if_necessary(Glib::ustring file, Glib::ustring ext)
 
 Glib::ustring File::add_slash_if_necessary(Glib::ustring dir)
 {
-  if (dir.c_str()[strlen(dir.c_str())-1] == '/')
+  if (dir.c_str()[strlen(dir.c_str())-1] == '/' ||
+      dir.c_str()[strlen(dir.c_str())-1] == '\\')
     return dir;
   else
-    return dir + "/";
+    {
+      Glib::ustring d = Glib::build_filename (dir, " ");
+      return String::utrim(d);
+    }
+}
+
+Glib::ustring File::getVariousFile(Glib::ustring filename)
+{
+  return Glib::build_filename (Configuration::s_dataPath, "various", filename);
+}
+
+Glib::ustring File::getGladeFile(Glib::ustring filename)
+{
+  return Glib::build_filename (Configuration::s_dataPath, "glade", filename);
+}
+
+Glib::ustring File::getEditorGladeFile(Glib::ustring filename)
+{
+  return Glib::build_filename (Configuration::s_dataPath, "glade", "editor", filename);
 }
 
 Glib::ustring File::getMiscFile(Glib::ustring filename)
 {
-  return Configuration::s_dataPath + "/" + filename;
+  return Glib::build_filename (Configuration::s_dataPath, filename);
 }
 
 Glib::ustring File::getXSLTFile(guint32 type, Glib::ustring old_version, Glib::ustring new_version)
@@ -102,7 +121,7 @@ Glib::ustring File::getXSLTFile(guint32 type, Glib::ustring old_version, Glib::u
   Glib::ustring filename = String::ucompose("%1-%2-%3",
                                             FileCompat::typeToCode(t), 
                                             old_version, new_version);
-  Glib::ustring file = getMiscFile("various/xslt/" + filename + ".xsl");
+  Glib::ustring file = getMiscFile(Glib::build_filename("various", "xslt") + filename + ".xsl");
   if (File::exists(file))
     return file;
   else
@@ -111,42 +130,42 @@ Glib::ustring File::getXSLTFile(guint32 type, Glib::ustring old_version, Glib::u
 
 Glib::ustring File::getUserProfilesDescription()
 {
-  return Configuration::s_savePath + "/" + PROFILE_LIST;
+  return Glib::build_filename (Configuration::s_savePath, PROFILE_LIST);
 }
 
 Glib::ustring File::getUserRecentlyPlayedGamesDescription()
 {
-  return Configuration::s_savePath + "/" + RECENTLY_PLAYED_LIST;
+  return Glib::build_filename (Configuration::s_savePath, RECENTLY_PLAYED_LIST);
 }
 
 Glib::ustring File::getUserRecentlyHostedGamesDescription()
 {
-  return Configuration::s_savePath + "/" + RECENTLY_HOSTED_LIST;
+  return Glib::build_filename (Configuration::s_savePath, RECENTLY_HOSTED_LIST);
 }
 
 Glib::ustring File::getUserRecentlyAdvertisedGamesDescription()
 {
-  return Configuration::s_savePath + "/" + RECENTLY_ADVERTISED_LIST;
+  return Glib::build_filename (Configuration::s_savePath, RECENTLY_ADVERTISED_LIST);
 }
 
 Glib::ustring File::getUserRecentlyEditedFilesDescription()
 {
-  return Configuration::s_savePath + "/" + RECENTLY_EDITED_LIST;
+  return Glib::build_filename (Configuration::s_savePath, RECENTLY_EDITED_LIST);
 }
 
 Glib::ustring File::getItemDescription()
 {
-  return Configuration::s_dataPath + "/various/items/items.xml";
+  return Glib::build_filename (Configuration::s_dataPath, "various", "items", "items.xml");
 }
 
 Glib::ustring File::getEditorFile(Glib::ustring filename)
 {
-  return Configuration::s_dataPath + "/various/editor/" + filename + ".png";
+  return Glib::build_filename (Configuration::s_dataPath,  "various", "editor", filename + ".png");
 }
 
 Glib::ustring File::getMusicFile(Glib::ustring filename)
 {
-  return Glib::ustring(Configuration::s_dataPath + "/music/" + filename.c_str());
+  return Glib::build_filename (Configuration::s_dataPath, "music", filename);
 }
 
 Glib::ustring File::getDataPath()
@@ -159,24 +178,44 @@ Glib::ustring File::getSavePath()
   return add_slash_if_necessary(Configuration::s_savePath);
 }
 
+Glib::ustring File::getSaveFile(Glib::ustring filename)
+{
+  return Glib::build_filename (getSavePath(), filename);
+}
+
+Glib::ustring File::getTempFile(Glib::ustring tmpdir, Glib::ustring filename)
+{
+  return Glib::build_filename (tmpdir, filename);
+}
+
+Glib::ustring File::getHomeFile(Glib::ustring filename)
+{
+  return Glib::build_filename (Glib::get_home_dir (), filename);
+}
+
+Glib::ustring File::getTarTempDir(Glib::ustring dir)
+{
+  return Glib::build_filename (Glib::get_tmp_dir (), dir, String::ucompose("%1", getpid()));
+}
+
 Glib::ustring File::getUserMapDir()
 {
-  return add_slash_if_necessary(Configuration::s_savePath) + MAPDIR + "/";
+  return add_slash_if_necessary(Glib::build_filename (add_slash_if_necessary(Configuration::s_savePath), MAPDIR));
 }
 
 Glib::ustring File::getMapDir()
 {
-  return add_slash_if_necessary(Configuration::s_dataPath) + MAPDIR + "/";
+  return add_slash_if_necessary (Glib::build_filename (add_slash_if_necessary(Configuration::s_dataPath), MAPDIR));
 }
 
 Glib::ustring File::getUserMapFile(Glib::ustring file)
 {
-  return getUserMapDir() + file;
+  return Glib::build_filename (getUserMapDir(), file);
 }
 
 Glib::ustring File::getMapFile(Glib::ustring file)
 {
-  return getMapDir() + file;
+  return Glib::build_filename (getMapDir(), file);
 }
 
 std::list<Glib::ustring> File::scanUserMaps()
@@ -327,13 +366,13 @@ Glib::ustring File::getSetDir(Glib::ustring ext, bool system)
   if (system == false)
     dir = getSavePath();
   if (ext == ARMYSET_EXT)
-    return dir + ARMYSETDIR + "/";
+    return add_slash_if_necessary (Glib::build_filename (dir, ARMYSETDIR));
   else if (ext == CITYSET_EXT)
-    return dir + CITYSETDIR + "/";
+    return add_slash_if_necessary (Glib::build_filename (dir, CITYSETDIR));
   else if (ext == TILESET_EXT)
-    return dir + TILESETDIR + "/";
+    return add_slash_if_necessary (Glib::build_filename (dir, TILESETDIR));
   else if (ext == SHIELDSET_EXT)
-    return dir + SHIELDSETDIR + "/";
+    return add_slash_if_necessary (Glib::build_filename (dir, SHIELDSETDIR));
   return "";
 }
 
@@ -372,8 +411,10 @@ void File::clean_dir(Glib::ustring dirname)
 
 Glib::ustring File::getSetConfigurationFilename(Glib::ustring dir, Glib::ustring subdir, Glib::ustring ext)
 {
-  return add_slash_if_necessary(dir) + subdir + "/" + subdir + ext;
+  return Glib::build_filename (add_slash_if_necessary(dir), 
+                               subdir, subdir + ext);
 }
+
 char *File::sanify(const char *string)
 {
   char *result = NULL;

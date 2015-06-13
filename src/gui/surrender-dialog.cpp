@@ -36,6 +36,5 @@ SurrenderDialog::SurrenderDialog(Gtk::Window &parent, int numEnemies)
                                numEnemies);
     s += _("Do you accept?");
     label->set_text(s);
-    image->property_file()
-      = File::getMiscFile("various/parley_offered.png");
+    image->property_file() = File::getVariousFile("parley_offered.png");
 }

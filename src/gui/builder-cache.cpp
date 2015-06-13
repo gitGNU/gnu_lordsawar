@@ -41,7 +41,7 @@ void BuilderCache::deleteInstance()
 void BuilderCache::preloadAllBuilders()
 {
   std::list<Glib::ustring> f = 
-    File::scanForFiles(File::getMiscFile("glade/"), ".ui");
+    File::scanForFiles(File::add_slash_if_necessary(File::getMiscFile("glade")), ".ui");
   for (std::list<Glib::ustring>::iterator i = f.begin(); i != f.end(); i++)
     {
       //for some reason when we load about-dialog.ui, it gets shown.
@@ -61,16 +61,21 @@ BuilderCache::~BuilderCache()
 {
 }
 
+Glib::RefPtr<Gtk::Builder> BuilderCache::editor_get(Glib::ustring f)
+{
+  return Gtk::Builder::create_from_file(File::getEditorGladeFile(f));
+}
+
 Glib::RefPtr<Gtk::Builder> BuilderCache::get(Glib::ustring f)
 {
   //Crapola.  the builder files are being destroyed somehow.
-  return Gtk::Builder::create_from_file(File::getMiscFile("glade/" + f));
+  return Gtk::Builder::create_from_file(File::getGladeFile(f));
   BuilderCache *b = getInstance();
   Glib::ustring k = File::get_basename(f, true);
   std::map<Glib::ustring,Glib::RefPtr<Gtk::Builder> >::iterator i = b->find(k);
   if (i == b->end())
     {
-      Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(File::getMiscFile("glade/" + f));
+      Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(File::getGladeFile(f));
       if (xml)
         {
           (*getInstance())[k] = Glib::RefPtr<Gtk::Builder>(xml);

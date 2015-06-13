@@ -107,7 +107,7 @@ bool ImageCache::loadDiplomacyImages()
   bool broken = false;
   int ts = 30;
   std::vector<PixMask*> diplomacy;
-  diplomacy = disassemble_row(File::getMiscFile("various/diplomacy-small.png"), 
+  diplomacy = disassemble_row(File::getVariousFile("diplomacy-small.png"), 
                               DIPLOMACY_TYPES, broken);
   if (broken)
     return false;
@@ -119,7 +119,7 @@ bool ImageCache::loadDiplomacyImages()
     }
 
   ts = 50;
-  diplomacy = disassemble_row(File::getMiscFile("various/diplomacy-large.png"), 
+  diplomacy = disassemble_row(File::getVariousFile("diplomacy-large.png"), 
                               DIPLOMACY_TYPES, broken);
   if (broken)
     return false;
@@ -139,7 +139,7 @@ bool ImageCache::loadCursorImages()
 
   // load the cursor pictures
   std::vector<PixMask*> cursor;
-  cursor = disassemble_row(File::getMiscFile("various/cursors.png"),
+  cursor = disassemble_row(File::getVariousFile("cursors.png"),
                            CURSOR_TYPES, broken);
   if (broken)
     return false;
@@ -162,7 +162,7 @@ bool ImageCache::loadProdShieldImages()
   int mediumysize = MEDIUM_PRODUCTION_SHIELD_HEIGHT;
   std::vector<PixMask*> prodshield;
   prodshield = disassemble_row
-    (File::getMiscFile("various/prodshieldset.png"), PRODUCTION_SHIELD_TYPES,
+    (File::getVariousFile("prodshieldset.png"), PRODUCTION_SHIELD_TYPES,
      broken);
   if (broken)
     return false;
@@ -174,7 +174,7 @@ bool ImageCache::loadProdShieldImages()
     }
   prodshield.clear();
   prodshield = disassemble_row 
-    (File::getMiscFile("various/prodshieldset-medium.png"), 
+    (File::getVariousFile("prodshieldset-medium.png"), 
      PRODUCTION_SHIELD_TYPES, broken);
   if (broken)
     return false;
@@ -194,7 +194,7 @@ bool ImageCache::loadMoveBonusImages()
   int xsize = MOVE_BONUS_WIDTH;
   int ysize = MOVE_BONUS_HEIGHT;
   std::vector<PixMask*> movebonus;
-  movebonus = disassemble_row(File::getMiscFile("various/movebonus.png"),
+  movebonus = disassemble_row(File::getVariousFile("movebonus.png"),
                               MOVE_BONUS_TYPES, broken);
   if (broken)
     return false;
@@ -211,13 +211,13 @@ bool ImageCache::loadNewLevelImages()
 {
   bool broken = false;
   std::vector<PixMask*> half;
-  half = disassemble_row(File::getMiscFile("various/hero-newlevel-male.png"), 
+  half = disassemble_row(File::getVariousFile("hero-newlevel-male.png"), 
 			 2, broken);
   if (broken)
     return false;
   d_newlevel_male = half[0];
   d_newlevelmask_male = half[1];
-  half = disassemble_row(File::getMiscFile("various/hero-newlevel-female.png"), 
+  half = disassemble_row(File::getVariousFile("hero-newlevel-female.png"), 
 			 2, broken);
   if (broken)
     return false;
@@ -230,7 +230,7 @@ bool ImageCache::loadDefaultTileStyleImages()
 {
   bool broken = false;
   std::vector<PixMask*> images = 
-    disassemble_row(File::getMiscFile("various/tilestyles.png"), 
+    disassemble_row(File::getVariousFile("tilestyles.png"), 
                     DEFAULT_TILESTYLE_TYPES, broken);
   if (broken)
     return false;
@@ -245,7 +245,7 @@ bool ImageCache::loadMedalImages()
   //load the medal icons
   int ts = 40;
   std::vector<PixMask*> medal;
-  medal = disassemble_row(File::getMiscFile("various/medals_mask.png"),
+  medal = disassemble_row(File::getVariousFile("medals_mask.png"),
                           MEDAL_TYPES, broken);
   if (broken)
     return false;
@@ -255,7 +255,7 @@ bool ImageCache::loadMedalImages()
 	PixMask::scale(medal[i], ts, ts);
       d_medal[0][i] = medal[i];
     }
-  medal = disassemble_row(File::getMiscFile("various/bigmedals.png"),
+  medal = disassemble_row(File::getVariousFile("bigmedals.png"),
 			      MEDAL_TYPES, broken);
   if (broken)
     return false;
@@ -268,7 +268,7 @@ bool ImageCache::loadWaypointImages()
 {
   bool broken = false;
   std::vector<PixMask*> images = disassemble_row
-    (File::getMiscFile("various/waypoints.png"), NUM_WAYPOINTS, broken);
+    (File::getVariousFile("waypoints.png"), NUM_WAYPOINTS, broken);
   if (broken)
     return false;
   for (unsigned int i = 0; i < NUM_WAYPOINTS; i++)
@@ -280,7 +280,7 @@ bool ImageCache::loadGameButtonImages()
 {
   bool broken = false;
   std::vector<PixMask*> images = disassemble_row
-    (File::getMiscFile("various/buttons.png"), NUM_GAME_BUTTON_IMAGES, broken);
+    (File::getVariousFile("buttons.png"), NUM_GAME_BUTTON_IMAGES, broken);
   if (broken)
     return false;
   int w = 0, h = 0;
@@ -291,7 +291,7 @@ bool ImageCache::loadGameButtonImages()
     d_gamebuttons[0][i] = images[i]; 
 
   images.clear();
-  images = disassemble_row(File::getMiscFile("various/buttons-medium.png"), 
+  images = disassemble_row(File::getVariousFile("buttons-medium.png"), 
                            NUM_GAME_BUTTON_IMAGES, broken);
   if (broken)
     return false;
@@ -307,7 +307,7 @@ bool ImageCache::loadArrowImages()
 {
   bool broken = false;
   std::vector<PixMask*> images = 
-    disassemble_row(File::getMiscFile("various/arrows.png"), 
+    disassemble_row(File::getVariousFile("arrows.png"), 
                     NUM_ARROW_IMAGES, broken);
   if (broken)
     return false;
@@ -320,7 +320,7 @@ bool ImageCache::loadArrowImages()
   for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
     d_arrow[0][i] = images[i];
   images.clear();
-  images = disassemble_row(File::getMiscFile("various/arrows-medium.png"), 
+  images = disassemble_row(File::getVariousFile("arrows-medium.png"), 
                            NUM_ARROW_IMAGES, broken);
   if (broken)
     return false;
@@ -338,7 +338,7 @@ bool ImageCache::loadArrowImages()
 PixMask* ImageCache::loadMiscImage(Glib::ustring pngfile)
 {
   bool broken = false;
-  return PixMask::create(File::getMiscFile("/various/" + pngfile), broken);
+  return PixMask::create(File::getVariousFile(pngfile), broken);
 }
 
 ImageCache::~ImageCache()

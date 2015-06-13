@@ -40,8 +40,18 @@ class File
 
         static Glib::ustring getSetDir(Glib::ustring ext, bool system = true);
 
-        //! load misc file, e.g. hero names 
+        //! load misc file
         static Glib::ustring getMiscFile(Glib::ustring filename);
+
+        //! load a file from the various dir
+        static Glib::ustring getVariousFile(Glib::ustring filename);
+
+        static Glib::ustring getGladeFile(Glib::ustring filename);
+        static Glib::ustring getEditorGladeFile(Glib::ustring filename);
+        static Glib::ustring getSaveFile(Glib::ustring filename);
+        static Glib::ustring getTempFile(Glib::ustring tmpdir, Glib::ustring filename);
+        static Glib::ustring getTarTempDir(Glib::ustring dir);
+        static Glib::ustring getHomeFile(Glib::ustring filename);
 
         //! load an xslt file.
         static Glib::ustring getXSLTFile(guint32 type, Glib::ustring old_version, Glib::ustring new_version);

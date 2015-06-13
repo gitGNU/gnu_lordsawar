@@ -101,10 +101,10 @@ MainWindow::MainWindow(Glib::ustring load_filename)
   needs_saving = false;
   road_editor_tip = NULL;
   Glib::RefPtr<Gtk::Builder> xml = 
-    BuilderCache::get("editor/main-window.ui");
+    BuilderCache::editor_get("main-window.ui");
 
     xml->get_widget("window", window);
-    window->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+    window->set_icon_from_file(File::getVariousFile("tileset_icon.png"));
 
     window->signal_delete_event().connect(
 	sigc::hide(sigc::mem_fun(*this, &MainWindow::on_delete_event)));
@@ -1730,11 +1730,11 @@ void MainWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(File::getMiscFile("glade/about-dialog.ui"));
+    = Gtk::Builder::create_from_file(File::getGladeFile("about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(*window);
-  dialog->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+  dialog->set_icon_from_file(File::getVariousFile("tileset_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
   dialog->set_logo(ImageCache::loadMiscImage("castle_icon.png")->to_pixbuf());

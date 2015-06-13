@@ -70,8 +70,7 @@ void GameLobbyDialog::update_city_map()
     }
   else
     {
-      map_image->property_file() = 
-	File::getMiscFile("various/city_occupied.png");
+      map_image->property_file() = File::getVariousFile("city_occupied.png");
     }
 }
 

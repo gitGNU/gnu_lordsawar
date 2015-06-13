@@ -214,12 +214,12 @@ void Gamelist::updateEntry(Glib::ustring scenario_id, guint32 round)
 	
 bool Gamelist::load()
 {
-  return loadFromFile(File::getSavePath() + "/" + RECENTLY_HOSTED_LIST);
+  return loadFromFile(File::getSaveFile(RECENTLY_HOSTED_LIST));
 }
 
 bool Gamelist::save() const
 {
-  return saveToFile(File::getSavePath() + "/" + RECENTLY_HOSTED_LIST);
+  return saveToFile(File::getSaveFile(RECENTLY_HOSTED_LIST));
 }
 
 RecentlyPlayedGameList* Gamelist::getList(bool scrub_profile_id) const

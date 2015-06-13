@@ -41,6 +41,9 @@ class BuilderCache: public std::map<Glib::ustring, Glib::RefPtr<Gtk::Builder> >
 
         //! Go get a builder object by name.
         static Glib::RefPtr<Gtk::Builder> get(Glib::ustring f);
+
+        //! Go get a builder object by name.
+        static Glib::RefPtr<Gtk::Builder> editor_get(Glib::ustring f);
     protected:    
 
 	// Constructor.
