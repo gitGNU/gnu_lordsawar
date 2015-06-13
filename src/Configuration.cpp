@@ -104,14 +104,9 @@ bool Configuration::loadConfigurationFile(Glib::ustring fileName)
         helper.registerTag(d_tag,
 	    sigc::hide<0>(sigc::mem_fun(*this, &Configuration::parseConfiguration)));
     
-        bool ret = false;
-        try {
-          ret = helper.parseXML();
-        } catch (xmlpp::parse_error e)
-          {
-            std::cerr << _("Okay, we're throwing your .lordsawarrc away.") <<
-              "  " << e.what() << std::endl;
-          }
+        bool ret = helper.parseXML();
+        if (ret == false)
+          std::cerr << _("Okay, we're throwing your .lordsawarrc away.");
         return ret;
     }
     else return false;

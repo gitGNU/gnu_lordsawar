@@ -537,6 +537,7 @@ bool XML_Helper::getData(double& data, Glib::ustring name)
 
 bool XML_Helper::parseXML()
 {
+  bool newline_at_end_of_document = false;
   if (!d_in || d_failed)
     return false;
 
@@ -546,12 +547,27 @@ bool XML_Helper::parseXML()
         memset (buffer, 0, sizeof (buffer));
         d_in->read(buffer, sizeof (buffer) - 1);
         Glib::ustring input(buffer);
-        parse_chunk(input);
+        try
+          {
+            parse_chunk(input);
+          }
+        catch (xmlpp::parse_error &e)
+          {
+            Glib::ustring msg = e.what();
+            if (msg.find("Extra content at the end of the document") != 
+                Glib::ustring::npos)
+              {
+                d_failed = false;
+                newline_at_end_of_document = true;
+              }
+            else
+              std::cerr << msg << std::endl;
+          }
         if (d_failed)
           break;
       } while (*d_in);
   
-  if (!d_failed)
+  if (!d_failed && !newline_at_end_of_document)
     finish_chunk_parsing();
 
   return (!d_failed);
