@@ -151,7 +151,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkAlignment" id="alignment1">
+          <object class="GtkAlignment" id="cityset_alignment">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="left_padding">12</property>
