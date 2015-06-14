@@ -19,6 +19,7 @@
 #include <glibmm.h>
 #include <iosfwd>
 #include <list>
+#include <cstdio>
 
 #ifndef TARHELPER_H
 #define TARHELPER_H
@@ -73,6 +74,7 @@ private:
 
     // DATA
     struct archive *t;
+    FILE *of;
     std::ios::openmode openmode;
     Glib::ustring tmpoutdir;
     Glib::ustring pathname;

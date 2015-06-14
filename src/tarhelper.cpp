@@ -42,6 +42,7 @@
 Tar_Helper::Tar_Helper(Glib::ustring file, std::ios::openmode mode, bool &broken)
 {
   t = NULL;
+  of = NULL;
   broken = Open(file, mode);
 }
 
@@ -62,7 +63,7 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
   openmode = mode;
   if (mode & std::ios::in) 
     {
-      FILE *of = fopen (file.c_str(), "rb");
+      of = fopen (file.c_str(), "rb");
       if (!of)
         return false;
       t = archive_read_new ();
@@ -76,7 +77,7 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
     }
   else if (mode & std::ios::out)
     {
-      FILE *of = fopen (file.c_str(), "wb");
+      of = fopen (file.c_str(), "wb");
       if (!of)
         return false;
       // libarchive will fclose the stream upon close.
@@ -176,6 +177,9 @@ void Tar_Helper::Close(bool clean)
           archive_read_close (t);
           archive_read_free (t);
         }
+      if (of)
+        fclose (of);
+      of = NULL;
       t = NULL;
       if (tmpoutdir != "" && clean)
         File::clean_dir(tmpoutdir);
