@@ -82,7 +82,7 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
       // libarchive will fclose the stream upon close.
       t = archive_write_new();
       archive_write_add_filter_none(t);
-      archive_write_set_format_pax_restricted(t);
+      archive_write_set_format_gnutar(t);
       if (archive_write_open_FILE(t, of))
         {
           archive_write_free (t);
