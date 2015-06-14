@@ -62,9 +62,12 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
   openmode = mode;
   if (mode & std::ios::in) 
     {
+      FILE *of = fopen (file.c_str(), "rb");
+      if (!of)
+        return false;
       t = archive_read_new ();
       archive_read_support_format_tar(t);
-      int r = archive_read_open_filename(t, file.c_str(), 8192);
+      int r = archive_read_open_FILE(t, of);
       if (r != ARCHIVE_OK)
         {
           archive_read_free (t);
@@ -73,10 +76,14 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
     }
   else if (mode & std::ios::out)
     {
+      FILE *of = fopen (file.c_str(), "wb");
+      if (!of)
+        return false;
+      // libarchive will fclose the stream upon close.
       t = archive_write_new();
       archive_write_add_filter_none(t);
       archive_write_set_format_pax_restricted(t);
-      if (archive_write_open_filename(t, file.c_str()))
+      if (archive_write_open_FILE(t, of))
         {
           archive_write_free (t);
           return true;
