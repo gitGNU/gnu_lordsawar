@@ -55,7 +55,6 @@ void Tar_Helper::reopen(Tar_Helper *t)
 bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
 {
   t = NULL;
-  bool broken = false;
   if (mode == std::ios::in && is_tarfile (file) == false)
     return true;
   //int m;
@@ -65,7 +64,7 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
     {
       of = fopen (file.c_str(), "rb");
       if (!of)
-        return false;
+        return true;
       t = archive_read_new ();
       archive_read_support_format_tar(t);
       int r = archive_read_open_FILE(t, of);
@@ -79,7 +78,7 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
     {
       of = fopen (file.c_str(), "wb");
       if (!of)
-        return false;
+        return true;
       // libarchive will fclose the stream upon close.
       t = archive_write_new();
       archive_write_add_filter_none(t);
@@ -91,7 +90,7 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
         }
     }
   else
-    return broken;
+    return true;
 
   if (mode & std::ios::in)
     {
@@ -101,7 +100,7 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
   else
     tmpoutdir = "";
   pathname = file;
-  return broken;
+  return false;
 }
 
 int Tar_Helper::dump_entry(struct archive *in, struct archive_entry *entry, struct archive *out)
