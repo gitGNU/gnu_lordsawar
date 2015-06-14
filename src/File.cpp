@@ -316,7 +316,7 @@ bool File::create_dir(Glib::ustring dir)
   try
     {
       Glib::RefPtr<Gio::File> directory = Gio::File::create_for_path(dir);
-      retval = directory->make_directory();
+      retval = directory->make_directory_with_parents();
     }
   catch (Gio::Error::Exception &ex)
     {
