@@ -82,6 +82,7 @@ void GameClientDecoder::gotActions(const Glib::ustring &payload)
   helper.registerTag(Action::d_tag, sigc::mem_fun(loader, &ActionLoader::loadAction));
   helper.registerTag(NetworkAction::d_tag, sigc::mem_fun(loader, &ActionLoader::loadAction));
   helper.parseXML();
+  helper.close();
 
   decodeActions(loader.actions);
 }
@@ -120,6 +121,7 @@ void GameClientDecoder::gotHistories(const Glib::ustring &payload)
   helper.registerTag(History::d_tag, sigc::mem_fun(loader, &HistoryLoader::loadHistory));
   helper.registerTag(NetworkHistory::d_tag, sigc::mem_fun(loader, &HistoryLoader::loadHistory));
   helper.parseXML();
+  helper.close();
 
   decodeHistories(loader.histories);
 }

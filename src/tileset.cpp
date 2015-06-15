@@ -441,8 +441,8 @@ public:
 	      delete tileset;
 	    tileset = NULL;
 	  }
-        File::erase(lwtfilename);
         helper.close();
+        File::erase(lwtfilename);
         t.Close();
       };
     bool load(Glib::ustring tag, XML_Helper* helper)

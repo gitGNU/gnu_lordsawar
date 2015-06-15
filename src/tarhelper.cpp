@@ -195,8 +195,9 @@ Glib::ustring Tar_Helper::getFirstFile(Glib::ustring extension, bool &broken)
 
 Glib::ustring Tar_Helper::getFile(Tar_Helper *t, Glib::ustring filename, bool &broken, Glib::ustring tmpoutdir)
 {
-  if (File::exists(tmpoutdir + filename) == true)
-    return tmpoutdir + filename;
+  Glib::ustring f = File::getTempFile(tmpoutdir, filename);
+  if (File::exists(f) == true)
+    return f;
   struct archive_entry *entry = NULL;
   bool found = false;
 
@@ -225,7 +226,7 @@ Glib::ustring Tar_Helper::getFile(Tar_Helper *t, Glib::ustring filename, bool &b
       archive_write_disk_set_options(ext, 
                                      ARCHIVE_EXTRACT_OWNER |
                                      ARCHIVE_EXTRACT_PERM);
-      Glib::ustring outfile = tmpoutdir + filename;
+      Glib::ustring outfile = File::getTempFile(tmpoutdir, filename);
       archive_entry_copy_pathname(entry, outfile.c_str());
 
       archive_write_header(ext, entry);

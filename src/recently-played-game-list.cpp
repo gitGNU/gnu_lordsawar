@@ -63,8 +63,9 @@ bool RecentlyPlayedGameList::loadFromFile(Glib::ustring filename)
       XML_Helper helper(filename.c_str(), std::ios::in);
       helper.registerTag(RecentlyPlayedGame::d_tag, sigc::mem_fun(this, &RecentlyPlayedGameList::load_tag));
       bool retval = helper.parseXML();
+      helper.close();
       if (retval == false)
-	unlink(filename.c_str());
+	File::erase(filename);
       return retval;
     }
   return true;

@@ -79,6 +79,7 @@ Snd::Snd()
         d_broken = true;
 	return;
     }
+    helper.close();
 
 #ifdef LW_SOUND
     impl->back = Gst::PlayBin2::create();

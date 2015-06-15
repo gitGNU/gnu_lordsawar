@@ -444,8 +444,8 @@ public:
 	      delete armyset;
 	    armyset = NULL;
 	  }
-        File::erase(lwafilename);
         helper.close();
+        File::erase(lwafilename);
         t.Close();
       };
     bool load(Glib::ustring tag, XML_Helper* helper)

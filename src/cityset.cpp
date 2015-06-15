@@ -190,8 +190,8 @@ public:
 	      delete cityset;
 	    cityset = NULL;
 	  }
-        File::erase(lwcfilename);
         helper.close();
+        File::erase(lwcfilename);
         t.Close();
       };
     bool load(Glib::ustring tag, XML_Helper* helper)

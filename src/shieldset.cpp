@@ -146,8 +146,8 @@ public:
 	      delete shieldset;
 	    shieldset = NULL;
 	  }
-        File::erase(lwsfilename);
         helper.close();
+        File::erase(lwsfilename);
         t.Close();
       };
     bool load(Glib::ustring tag, XML_Helper* helper)

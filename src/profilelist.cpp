@@ -74,8 +74,9 @@ bool Profilelist::loadFromFile(Glib::ustring filename)
       helper.registerTag(Profile::d_tag, 
                          sigc::mem_fun(this, &Profilelist::load_tag));
       bool retval = helper.parseXML();
+      helper.close();
       if (retval == false)
-	unlink(filename.c_str());
+	File::erase(filename);
       return retval;
     }
   return true;

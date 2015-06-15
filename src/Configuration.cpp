@@ -105,6 +105,7 @@ bool Configuration::loadConfigurationFile(Glib::ustring fileName)
 	    sigc::hide<0>(sigc::mem_fun(*this, &Configuration::parseConfiguration)));
     
         bool ret = helper.parseXML();
+        helper.close();
         if (ret == false)
           std::cerr << _("Okay, we're throwing your .lordsawarrc away.");
         return ret;

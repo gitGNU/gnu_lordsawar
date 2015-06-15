@@ -116,6 +116,7 @@ bool GamelistClient::onGotMessage(int type, Glib::ustring payload)
             (RecentlyPlayedGameList::d_tag, 
              sigc::mem_fun(*this, &GamelistClient::loadRecentlyPlayedGameList));
           helper.parseXML();
+          helper.close();
           received_game_list.emit(d_recently_played_game_list, "");
         }
       break;

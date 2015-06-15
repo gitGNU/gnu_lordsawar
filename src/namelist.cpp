@@ -40,7 +40,7 @@ NameList::NameList(Glib::ustring filename, Glib::ustring item_tag)
       std::cerr << String::ucompose(_("Error can't load namelist `%1'"), filename) << std::endl;
       exit(-1);
     }
-
+  helper.close();
   return;
 }
 

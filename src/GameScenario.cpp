@@ -111,8 +111,8 @@ GameScenario::GameScenario(Glib::ustring savegame, bool& broken)
       Glib::ustring filename = t.getFirstFile(ext, broken);
       XML_Helper helper(filename, std::ios::in);
       broken = loadWithHelper(helper);
-      File::erase(filename);
       helper.close();
+      File::erase(filename);
       t.Close();
       if (broken)
         cleanup();
@@ -1052,10 +1052,10 @@ public:
       helper.registerTag(Player::d_tag, 
 			 sigc::mem_fun(this, &ParamLoader::loadParam));
       bool retval = helper.parseXML();
+      helper.close();
       File::erase(tmpfile);
       if (broken == false)
 	broken = !retval;
-      helper.close();
     }
     bool loadParam(Glib::ustring tag, XML_Helper* helper)
       {
@@ -1146,6 +1146,7 @@ public:
     GameParameters game_params;
     guint32 d_neutral;
 };
+
 GameParameters GameScenario::loadGameParameters(Glib::ustring filename, bool &broken)
 {
   ParamLoader loader(filename, broken);
@@ -1176,10 +1177,10 @@ public:
       helper.registerTag(GameScenario::d_tag, 
 			 sigc::mem_fun(this, &PlayModeLoader::loadParam));
       bool retval = helper.parseXML();
+      helper.close();
       File::erase(tmpfile);
       if (broken == false)
 	broken = !retval;
-      helper.close();
     }
     bool loadParam(Glib::ustring tag, XML_Helper* helper)
       {
@@ -1224,9 +1225,10 @@ public:
       helper.registerTag(City::d_tag, 
                          sigc::mem_fun(this, &DetailsLoader::loadDetails));
       bool retval = helper.parseXML();
+      helper.close();
+      File::erase(tmpfile);
       if (!broken)
 	broken = !retval;
-      File::erase(tmpfile);
     }
 
     bool loadDetails(Glib::ustring tag, XML_Helper* helper)
