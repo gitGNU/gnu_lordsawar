@@ -1,6 +1,6 @@
 Cross-compiling LordsAWar! for Windows on Fedora 22
 
-$ sudo yum install intltool automake autoconf m4 git libtool glib2-devel mingw-w64-tools mingw64-gcc-c++ mingw64-libarchive mingw64-cairomm mingw64-libsigc++20 mingw64-gettext mingw64-libxslt mingw64-libxml++ mingw64-gtkmm30
+$ sudo yum install intltool automake autoconf m4 git libtool glib2-devel mingw32-filesystem mingw32-gcc-c++ mingw32-libarchive mingw32-cairomm mingw32-libsigc++20 mingw32-gettext mingw32-libxslt mingw32-libxml++ mingw32-gtkmm30
 
 $ git clone git://git.savannah.nongnu.org/lordsawar.git
 
