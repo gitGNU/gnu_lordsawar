@@ -290,8 +290,10 @@ Glib::ustring File::get_basename(Glib::ustring path, bool keep_ext)
 //copy_file taken from ardour-2.0rc2, gplv2+.
 bool File::copy (Glib::ustring from, Glib::ustring to)
 {
-  std::ifstream in (from.c_str());
-  std::ofstream out (to.c_str());
+  std::ifstream in;
+  std::ofstream out;
+  in.open(from.c_str(), std::ios::in | std::ios::binary);
+  out.open(to.c_str(), std::ios::out | std::ios::binary);
 
   if (!in)
     return false;
@@ -303,7 +305,7 @@ bool File::copy (Glib::ustring from, Glib::ustring to)
 
   if (!in || !out) 
     {
-      unlink (to.c_str());
+      File::erase(to);
       return false;
     }
 
