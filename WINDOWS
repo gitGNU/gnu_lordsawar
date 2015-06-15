@@ -17,3 +17,19 @@ $ sudo make install
 The approach here is to set the datadir to ".", so that we can put all of the data files in the same directory as the exe.  Compiling "." as the datadir into the program means that the default configuration file will be written with this path -- and the data files will be found on the first run without the user having to manually munge the .lordsawarrc file.
 
 Sound is disabled because Fedora lacks a mingw-compiled gstreamermm package.
+
+
+mingw-bundledlls is used to collect up the required DLLs for the lordsawar.exe executable.  It can be downloaded here: https://github.com/mpreisler/mingw-bundledlls 
+
+The DLL blacklist for the program is:
+    "advapi32.dll", "kernel32.dll", "msvcrt.dll", "ole32.dll", "user32.dll",
+    "ws2_32.dll", "comdlg32.dll", "gdi32.dll", "imm32.dll", "oleaut32.dll",
+    "shell32.dll", "winmm.dll", "winspool.drv", "wldap32.dll",
+    "ntdll.dll", "dnsapi.dll", "iphlpapi.dll", "shlwapi.dll", "msimg32.dll",
+    "gdiplus.dll", "usp10.dll", "comctl32.dll"
+
+$ mingw-bundledlls src/.libs/lordsawar.exe --copy
+
+The important thing here is to run the script on the executable in .libs/, and not the one in src/, because the one in source is just a libtool wrapper program.
+
+If it complains about a missing libgcc DLL, add -static-libgcc to AM_LDFLAGS in src/Makefile.am and src/editor/Makefile.am.
