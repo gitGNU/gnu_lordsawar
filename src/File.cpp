@@ -195,7 +195,8 @@ Glib::ustring File::getHomeFile(Glib::ustring filename)
 
 Glib::ustring File::getTarTempDir(Glib::ustring dir)
 {
-  return Glib::build_filename (Glib::get_tmp_dir (), dir, String::ucompose("%1", getpid()));
+  return Glib::build_filename (Glib::get_tmp_dir (), 
+                               String::ucompose("%1.%2", dir, getpid()));
 }
 
 Glib::ustring File::getUserMapDir()
