@@ -74,7 +74,6 @@ private:
 
     // DATA
     struct archive *t;
-    FILE *of;
     std::ios::openmode openmode;
     Glib::ustring tmpoutdir;
     Glib::ustring pathname;
