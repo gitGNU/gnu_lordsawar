@@ -8,7 +8,7 @@ $ cd lordsawar
 
 $ ./autogen.sh
 
-$ mingw64-configure --disable-gls --disable-ghs --enable-sound=no --program-prefix=""
+$ mingw64-configure --disable-gls --disable-ghs --disable-sound --program-prefix=""
 
 $ LORDSAWAR_DATADIR="." make -e -j4
 
