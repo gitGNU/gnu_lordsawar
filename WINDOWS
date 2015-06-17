@@ -21,6 +21,8 @@ Sound is disabled because Fedora lacks a mingw-compiled gstreamermm package.
 
 mingw-bundledlls is used to collect up the required DLLs for the lordsawar.exe executable.  It can be downloaded here: https://github.com/mpreisler/mingw-bundledlls 
 
+Put it in your path, and make it executable.
+
 The DLL blacklist for the program is:
     "advapi32.dll", "kernel32.dll", "msvcrt.dll", "ole32.dll", "user32.dll",
     "ws2_32.dll", "comdlg32.dll", "gdi32.dll", "imm32.dll", "oleaut32.dll",
@@ -28,6 +30,9 @@ The DLL blacklist for the program is:
     "ntdll.dll", "dnsapi.dll", "iphlpapi.dll", "shlwapi.dll", "msimg32.dll",
     "gdiplus.dll", "usp10.dll", "comctl32.dll"
 
+To make mingw-bundledlls use this blacklist you have to modify the program.  Open the file and change the blacklist array at line 37.
+
+Finally, run the program and collect up the DLLs.
 $ mingw-bundledlls src/.libs/lordsawar.exe --copy
 
 The important thing here is to run the script on the executable in .libs/, and not the one in src/, because the one in source is just a libtool wrapper program.
