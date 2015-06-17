@@ -8,7 +8,7 @@ $ cd lordsawar
 
 $ ./autogen.sh
 
-$ mingw64-configure --disable-gls --disable-ghs --disable-sound --program-prefix=""
+$ mingw32-configure --disable-gls --disable-ghs --disable-sound --program-prefix=""
 
 $ LORDSAWAR_DATADIR="." make -e -j4
 
@@ -33,3 +33,12 @@ $ mingw-bundledlls src/.libs/lordsawar.exe --copy
 The important thing here is to run the script on the executable in .libs/, and not the one in src/, because the one in source is just a libtool wrapper program.
 
 If it complains about a missing libgcc DLL, add -static-libgcc to AM_LDFLAGS in src/Makefile.am and src/editor/Makefile.am.
+
+
+Put the binary and all the data files in a zip file and you're good to go.
+
+
+Creating a windows installer
+
+$ sudo yum install mingw32-nsis
+
