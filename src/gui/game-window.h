@@ -192,6 +192,7 @@ class GameWindow: public sigc::trackable
 
     bool on_smallmap_mouse_button_event(GdkEventButton *e);
     bool on_smallmap_mouse_motion_event(GdkEventMotion *e);
+    bool on_mouse_entered_smallmap();
     
     void on_load_game_activated();
     void on_save_game_activated();

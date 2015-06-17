@@ -178,6 +178,8 @@ GameWindow::GameWindow()
        (sigc::mem_fun(*this, &GameWindow::on_smallmap_mouse_button_event));
       map_eventbox->signal_motion_notify_event().connect
        (sigc::mem_fun(*this, &GameWindow::on_smallmap_mouse_motion_event));
+      map_eventbox->signal_enter_notify_event().connect
+       (sigc::hide(sigc::mem_fun(*this, &GameWindow::on_mouse_entered_smallmap)));
     xml->get_widget("control_panel_viewport", control_panel_viewport);
     game_button_box = GameButtonBox::create(Configuration::s_ui_form_factor);
     game_button_box->reparent(*control_panel_viewport);
@@ -785,9 +787,9 @@ bool GameWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
     
 void GameWindow::on_bigmap_cursor_changed(ImageCache::CursorType cursor)
 {
-  bigmap_image->get_window()->set_cursor 
+  bigmap_image->get_window()->set_cursor
     (Gdk::Cursor::create
-     (Gdk::Display::get_default(), 
+     (Gdk::Display::get_default(),
       ImageCache::getInstance()->getCursorPic (cursor)->to_pixbuf(), 4, 4));
 }
 
@@ -824,13 +826,18 @@ bool GameWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
 	  prev = e->time;
 	}
 
-      map_eventbox->get_window()->set_cursor 
-	(Gdk::Cursor::create
-	 (Gdk::Display::get_default(), 
-	  ImageCache::getInstance()->getCursorPic
-		      (ImageCache::MAGNIFYING_GLASS)->to_pixbuf(), 8, 5));
     }
 
+  return true;
+}
+
+bool GameWindow::on_mouse_entered_smallmap()
+{
+  map_eventbox->get_window()->set_cursor
+    (Gdk::Cursor::create (Gdk::Display::get_default(),
+                          ImageCache::getInstance()->getCursorPic
+                          (ImageCache::MAGNIFYING_GLASS)->to_pixbuf(),
+                          8, 5));
   return true;
 }
 
