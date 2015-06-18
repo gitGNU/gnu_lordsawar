@@ -39,6 +39,7 @@ The important thing here is to run the script on the executable in .libs/, and n
 
 If it complains about a missing libgcc DLL, add -static-libgcc to AM_LDFLAGS in src/Makefile.am and src/editor/Makefile.am.
 
+To make lordsawar.exe not run with a console window, add -mwindows to AM_LDFLAGS in src/Makefile.am, and to src/editor/Makefile.am.
 
 Put the binary and all the data files in a zip file and you're good to go.
 
