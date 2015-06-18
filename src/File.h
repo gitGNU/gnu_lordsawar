@@ -141,6 +141,8 @@ class File
         static Glib::ustring get_tmp_file(Glib::ustring ext = "");
 
         static Glib::ustring get_extension(Glib::ustring filename);
+
+        static bool rename(Glib::ustring src, Glib::ustring dest);
 };
 
 bool case_insensitive (const Glib::ustring& first, const Glib::ustring& second);

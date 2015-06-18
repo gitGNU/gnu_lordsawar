@@ -784,7 +784,7 @@ bool XML_Helper::rewrite_version(Glib::ustring filename, Glib::ustring tag, Glib
   out.close();
   in.close();
   File::erase(filename);
-  rename(tmpfile.c_str(), filename.c_str());
+  File::rename(tmpfile, filename);
   return found;
 }
 

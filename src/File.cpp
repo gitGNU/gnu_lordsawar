@@ -471,3 +471,13 @@ bool case_insensitive (const Glib::ustring& first, const Glib::ustring& second)
     }
   return (first.length() < second.length());
 }
+
+bool File::rename(Glib::ustring src, Glib::ustring dest)
+{
+  if (File::exists(src) && File::exists(dest))
+    {
+      Glib::RefPtr<Gio::File> f = Gio::File::create_for_path(src);
+      return f->move (Gio::File::create_for_path(dest));
+    }
+  return false;
+}

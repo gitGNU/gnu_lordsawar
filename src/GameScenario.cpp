@@ -854,8 +854,8 @@ bool GameScenario::autoSave()
       std::cerr<< "Autosave failed.\n";
       return false;
     }
-  if (rename(File::getSaveFile("tmp" + SAVE_EXT).c_str(),
-	     File::getSaveFile(filename).c_str()))
+  if (File::rename(File::getSaveFile("tmp" + SAVE_EXT),
+                   File::getSaveFile(filename)))
     {
       char* err = strerror(errno);
       std::cerr << String::ucompose(_("Error! can't rename the temporary file `%1' to the autosave file `%2'.  %3"), File::getSaveFile("tmp" + SAVE_EXT), File::getSaveFile(filename), err) << std::endl;

@@ -652,7 +652,7 @@ bool FileCompat::xsl_transform(Glib::ustring filename, Glib::ustring xsl_file) c
   xsltCleanupGlobals();
   xmlCleanupParser();
   File::erase(filename);
-  rename(tmpfile.c_str(), filename.c_str());
+  File::rename(tmpfile, filename);
   return true;
 }
 
