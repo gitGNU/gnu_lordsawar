@@ -854,6 +854,8 @@ bool GameScenario::autoSave()
       std::cerr<< "Autosave failed.\n";
       return false;
     }
+  //erase the old autosave file if any, and then plop our new one in place.
+  File::erase(File::getSaveFile(filename));
   if (File::rename(File::getSaveFile("tmp" + SAVE_EXT),
                    File::getSaveFile(filename)))
     {
