@@ -52,7 +52,7 @@ public:
               {
                 //note to translators: %1 is a file extension, %2 is a directory.
                 std::cerr << String::ucompose(_("Couldn't find any *%1 files in `%2'."),extension, File::getSetDir(extension)) << std::endl;
-                std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
+                std::cerr << String::ucompose(_("Please check the path settings in %1"), File::getHomeFile(".lordsawarrc")) << std::endl;
                 exit(-1);
               }
             return retlist;

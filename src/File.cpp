@@ -260,8 +260,8 @@ std::list<Glib::ustring> File::scanMaps()
     
     if (retlist.empty())
     {
-      std::cerr << "Couldn't find a single map!" << std::endl;
-      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+      std::cerr << _("Error: Couldn't find a single map!") << std::endl;
+      std::cerr << String::ucompose(_("Please check the path settings in %1"), File::getHomeFile(".lordsawarrc")) << std::endl;
     }
 
     return retlist;
