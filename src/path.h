@@ -134,9 +134,6 @@ class Path : public std::list<Vector<int> >
 
         // Data
 
-	//! A cached copy of a Stack object's movement bonus.
-        guint32 d_bonus;
-
 	//! The point in the path that can't be reached.
 	guint32 d_moves_exhausted_at_point;
 

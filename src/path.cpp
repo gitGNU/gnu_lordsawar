@@ -40,13 +40,14 @@ Glib::ustring Path::d_tag = "path";
 #define debug(x)
 
 Path::Path()
+ : std::list<Vector<int> > ()
 {
   clear();
   d_moves_exhausted_at_point = 0;
 }
 
 Path::Path(const Path& p)
- : std::list<Vector<int> >(), d_bonus(p.d_bonus), 
+ : std::list<Vector<int> >(),
     d_moves_exhausted_at_point(p.d_moves_exhausted_at_point)
 {
   for (const_iterator it = p.begin(); it != p.end(); it++)
