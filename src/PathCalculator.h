@@ -130,6 +130,7 @@ private:
 
     void dumpNodeMap(Vector<int> dest);
     bool delete_stack;
+    Stack *load_unload_stack;
 
 };
 

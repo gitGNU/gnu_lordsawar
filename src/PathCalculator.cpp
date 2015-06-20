@@ -34,6 +34,8 @@
 
 void PathCalculator::populateNodeMap()
 {
+  load_unload_stack = Stack::createNonUniqueStack(stack->getOwner(), 
+                                                  stack->getPos());
   Vector<int> start = stack->getPos();
   int width = GameMap::getWidth();
   int height = GameMap::getHeight();
@@ -336,10 +338,8 @@ std::list<Vector<int> > PathCalculator::calcMoves(Vector<int> pos)
 
 bool PathCalculator::load_or_unload(Vector<int> src, Vector<int> dest, bool &ship)
 {
-  Stack *new_stack = Stack::createNonUniqueStack(stack->getOwner(), src);
-  //do we load or unload if we step from SRC to DEST?
-  bool retval = new_stack->isMovingToOrFromAShip(dest, ship);
-  delete new_stack;
+  load_unload_stack->setPos(src);
+  bool retval = load_unload_stack->isMovingToOrFromAShip(dest, ship);
   return retval;
 }
 
@@ -376,6 +376,8 @@ int PathCalculator::pointsToMoveTo(Vector<int> pos, Vector<int> next) const
 
 PathCalculator::~PathCalculator()
 {
+  if (load_unload_stack)
+    delete load_unload_stack;
   free (nodes);
   if (delete_stack)
     delete stack;
