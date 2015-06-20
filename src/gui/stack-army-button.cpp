@@ -179,7 +179,7 @@ void StackArmyButton::fill_army_button()
                               Shield::NEUTRAL, false)->to_pixbuf();
       
       stack_image->clear();
-      army_label->set_text("");
+      army_label->set_text("  ");
     }
 }
 
