@@ -85,6 +85,7 @@ StatusBox::StatusBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk::Builder
   : Gtk::Box(baseObject)
 {
   d_height_fudge_factor = 0;
+  xml->get_widget("info_notebook", notebook);
   xml->get_widget("stats_box", stats_box);
   xml->get_widget("progress_box", progress_box);
   xml->get_widget("stack_info_container", stack_info_container);
@@ -150,9 +151,7 @@ void StatusBox::on_stack_info_changed(Stack *s)
 
 void StatusBox::show_stats()
 {
-  stack_info_container->hide();
-  progress_box->hide();
-  stats_box->show();
+  notebook->set_current_page(1);
 }
 
 void StatusBox::show_progress()
@@ -162,17 +161,14 @@ void StatusBox::show_progress()
     progress_status_label->set_text("");
   else
     progress_status_label->set_markup("<b>" + Playerlist::getActiveplayer()->getName() + "</b>");
-  stats_box->hide();
-  stack_info_container->hide();
-  progress_box->show();
+  notebook->set_current_page(2);
 }
 
 void StatusBox::show_stack(StackTile *s)
 {
-  stats_box->hide();
-  progress_box->hide();
   stack_info_container->show_all();
   stack_tile_box->show_stack(s);
+  notebook->set_current_page(0);
 }
 
 void StatusBox::update_sidebar_stats(SidebarStats s)
