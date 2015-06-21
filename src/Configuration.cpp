@@ -44,7 +44,7 @@ Glib::ustring Configuration::configuration_file_path;
 Glib::ustring Configuration::s_dataPath = LORDSAWAR_DATADIR;
 Glib::ustring Configuration::s_savePath;
 Glib::ustring Configuration::s_lang = "";
-int Configuration::s_displaySpeedDelay = 3000;
+int Configuration::s_displaySpeedDelay = SPEED_DELAY;
 int Configuration::s_displayFightRoundDelayFast = 250;
 int Configuration::s_displayFightRoundDelaySlow = 500;
 bool Configuration::s_displayCommentator = true;
