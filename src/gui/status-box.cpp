@@ -156,7 +156,6 @@ void StatusBox::show_stats()
 
 void StatusBox::show_progress()
 {
-  turn_progressbar->property_fraction() = 0.0;
   if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getNeutral())
     progress_status_label->set_text("");
   else
@@ -208,7 +207,13 @@ void StatusBox::set_progress_label(Glib::ustring s)
 
 void StatusBox::pulse()
 {
-  turn_progressbar->pulse();
+  Glib::TimeVal now;
+  now.assign_current_time();
+  if (now.as_double() - last_pulsed.as_double() > 0.1)
+    {
+      turn_progressbar->pulse();
+      last_pulsed = now;
+    }
 }
   
 void StatusBox::toggle_group_ungroup()
@@ -229,4 +234,9 @@ void StatusBox::enforce_height()
     height -= 5;
 
   stats_box->get_parent()->property_height_request() = height;
+}
+
+void StatusBox::reset_progress()
+{
+  turn_progressbar->set_fraction(0.0);
 }

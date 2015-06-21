@@ -51,6 +51,7 @@ class StatusBox: public Gtk::Box
 
     void set_progress_label(Glib::ustring s);
     void pulse();
+    void reset_progress();
     void update_sidebar_stats(SidebarStats s);
     void toggle_group_ungroup();
     //! Signals
@@ -78,6 +79,7 @@ class StatusBox: public Gtk::Box
     Gtk::Box *progress_box;
     Gtk::ProgressBar *turn_progressbar;
     Gtk::Label *progress_status_label;
+    Glib::TimeVal last_pulsed;
 
     void drop_connections();
     void pad_image(Gtk::Image *image);

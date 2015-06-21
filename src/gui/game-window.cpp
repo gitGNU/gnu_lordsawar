@@ -2366,6 +2366,7 @@ void GameWindow::show_shield_turn() //show turn indicator
 
 void GameWindow::on_remote_next_player_turn()
 {
+  status_box->reset_progress();
   status_box->on_stack_info_changed(NULL);
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
@@ -2377,6 +2378,7 @@ void GameWindow::on_remote_next_player_turn()
 
 void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 {
+  status_box->reset_progress();
   status_box->on_stack_info_changed(NULL);
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
