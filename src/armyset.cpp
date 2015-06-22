@@ -32,6 +32,7 @@
 #include "file-compat.h"
 #include "ucompose.hpp"
 #include "xmlhelper.h"
+#include "rnd.h"
 
 Glib::ustring Armyset::d_tag = "armyset";
 Glib::ustring Armyset::file_extension = ARMYSET_EXT;
@@ -818,7 +819,7 @@ const ArmyProto * Armyset::getRandomRuinKeeper() const
     }
             
   if (!occupants.empty())
-    return occupants[rand() % occupants.size()];
+    return occupants[Rnd::rand() % occupants.size()];
 
   return NULL;
 }
@@ -835,7 +836,7 @@ const ArmyProto *Armyset::getRandomAwardableAlly() const
     }
             
   if (!allies.empty())
-    return allies[rand() % allies.size()];
+    return allies[Rnd::rand() % allies.size()];
 
   return NULL;
 }

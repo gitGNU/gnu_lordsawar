@@ -24,6 +24,7 @@
 #include "tileset.h"
 #include "tarhelper.h"
 #include "xmlhelper.h"
+#include "rnd.h"
 
 Glib::ustring Tile::d_tag = "tile";
 
@@ -127,7 +128,7 @@ TileStyle *Tile::getRandomTileStyle (TileStyle::Type style) const
 
   if (tilestyles.empty() == true)
     return NULL;
-  return tilestyles[rand() % tilestyles.size()];
+  return tilestyles[Rnd::rand() % tilestyles.size()];
 }
 
 Glib::ustring Tile::tileTypeToString(const Tile::Type type)

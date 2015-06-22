@@ -33,6 +33,7 @@
 #include "ucompose.hpp"
 #include "stackreflist.h"
 #include "xmlhelper.h"
+#include "rnd.h"
 
 Glib::ustring Reward::d_tag = "reward";
 
@@ -110,7 +111,7 @@ Reward_Gold::~Reward_Gold()
 
 guint32 Reward_Gold::getRandomGoldPieces()
 {
-  return 310 + (rand() % 1000);
+  return 310 + (Rnd::rand() % 1000);
 }
 
 Reward_Allies::Reward_Allies(guint32 army_type, guint32 army_set, guint32 count)
@@ -162,7 +163,7 @@ bool Reward_Allies::save(XML_Helper* helper) const
 	
 guint32 Reward_Allies::getRandomAmountOfAllies()
 {
-  int percent = rand() % 100;
+  int percent = Rnd::rand() % 100;
   if (percent < 30)
     return 1;
   else if (percent < 50)
@@ -274,7 +275,7 @@ Item *Reward_Item::getRandomItem()
 {
   Itemlist *il = Itemlist::getInstance();
   Itemlist::iterator it = il->begin();
-  guint32 id = rand() % il->size();
+  guint32 id = Rnd::rand() % il->size();
   std::advance(it, id);
   ItemProto *i = it->second;
   return new Item(*i, id);
@@ -353,7 +354,7 @@ Ruin *Reward_Ruin::getRandomHiddenRuin()
     }
  if (hidden_ruins.empty())
    return NULL;
- return hidden_ruins[rand() % hidden_ruins.size()];
+ return hidden_ruins[Rnd::rand() % hidden_ruins.size()];
 }
 
 Reward_Ruin::~Reward_Ruin()
@@ -405,11 +406,11 @@ bool Reward_Map::save(XML_Helper* helper) const
 void Reward_Map::getRandomMap(int *x, int *y, int *width, int *height)
 {
   int map_width = GameMap::getInstance()->getWidth();
-  *x = rand() % (map_width - (map_width / 10));
+  *x = Rnd::rand() % (map_width - (map_width / 10));
   int map_height = GameMap::getInstance()->getHeight();
-  *y = rand() % (map_height - (map_height / 10));
-  *width = ((rand() % (map_width - *x)) + (map_width / 10));
-  *height = ((rand() % (map_height - *y)) + (map_height / 10));
+  *y = Rnd::rand() % (map_height - (map_height / 10));
+  *width = ((Rnd::rand() % (map_width - *x)) + (map_width / 10));
+  *height = ((Rnd::rand() % (map_height - *y)) + (map_height / 10));
 }
 
 Reward_Map::~Reward_Map()

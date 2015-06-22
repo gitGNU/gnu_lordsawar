@@ -37,6 +37,7 @@
 #include "vectoredunit.h"
 #include "action.h"
 #include "xmlhelper.h"
+#include "rnd.h"
 
 Glib::ustring City::d_tag = "city";
 
@@ -370,19 +371,19 @@ guint32 City::countDefenders() const
 
 void City::randomlyImproveOrDegradeArmy(ArmyProdBase *army)
 {
-  if (rand() % 30 == 0) //random chance of improving strength
+  if (Rnd::rand() % 30 == 0) //random chance of improving strength
       army->setStrength(army->getStrength() + 1);
-  if (rand() % 25 == 0) //random chance of improving turns
+  if (Rnd::rand() % 25 == 0) //random chance of improving turns
     {
       if (army->getProduction() > 1)
 	army->setProduction(army->getProduction() - 1);
     }
-  if (rand() % 50 == 0) //random chance of degrading strength
+  if (Rnd::rand() % 50 == 0) //random chance of degrading strength
     {
       if (army->getStrength() > 1)
 	army->setStrength(army->getStrength() - 1);
     }
-  if (rand() % 45 == 0) //random chance of improving turns
+  if (Rnd::rand() % 45 == 0) //random chance of improving turns
     {
       if (army->getProduction() < 5)
 	army->setProduction(army->getProduction() + 1);
@@ -427,13 +428,13 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   guint32 set = d_owner->getArmyset();
 
   int army_type;
-  int num = rand() % 10;
+  int num = Rnd::rand() % 10;
   if (num < 7)
     army_type = 1;
   else if (num < 9 && likely == 0)
     army_type = 0;
   else
-    army_type = 1 + likely + (rand () % 11);
+    army_type = 1 + likely + (Rnd::rand () % 11);
   ArmyProto *template_army = al->getArmy(set, army_type);
   if (!template_army || 
       (template_army->getAwardable() == true && produce_allies == false) ||
@@ -446,14 +447,14 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(0, army);
 
-  if (((rand() % 10) < 3 && !isCapital() && likely < 1) ||
+  if (((Rnd::rand() % 10) < 3 && !isCapital() && likely < 1) ||
       template_army->getAwardable())
     {
       sortProduction();
       return;
     }
 
-  army_type += 1 + (rand() % (2 + (produce_allies ? 2 : 0)));
+  army_type += 1 + (Rnd::rand() % (2 + (produce_allies ? 2 : 0)));
   template_army = al->getArmy(set, army_type);
   if (!template_army ||
       (template_army->getAwardable() == true && produce_allies == false) ||
@@ -466,7 +467,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(1, army);
 
-  if (((rand() % 10) < 4 && !isCapital() && likely < 2) ||
+  if (((Rnd::rand() % 10) < 4 && !isCapital() && likely < 2) ||
       template_army->getAwardable())
     {
       sortProduction();
@@ -474,9 +475,9 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
     }
 
   if (army_type < 5)
-    army_type += 1 + (rand() % (7 + (produce_allies ? 2 : 0)));
+    army_type += 1 + (Rnd::rand() % (7 + (produce_allies ? 2 : 0)));
   else
-    army_type += 1 + (rand() % (2 + (produce_allies ? 2 : 0)));
+    army_type += 1 + (Rnd::rand() % (2 + (produce_allies ? 2 : 0)));
   template_army = al->getArmy(set, army_type);
   if (!template_army ||
       (template_army->getAwardable() == true && produce_allies == false) ||
@@ -489,14 +490,14 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   randomlyImproveOrDegradeArmy(army);
   addProductionBase(2, army);
 
-  if (((rand() % 10) < 6 && !isCapital() && likely < 3) ||
+  if (((Rnd::rand() % 10) < 6 && !isCapital() && likely < 3) ||
       template_army->getAwardable())
     {
       sortProduction();
       return;
     }
 
-  army_type += 1 + (rand() % (3 + (produce_allies ? 2 : 0)));
+  army_type += 1 + (Rnd::rand() % (3 + (produce_allies ? 2 : 0)));
   template_army = al->getArmy(set, army_type);
   if (!template_army ||
       (template_army->getAwardable() == true && produce_allies == false) ||

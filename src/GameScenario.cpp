@@ -69,6 +69,7 @@
 #include "stacktile.h"
 #include "file-compat.h"
 #include "Item.h"
+#include "rnd.h"
 
 Glib::ustring GameScenario::d_tag = "scenario";
 Glib::ustring GameScenario::d_top_tag = PACKAGE;
@@ -460,7 +461,7 @@ bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start)
 	      (*it)->produceStrongestProductionBase();
 	      break;
 	    case GameParameters::ACTIVE:
-	      if (rand () % 100 >  20)
+	      if (Rnd::rand () % 100 >  20)
 		(*it)->produceStrongestProductionBase();
 	      else
 		(*it)->produceWeakestProductionBase();
@@ -1282,15 +1283,9 @@ void GameScenario::clean_tmp_dir() const
 
 Glib::ustring GameScenario::generate_guid()
 {
-  Glib::TimeVal now;
-  now.assign_current_time();
-  double n = now.as_double();
-  n -= (int) n ;
-  n *= 100000000;
-  Glib::Rand r(n);
   char buf[40];
   //this is a very poor guid generator.
-  snprintf (buf, sizeof (buf), "{%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", r.get_int(), rand() % 4096, r.get_int_range(0, 4096), r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256) % 256, r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256));
+  snprintf (buf, sizeof (buf), "{%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", Rnd::rand(), Rnd::rand() % 4096, Rnd::rand() % 4096, Rnd::rand() % 256, Rnd::rand() % 256, Rnd::rand() % 256, Rnd::rand() % 256, Rnd::rand() % 256, Rnd::rand() % 256, Rnd::rand() % 256, Rnd::rand() % 256);
 
   return Glib::ustring(buf);
 }

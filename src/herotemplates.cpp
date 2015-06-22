@@ -27,6 +27,7 @@
 #include "heroproto.h"
 #include "xmlhelper.h"
 #include "ucompose.hpp"
+#include "rnd.h"
 
 HeroTemplates* HeroTemplates::d_instance = 0;
 
@@ -86,13 +87,13 @@ HeroProto *HeroTemplates::getRandomHero(Hero::Gender gender, int player_id)
   if (heroes.size() == 0)
     return getRandomHero(player_id);
 
-  int num = rand() % heroes.size();
+  int num = Rnd::rand() % heroes.size();
   return heroes[num];
 }
 
 HeroProto *HeroTemplates::getRandomHero(int player_id)
 {
-  int num = rand() % d_herotemplates[player_id].size();
+  int num = Rnd::rand() % d_herotemplates[player_id].size();
   return d_herotemplates[player_id][num];
 }
 
@@ -159,19 +160,19 @@ bool HeroTemplates::load(Glib::ustring tag, XML_Helper *helper)
       if (gender == Hero::MALE)
 	{
 	  if (d_male_heroes.size() > 0)
-	    herotype = d_male_heroes[rand() % d_male_heroes.size()];
+	    herotype = d_male_heroes[Rnd::rand() % d_male_heroes.size()];
 	}
       else if (gender == Hero::FEMALE)
 	{
 	  if (d_female_heroes.size() > 0)
-	    herotype = d_female_heroes[rand() % d_female_heroes.size()];
+	    herotype = d_female_heroes[Rnd::rand() % d_female_heroes.size()];
 	}
       if (herotype == NULL)
 	{
 	  if (d_male_heroes.size() > 0)
-	    herotype = d_male_heroes[rand() % d_male_heroes.size()];
+	    herotype = d_male_heroes[Rnd::rand() % d_male_heroes.size()];
 	  else if (d_female_heroes.size() > 0)
-	    herotype = d_female_heroes[rand() % d_female_heroes.size()];
+	    herotype = d_female_heroes[Rnd::rand() % d_female_heroes.size()];
 	}
       if (herotype == NULL)
 	return false;

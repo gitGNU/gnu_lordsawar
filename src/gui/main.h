@@ -44,6 +44,7 @@ class Main: public sigc::trackable
     guint32 random_number_seed;
     bool start_headless_server;
     guint32 port;
+    Glib::Rand rnd;
     
  private:
     struct Impl;

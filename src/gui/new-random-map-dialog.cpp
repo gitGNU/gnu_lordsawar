@@ -38,6 +38,7 @@
 #include "CreateScenario.h"
 #include "player.h"
 #include "counter.h"
+#include "rnd.h"
 
 NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
  : LwDialog(parent, "new-random-map-dialog.ui")
@@ -361,7 +362,7 @@ GameParameters NewRandomMapDialog::getParams()
   if (grass_random_togglebutton->get_active())
     g.map.grass =  
       int(grass_scale->get_adjustment()->get_lower()) + 
-      (rand() % (int(grass_scale->get_adjustment()->get_upper()) -
+      (Rnd::rand() % (int(grass_scale->get_adjustment()->get_upper()) -
 		 int(grass_scale->get_adjustment()->get_lower()) + 1));
   else
     g.map.grass = int(grass_scale->get_value());
@@ -369,7 +370,7 @@ GameParameters NewRandomMapDialog::getParams()
   if (water_random_togglebutton->get_active())
     g.map.water =  
       int(water_scale->get_adjustment()->get_lower()) + 
-      (rand() % (int(water_scale->get_adjustment()->get_upper()) -
+      (Rnd::rand() % (int(water_scale->get_adjustment()->get_upper()) -
 		 int(water_scale->get_adjustment()->get_lower()) + 1));
   else
     g.map.water = int(water_scale->get_value());
@@ -377,7 +378,7 @@ GameParameters NewRandomMapDialog::getParams()
   if (swamp_random_togglebutton->get_active())
     g.map.swamp =  
       int(swamp_scale->get_adjustment()->get_lower()) + 
-      (rand() % (int(swamp_scale->get_adjustment()->get_upper()) -
+      (Rnd::rand() % (int(swamp_scale->get_adjustment()->get_upper()) -
 		 int(swamp_scale->get_adjustment()->get_lower()) + 1));
   else
     g.map.swamp = int(swamp_scale->get_value());
@@ -385,7 +386,7 @@ GameParameters NewRandomMapDialog::getParams()
   if (forest_random_togglebutton->get_active())
     g.map.forest =  
       int(forest_scale->get_adjustment()->get_lower()) + 
-      (rand() % (int(forest_scale->get_adjustment()->get_upper()) -
+      (Rnd::rand() % (int(forest_scale->get_adjustment()->get_upper()) -
 		 int(forest_scale->get_adjustment()->get_lower()) + 1));
   else
     g.map.forest = int(forest_scale->get_value());
@@ -393,7 +394,7 @@ GameParameters NewRandomMapDialog::getParams()
   if (hills_random_togglebutton->get_active())
     g.map.hills =  
       int(hills_scale->get_adjustment()->get_lower()) + 
-      (rand() % (int(hills_scale->get_adjustment()->get_upper()) -
+      (Rnd::rand() % (int(hills_scale->get_adjustment()->get_upper()) -
 		 int(hills_scale->get_adjustment()->get_lower()) + 1));
   else
     g.map.hills = int(hills_scale->get_value());
@@ -401,7 +402,7 @@ GameParameters NewRandomMapDialog::getParams()
   if (mountains_random_togglebutton->get_active())
     g.map.mountains =  
       int(mountains_scale->get_adjustment()->get_lower()) + 
-      (rand() % (int(mountains_scale->get_adjustment()->get_upper()) -
+      (Rnd::rand() % (int(mountains_scale->get_adjustment()->get_upper()) -
 		 int(mountains_scale->get_adjustment()->get_lower()) 
 		 + 1));
   else
@@ -410,7 +411,7 @@ GameParameters NewRandomMapDialog::getParams()
   if (cities_random_togglebutton->get_active())
     g.map.cities =  
       int(cities_scale->get_adjustment()->get_lower()) + 
-      (rand() % (int(cities_scale->get_adjustment()->get_upper()) -
+      (Rnd::rand() % (int(cities_scale->get_adjustment()->get_upper()) -
 		 int(cities_scale->get_adjustment()->get_lower()) + 1));
   else
     g.map.cities = int(cities_scale->get_value());

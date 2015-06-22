@@ -23,6 +23,8 @@
 #include <gtkmm.h>
 #include <sigc++/trackable.h>
 #include <sigc++/functors/mem_fun.h>
+#include <time.h>
+#include "rnd.h"
 
 #include "main.h"
 
@@ -104,6 +106,11 @@ bool Main::iterate_main_loop()
 
 void Main::start_main_loop()
 {
+  if (random_number_seed)
+    Rnd::set_seed(random_number_seed);
+  else
+    Rnd::set_seed(time(NULL));
+
     if (Configuration::s_decorated)
       {
         ;

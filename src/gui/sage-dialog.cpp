@@ -29,6 +29,7 @@
 #include "rewardlist.h"
 #include "playerlist.h"
 #include "Item.h"
+#include "rnd.h"
 
 SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Hero *h, Ruin *r)
  : LwDialog(parent, "sage-dialog.ui")
@@ -136,7 +137,7 @@ void SageDialog::addReward(Reward *reward)
 	  name  = m->getName();
 	  if (name == "")
 	    {
-	      switch (rand() % 6)
+	      switch (Rnd::rand() % 6)
 		{
 		case 0: name = _("parchment map"); break;
 		case 1: name = _("vellum map"); break;
@@ -157,7 +158,7 @@ void SageDialog::addReward(Reward *reward)
 	  if (r->getReward() == NULL)
 	    {
 	      Reward *rew  = NULL;
-	      if (rand() % 2 == 0)
+	      if (Rnd::rand() % 2 == 0)
 		{
 		  rew = Rewardlist::getInstance()->popRandomItemReward();
 		  if (!rew)

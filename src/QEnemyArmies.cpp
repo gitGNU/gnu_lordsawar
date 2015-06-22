@@ -32,6 +32,7 @@
 #include "player.h"
 #include "hero.h"
 #include "xmlhelper.h"
+#include "rnd.h"
 
 //go get an existing alive player,
 //with the stipluation that player P is not taken into consideration
@@ -47,7 +48,7 @@ Player* getVictimPlayer(Player *p)
   if (players.size() == 0)
     return NULL;
   else
-    return players[rand() % players.size()];
+    return players[Rnd::rand() % players.size()];
 }
 
 void QuestEnemyArmies::update_targets()
@@ -72,7 +73,7 @@ QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, guint32 hero)
   d_victim_player = getVictimPlayer(getHero()->getOwner());
 
   /** we have to kill 14-20 units: 14 + rand(0..6) */
-  d_to_kill = 14 + (rand() % 7);
+  d_to_kill = 14 + (Rnd::rand() % 7);
 
   update_targets();
   initDescription();

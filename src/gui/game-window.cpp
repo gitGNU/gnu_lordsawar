@@ -118,6 +118,7 @@
 #include "lw-dialog.h"
 #include "builder-cache.h"
 #include "new-network-game-dialog.h"
+#include "rnd.h"
 
 GameWindow::GameWindow()
 {
@@ -2061,7 +2062,7 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
     name = p->getName();
 
   Glib::ustring s;
-  switch (rand() % 4)
+  switch (Rnd::rand() % 4)
     {
     case 0: s = _("%1, you have triumphed in the battle of %2."); break;
     case 1: s = _("%1, you have claimed victory in the battle of %2."); break;
@@ -2559,7 +2560,7 @@ void GameWindow::on_advice_asked(float percent)
   xml->get_widget("label", label);
   Glib::ustring s;
 
-  int num = rand() % 5;
+  int num = Rnd::rand() % 5;
   if (num == 0)
     s += _("My Good Lord!");
   else if (num == 1)
@@ -2572,8 +2573,8 @@ void GameWindow::on_advice_asked(float percent)
     s += _("O Great Warlord!");
   s += "\n";
 
-  num = rand() % 7;
-  num = rand() % 7;
+  num = Rnd::rand() % 7;
+  num = Rnd::rand() % 7;
   if (percent >= 90.0)
     {
       if (num == 0)

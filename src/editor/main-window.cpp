@@ -90,6 +90,7 @@
 #include "RenamableLocation.h"
 #include "fight-order-editor-dialog.h"
 #include "road-editor-tip.h"
+#include "rnd.h"
 
 MainWindow::MainWindow(Glib::ustring load_filename)
 {
@@ -1695,7 +1696,7 @@ void MainWindow::randomize_signpost(Signpost *signpost)
 {
   Glib::ustring name = "";
   if (d_create_scenario_names->getNumSignposts() > 0 &&
-      (rand() % d_create_scenario_names->getNumSignposts()) == 0)
+      (Rnd::rand() % d_create_scenario_names->getNumSignposts()) == 0)
     name = d_create_scenario_names->popRandomSignpost();
   else
 

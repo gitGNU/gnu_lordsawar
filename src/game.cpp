@@ -70,6 +70,7 @@
 #include "Commentator.h"
 #include "select-city-map.h"
 #include "Item.h"
+#include "rnd.h"
 
 Game *Game::current_game = 0;
 
@@ -1174,7 +1175,7 @@ void Game::init_turn_for_player(Player* p)
           std::vector<Glib::ustring> comments =
             Commentator::getInstance()->getComments(p);
           if (comments.size() > 0)
-            commentator_comments.emit(comments[rand() % comments.size()]);
+            commentator_comments.emit(comments[Rnd::rand() % comments.size()]);
         }
     }
 

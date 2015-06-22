@@ -23,7 +23,6 @@
 #include <config.h>
 
 #include <iostream>
-#include <time.h>
 
 #ifdef LW_SOUND
 #include <gstreamermm/init.h>
@@ -47,7 +46,6 @@
 int max_vector_width;
 int main(int argc, char* argv[])
 {
-  srand(time(NULL));         // set the random seed
 
   initialize_configuration();
   Profilelist::support_backward_compatibility();
@@ -100,7 +98,6 @@ int main(int argc, char* argv[])
 		  exit(-1);
 		}
               kit.random_number_seed = seed;
-	      srand(seed);
 	    }
 	  else if (parameter == "--port" || parameter == "-p")
 	    {

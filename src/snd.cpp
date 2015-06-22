@@ -28,6 +28,7 @@
 #include "defs.h"
 #include "xmlhelper.h"
 #include "timing.h"
+#include "rnd.h"
 
 #ifdef LW_SOUND
 #include <gstreamermm.h>
@@ -259,7 +260,7 @@ void Snd::nextPiece()
     // select a random music piece from the list of background pieces
     while (!d_bgMap.empty())
       {
-        int i = rand() % d_bgMap.size();
+        int i = Rnd::rand() % d_bgMap.size();
         if (!File::exists(File::getMusicFile(d_musicMap[d_bgMap[i]]->file)))
             continue;
         impl->back->set_state(Gst::STATE_NULL);

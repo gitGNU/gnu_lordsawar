@@ -37,6 +37,7 @@
 #include "Configuration.h"
 #include "shieldset.h"
 #include "tileset.h"
+#include "rnd.h"
 
 OverviewMap::OverviewMap()
 {
@@ -92,7 +93,7 @@ prand(int i, int j)
     {
       ;
     }
-  return (rand () % 3);
+  return (Rnd::rand () % 3);
 }
 
 static int 
@@ -467,8 +468,6 @@ Maptile* OverviewMap::getTile(int x, int y)
 
 void OverviewMap::draw_terrain_tiles(Rectangle r)
 {
-    unsigned int oldrand = rand();
-    srand(0);
     Tileset *ts = GameMap::getTileset();
     Gdk::RGBA rd = ts->getRoadColor();
     for (int i = r.x; i < r.x + r.w; i+=int(map_tiles_per_tile))
@@ -483,7 +482,6 @@ void OverviewMap::draw_terrain_tiles(Rectangle r)
           else
             draw_terrain_tile (mtile, i, j);
         }
-    srand (oldrand);
 }
 
 void OverviewMap::after_draw()

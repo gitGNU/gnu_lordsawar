@@ -32,6 +32,7 @@
 #include "QuestsManager.h"
 #include "playerlist.h"
 #include "stacklist.h"
+#include "rnd.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -159,7 +160,7 @@ Hero* QuestKillHero::chooseToKill()
     return NULL;
 
   // Now pick a hero:
-  return heroes[rand() % heroes.size()];
+  return heroes[Rnd::rand() % heroes.size()];
 }
 
 void QuestKillHero::armyDied(Army *a, bool heroIsCulprit)

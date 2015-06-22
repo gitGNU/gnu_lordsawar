@@ -20,6 +20,7 @@
 #include "rewardlist.h"
 #include "reward.h"
 #include "xmlhelper.h"
+#include "rnd.h"
 
 Glib::ustring Rewardlist::d_tag = "rewardlist";
 
@@ -179,7 +180,7 @@ Reward *Rewardlist::popRandomReward(Reward::Type type)
     }
   if (rewards.size())
     {
-      Reward *newReward = rewards[rand() % rewards.size()];
+      Reward *newReward = rewards[Rnd::rand() % rewards.size()];
       remove(newReward);
       return newReward;
     }

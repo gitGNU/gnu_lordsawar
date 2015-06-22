@@ -1,4 +1,4 @@
-// Copyright (C) 2009, 2014 Ben Asselstine
+//  Copyright (C) 2015 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,25 +15,29 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include "SightMap.h"
-#include "Sage.h"
-#include "rewardlist.h"
 #include "rnd.h"
 
-Sage::Sage()
-{
-  reward = NULL;
-  Rewardlist::iterator iter = Rewardlist::getInstance()->begin();
-  for (;iter != Rewardlist::getInstance()->end(); iter++)
-    {
-      if ((*iter)->getType() == Reward::ITEM)
-        continue;
-      // we don't want items here, but we do want locations
-      // of items, within hidden ruins.
+Rnd *Rnd::s_instance;
 
-      push_back(*iter);
-    }
-  //this covers, the one-time rewards of items and maps
-  //but now we put in gold too
-  push_back(new Reward_Gold(500 + Rnd::rand() % 1000));
+Rnd* Rnd::instance()
+{
+  if (s_instance == NULL)
+    s_instance = new Rnd();
+  return s_instance;
+}
+
+Rnd::Rnd()
+{
+  rnd = new Glib::Rand();
+}
+  
+guint32 Rnd::rand()
+{
+  guint32 num = instance()->rnd->get_int();
+  return num;
+}
+
+Rnd::~Rnd()
+{
+  delete rnd;
 }

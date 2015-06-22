@@ -29,6 +29,7 @@
 #include "stack.h"
 #include "xmlhelper.h"
 #include "hero.h"
+#include "rnd.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -134,7 +135,7 @@ City* QuestCityRaze::chooseToRaze(Player *p)
   if (cities.empty())
     return 0;
 
-  return cities[rand() % cities.size()];
+  return cities[Rnd::rand() % cities.size()];
 }
 
 void QuestCityRaze::armyDied(Army *a, bool heroIsCulprit)

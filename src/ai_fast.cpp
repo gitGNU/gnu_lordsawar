@@ -49,6 +49,7 @@
 #include "Quest.h"
 #include "SightMap.h"
 #include "Sage.h"
+#include "rnd.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 //#define debug(x)
@@ -585,7 +586,7 @@ bool AI_Fast::computerTurn()
 		Path *target2_path = NULL;
 		Citylist *cl = Citylist::getInstance();
 		City *target1;
-                if (rand() % 3 == 0)
+                if (Rnd::rand() % 3 == 0)
                   target1 = cl->getClosestEnemyCity(s);
                 else
                   target1 = cl->getNearestEnemyCity(s->getPos());

@@ -23,6 +23,7 @@
 #include "File.h"
 #include "ucompose.hpp"
 #include "xmlhelper.h"
+#include "rnd.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -60,7 +61,7 @@ Glib::ustring NameList::popRandomName()
   Glib::ustring name;
   if (empty())
     return "";
-  int randno = rand() % size();
+  int randno = Rnd::rand() % size();
   name = (*this)[randno];
 
   NameList::iterator it = std::find(begin(), end(), name);

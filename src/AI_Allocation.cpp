@@ -44,6 +44,7 @@
 #include "QKillHero.h"
 #include "QEnemyArmies.h"
 #include "QEnemyArmytype.h"
+#include "rnd.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 //#define debug(x)
@@ -419,7 +420,7 @@ bool AI_Allocation::emptyOutCities()
               if (!s)
                 continue;
               if ((s->getMoves() > 3 && s->size() >= 4 &&
-                   (num_defenders - s->size()) >= 3) || (rand() % 10) == 0)
+                   (num_defenders - s->size()) >= 3) || (Rnd::rand() % 10) == 0)
                 {
                   City *target = cl->getNearestEnemyCity(s->getPos());
                   if (target)

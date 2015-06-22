@@ -32,6 +32,7 @@
 #include "playerlist.h"
 #include "SightMap.h"
 #include "reward.h"
+#include "rnd.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -105,9 +106,9 @@ void CreateScenarioRandomize::pushRandomSignpost(Glib::ustring name)
 guint32 CreateScenarioRandomize::getRandomCityIncome(bool capital)
 {
   if (capital)
-    return 33 + (rand() % 8);
+    return 33 + (Rnd::rand() % 8);
   else
-    return 15 + (rand() % 12);
+    return 15 + (Rnd::rand() % 12);
 }
 
 Army * CreateScenarioRandomize::getRandomRuinKeeper(Player *p)
@@ -160,7 +161,7 @@ Reward *CreateScenarioRandomize::getNewRandomReward(bool hidden_ruins)
   int max_reward_types = 5;
   if (!hidden_ruins)
     max_reward_types--;
-  int num = rand() % max_reward_types;
+  int num = Rnd::rand() % max_reward_types;
   Reward *reward = 0;
 
   switch (num)
@@ -205,7 +206,7 @@ Reward *CreateScenarioRandomize::getNewRandomReward(bool hidden_ruins)
 
 int CreateScenarioRandomize::adjustBaseGold (int base_gold)
 {
-  int gold = base_gold + ((rand() % 7) - 4);
+  int gold = base_gold + ((Rnd::rand() % 7) - 4);
   if (gold < 0)
     gold = 0;
   return gold;

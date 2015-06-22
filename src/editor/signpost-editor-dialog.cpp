@@ -27,6 +27,7 @@
 #include "defs.h"
 #include "CreateScenarioRandomize.h"
 #include "signpost.h"
+#include "rnd.h"
 
 SignpostEditorDialog::SignpostEditorDialog(Gtk::Window &parent, Signpost *s, CreateScenarioRandomize *randomizer)
  : LwEditorDialog(parent, "signpost-editor-dialog.ui")
@@ -61,7 +62,7 @@ int SignpostEditorDialog::run()
 void SignpostEditorDialog::on_randomize_clicked()
 {
   Glib::ustring existing_name = sign_textview->get_buffer()->get_text();
-  bool dynamic = ((rand() % d_randomizer->getNumSignposts()) == 0);
+  bool dynamic = ((Rnd::rand() % d_randomizer->getNumSignposts()) == 0);
   if (existing_name == DEFAULT_SIGNPOST)
     {
       if (dynamic)

@@ -38,6 +38,7 @@
 #include "history.h"
 #include "stackreflist.h"
 #include "hero.h"
+#include "rnd.h"
 
 Glib::ustring QuestsManager::d_tag = "questlist";
 
@@ -100,7 +101,7 @@ Quest* QuestsManager::createNewQuest(guint32 heroId, bool razing_possible)
     int which = 0;
     while (!which)
     {
-        which = 1 + rand() % 7;
+        which = 1 + Rnd::rand() % 7;
         // if this quest is not feasible - try again with another
         // quest:
         if ((*(d_questsFeasible[which-1]))(heroId) == 0)

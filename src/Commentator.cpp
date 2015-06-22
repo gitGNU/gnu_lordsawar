@@ -24,6 +24,7 @@
 #include "stacklist.h"
 #include "citylist.h"
 #include "city.h"
+#include "rnd.h"
 
 Commentator* Commentator::d_instance = 0;
 
@@ -50,7 +51,7 @@ Commentator::Commentator()
 bool Commentator::hasComment() const
 
 {
-  if ((rand() % MAX_PLAYERS) == 0)
+  if ((Rnd::rand() % MAX_PLAYERS) == 0)
     return true;
   return false;
 }

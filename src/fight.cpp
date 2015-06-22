@@ -35,6 +35,7 @@
 #include "stack.h"
 #include "Backpack.h"
 #include "stacktile.h"
+#include "rnd.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -602,8 +603,8 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 
   while (damage == 0)
     {
-      int attacker_roll = rand() % sides;
-      int defender_roll = rand() % sides;
+      int attacker_roll = Rnd::rand() % sides;
+      int defender_roll = Rnd::rand() % sides;
 
       if (attacker_roll < attacker->terrain_strength &&
 	  defender_roll >= defender->terrain_strength)

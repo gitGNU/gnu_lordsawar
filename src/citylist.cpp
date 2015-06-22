@@ -34,6 +34,7 @@
 #include "cityset.h"
 #include "citysetlist.h"
 #include "PathCalculator.h"
+#include "rnd.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -608,6 +609,6 @@ City *Citylist::getRandomCityForHero(Player *player) const
       cities.push_back((*it));
   if (cities.empty())
     return NULL;
-  return cities[rand() % cities.size()];
+  return cities[Rnd::rand() % cities.size()];
 }
 // End of file

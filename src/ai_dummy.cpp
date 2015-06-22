@@ -33,6 +33,7 @@
 #include "GameScenarioOptions.h"
 #include "SightMap.h"
 #include "Sage.h"
+#include "rnd.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -65,9 +66,9 @@ void AI_Dummy::setDefensiveProduction(City *city)
   if (city->getActiveProductionSlot() == -1 &&
       city->countDefenders() < MAX_ARMIES_PRODUCED_IN_NEUTRAL_CITY)
     {
-      if (rand() % 2 == 0)
+      if (Rnd::rand() % 2 == 0)
 	{
-	  int idx = rand() % city->getMaxNoOfProductionBases();
+	  int idx = Rnd::rand() % city->getMaxNoOfProductionBases();
 	  cityChangeProduction(city, idx);
 	}
     }

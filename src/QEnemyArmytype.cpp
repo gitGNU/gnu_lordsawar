@@ -30,6 +30,7 @@
 #include "player.h"
 #include "armyproto.h"
 #include "hero.h"
+#include "rnd.h"
 
 //go get an existing army type,
 //with the stipluation that player P's armies are not taken into consideration
@@ -62,7 +63,7 @@ int getVictimArmytype(Player *p, std::list<Vector<int> >&targets)
   if (specials.size() == 0)
     return -1;
   else
-    return specials[rand() % specials.size()]->getTypeId();
+    return specials[Rnd::rand() % specials.size()]->getTypeId();
 }
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}

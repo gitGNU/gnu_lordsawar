@@ -66,6 +66,7 @@
 #include "FogMap.h"
 #include "history.h"
 #include "game-parameters.h"
+#include "rnd.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -431,7 +432,7 @@ bool CreateScenario::distributePlayers()
 	  continue;
 	while (1)
 	  {
-	    Vector<int> pos = Vector<int>(rand() % d_width, rand() % d_height);
+	    Vector<int> pos = Vector<int>(Rnd::rand() % d_width, Rnd::rand() % d_height);
 	    City *city = Citylist::getInstance()->getNearestCity(pos);
 	    if (city->isBurnt() == false && city->isCapital() == false)
 	      {
@@ -501,7 +502,7 @@ bool CreateScenario::setupTemples()
     for (Templelist::iterator it = tl->begin(); it != tl->end(); it++)
     {
         // set a random temple type
-        int type= (int) ((TEMPLE_TYPES*1.0) * (rand() / (RAND_MAX + 1.0)));
+        int type= (int) ((TEMPLE_TYPES*1.0) * (Rnd::rand() / (RAND_MAX + 1.0)));
         (*it)->setType(type);
 
     }
@@ -521,7 +522,7 @@ bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
         it != Ruinlist::getInstance()->end(); it++)
     {
         // set a random ruin type
-        if (rand() % stronghold_factor == 0) //one in six ruins is a stronghold
+        if (Rnd::rand() % stronghold_factor == 0) //one in six ruins is a stronghold
           {
             (*it)->setType(Ruin::STRONGHOLD);
             if (strongholds_invisible == true)
@@ -534,7 +535,7 @@ bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
           (*it)->setType(Ruin::RUIN);
 
         //one in twenty ruins is a sage
-        if (rand() % sage_factor == 0 && (*it)->getType() == Ruin::RUIN) 
+        if (Rnd::rand() % sage_factor == 0 && (*it)->getType() == Ruin::RUIN) 
           {
             (*it)->setSage (true);
             continue;
@@ -542,7 +543,7 @@ bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
 
 
         //one in ten ruins doesn't have a guardian
-        if (rand() % no_guardian_factor == 0 && (*it)->getType() == Ruin::RUIN) 
+        if (Rnd::rand() % no_guardian_factor == 0 && (*it)->getType() == Ruin::RUIN) 
           continue;
 
         // and set a guardian
@@ -579,7 +580,7 @@ bool CreateScenario::setupSignposts(int ratio)
 	if (randomSignpostsEmpty())
 	    randno = dynamicPercent;
 	else
-	    randno = rand() % 100;
+	    randno = Rnd::rand() % 100;
 	if (randno < dynamicPercent)
 	{
             // set up a signpost from the list of signposts

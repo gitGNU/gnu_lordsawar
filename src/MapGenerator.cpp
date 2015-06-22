@@ -49,6 +49,7 @@
 #include "RoadPathCalculator.h"
 #include "cityset.h"
 #include "overviewmap.h"
+#include "rnd.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -434,15 +435,15 @@ void MapGenerator::connectWithWater(Vector<int> from, Vector<int> to)
         // we don't want to mess up whole map with straight lines
         return;
 
-    int kind(rand()%4);
+    int kind(Rnd::rand()%4);
     delta /= length(delta)*2;
     for(Vector<float>path = Vector<float>(from)+delta*4 ; dist<float>(path,Vector<float>(to)-delta*4) > 0.5 ; path -= delta)
     {
         int j = (int)(path.x);
         int i = (int)(path.y);
 
-        if(rand()%3 == 0) 
-            kind = rand()%4;
+        if(Rnd::rand()%3 == 0) 
+            kind = Rnd::rand()%4;
         switch(kind)
         {
             case 0:
@@ -576,7 +577,7 @@ void MapGenerator::verifyIslands()
     // largest are good. Also one/third of all others is good:
     std::set<int> good(largest);
     for(size_t i=0 ; i<counts.size() ; ++i)
-        if(rand()%3 == 0) // that's one/third here
+        if(Rnd::rand()%3 == 0) // that's one/third here
             good.insert(counts[i]);
 
     // now, eliminate all land that is not good
@@ -594,7 +595,7 @@ void MapGenerator::makeRivers()
     //  1 - plenty of short rivers and islands
     //  2 - longer rivers, less islands
     //  3 - even longer rivers, even less islands
-    int river_style=rand()%3+1;
+    int river_style=Rnd::rand()%3+1;
 
     // count how many separate bodies of water were found
     int how_many;
@@ -795,8 +796,8 @@ void MapGenerator::makeTerrain(Tile::Type t, int percent, bool contin)
     while(placed != terrain)
     {
         // find a random starting position
-        int x = rand() % d_width;
-        int y = rand() % d_height;
+        int x = Rnd::rand() % d_width;
+        int y = Rnd::rand() % d_height;
         if (seekPlain(x, y) == false)
           continue;
 
@@ -814,7 +815,7 @@ void MapGenerator::makeTerrain(Tile::Type t, int percent, bool contin)
             
             // from a random direction, check all directions for further progress
             int loop = 0;
-            for (int dir = rand()%8; loop < 8; loop++, dir = (dir+1)%8)
+            for (int dir = Rnd::rand()%8; loop < 8; loop++, dir = (dir+1)%8)
             {
                 int tmpx = x + d_xdir[dir];
                 int tmpy = y + d_ydir[dir];
@@ -877,11 +878,11 @@ void MapGenerator::makeStreamer(Tile::Type t, int percent, int thick)
     while(placed < terrain)
     {
         // find a random starting position
-        int x = rand() % d_width;
-        int y = rand() % d_height;
+        int x = Rnd::rand() % d_width;
+        int y = Rnd::rand() % d_height;
         if (seekPlain(x, y) == false)
           continue;
-        dir = rand()%8; // pick a random direction
+        dir = Rnd::rand()%8; // pick a random direction
         // now go on until we hit a dead end
         while (placed < terrain)
         {
@@ -893,9 +894,9 @@ void MapGenerator::makeStreamer(Tile::Type t, int percent, int thick)
                 continue;
             }
             
-            if (rand() % 2 == 0)
+            if (Rnd::rand() % 2 == 0)
               {
-                if (rand() % 2 == 0)
+                if (Rnd::rand() % 2 == 0)
                   {
                     dir++;
                     if (dir > 7)
@@ -973,7 +974,7 @@ bool MapGenerator::seekPlain(int& x, int& y)
     
     // fill the list with initial values; the rand is there to avoid a bias
     // (i.e. prefer a certain direction)
-    for (int dir = rand() % 8, i = 0; i < 8; i++, dir = (dir+1)%8)
+    for (int dir = Rnd::rand() % 8, i = 0; i < 8; i++, dir = (dir+1)%8)
         tiles.push_back(Vector<int>(x + d_xdir[dir], y + d_ydir[dir]));
     
     // now loop until all tiles were checked (should hardly happen)
@@ -1064,8 +1065,8 @@ void MapGenerator::makeCities(int cities)
     // place the cities
     while(city_count < cities)
     {
-        int x = rand()%(d_width-2);
-        int y = rand()%(d_height-2);
+        int x = Rnd::rand()%(d_width-2);
+        int y = Rnd::rand()%(d_height-2);
         if (inhospitableTerrain(x, y, cityset->getCityTileWidth()) && (iterations < 1000))
         {
             iterations++;
@@ -1144,8 +1145,8 @@ void MapGenerator::makeBuildings(Maptile::Building b, int building)
     {        
 	for (j = 0; j < iterations; j++)
 	{
-             x = rand()%d_width;
-             y = rand()%d_height;
+             x = Rnd::rand()%d_width;
+             y = Rnd::rand()%d_height;
         
 	     found_place = true;
 	     for (unsigned int k = 0; k < width; k++)
@@ -1232,7 +1233,7 @@ void MapGenerator::normalize()
     Tile::Type curTer=Tile::NONE, ajTer=Tile::NONE;
 
     // that was 40 before. Now with rivers, the smaller the value - the more connected rivers we got.
-    int center_tiles = rand()%40;
+    int center_tiles = Rnd::rand()%40;
     //std::cerr << center_tiles << "\% chance of disconnecting rivers.\n";
 
     // Go through every tile bar the outer edge
@@ -1264,20 +1265,20 @@ void MapGenerator::normalize()
             {
                 if (ajacentTer[curTer]==0)
                     d_terrain[globy*d_width +globx] = Tile::GRASS;
-                else if ((ajacentTer[curTer]==1) && (rand()%100 < 95 ))
+                else if ((ajacentTer[curTer]==1) && (Rnd::rand()%100 < 95 ))
                     d_terrain[globy*d_width +globx] = Tile::GRASS;
-                else if ((ajacentTer[curTer]==2) && (rand()%100 < 70 ))
+                else if ((ajacentTer[curTer]==2) && (Rnd::rand()%100 < 70 ))
                     d_terrain[globy*d_width +globx] = Tile::GRASS;
-                else if ((ajacentTer[curTer]==3) && (rand()%100 < center_tiles ))
+                else if ((ajacentTer[curTer]==3) && (Rnd::rand()%100 < center_tiles ))
                     d_terrain[globy*d_width +globx] = Tile::GRASS;
             }
             else 
             {
                 if (ajacentTer[Tile::WATER]==8)
                     d_terrain[globy*d_width +globx] = Tile::WATER;
-                else if ((ajacentTer[Tile::WATER]==7) && (rand()%100 < 70 ))
+                else if ((ajacentTer[Tile::WATER]==7) && (Rnd::rand()%100 < 70 ))
                     d_terrain[globy*d_width +globx] = Tile::WATER;
-                else if ((ajacentTer[Tile::WATER]==6) && (rand()%100 < 40 ))
+                else if ((ajacentTer[Tile::WATER]==6) && (Rnd::rand()%100 < 40 ))
                     d_terrain[globy*d_width +globx] = Tile::WATER;
              }
         }
@@ -1622,7 +1623,7 @@ void MapGenerator::makeRoads()
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
-      if (rand() % 2 == 0)
+      if (Rnd::rand() % 2 == 0)
 	continue;
       City *c = cl->getNearestCityPast((*it)->getPos(), 13);
       Vector<int> dest = c->getPos();
@@ -1778,11 +1779,11 @@ void MapGenerator::rescueLoneTiles(Tile::Type FIND_THIS, Tile::Type REPLACE, boo
                     if ( box[0][2] && !box[1][2] &&  box[2][2] &&  
                          box[0][1] &&  box[1][1] &&  box[2][1] && 
                          box[0][0] && !box[1][0] &&  box[2][0])
-                            d_terrain[j*d_width + i+(rand()%2?+1:-1)] = FIND_THIS;
+                            d_terrain[j*d_width + i+(Rnd::rand()%2?+1:-1)] = FIND_THIS;
                     if ( box[0][2] &&  box[1][2] &&  box[2][2] &&  
                         !box[0][1] &&  box[1][1] && !box[2][1] && 
                          box[0][0] &&  box[1][0] &&  box[2][0])
-                            d_terrain[(j+(rand()%2?+1:-1))*d_width + i] = FIND_THIS;
+                            d_terrain[(j+(Rnd::rand()%2?+1:-1))*d_width + i] = FIND_THIS;
 
                     if ( box[0][2] && !box[1][2] && !box[2][2] &&  
                          box[0][1] &&  box[1][1] && !box[2][1] && 

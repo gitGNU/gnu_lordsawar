@@ -26,6 +26,7 @@
 #include "city.h"
 #include "xmlhelper.h"
 #include "hero.h"
+#include "rnd.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -34,7 +35,7 @@ QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, guint32 hero)
   : Quest(q_mgr, hero, Quest::PILLAGEGOLD), d_pillaged(0)
 {
   //pick an amount of gold to sack and pillage
-  d_to_pillage = 850 + (rand() % 630);
+  d_to_pillage = 850 + (Rnd::rand() % 630);
 
   initDescription();
 }

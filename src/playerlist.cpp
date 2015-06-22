@@ -43,6 +43,7 @@
 #include "shieldsetlist.h"
 #include "ucompose.hpp"
 #include "stack.h"
+#include "rnd.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -547,7 +548,7 @@ bool Playerlist::randomly(const Player *lhs, const Player *rhs)
     }
   if (lhs == pl->getNeutral())
     return false;
-  if (rand() % 2 == 0)
+  if (Rnd::rand() % 2 == 0)
     return true;
   else
     return false;

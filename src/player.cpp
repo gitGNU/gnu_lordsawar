@@ -82,6 +82,7 @@
 #include "Item.h"
 #include "ItemProto.h"
 #include "xmlhelper.h"
+#include "rnd.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 #define debug(x)
@@ -1364,7 +1365,7 @@ Fight::Result ruinfight (Stack **attacker, Stack **defender)
     monster_factor = 0.5;
   float fail = base_factor * monster_factor * stack_factor * hero_factor;
 
-  if (rand() % 100 > (int)(fail * 100.0))
+  if (Rnd::rand() % 100 > (int)(fail * 100.0))
     {
       result = Fight::ATTACKER_WON;
       loser = *defender;
@@ -4040,12 +4041,12 @@ bool Player::maybeRecruitHero ()
       if (getHeroes().size() > 0)
 	  exists = true; 
 
-      gold_needed = (rand() % 500) + 1000;
+      gold_needed = (Rnd::rand() % 500) + 1000;
       if (exists == false)
 	gold_needed /= 2;
     }
 
-  if ((((rand() % 6) == 0 && gold_needed < getGold()) || gold_needed == 0))
+  if ((((Rnd::rand() % 6) == 0 && gold_needed < getGold()) || gold_needed == 0))
     {
       HeroProto *heroproto = 
         HeroTemplates::getInstance()->getRandomHero(getId());
@@ -4577,7 +4578,7 @@ void Player::reportEndOfTurn()
 Reward* Player::giveQuestReward(Quest *quest, Stack *stack)
 {
   StackReflist *stacks = new StackReflist();
-  Reward::Type reward_type = Reward::Type(rand() % 4);
+  Reward::Type reward_type = Reward::Type(Rnd::rand() % 4);
   switch (reward_type)
     {
     case Reward::GOLD:
@@ -4591,7 +4592,7 @@ Reward* Player::giveQuestReward(Quest *quest, Stack *stack)
       break;
     case Reward::ALLIES:
         {
-          int num = (rand() % 8) + 1;
+          int num = (Rnd::rand() % 8) + 1;
           const ArmyProto *a = Reward_Allies::randomArmyAlly();
           Reward_Allies *reward = new Reward_Allies(a, num);
           giveReward(stack, reward, stacks);

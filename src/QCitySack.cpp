@@ -30,6 +30,7 @@
 #include "stack.h"
 #include "xmlhelper.h"
 #include "hero.h"
+#include "rnd.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -132,7 +133,7 @@ City * QuestCitySack::chooseToSack(Player *p)
   if (cities.empty())
     return 0;
 
-  return cities[rand() % cities.size()];
+  return cities[Rnd::rand() % cities.size()];
 }
 
 void QuestCitySack::armyDied(Army *a, bool heroIsCulprit)

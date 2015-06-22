@@ -23,6 +23,7 @@
 #include "rewardlist.h"
 #include "Sage.h"
 #include "xmlhelper.h"
+#include "rnd.h"
 
 Glib::ustring Ruin::d_tag = "ruin";
 
@@ -167,9 +168,9 @@ void Ruin::populateWithRandomReward()
 {
   int num;
   if (getType() == Ruin::STRONGHOLD)
-    num = 1 + (rand() % 2);
+    num = 1 + (Rnd::rand() % 2);
   else
-    num = rand() % 3;
+    num = Rnd::rand() % 3;
   if (num == 0)
     setReward(new Reward_Gold(Reward_Gold::getRandomGoldPieces()));
   else if (num == 1)
