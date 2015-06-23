@@ -87,7 +87,7 @@ struct Vector
 	//size_t size = v.x * max_vector_width + v.y;
 	//return size;
       //};
-   T toIndex() {return y*max_vector_width+x; }
+   int toIndex() {return y*max_vector_width+x; }
 };
 
 template <typename T>
