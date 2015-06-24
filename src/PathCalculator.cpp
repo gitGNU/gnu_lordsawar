@@ -351,7 +351,7 @@ int PathCalculator::pointsToMoveTo(Vector<int> pos, Vector<int> next) const
 
   if (enemy_city_avoidance >= 1)
     {
-      if (tile->getBuilding() == Maptile::CITY)
+      if (GameMap::getInstance()->getBuilding(pos) == Maptile::CITY)
         {
           //We will still try to avoid enemy cities a little.
           City *enemy = GameMap::getEnemyCity(pos);
