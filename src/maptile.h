@@ -105,7 +105,7 @@ class Maptile
         guint32 getIndex() const {return d_index;}
 
         //! Get which building is on the maptile.
-        Building getBuilding() const {return d_building;}
+        inline Building getBuilding() const {return d_building;}
 
         //! Get the number of moves needed to cross this maptile.
 	/**

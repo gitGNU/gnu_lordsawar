@@ -538,18 +538,19 @@ void OverviewMap::draw(Player *player)
     }
 
     //fog it up
-    for (int i = 0; i < GameMap::getWidth(); i++)
-        for (int j = 0; j < GameMap::getHeight(); j++)
-        {
-          Vector <int> pos;
-          pos.x = i;
-          pos.y = j;
-          if (Playerlist::getViewingplayer()->getFogMap()->isFogged(pos) == true)
+    if (GameScenarioOptions::s_hidden_map == true)
+      {
+        for (int i = 0; i < GameMap::getWidth(); i++)
+          for (int j = 0; j < GameMap::getHeight(); j++)
             {
-              pos = mapToSurface(pos);
-              draw_filled_rect(true, pos.x, pos.y, size, size, FOG_COLOUR);
+              Vector <int> pos = Vector<int>(i, j);
+              if (Playerlist::getViewingplayer()->getFogMap()->isFogged(pos) == true)
+                {
+                  pos = mapToSurface(pos);
+                  draw_filled_rect(true, pos.x, pos.y, size, size, FOG_COLOUR);
+                }
             }
-        }
+      }
 
     //the idea here is that we want to show what happens when an AI-owned
     //stack moves through our area.  so we block the view of computer

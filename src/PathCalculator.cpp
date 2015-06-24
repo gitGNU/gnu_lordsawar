@@ -233,9 +233,6 @@ bool PathCalculator::calcFinalMoves(Vector<int> pos, Vector<int> next)
 
 bool PathCalculator::calcMoves(Vector<int> pos, Vector<int> next)
 {
-  bool traversable = false;
-  int mp;
-  int dxy = nodes[pos.toIndex()].moves;   // always >= 0
   //am i blocked from entering sx,sy from pos?
   bool is_blocked_dir = isBlockedDir(pos, next);
   if (!flying && is_blocked_dir)
@@ -251,8 +248,9 @@ bool PathCalculator::calcMoves(Vector<int> pos, Vector<int> next)
       if (diff.x && diff.y)
 	return false;
     }
+  int dxy = nodes[pos.toIndex()].moves;   // always >= 0
   int newDsxy = dxy;
-  mp = pointsToMoveTo(pos, next);
+  int mp = pointsToMoveTo(pos, next);
   if (mp < 0)
     mp = 0;
   if (!flying && load_or_unload(pos, next, on_ship) == true)
@@ -275,9 +273,9 @@ bool PathCalculator::calcMoves(Vector<int> pos, Vector<int> next)
 	}
 
       // append the item to the queue
-      traversable = true;
+      return true;
     }
-  return traversable;
+  return false;
 }
 
 bool PathCalculator::calcFinalMoves(Vector<int> pos)
@@ -345,20 +343,21 @@ bool PathCalculator::load_or_unload(Vector<int> src, Vector<int> dest, bool &shi
 
 int PathCalculator::pointsToMoveTo(Vector<int> pos, Vector<int> next) const
 {
-  guint32 moves;
   const Maptile* tile = GameMap::getInstance()->getTile(next);
-
   if (pos == next) //probably shouldn't happen
     return 0;
 
-  moves = tile->getMoves();
+  guint32 moves = tile->getMoves();
 
   if (enemy_city_avoidance >= 1)
     {
-      //We will still try to avoid enemy cities a little.
-      City *enemy = GameMap::getEnemyCity(pos);
-      if (enemy && enemy->isBurnt() == false)
-	moves += enemy_city_avoidance;
+      if (tile->getBuilding() == Maptile::CITY)
+        {
+          //We will still try to avoid enemy cities a little.
+          City *enemy = GameMap::getEnemyCity(pos);
+          if (enemy && enemy->isBurnt() == false)
+            moves += enemy_city_avoidance;
+        }
     }
   if (enemy_stack_avoidance >= 1)
     {
@@ -390,26 +389,13 @@ bool PathCalculator::isBlockedDir(Vector<int> pos, Vector<int> next)
   int diffy = next.y - pos.y;
   if (diffx >= -1 && diffx <= 1 && diffy >= -1 && diffy <= 1) 
     {
-      int idx = 0;
-      if (diffx == -1 && diffy == -1)
-	idx = 0;
-      else if (diffx == -1 && diffy == 0)
-	idx = 1;
-      else if (diffx == -1 && diffy == 1)
-	idx = 2;
-      else if (diffx == 0 && diffy == 1)
-	idx = 3;
-      else if (diffx == 0 && diffy == -1)
-	idx = 4;
-      else if (diffx == 1 && diffy == -1)
-	idx = 5;
-      else if (diffx == 1 && diffy == 0)
-	idx = 6;
-      else if (diffx == 1 && diffy == 1)
-	idx = 7;
-      else
-	return false;
-      return GameMap::getInstance()->getTile(pos)->d_blocked[idx];
+      int idxs[3][3] =
+        {
+            { 0, 1, 2 },
+            { 4, 0, 3 },
+            { 5, 6, 7 },
+        };
+      return GameMap::getInstance()->getTile(pos)->d_blocked[idxs[diffx+1][diffy+1]];
     }
 
   return false;

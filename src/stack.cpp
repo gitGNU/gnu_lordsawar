@@ -125,15 +125,19 @@ void Stack::moveOneStep(bool skipping)
 bool Stack::isMovingToOrFromAShip(Vector<int> dest, bool &on_ship) const
 {
   Vector<int> pos = getPos();
+  GameMap *gm = GameMap::getInstance();
 
-  bool to_city = GameMap::getInstance()->getBuilding(dest) == Maptile::CITY;
-  bool on_city = GameMap::getInstance()->getBuilding(pos) == Maptile::CITY;
+  Maptile::Building src_building = gm->getBuilding(pos);
+  Maptile::Building dst_building = gm->getBuilding(dest);
 
-  bool on_port = GameMap::getInstance()->getBuilding(pos) == Maptile::PORT;
-  bool on_bridge = GameMap::getInstance()->getBuilding(pos) == Maptile::BRIDGE;
-  bool to_bridge = GameMap::getInstance()->getBuilding(dest) == Maptile::BRIDGE;
-  bool on_water = (GameMap::getInstance()->getTerrainType(pos) == Tile::WATER);
-  bool to_water = (GameMap::getInstance()->getTerrainType(dest) == Tile::WATER);
+  bool to_city = dst_building == Maptile::CITY;
+  bool on_city = src_building == Maptile::CITY;
+
+  bool on_port = src_building == Maptile::PORT;
+  bool on_bridge = src_building == Maptile::BRIDGE;
+  bool to_bridge = dst_building == Maptile::BRIDGE;
+  bool on_water = (gm->getTerrainType(pos) == Tile::WATER);
+  bool to_water = (gm->getTerrainType(dest) == Tile::WATER);
   //here we mark the armies as being on or off a boat
   /* skipping refers to when we have to move over another friendly stack
    * of a size that's too big to join with. */

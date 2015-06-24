@@ -73,7 +73,9 @@ class GameMap: public sigc::trackable
           * 
           * @return singleton instance
           */
-        static GameMap* getInstance();
+        static GameMap* getInstance() {
+          return s_instance ? s_instance : getInstance("", "", ""); };
+
 
         /** Returns singleton instance or creates a new one using the tileset
           * 
@@ -603,7 +605,7 @@ class GameMap: public sigc::trackable
          * @return Returns NULL when the given position is out of range.  
          * Otherwise a pointer to a Maptile object is returned.
          */
-        Maptile* getTile(int x, int y) const;
+        inline Maptile* getTile(int x, int y) const { return d_map[y*s_width + x]; };
 
         /** Return a pointer to the Maptile object at the given position.
          *
@@ -614,7 +616,7 @@ class GameMap: public sigc::trackable
          * @return Returns NULL when the given position is out of range.  
          * Otherwise a pointer to a Maptile object is returned.
          */
-        Maptile* getTile(Vector<int> p) const {return getTile(p.x, p.y);}
+        inline Maptile* getTile(Vector<int> p) const {return getTile(p.x, p.y);}
 
         /** Try to insert an Army in this Location on the map.
          *
@@ -1003,7 +1005,11 @@ class GameMap: public sigc::trackable
          * position, or Maptile::NONE if one is not present, or if the given
          * position is out of range.
          */
-	Maptile::Building getBuilding(Vector<int> tile);
+	inline Maptile::Building getBuilding(Vector<int> tile) const
+          {
+            Maptile *t = getTile(tile);
+            return t ? t->getBuilding() : Maptile::NONE;
+          }
 
         /** Count the number of tiles occupied by buildings of a given type.
          *
@@ -1021,7 +1027,11 @@ class GameMap: public sigc::trackable
          * @return Returns a Tile::Type for the given position.  Tile::NONE is
          * returned if the given position is out of bounds.
          */
-	Tile::Type getTerrainType(Vector<int> tile);
+	inline Tile::Type getTerrainType(Vector<int> tile) const
+          {
+            Maptile *t = getTile(tile);
+            return t ? t->getType() : Tile::NONE;
+          }
 
         /** Change the building type of a tile.
          *

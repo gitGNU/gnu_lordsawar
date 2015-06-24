@@ -77,14 +77,6 @@ Tileset* GameMap::s_tileset = 0;
 Cityset* GameMap::s_cityset = 0;
 Shieldset* GameMap::s_shieldset = 0;
 
-GameMap* GameMap::getInstance()
-{
-    if (s_instance != 0)
-      return s_instance;
-    else
-      return getInstance("", "", "");
-}
-
 
 GameMap* GameMap::getInstance(Glib::ustring TilesetName, 
 			      Glib::ustring ShieldsetName, 
@@ -379,17 +371,6 @@ void GameMap::setTile(int x, int y, Maptile *tile)
     delete d_map[y*s_width + x];
     d_map[y*s_width + x] = tile;
     applyTileStyle (y, x);
-}
-
-Maptile* GameMap::getTile(int x, int y) const
-{
-  if (x < 0 && x >= s_width && y < 0 && y >= s_height)
-    {
-      printf("%d,%d > or < %d,%d\n", x, y, s_width, s_height);
-    }
-  assert(x >= 0 && x < s_width && y >= 0 && y < s_height);
-
-  return d_map[y*s_width + x];
 }
 
 Stack* GameMap::addArmy(Vector<int> pos, Army *a)
@@ -1627,21 +1608,6 @@ bool GameMap::moveBuilding(Vector<int> from, Vector<int> to, guint32 new_width)
 	}
     }
   return moved;
-}
-
-Tile::Type GameMap::getTerrainType(Vector<int> tile)
-{
-  if (getTile(tile))
-    return getTile(tile)->getType();
-  else
-    return Tile::NONE;
-}
-
-Maptile::Building GameMap::getBuilding(Vector<int> tile)
-{
-  if (getTile(tile))
-    return getTile(tile)->getBuilding();
-  return Maptile::NONE;
 }
 
 void GameMap::setBuilding(Vector<int> tile, Maptile::Building building)

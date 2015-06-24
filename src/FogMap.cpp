@@ -146,6 +146,8 @@ FogMap::ShadeType FogMap::getShadeTile(Vector<int> pos) const
 
 void FogMap::alterFogRadius(Vector<int> pt, int radius, FogType new_type)
 {
+    if (GameScenarioOptions::s_hidden_map == false)
+      return;
     // this doesn't draw a circle, it draws a square
     // it isn't a bug, except for being badly named
     int x = pt.x - radius;
@@ -165,6 +167,8 @@ void FogMap::alterFogRadius(Vector<int> pt, int radius, FogType new_type)
 
 void FogMap::alterFogRectangle(Vector<int> pt, int height, int width, FogType new_type)
 {
+    if (GameScenarioOptions::s_hidden_map == false)
+      return;
     int x = pt.x;
     int y = pt.y;
     for (int i = 0; i < height; i++)
