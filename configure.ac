@@ -133,6 +133,11 @@ rm -f src/main.o
 eval LORDSAWAR_DATADIR="$datadir/lordsawar"
 AC_SUBST(LORDSAWAR_DATADIR)
 
+eval eval DATADIR="$datadir"
+AC_SUBST(DATADIR)
+
+AC_CONFIG_FILES([make-windows-zip.sh],[chmod +x make-windows-zip.sh])
+
 AC_CONFIG_FILES([
         dat/Makefile 
         dat/icons/Makefile 
