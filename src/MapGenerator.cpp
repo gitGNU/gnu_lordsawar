@@ -789,6 +789,7 @@ void MapGenerator::makeRivers()
  */
 void MapGenerator::makeTerrain(Tile::Type t, int percent, bool contin)
 {
+    int tries = 0;
     // calculate the total number of tiles for this terrain
     int terrain = d_width*d_height*percent / 100;
     int placed = 0;  // total of current terrain placed so far 
@@ -799,7 +800,12 @@ void MapGenerator::makeTerrain(Tile::Type t, int percent, bool contin)
         int x = Rnd::rand() % d_width;
         int y = Rnd::rand() % d_height;
         if (seekPlain(x, y) == false)
+        {
+          tries++;
+          if (tries > 30000)
+            break;
           continue;
+        }
 
 
         // now go on until we hit a dead end
