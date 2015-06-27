@@ -166,7 +166,7 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     debug("Making random map:");
    
     // create the terrain
-    debug("flatening plains");
+    debug("flattening plains");
     progress.emit(.090, _("flattening plains..."));
     makePlains();
     debug("raining water");
