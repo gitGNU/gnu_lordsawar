@@ -279,6 +279,7 @@ class MapGenerator
         void normalize();
 
 	bool makeRoad(int src_x, int src_y, int dest_x, int dest_y);
+        void cleanupRoads();
 	bool makeRoad(Vector<int> src, Vector<int>dest);
 	int tryRoad(int src_x, int src_y, int dest_x, int dest_y);
 	int tryRoad(Vector<int> src, Vector<int>dest);

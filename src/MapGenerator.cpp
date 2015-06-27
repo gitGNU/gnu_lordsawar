@@ -133,6 +133,20 @@ void MapGenerator::setPercentages(int pwater, int pforest, int pswamp,
     d_pmountains = pmountains;
 }
 
+void MapGenerator::cleanupRoads()
+{
+  /*
+   * in rare cases, we can make roads on water.  this routine gets rid of them.
+   */
+  for (int i = 0; i < d_height; i++)
+    for (int j = 0; j < d_width; j++)
+      {
+        if (d_building[i*d_width + j] == Maptile::ROAD &&
+            d_terrain[i*d_width + j] == Tile::WATER)
+          d_building[i*d_width + j] = Maptile::NONE;
+      }
+}
+
 /** 
  * Generates a random map . The map is stored as a char array of size 
  * 100x100. Each character stands for something. We use :
@@ -220,6 +234,7 @@ void MapGenerator::makeMap(int width, int height, bool roads)
         progress.emit(.950, _("building bridges..."));
         makeBridges();
       }
+    cleanupRoads();
     debug("raising signs");
     progress.emit(.990, _("raising signs..."));
     makeBuildings(Maptile::SIGNPOST,d_nosignposts);
