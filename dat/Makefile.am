@@ -31,6 +31,7 @@ lwdesktop_DATA= lordsawar.desktop lordsawar-editor.desktop
 
 EXTRA_DIST = \
     README \
+    appdata.xml \
     citynames.xml.in \
     heronames.xml.in \
     templenames.xml.in \
