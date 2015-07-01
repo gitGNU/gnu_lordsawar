@@ -29,9 +29,11 @@ lordsawar-editor.desktop: lordsawar-editor.desktop.in $(wildcard $(top_srcdir)/p
 lwdesktopdir= $(datadir)/applications
 lwdesktop_DATA= lordsawar.desktop lordsawar-editor.desktop
 
+appdatadir=$(datadir)/appdata
+appdata_DATA=lordsawar-appdata.xml
+
 EXTRA_DIST = \
     README \
-    appdata.xml \
     citynames.xml.in \
     heronames.xml.in \
     templenames.xml.in \
