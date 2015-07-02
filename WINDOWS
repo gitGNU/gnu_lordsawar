@@ -16,6 +16,8 @@ $ sudo make install
 
 The approach here is to set the datadir to ".", so that we can put all of the data files in the same directory as the exe.  Compiling "." as the datadir into the program means that the default configuration file will be written with this path -- and the data files will be found on the first run without the user having to manually munge the .lordsawarrc file.
 
+The LDFLAGS="-mwindows" ensures that we run our .exe without a terminal.
+
 Sound is disabled because Fedora lacks a mingw-compiled gstreamermm package.
 
 
