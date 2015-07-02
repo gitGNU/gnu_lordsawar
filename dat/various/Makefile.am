@@ -40,7 +40,9 @@ various_DATA = \
     diplomacy-small.png \
     diplomacy-large.png \
     castle_icon.png \
+    castle_icon.ico \
     tileset_icon.png \
+    tileset_icon.ico \
     parley_offered.png \
     parley_refused.png \
     hero-newlevel-female.png \
@@ -85,7 +87,9 @@ EXTRA_DIST = \
     diplomacy-small.png \
     diplomacy-large.png \
     castle_icon.png \
+    castle_icon.ico \
     tileset_icon.png \
+    tileset_icon.ico \
     parley_offered.png \
     parley_refused.png \
     hero-newlevel-female.png \
