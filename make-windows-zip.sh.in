@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (C) 2015 Ben Asselstine
+# this script is licensed under the terms of the GNU GPL version 3, or later.
 
 if [ ! -f configure.ac ]; then
   echo We need you to run this script in the top level directory of the lordsawar source tree.
