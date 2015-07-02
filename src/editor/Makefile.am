@@ -102,7 +102,7 @@ lordsawar_editor_SOURCES = \
 	
 if WINDOWS_OS
 
-lordsawar_editor_SOURCES += ${top_srcdir}/dat/lordsawar.rc
+lordsawar_editor_SOURCES += ${top_srcdir}/dat/lordsawar-editor.rc
 .rc.o:
 	i686-w64-mingw32-windres -I ../../ -i $< $@
 SUFFIXES=.rc
