@@ -77,7 +77,7 @@ echo "!insertmacro MUI_PAGE_INSTFILES" >> $nsiscript
 echo "!define MUI_FINISHPAGE_NOAUTOCLOSE" >> $nsiscript
 echo "!define MUI_FINISHPAGE_RUN" >> $nsiscript
 echo "!define MUI_FINISHPAGE_RUN_NOTCHECKED" >> $nsiscript
-echo "!define MUI_FINISHPAGE_RUN_TEXT \"Start a shortcut\"" >> $nsiscript
+echo "!define MUI_FINISHPAGE_RUN_TEXT \"Start playing LordsAWar! right now\"" >> $nsiscript
 echo "!define MUI_FINISHPAGE_RUN_FUNCTION \"LaunchLink\"" >> $nsiscript
 echo "!insertmacro MUI_PAGE_FINISH" >> $nsiscript
 echo "!insertmacro MUI_LANGUAGE \"English\"" >> $nsiscript
