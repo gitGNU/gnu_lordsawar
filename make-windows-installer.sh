@@ -70,6 +70,17 @@ nsiscript=`mktemp /tmp/lordsawar-windows.XXXXXX`
 echo "Name \"LordsAWar!\"" >> $nsiscript
 echo "OutFile \"lordsawar-setup.exe\"" >> $nsiscript
 echo "InstallDir \"\$PROGRAMFILES32\\LordsAWar\"" >> $nsiscript
+echo "!include \"MUI.nsh\"" >> $nsiscript
+echo "!insertmacro MUI_PAGE_WELCOME" >> $nsiscript
+echo "!insertmacro MUI_PAGE_DIRECTORY" >> $nsiscript
+echo "!insertmacro MUI_PAGE_INSTFILES" >> $nsiscript
+echo "!define MUI_FINISHPAGE_NOAUTOCLOSE" >> $nsiscript
+echo "!define MUI_FINISHPAGE_RUN" >> $nsiscript
+echo "!define MUI_FINISHPAGE_RUN_NOTCHECKED" >> $nsiscript
+echo "!define MUI_FINISHPAGE_RUN_TEXT \"Start a shortcut\"" >> $nsiscript
+echo "!define MUI_FINISHPAGE_RUN_FUNCTION \"LaunchLink\"" >> $nsiscript
+echo "!insertmacro MUI_PAGE_FINISH" >> $nsiscript
+echo "!insertmacro MUI_LANGUAGE \"English\"" >> $nsiscript
 echo "Section \"install\"" >> $nsiscript
 echo "  SetOutPath \"\$INSTDIR\"" >> $nsiscript
 
@@ -91,7 +102,6 @@ while IFS='' read -r line || [[ -n $line ]]; do
   echo "  File /r $dir" >> $nsiscript
 done < "$dirlist"
 echo "  WriteUninstaller \"\$INSTDIR\\Uninstall.exe\"" >> $nsiscript
-echo "  ExecShell \"open\" \"\$Desktop\\lordsawar.lnk\"" >> $nsiscript
 echo "SectionEnd" >> $nsiscript
 
 echo "Section \"Uninstall\"" >> $nsiscript
@@ -102,14 +112,21 @@ echo "  delete \"\$DESKTOP\\lordsawar-editor.lnk\"" >> $nsiscript
 echo "  delete \"\$INSTDIR\\Uninstall.exe\"" >> $nsiscript
 echo "SectionEnd" >> $nsiscript
 
+echo "Function LaunchLink" >> $nsiscript
+echo "  ExecShell \"open\" \"\$Desktop\\lordsawar.lnk\"" >> $nsiscript
+echo "FunctionEnd" >> $nsiscript
 echo "Generated this .nsi script:"
 cat $nsiscript
 echo "------"
 echo "Please wait while we generate lordsawar-setup.exe..."
 
 cd $tmpdir/lordsawar-windows
-makensis -V0 -NOCD $nsiscript
-cp $tmpdir/lordsawar-windows/lordsawar-setup.exe $orig
+makensis -NOCD $nsiscript
+if [ -f $tmpdir/lordsawar-windows/lordsawar-setup.exe ]; then
+  cp $tmpdir/lordsawar-windows/lordsawar-setup.exe $orig
+else
+  echo "Error: something went wrong when creating the installer."
+fi
 cd $orig
 # cleanup
 rm $dirlist
