@@ -34,6 +34,7 @@ appdata_DATA=lordsawar-appdata.xml
 
 EXTRA_DIST = \
     README \
+    lordsawar-appdata.xml \
     citynames.xml.in \
     heronames.xml.in \
     templenames.xml.in \
