@@ -90,7 +90,7 @@ class EditorBigMap: public BigMap
     Vector<int> moving_objects_from;
 
     enum {
-	NONE, DRAGGING
+	NONE, DRAGGING, MOVE_DRAGGING
     } mouse_state;
 
     virtual void after_draw();

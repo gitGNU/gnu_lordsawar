@@ -74,7 +74,7 @@ ProdSlotlist::ProdSlotlist(const ProdSlotlist& c)
 {
   for (std::vector<ProdSlot*>::const_iterator it = c.begin(); 
        it != c.end(); it++)
-      push_back(*it);
+    push_back(new ProdSlot(*(*it)));
 }
 
 bool ProdSlotlist::save(XML_Helper* helper) const

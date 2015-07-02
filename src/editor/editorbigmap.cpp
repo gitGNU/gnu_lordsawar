@@ -97,8 +97,16 @@ void EditorBigMap::mouse_button_event(MouseButtonEvent e)
   mouse_pos = e.pos;
 
   if (e.button == MouseButtonEvent::LEFT_BUTTON
-      && e.state == MouseButtonEvent::PRESSED)
+      && e.state == MouseButtonEvent::PRESSED &&
+      mouse_state == NONE)
     change_map_under_cursor();
+  else if (e.button == MouseButtonEvent::LEFT_BUTTON &&
+           e.state == MouseButtonEvent::RELEASED &&
+           mouse_state == MOVE_DRAGGING && pointer == MOVE)
+    {
+      mouse_state = NONE;
+      change_map_under_cursor();
+    }
   else if (e.button == MouseButtonEvent::RIGHT_BUTTON
            && e.state == MouseButtonEvent::PRESSED)
     bring_up_details();
@@ -120,7 +128,8 @@ void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
     }
 
     // draw with left mouse button
-    if (e.pressed[MouseMotionEvent::LEFT_BUTTON])
+    if (e.pressed[MouseMotionEvent::LEFT_BUTTON] &&
+        mouse_state == NONE)
     {
 	change_map_under_cursor();
     }
@@ -161,6 +170,10 @@ void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
 	redraw = false;
 	mouse_state = DRAGGING;
     }
+    else if (e.pressed[MouseMotionEvent::LEFT_BUTTON] &&
+             (mouse_state == NONE || mouse_state == MOVE_DRAGGING) &&
+             pointer == MOVE)
+      mouse_state = MOVE_DRAGGING;
 
     if (redraw && pointer != POINTER)
 	draw(Playerlist::getViewingplayer());
@@ -273,7 +286,6 @@ int EditorBigMap::tile_to_bridge_type(Vector<int> t)
 
 void EditorBigMap::change_map_under_cursor()
 {
-
   Player* active = Playerlist::getInstance()->getActiveplayer();
   std::vector<Vector<int> > tiles = get_cursor_tiles();
 
@@ -298,14 +310,17 @@ void EditorBigMap::change_map_under_cursor()
     case MOVE:
       if (moving_objects_from == Vector<int>(-1,-1))
         {
-          if (GameMap::getInstance()->getBuilding(tile) != 
-              Maptile::NONE || 
+          if (GameMap::getInstance()->getBuilding(tile) != Maptile::NONE ||
               GameMap::getStack(tile) != NULL ||
               GameMap::getBackpack(tile)->empty() == false)
             moving_objects_from = tile;
         }
       else
         {
+          if (mouse_state == MOVE_DRAGGING)
+            break;
+          if (moving_objects_from == tile)
+            break;
           Vector<int> from = moving_objects_from;
           //here we go with the move!
           GameMap *gm = GameMap::getInstance();
