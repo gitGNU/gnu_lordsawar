@@ -136,6 +136,14 @@ AC_SUBST(LORDSAWAR_DATADIR)
 eval eval DATADIR="$datadir"
 AC_SUBST(DATADIR)
 
+echo "$ac_cv_host" | grep "mingw" --quiet
+if test "$?" = "x0"; then
+        wincheck=true
+else
+        wincheck=false
+fi
+AM_CONDITIONAL([WINDOWS_OS], [test x$wincheck = xtrue])
+
 AC_CONFIG_FILES([make-windows-zip.sh],[chmod +x make-windows-zip.sh])
 
 AC_CONFIG_FILES([

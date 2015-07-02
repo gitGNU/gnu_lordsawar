@@ -14,7 +14,7 @@ lordsawardata_DATA = \
 
 DISTCLEANFILES = citynames.xml heronames.xml templenames.xml ruinnames.xml signposts.xml lordsawar.desktop lordsawar.desktop.in lordsawar-editor.desktop lordsawar-editor.desktop.in
 
-CLEANFILES=desktop-foo desktop-bar
+CLEANFILES=desktop-foo desktop-bar lordsawar.o
 
 lordsawar.desktop: lordsawar.desktop.in $(wildcard $(top_srcdir)/po/*.po)
 		sed -e 's|.[{]prefix[}]|${prefix}|' lordsawar.desktop.in > desktop-foo \

@@ -131,6 +131,15 @@ lordsawar_SOURCES = armymap.cpp armymap.h \
 	sidebar-stats.h game.cpp game.h gamebigmap.cpp gamebigmap.h \
 	snd.cpp snd.h main.cpp 
 
+if WINDOWS_OS
+
+lordsawar_SOURCES += ${top_srcdir}/dat/lordsawar.rc
+.rc.o:
+	i686-w64-mingw32-windres -I .. -i $< $@
+SUFFIXES=.rc
+
+endif
+
 lordsawar_upgrade_file_SOURCES = upgrade-file.cpp
 
 lordsawar_upgrade_file_LDADD = liblordsawar.la \

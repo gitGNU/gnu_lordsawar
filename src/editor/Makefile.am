@@ -100,6 +100,15 @@ lordsawar_editor_SOURCES = \
 	fight-order-editor-dialog.cpp fight-order-editor-dialog.h \
 	road-editor-tip.cpp road-editor-tip.h
 	
+if WINDOWS_OS
+
+lordsawar_editor_SOURCES += ${top_srcdir}/dat/lordsawar.rc
+.rc.o:
+	i686-w64-mingw32-windres -I ../../ -i $< $@
+SUFFIXES=.rc
+
+endif
+
 lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \
