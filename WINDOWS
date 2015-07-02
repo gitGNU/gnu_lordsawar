@@ -10,7 +10,7 @@ $ ./autogen.sh
 
 $ mingw32-configure --disable-gls --disable-ghs --disable-sound --program-prefix=""
 
-$ LORDSAWAR_DATADIR="." make -e -j4
+$ LDFLAGS="-mwindows" LORDSAWAR_DATADIR="." make -e -j4
 
 $ sudo make install
 
