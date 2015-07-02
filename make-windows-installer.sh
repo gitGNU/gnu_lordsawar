@@ -67,8 +67,9 @@ cd $orig
 
 nsiscript=`mktemp /tmp/lordsawar-windows.XXXXXX`
  
-echo "OutFile \"setup.exe\"" >> $nsiscript
-echo "InstallDir \"\$PROGRAMFILES/LordsAWar\"" >> $nsiscript
+echo "Name \"LordsAWar!\"" >> $nsiscript
+echo "OutFile \"lordsawar-setup.exe\"" >> $nsiscript
+echo "InstallDir \"\$PROGRAMFILES32\\LordsAWar\"" >> $nsiscript
 echo "Section \"install\"" >> $nsiscript
 echo "  SetOutPath \"\$INSTDIR\"" >> $nsiscript
 
@@ -76,6 +77,8 @@ while IFS='' read -r line || [[ -n $line ]]; do
   echo -n "  File " >> $nsiscript
   echo $line | sed -e 's/^.\/lordsawar-windows\///g' >> $nsiscript
 done < "$filelist"
+echo "  CreateShortcut \"\$DESKTOP\\lordsawar.lnk\" \"\$INSTDIR\\lordsawar.exe\" \"\" \"\$INSTDIR\\various\\castle_icon.ico\"" >> $nsiscript
+echo "  CreateShortcut \"\$DESKTOP\\lordsawar-editor.lnk\" \"\$INSTDIR\\lordsawar-editor.exe\" \"\" \"\$INSTDIR\\various\\tileset_icon.ico\"" >> $nsiscript
 
 while IFS='' read -r line || [[ -n $line ]]; do
   if [ "x$line" == "x." ]; then
@@ -85,20 +88,28 @@ while IFS='' read -r line || [[ -n $line ]]; do
     continue
   fi
   dir=`echo $line | sed -e 's/^.\/lordsawar-windows\///g'`
-  echo "  SetOutPath \"\$INSTDIR\\$dir\"" >> $nsiscript
   echo "  File /r $dir" >> $nsiscript
 done < "$dirlist"
 echo "  WriteUninstaller \"\$INSTDIR\\Uninstall.exe\"" >> $nsiscript
+echo "  ExecShell \"open\" \"\$Desktop\\lordsawar.lnk\"" >> $nsiscript
 echo "SectionEnd" >> $nsiscript
 
 echo "Section \"Uninstall\"" >> $nsiscript
 echo "  RMDir /r \"\$INSTDIR\*.*\"" >> $nsiscript
 echo "  RMDir \"\$INSTDIR\"" >> $nsiscript
+echo "  delete \"\$DESKTOP\\lordsawar.lnk\"" >> $nsiscript
+echo "  delete \"\$DESKTOP\\lordsawar-editor.lnk\"" >> $nsiscript
+echo "  delete \"\$INSTDIR\\Uninstall.exe\"" >> $nsiscript
 echo "SectionEnd" >> $nsiscript
 
+echo "Generated this .nsi script:"
+cat $nsiscript
+echo "------"
+echo "Please wait while we generate lordsawar-setup.exe..."
+
 cd $tmpdir/lordsawar-windows
-makensis -NOCD $nsiscript
-cp $tmpdir/lordsawar-windows/setup.exe $orig
+makensis -V0 -NOCD $nsiscript
+cp $tmpdir/lordsawar-windows/lordsawar-setup.exe $orig
 cd $orig
 # cleanup
 rm $dirlist
@@ -107,3 +118,4 @@ if [ -d $tmpdir ]; then
   rm -rf $tmpdir
 fi
 rm $nsiscript
+echo "Done."
