@@ -31,6 +31,12 @@
 #include "PixMask.h"
 #include "maptile.h"
 
+class Road;
+class City;
+class Temple;
+class Ruin;
+class Bridge;
+class Stack;
 class SelectorPixMaskCacheItem;
 class ArmyPixMaskCacheItem;
 class FlagPixMaskCacheItem;
@@ -186,6 +192,7 @@ class ImageCache
           * @param type         the type of the ruin
           * @return image of the ruin 
           */
+        PixMask* getRuinPic(Ruin *r);
         PixMask* getRuinPic(int type);
         PixMask* getRuinPic(int type, guint32 cityset);
 
@@ -202,6 +209,7 @@ class ImageCache
           * @param type         the type of the temple
           * @return image of the temple
           */
+        PixMask* getTemplePic(Temple *t);
         PixMask* getTemplePic(int type);
         PixMask* getTemplePic(int type, guint32 cityset);
 
@@ -210,6 +218,7 @@ class ImageCache
           * @param type         the type of the road
           * @return image of the road
           */
+        PixMask* getRoadPic(Road *r);
         PixMask* getRoadPic(int type, guint32 tileset);
         PixMask* getRoadPic(int type);
 
@@ -226,6 +235,7 @@ class ImageCache
           * @param type         the type of the bridge 0=e/w 1=n/s
           * @return image of the bridge
           */
+        PixMask* getBridgePic(Bridge *b);
         PixMask* getBridgePic(int type, guint32 tileset);
         PixMask* getBridgePic(int type);
 

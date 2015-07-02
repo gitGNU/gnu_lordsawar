@@ -32,6 +32,10 @@
 #include "Configuration.h"
 #include "city.h"
 #include "Tile.h"
+#include "ruin.h"
+#include "temple.h"
+#include "road.h"
+#include "bridge.h"
 #include "FogMap.h"
 
 ImageCache* ImageCache::s_instance = 0;
@@ -831,6 +835,12 @@ PixMask* ImageCache::getTowerPic(const Player* p, guint32 cityset)
   return s;
 }
 
+PixMask* ImageCache::getTemplePic(Temple *t)
+{
+  guint32 cityset = GameMap::getInstance()->getCitysetId();
+  return getTemplePic(t->getType(), cityset);
+}
+
 PixMask* ImageCache::getTemplePic(int type)
 {
   guint32 cityset = GameMap::getInstance()->getCitysetId();
@@ -850,6 +860,11 @@ PixMask* ImageCache::getTemplePic(int type, guint32 cityset)
   return s;
 }
 
+PixMask* ImageCache::getRuinPic(Ruin *ruin)
+{
+  guint32 cityset = GameMap::getInstance()->getCitysetId();
+  return getRuinPic(ruin->getType(), cityset);
+}
 PixMask* ImageCache::getRuinPic(int type)
 {
   guint32 cityset = GameMap::getInstance()->getCitysetId();
@@ -880,6 +895,11 @@ PixMask* ImageCache::getDiplomacyPic(int type, Player::DiplomaticState state)
   if (added)
     checkPictures();
   return s;
+}
+
+PixMask* ImageCache::getRoadPic(Road *r)
+{
+  return ImageCache::getRoadPic(r->getType());
 }
 
 PixMask* ImageCache::getRoadPic(int type)
@@ -916,6 +936,11 @@ PixMask* ImageCache::getFogPic(int type, guint32 tileset)
   if (added)
     checkPictures();
   return s;
+}
+
+PixMask* ImageCache::getBridgePic(Bridge *b)
+{
+  return getBridgePic(b->getType());
 }
 
 PixMask* ImageCache::getBridgePic(int type)

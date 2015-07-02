@@ -102,6 +102,7 @@ class EditorBigMap: public BigMap
     std::vector<Vector<int> > get_screen_tiles();
     bool show_tile_types_instead_of_tile_styles;
     void bring_up_details();
+    void display_moving_building(Vector<int> src, Vector<int> dest);
 };
 
 #endif

@@ -129,10 +129,8 @@ void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
 
     // draw with left mouse button
     if (e.pressed[MouseMotionEvent::LEFT_BUTTON] &&
-        mouse_state == NONE)
-    {
-	change_map_under_cursor();
-    }
+        pointer != MOVE)
+      change_map_under_cursor();
     
     // drag with right mouse button
     if (e.pressed[MouseMotionEvent::RIGHT_BUTTON]
@@ -319,8 +317,6 @@ void EditorBigMap::change_map_under_cursor()
         {
           if (mouse_state == MOVE_DRAGGING)
             break;
-          if (moving_objects_from == tile)
-            break;
           Vector<int> from = moving_objects_from;
           //here we go with the move!
           GameMap *gm = GameMap::getInstance();
@@ -329,7 +325,7 @@ void EditorBigMap::change_map_under_cursor()
               Stack *s = gm->getStack(from);
               if (!s)
                 s = gm->getStack(from);
-              std::list<Stack *> enemy_stacks = 
+              std::list<Stack *> enemy_stacks =
                 gm->getEnemyStacks(tile, s->getOwner());
               if (gm->canPutStack(s->size(), s->getOwner(), tile) == true &&
                   enemy_stacks.empty() == true)
@@ -351,33 +347,24 @@ void EditorBigMap::change_map_under_cursor()
                       //also we need to clear the active stack to have it show.
                       gm->getStack(tile)->getOwner()->setActivestack(0);
                     }
-                  moving_objects_from = Vector<int>(-1,-1);
                 }
             }
           else if (gm->getBackpack(from)->empty() == false)
-            {
-              gm->moveBackpack(from, tile);
-              moving_objects_from = Vector<int>(-1,-1);
-            }
+            gm->moveBackpack(from, tile);
           else if (gm->getBuilding(from) != Maptile::NONE)
             {
               guint32 s = gm->getBuildingSize(from);
               if (gm->canPutBuilding
                   (gm->getBuilding(from), s, tile, false) == true)
-                {
-                  gm->moveBuilding(from, tile);
-                  moving_objects_from = Vector<int>(-1,-1);
-                }
+                gm->moveBuilding(from, tile);
               else
                 {
                   if (gm->getLocation(from)->contains(tile) ||
                       LocationBox(tile, s).contains(from))
-                    {
-                      gm->moveBuilding(from, tile);
-                      moving_objects_from = Vector<int>(-1,-1);
-                    }
+                    gm->moveBuilding(from, tile);
                 }
             }
+          moving_objects_from = Vector<int>(-1,-1);
         }
       break;
     case ERASE:
@@ -588,6 +575,39 @@ void EditorBigMap::smooth_view()
   draw(Playerlist::getViewingplayer());
 }
 
+void EditorBigMap::display_moving_building(Vector<int> src, Vector<int> dest)
+{
+  PixMask *pic = NULL;
+  switch (GameMap::getInstance()->getBuilding(src))
+    {
+    case Maptile::CITY:
+      pic = ImageCache::getInstance()->getCityPic (GameMap::getCity (src));
+      break;
+    case Maptile::RUIN:
+      pic = ImageCache::getInstance()->getRuinPic (GameMap::getRuin (src));
+      break;
+    case Maptile::TEMPLE:
+      pic = ImageCache::getInstance()->getTemplePic (GameMap::getTemple (src));
+      break;
+    case Maptile::SIGNPOST:
+      pic = ImageCache::getInstance()->getSignpostPic ();
+      break;
+    case Maptile::ROAD:
+      pic = ImageCache::getInstance()->getRoadPic (GameMap::getRoad (src));
+      break;
+    case Maptile::PORT:
+      pic = ImageCache::getInstance()->getPortPic ();
+      break;
+    case Maptile::BRIDGE:
+      pic = ImageCache::getInstance()->getBridgePic (GameMap::getBridge (src));
+      break;
+    default:
+      break;
+    }
+  if (pic)
+    pic->blit(buffer, dest);
+}
+
 void EditorBigMap::after_draw()
 {
     int tilesize = GameMap::getInstance()->getTileSize();
@@ -671,9 +691,52 @@ void EditorBigMap::after_draw()
 
 	  case MOVE:
 	    if (moving_objects_from != Vector<int>(-1,-1))
-              buffer_gc->set_source_rgb(moving_box_color.get_red(),
-                                        moving_box_color.get_green(),
-                                        moving_box_color.get_blue());
+              {
+                Vector<int> tile = *i;
+                buffer_gc->set_source_rgb(moving_box_color.get_red(),
+                                          moving_box_color.get_green(),
+                                          moving_box_color.get_blue());
+                GameMap *gm = GameMap::getInstance();
+                Vector<int> from = moving_objects_from;
+                if (gm->getStack(from) != NULL)
+                  {
+                    Stack *s = gm->getStack(from);
+                    if (!s)
+                      s = gm->getStack(from);
+                    std::list<Stack *> enemy_stacks = 
+                      gm->getEnemyStacks(tile, s->getOwner());
+                    if (gm->canPutStack(s->size(), s->getOwner(), tile) == true &&
+                        enemy_stacks.empty() == true)
+                      {
+                        Playerlist *plist = Playerlist::getInstance();
+                        pic = ImageCache::getInstance()->getArmyPic
+                          (plist->getActiveplayer()->getArmyset(), 0,
+                           plist->getActiveplayer(), NULL);
+                        pic->blit(buffer, pos);
+                        pic = ImageCache::getInstance()->getFlagPic
+                          (gm->countArmyUnits(s->getPos()),
+                           plist->getActiveplayer());
+                        pic->blit(buffer, pos);
+                      }
+                  }
+                else if (gm->getBackpack(from)->empty() == false)
+                  {
+                    pic = ImageCache::getInstance()->getBagPic();
+                    pic->blit(buffer, pos);
+                  }
+                else if (gm->getBuilding(from) != Maptile::NONE)
+                  {
+                    guint32 s = gm->getBuildingSize(from);
+                    bool same = false;
+                    if (gm->getLocation(from)->contains(tile) ||
+                        LocationBox(tile, s).contains(from))
+                      same = true;
+                    if (gm->canPutBuilding
+                        (gm->getBuilding(from), s, tile, false) == true ||
+                        same)
+                      display_moving_building (from, pos);
+                  }
+              }
 	    else
               buffer_gc->set_source_rgb(move_box_color.get_red(),
                                         move_box_color.get_green(),
