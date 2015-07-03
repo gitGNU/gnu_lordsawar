@@ -151,8 +151,7 @@ lordsawar_upgrade_file_LDADD = liblordsawar.la \
     $(XSLT_LIBS) \
     $(ARCHIVE_LIBS) \
     $(LIBSIGC_LIBS) \
-    -lz \
-    @LIBINTL@
+    -lz
 
 lordsawar_upgrade_file_DEPENDENCIES = \
   liblordsawar.la \
@@ -183,8 +182,7 @@ lordsawar_LDADD = liblordsawar.la \
     $(ARCHIVE_LIBS) \
     $(LIBSIGC_LIBS) \
     -lz \
-    gui/liblwgui.la \
-    @LIBINTL@
+    gui/liblwgui.la
 
 lordsawar_DEPENDENCIES = \
   liblordsawar.la \

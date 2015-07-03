@@ -39,12 +39,6 @@ dnl check for libxml and libxslt
 PKG_CHECK_MODULES(XSLT, [libxslt >= 1.1.20])
 AC_SUBST(XSLT_CFLAGS)
 
-
-#if test $winnls = no ; then
-AM_GNU_GETTEXT_VERSION([0.18.3])
-AM_GNU_GETTEXT([external])
-#fi
-
 dnl Check for glib
 
 PKG_CHECK_MODULES(GLIBMM, glibmm-2.4)

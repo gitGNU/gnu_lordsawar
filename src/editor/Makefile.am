@@ -32,7 +32,7 @@ lordsawar_import_LDADD = $(top_builddir)/src/gui/liblwgui.la \
 			$(XSLT_LIBS) \
 			$(ARCHIVE_LIBS) \
 			-lz \
-			@LIBINTL@ -L$(top_builddir)/src
+			-L$(top_builddir)/src
 
 
 libeditutil_la_SOURCES = \
@@ -122,7 +122,7 @@ lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
     			 $(XSLT_LIBS) \
     			 $(ARCHIVE_LIBS) \
                          -lz \
-                         @LIBINTL@ -L$(top_builddir)/src
+                         -L$(top_builddir)/src
 
 endif
 

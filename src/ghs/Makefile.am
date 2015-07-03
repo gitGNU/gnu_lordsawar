@@ -33,8 +33,7 @@ lordsawar_game_host_client_LDADD = \
                                   $(XSLT_LIBS) \
                                   $(XMLPP_LIBS) \
                                   $(ARCHIVE_LIBS) \
-                                  -lz \
-                                  @LIBINTL@
+                                  -lz
 
 lordsawar_game_host_server_SOURCES = main.cpp \
   gamehost-server.cpp gamehost-server.h 
@@ -50,8 +49,7 @@ lordsawar_game_host_server_LDADD = \
                                   $(XSLT_LIBS) \
                                   $(XMLPP_LIBS) \
                                   $(ARCHIVE_LIBS) \
-                                  -lz \
-                                  @LIBINTL@ 
+                                  -lz
 endif
 
 
