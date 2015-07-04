@@ -3,7 +3,7 @@
 # this script is licensed under the terms of the GNU GPL version 3, or later.
 #
 # make a windows installer using NSIS and the zip file that gets generated 
-# by running make-lordsawar.zip.sh
+# by running make-windows-zip.sh
 
 #let's make sure the lordsawar-windows.zip file is in place.
 if [ !  -x ./make-windows-zip.sh ]; then
@@ -16,7 +16,7 @@ if [ !  -x ./make-windows-zip.sh ]; then
 fi
 
 if [ ! -f ./lordsawar-windows.zip ]; then
-  ./make-lordsawar-zip.sh
+  ./make-windows-zip.sh
 fi
 if [ ! -f ./lordsawar-windows.zip ]; then
   echo "Error: can't make the zip file."
