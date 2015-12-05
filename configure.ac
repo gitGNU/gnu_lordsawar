@@ -131,7 +131,7 @@ eval eval DATADIR="$datadir"
 AC_SUBST(DATADIR)
 
 echo "$ac_cv_host" | grep "mingw" --quiet
-if test "$?" = "x0"; then
+if test "x$?" = "x0"; then
         wincheck=true
 else
         wincheck=false
