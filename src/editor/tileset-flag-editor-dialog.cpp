@@ -168,10 +168,10 @@ bool TilesetFlagEditorDialog::loadFlag(Glib::ustring filename)
 	    {
 	      if ((*sit)->getOwner() == 8) //ignore neutral
 		continue;
-		flags[(*sit)->getOwner()]->push_back
-		  (ImageCache::applyMask(*it, *mit, (*sit)->getColor())->to_pixbuf());
+              flags[(*sit)->getOwner()]->push_back
+                (ImageCache::applyMask(*it, *mit, (*sit)->getColor())->to_pixbuf());
 		
-		frame[(*sit)->getOwner()] = flags[(*sit)->getOwner()]->begin();
+              frame[(*sit)->getOwner()] = flags[(*sit)->getOwner()]->begin();
 	    }
 	}
 

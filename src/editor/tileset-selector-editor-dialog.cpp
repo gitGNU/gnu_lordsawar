@@ -211,10 +211,10 @@ bool TilesetSelectorEditorDialog::loadSelector(Glib::ustring filename)
 	    {
 	      if ((*sit)->getOwner() == 8) //ignore neutral
 		continue;
-		selectors[(*sit)->getOwner()]->push_back
-		  (ImageCache::applyMask(*it, *mit, (*sit)->getColor())->to_pixbuf());
+              selectors[(*sit)->getOwner()]->push_back
+                (ImageCache::applyMask(*it, *mit, (*sit)->getColor())->to_pixbuf());
 		
-		frame[(*sit)->getOwner()] = selectors[(*sit)->getOwner()]->begin();
+              frame[(*sit)->getOwner()] = selectors[(*sit)->getOwner()]->begin();
 	    }
 	}
 

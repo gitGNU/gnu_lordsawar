@@ -106,7 +106,7 @@ bool LocationBox::isFull(Player *p) const
 	if (stile->canAdd(1, p) == true)
 	  return false;
       }
-    return true;
+  return true;
 }
 
 Stack* LocationBox::getFreeStack(Player *p, Vector<int> &tile) const

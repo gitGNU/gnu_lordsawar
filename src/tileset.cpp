@@ -873,7 +873,7 @@ Tile *Tileset::getFirstTile(SmallTile::Pattern pattern) const
   for (const_iterator i = begin(); i != end(); i++)
     if ((*i)->getSmallTile()->getPattern() == pattern)
       return *i;
-    return NULL;
+  return NULL;
 }
 
 Tileset* Tileset::copy(const Tileset *tileset)

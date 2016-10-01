@@ -329,19 +329,19 @@ bool Stacklist::flRemove(Stack* object)
 {
   if (object == NULL)
     return false;
-    iterator stackit = find(begin(), end(), object);
-    if (stackit != end())
+  iterator stackit = find(begin(), end(), object);
+  if (stackit != end())
     {
-        if (d_activestack == object)
-            d_activestack = 0;
-	assert (object->getId() == (*stackit)->getId());
-	deletePositionFromMap(object);
-        delete object;
-        erase(stackit);
-        return true;
+      if (d_activestack == object)
+        d_activestack = 0;
+      assert (object->getId() == (*stackit)->getId());
+      deletePositionFromMap(object);
+      delete object;
+      erase(stackit);
+      return true;
     }
 
-    return false;
+  return false;
 }
 
 bool Stacklist::save(XML_Helper* helper) const

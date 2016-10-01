@@ -120,11 +120,11 @@ GameMap::GameMap(Glib::ustring TilesetName, Glib::ustring ShieldsetName,
   if (CitysetName != "")
     d_cityset = CitysetName;
 
-    Vector<int>::setMaximumWidth(s_width);
-    d_map = new Maptile*[s_width*s_height];
-    for (int j = 0; j < s_height; j++)
-        for (int i = 0; i < s_width; i++)
-            d_map[j*s_width + i] = 0;
+  Vector<int>::setMaximumWidth(s_width);
+  d_map = new Maptile*[s_width*s_height];
+  for (int j = 0; j < s_height; j++)
+    for (int i = 0; i < s_width; i++)
+      d_map[j*s_width + i] = 0;
 
 }
 
