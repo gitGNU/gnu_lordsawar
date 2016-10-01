@@ -157,48 +157,48 @@ void SmallmapEditorDialog::on_road_finish_toggled()
 
 void SmallmapEditorDialog::setup_terrain_radiobuttons()
 {
-    // get rid of old ones
+  // get rid of old ones
   std::vector<Gtk::Widget*> kids = terrain_type_table->get_children();
   for (guint i = 0; i < kids.size(); i++)
     terrain_type_table->remove(*kids[i]);
 
-    // then add new ones from the tile set
-    Tileset *tset = GameMap::getTileset();
-    Gtk::RadioButton::Group group;
-    bool group_set = false;
-    const int no_columns = 6;
-    for (unsigned int i = 0; i < tset->size(); ++i)
+  // then add new ones from the tile set
+  Tileset *tset = GameMap::getTileset();
+  Gtk::RadioButton::Group group;
+  bool group_set = false;
+  const int no_columns = 6;
+  for (unsigned int i = 0; i < tset->size(); ++i)
     {
-	Tile *tile = (*tset)[i];
-	TerrainItem item;
-	item.button = manage(new Gtk::RadioButton);
-	if (group_set)
-	    item.button->set_group(group);
-	else
-	{
-	    group = item.button->get_group();
-	    group_set = true;
-	}
-	item.button->property_draw_indicator() = false;
+      Tile *tile = (*tset)[i];
+      TerrainItem item;
+      item.button = manage(new Gtk::RadioButton);
+      if (group_set)
+        item.button->set_group(group);
+      else
+        {
+          group = item.button->get_group();
+          group_set = true;
+        }
+      item.button->property_draw_indicator() = false;
 
-	int row = i / no_columns, column = i % no_columns;
-	
-	terrain_type_table->attach(*item.button, column, column + 1,
-				   row, row + 1, Gtk::SHRINK);
-	item.button->signal_toggled().connect(
-	    sigc::mem_fun(this, &SmallmapEditorDialog::on_terrain_radiobutton_toggled));
+      int row = i / no_columns, column = i % no_columns;
 
-	Glib::RefPtr<Gdk::Pixbuf> pic;
-	PixMask *pix = (*(*(*tile).begin())->begin())->getImage()->copy();
-	PixMask::scale(pix, 40, 40);
-	item.button->add(*manage(new Gtk::Image(pix->to_pixbuf())));
-	delete pix;
+      terrain_type_table->attach(*item.button, column, column + 1,
+                                 row, row + 1, Gtk::SHRINK);
+      item.button->signal_toggled().connect(
+                                            sigc::mem_fun(this, &SmallmapEditorDialog::on_terrain_radiobutton_toggled));
 
-	item.terrain = tile->getType();
-	terrain_items.push_back(item);
+      Glib::RefPtr<Gdk::Pixbuf> pic;
+      PixMask *pix = (*(*(*tile).begin())->begin())->getImage()->copy();
+      PixMask::scale(pix, 40, 40);
+      item.button->add(*manage(new Gtk::Image(pix->to_pixbuf())));
+      delete pix;
+
+      item.terrain = tile->getType();
+      terrain_items.push_back(item);
     }
 
-    terrain_type_table->show_all();
+  terrain_type_table->show_all();
 }
 
 void SmallmapEditorDialog::on_terrain_radiobutton_toggled()
