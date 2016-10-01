@@ -1254,7 +1254,7 @@ void MapGenerator::normalize()
     Tile::Type curTer=Tile::NONE, ajTer=Tile::NONE;
 
     // that was 40 before. Now with rivers, the smaller the value - the more connected rivers we got.
-    int center_tiles = Rnd::rand()%40;
+    unsigned int center_tiles = Rnd::rand()%40;
     //std::cerr << center_tiles << "\% chance of disconnecting rivers.\n";
 
     // Go through every tile bar the outer edge
