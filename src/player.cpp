@@ -1365,7 +1365,7 @@ Fight::Result ruinfight (Stack **attacker, Stack **defender)
     monster_factor = 0.5;
   float fail = base_factor * monster_factor * stack_factor * hero_factor;
 
-  if (Rnd::rand() % 100 > (int)(fail * 100.0))
+  if (Rnd::rand() % 100 > fail * 100.0)
     {
       result = Fight::ATTACKER_WON;
       loser = *defender;
