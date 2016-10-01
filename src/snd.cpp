@@ -131,6 +131,9 @@ int Snd::getMusicVolume()
 
 bool Snd::play(Glib::ustring piece, int nloops, bool fade)
 {
+  (void)piece;
+  (void)nloops;
+  (void)fade;
   debug("playing Music")
     if (d_broken || !Configuration::s_musicenable)
       return true;
@@ -162,6 +165,8 @@ bool Snd::play(Glib::ustring piece, int nloops, bool fade)
 
 bool Snd::on_bus_message(const Glib::RefPtr<Gst::Message> & msg, guint32 source)
 {
+  (void)msg;
+  (void)source;
 #ifdef LW_SOUND
   switch (msg->get_message_type())
     {
@@ -188,6 +193,7 @@ bool Snd::on_bus_message(const Glib::RefPtr<Gst::Message> & msg, guint32 source)
   
 bool Snd::halt(bool fade)
 {
+  (void)fade;
   debug("stopping music")
 
 #ifdef LW_SOUND
@@ -202,6 +208,7 @@ bool Snd::halt(bool fade)
 
 bool Snd::on_effect_fade(double step)
 {
+  (void)step;
 #ifdef LW_SOUND
   double volume = impl->effect->property_volume();
   double max = (double)Configuration::s_musicvolume/128.0;
