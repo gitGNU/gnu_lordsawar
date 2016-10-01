@@ -108,7 +108,7 @@ private:
   void sendActions(Participant *part);
   void sendHistories(Participant *part);
 
-  std::auto_ptr<NetworkServer> network_server;
+  std::unique_ptr<NetworkServer> network_server;
 
   std::list<Participant *> participants;
   std::list<GameParameters::Player> players_seated_locally;

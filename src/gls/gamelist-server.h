@@ -55,7 +55,7 @@ protected:
   ~GamelistServer();
 
 private:
-  std::auto_ptr<NetworkServer> network_server;
+  std::unique_ptr<NetworkServer> network_server;
   Glib::ustring datafile;
 
   bool onGotMessage(void *conn, int type, Glib::ustring message);

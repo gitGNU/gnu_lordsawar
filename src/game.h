@@ -264,8 +264,8 @@ class Game
 
     GameScenario* d_gameScenario;
     NextTurn* d_nextTurn;
-    std::auto_ptr<GameBigMap> bigmap;
-    std::auto_ptr<SmallMap> smallmap;
+    std::unique_ptr<GameBigMap> bigmap;
+    std::unique_ptr<SmallMap> smallmap;
 
 
     bool input_locked;

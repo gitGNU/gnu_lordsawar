@@ -73,7 +73,7 @@ protected:
   ~GamehostServer();
 
 private:
-  std::auto_ptr<NetworkServer> network_server;
+  std::unique_ptr<NetworkServer> network_server;
   Glib::ustring hostname;
   std::list<HostGameRequest*> host_game_requests;
   std::list<Glib::ustring> members;
