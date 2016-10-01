@@ -111,24 +111,24 @@ void Main::start_main_loop()
   else
     Rnd::set_seed(time(NULL));
 
-    if (Configuration::s_decorated)
-      {
-        ;
-      }
+  if (Configuration::s_decorated)
+    {
+      ;
+    }
 
-    try
+  try
     {
       if (impl->driver != NULL)
-	{
-	  delete impl->driver;
-	  impl->driver = NULL;
-	}
-	impl->driver = new Driver(load_filename);
-	impl->gtk_main->run();
+        {
+          delete impl->driver;
+          impl->driver = NULL;
+        }
+      impl->driver = new Driver(load_filename);
+      impl->gtk_main->run();
     }
-    catch (const Glib::Error &ex) {
-	std::cerr << ex.what() << std::endl;
-    }
+  catch (const Glib::Error &ex) {
+    std::cerr << ex.what() << std::endl;
+  }
 }
 
 void Main::stop_main_loop()

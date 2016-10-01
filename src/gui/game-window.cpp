@@ -315,31 +315,32 @@ GameWindow::~GameWindow()
     (*it).disconnect();
   connections.clear();
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
-    if (city_info_tip)
-      {
-	delete city_info_tip;
-	city_info_tip = NULL;
-      }
-    if (stack_info_tip)
-      {
-	delete stack_info_tip;
-	stack_info_tip = NULL;
-      }
-    if (game)
-      {
-	delete game;
-	game = NULL;
-      }
-    if (game_button_box)
-      {
-        delete game_button_box;
-        game_button_box = NULL;
-      }
-    if (status_box)
-      {
-        delete status_box;
-        status_box = NULL;
-      }
+    shield_image[i]->clear();
+  if (city_info_tip)
+    {
+      delete city_info_tip;
+      city_info_tip = NULL;
+    }
+  if (stack_info_tip)
+    {
+      delete stack_info_tip;
+      stack_info_tip = NULL;
+    }
+  if (game)
+    {
+      delete game;
+      game = NULL;
+    }
+  if (game_button_box)
+    {
+      delete game_button_box;
+      game_button_box = NULL;
+    }
+  if (status_box)
+    {
+      delete status_box;
+      status_box = NULL;
+    }
   delete window;
 }
 

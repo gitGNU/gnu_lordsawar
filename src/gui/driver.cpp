@@ -981,28 +981,27 @@ void Driver::init_game_window()
 {
   if (game_window)
     delete game_window;
-    game_window = new GameWindow;
+  game_window = new GameWindow;
 
-    game_window->game_ended.connect(
-	sigc::mem_fun(*this, &Driver::on_game_ended));
-    game_window->game_ended_start_new.connect(
-	sigc::mem_fun(*this, &Driver::on_game_ended_and_start_new));
-    game_window->show_lobby.connect(
-	sigc::mem_fun(*this, &Driver::on_show_lobby_requested));
-    game_window->quit_requested.connect(
-	sigc::mem_fun(*this, &Driver::on_quit_requested));
-    game_window->load_hosted_network_game.connect(
-	sigc::mem_fun(*this, &Driver::on_game_ended_and_load_network_game));
+  game_window->game_ended.connect
+    (sigc::mem_fun(*this, &Driver::on_game_ended));
+  game_window->game_ended_start_new.connect
+    (sigc::mem_fun(*this, &Driver::on_game_ended_and_start_new));
+  game_window->show_lobby.connect
+    (sigc::mem_fun(*this, &Driver::on_show_lobby_requested));
+  game_window->quit_requested.connect
+    (sigc::mem_fun(*this, &Driver::on_quit_requested));
+  game_window->load_hosted_network_game.connect
+    (sigc::mem_fun(*this, &Driver::on_game_ended_and_load_network_game));
 
-    //make the width+height suitable for the screen size.
-    Glib::RefPtr<Gdk::Screen> screen = Gdk::Display::get_default()->get_default_screen();
-    guint32 screen_height = screen->get_height();
-    guint32 height = 450;
-    if (screen_height <= 600)
-      height = 400;
-    guint32 width = (int)((float)height * 1.42223);
-    game_window->init(width, height);
-
+  //make the width+height suitable for the screen size.
+  Glib::RefPtr<Gdk::Screen> screen = Gdk::Display::get_default()->get_default_screen();
+  guint32 screen_height = screen->get_height();
+  guint32 height = 450;
+  if (screen_height <= 600)
+    height = 400;
+  guint32 width = (int)((float)height * 1.42223);
+  game_window->init(width, height);
 }
 
 GameScenario *Driver::load_game(Glib::ustring file_path)
