@@ -16,7 +16,7 @@ if [ "x$tmpdir" != "x" ]; then
   for f in $files; do
           tmpfiles="$tmpfiles `basename $f`"
   done
-  tar -cvf $tarball $tmpfiles
+  tar -cvf $tarball $tmpfiles --sort=name --clamp-mtime --mtime="@${SOURCE_DATE_EPOCH:-$(date +%s)}" --mode=go=rX,u+rw,a-s --owner=root --group=root --numeric-owner
   cd $origdir
   cp -f $tmpdir/$tarball $1
   rm -f $tmpdir/*
