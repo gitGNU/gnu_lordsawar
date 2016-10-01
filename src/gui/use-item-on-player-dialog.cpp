@@ -67,7 +67,7 @@ Player *UseItemOnPlayerDialog::grabSelectedPlayer()
 {
     Glib::RefPtr<Gtk::TreeView::Selection> sel;
     sel = player_treeview->get_selection();
-    if (sel == true)
+    if (sel)
       {
         Gtk::TreeModel::iterator it = sel->get_selected();
         Gtk::TreeModel::Row row = *it;
