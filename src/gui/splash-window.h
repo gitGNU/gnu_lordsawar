@@ -62,8 +62,9 @@ class SplashWindow: public sigc::trackable
     Gtk::Button *quit_button;
     Gtk::Button *new_network_game_button;
     Gtk::Button *preferences_button;
-    Gtk::VBox *button_box; //crash button box
-    Gtk::HBox *main_box; //crash button box
+    Gtk::Box *button_box; //crash button box
+    Gtk::Box *main_box; //crash button box
+    Gtk::EventBox *eventbox;
 	    
     bool on_delete_event();
   

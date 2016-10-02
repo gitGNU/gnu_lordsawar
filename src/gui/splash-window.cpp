@@ -47,8 +47,6 @@ SplashWindow::SplashWindow()
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getVariousFile("castle_icon.png"));
-    window->signal_draw().connect
-      (sigc::mem_fun(*this, &SplashWindow::on_draw));
     window->signal_delete_event().connect
       (sigc::hide(sigc::mem_fun(*this, &SplashWindow::on_delete_event)));
     
@@ -71,6 +69,9 @@ SplashWindow::SplashWindow()
     Snd::getInstance()->play("intro");
 
     xml->get_widget("box", main_box);
+    xml->get_widget("eventbox", eventbox);
+    eventbox->signal_draw().connect
+      (sigc::mem_fun(*this, &SplashWindow::on_draw));
     xml->get_widget("button_box", button_box);
     if (Configuration::s_autosave_policy == 1)
       {
