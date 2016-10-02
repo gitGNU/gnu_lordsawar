@@ -35,11 +35,25 @@
 #include "File.h"
 #include "shield.h"
 
+void ArmyInfoTip::set_transient (Gtk::Widget *target)
+{
+  Gtk::Widget *w = target->get_ancestor (GTK_TYPE_WINDOW);
+  if (w)
+    window->set_transient_for (*dynamic_cast<Gtk::Window*>(w));
+  else
+    {
+      w = target->get_ancestor (GTK_TYPE_DIALOG);
+      if (w)
+        window->set_transient_for (*dynamic_cast<Gtk::Dialog*>(w));
+    }
+}
+
 ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
 {
     Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("army-info-window.ui");
 
     xml->get_widget("window", window);
+    set_transient (target);
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
     Player *p;
@@ -101,6 +115,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
     Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("army-info-window.ui");
 
     xml->get_widget("window", window);
+    set_transient (target);
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
     Player *p = city->getOwner();
@@ -159,6 +174,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
     Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("army-info-window.ui");
 
     xml->get_widget("window", window);
+    set_transient (target);
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
     Player *p = Playerlist::getInstance()->getActiveplayer();

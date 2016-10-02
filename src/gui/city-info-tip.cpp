@@ -35,6 +35,15 @@ CityInfoTip::CityInfoTip(Gtk::Widget *target, MapTipPosition mpos, const City *c
     Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("city-info-window.ui");
 
     xml->get_widget("window", window);
+    Gtk::Widget *w = target->get_ancestor (GTK_TYPE_WINDOW);
+    if (w)
+      window->set_transient_for (*dynamic_cast<Gtk::Window*>(w));
+    else
+      {
+        w = target->get_ancestor (GTK_TYPE_DIALOG);
+        if (w)
+          window->set_transient_for (*dynamic_cast<Gtk::Dialog*>(w));
+      }
     Gtk::Image *left_shield_image;
     xml->get_widget("left_shield_image", left_shield_image);
     Gtk::Image *right_shield_image;

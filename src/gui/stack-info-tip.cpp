@@ -38,6 +38,15 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *
     Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("stack-info-window.ui");
 
     xml->get_widget("window", window);
+    Gtk::Widget *w = target->get_ancestor (GTK_TYPE_WINDOW);
+    if (w)
+      window->set_transient_for (*dynamic_cast<Gtk::Window*>(w));
+    else
+      {
+        w = target->get_ancestor (GTK_TYPE_DIALOG);
+        if (w)
+          window->set_transient_for (*dynamic_cast<Gtk::Dialog*>(w));
+      }
     xml->get_widget("image_hbox", image_hbox);
 
     //fill up the hbox with images of the armies in the stack

@@ -15,11 +15,13 @@
             <property name="visible">True</property>
             <property name="border_width">6</property>
             <child>
-              <object class="GtkHBox" id="hbox">
+              <object class="GtkBox" id="hbox">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="spacing">6</property>
                 <child>
-                  <object class="GtkVBox" id="images_vbox">
+                  <object class="GtkBox" id="images_vbox">
+                    <property name="orientation">vertical</property>
                     <property name="visible">True</property>
                     <property name="spacing">6</property>
                     <child>
