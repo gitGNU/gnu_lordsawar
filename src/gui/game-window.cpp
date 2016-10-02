@@ -1648,6 +1648,7 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
     delete map_tip;
   map_tip = new Gtk::Window(Gtk::WINDOW_POPUP);
 
+  map_tip->set_transient_for (*window);
   Gtk::Frame *f = manage(new Gtk::Frame);
   f->property_shadow_type() = Gtk::SHADOW_ETCHED_OUT;
 
