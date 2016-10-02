@@ -2354,11 +2354,13 @@ void GameWindow::show_shield_turn() //show turn indicator
 	  continue;
 	}
       if (*i == pl->getActiveplayer())
-        shield_image[c]->property_pixbuf() =
-          gc->getShieldPic(1,(*i))->to_pixbuf();
+        shield_image[c]->property_pixbuf() = gc->getShieldPic(1,(*i))->to_pixbuf();
       else
-        shield_image[c]->property_pixbuf() =
-          gc->getShieldPic(0,(*i))->to_pixbuf();
+        shield_image[c]->property_pixbuf() = gc->getShieldPic(1,(*i))->to_pixbuf();
+      if (*i == pl->getActiveplayer())
+        shield_image[c]->property_margin_top() = 0;
+      else
+        shield_image[c]->property_margin_top() = 6;
       shield_image[c]->property_tooltip_text() = (*i)->getName();
       c++;
     }

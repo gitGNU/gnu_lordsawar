@@ -162,7 +162,7 @@ class GameWindow: public sigc::trackable
     Gtk::Image *bigmap_image;
 
     Gtk::Label *turn_label;
-    Gtk::HBox *turn_hbox;
+    Gtk::Box *turn_hbox;
     Gtk::Image *shield_image[MAX_PLAYERS];
     
     // the button control panel
@@ -176,7 +176,7 @@ class GameWindow: public sigc::trackable
     stack_buttons_type stack_buttons;
     Gtk::EventBox *map_eventbox;
     Gtk::EventBox *bigmap_eventbox;
-    Gtk::HBox *status_box_container;
+    Gtk::Box *status_box_container;
     StatusBox *status_box;
 
     Glib::ustring current_save_filename;
