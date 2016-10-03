@@ -12,7 +12,7 @@ lordsawardata_DATA = \
     ruinnames.xml \
     signposts.xml
 
-DISTCLEANFILES = citynames.xml heronames.xml templenames.xml ruinnames.xml signposts.xml lordsawar.desktop lordsawar.desktop.in lordsawar-editor.desktop lordsawar-editor.desktop.in
+DISTCLEANFILES = citynames.xml heronames.xml templenames.xml ruinnames.xml signposts.xml lordsawar.desktop lordsawar.desktop.in
 
 CLEANFILES=desktop-foo desktop-bar lordsawar.o
 
@@ -21,13 +21,8 @@ lordsawar.desktop: lordsawar.desktop.in $(wildcard $(top_srcdir)/po/*.po)
 		&& $(INTLTOOL_MERGE) $(top_srcdir)/po desktop-foo $(@) -d -u -c $(top_builddir)/po/.intltool-merge-cache \
 		&& rm -r desktop-foo
 
-lordsawar-editor.desktop: lordsawar-editor.desktop.in $(wildcard $(top_srcdir)/po/*.po)
-		sed -e 's|.[{]prefix[}]|${prefix}|' lordsawar-editor.desktop.in > desktop-bar \
-		&& $(INTLTOOL_MERGE) $(top_srcdir)/po desktop-bar $(@) -d -u -c $(top_builddir)/po/.intltool-merge-cache \
-		&& rm -r desktop-bar
-
 lwdesktopdir= $(datadir)/applications
-lwdesktop_DATA= lordsawar.desktop lordsawar-editor.desktop
+lwdesktop_DATA= lordsawar.desktop
 
 appdatadir=$(datadir)/appdata
 appdata_DATA=lordsawar-appdata.xml
@@ -41,4 +36,3 @@ EXTRA_DIST = \
     ruinnames.xml.in \
     signposts.xml.in \
     lordsawar.desktop.in.in \
-    lordsawar-editor.desktop.in.in
