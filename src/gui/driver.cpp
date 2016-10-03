@@ -71,6 +71,8 @@
 #include "citysetlist.h"
 #include "herotemplates.h"
 #include "new-network-game-dialog.h"
+#include "../editor/main-window.h"
+#include "../editor/editor-splash-window.h"
 
 Driver::Driver(Glib::ustring load_filename)
 {
@@ -78,6 +80,7 @@ Driver::Driver(Glib::ustring load_filename)
     game_lobby_dialog = NULL;
     splash_window = NULL;
     download_window = NULL;
+    editor_window = NULL;
   game_scenario_downloaded = "";
     splash_window = new SplashWindow;
     splash_window->new_game_requested.connect(
@@ -88,6 +91,8 @@ Driver::Driver(Glib::ustring load_filename)
 	sigc::mem_fun(*this, &Driver::on_new_remote_network_game_requested));
     splash_window->load_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_load_requested));
+    splash_window->editor_requested.connect(
+	sigc::mem_fun(*this, &Driver::on_editor_requested));
     splash_window->quit_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_quit_requested));
 
@@ -916,6 +921,31 @@ void Driver::on_load_requested(Glib::ustring filename)
                                                   nngd.isRemotelyHosted());
           }
       }
+}
+
+void Driver::on_editor_requested()
+{
+  if (splash_window)
+    splash_window->hide();
+  if (editor_window)
+    delete editor_window;
+
+  EditorSplashWindow d;
+  d.run();
+  d.hide();
+  editor_window = new MainWindow ();
+  editor_window->editor_quit.connect
+    (sigc::mem_fun(*this, &Driver::on_editor_quit));
+  editor_window->show();
+  editor_window->init();
+}
+
+void Driver::on_editor_quit ()
+{
+  if (editor_window)
+    delete editor_window;
+  editor_window = NULL;
+  splash_window->show();
 }
 
 void Driver::on_quit_requested()

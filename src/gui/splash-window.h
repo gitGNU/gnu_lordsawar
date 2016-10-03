@@ -53,6 +53,7 @@ class SplashWindow: public sigc::trackable
     sigc::signal<void, GameParameters> new_game_requested;
     sigc::signal<void, Glib::ustring> load_requested;
     sigc::signal<void> quit_requested;
+    sigc::signal<void> editor_requested;
 
  private:
     Gtk::Window* window;
@@ -62,6 +63,7 @@ class SplashWindow: public sigc::trackable
     Gtk::Button *quit_button;
     Gtk::Button *new_network_game_button;
     Gtk::Button *preferences_button;
+    Gtk::Button *editor_button;
     Gtk::Box *button_box; //crash button box
     Gtk::Box *main_box; //crash button box
     Gtk::EventBox *eventbox;
@@ -74,6 +76,7 @@ class SplashWindow: public sigc::trackable
     void on_load_game_clicked();
     void on_load_scenario_clicked();
     void on_preferences_clicked();
+    void on_editor_clicked();
     void on_quit_clicked();
     void on_rescue_crashed_game_clicked();
 	

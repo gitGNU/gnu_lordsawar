@@ -66,6 +66,9 @@ SplashWindow::SplashWindow()
     xml->get_widget("preferences_button", preferences_button);
     preferences_button->signal_clicked().connect
       (sigc::mem_fun(*this, &SplashWindow::on_preferences_clicked));
+    xml->get_widget("editor_button", editor_button);
+    editor_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &SplashWindow::on_editor_clicked));
     Snd::getInstance()->play("intro");
 
     xml->get_widget("box", main_box);
@@ -256,6 +259,11 @@ void SplashWindow::on_load_scenario_clicked()
       gp.run();
     } 
   //load_requested.emit(filename);
+}
+
+void SplashWindow::on_editor_clicked()
+{
+  editor_requested.emit ();
 }
 
 void SplashWindow::on_network_game_selected(Glib::ustring ip, unsigned short port, Profile *profile)

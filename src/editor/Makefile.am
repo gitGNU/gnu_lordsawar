@@ -18,22 +18,7 @@
 #   02110-1301, USA.
 MAINTAINERCLEANFILES= Makefile.in
 
-if WANT_EDITOR
-bin_PROGRAMS = lordsawar-editor lordsawar-import
-
-noinst_LTLIBRARIES = libshieldsetwindow.la libarmysetwindow.la libcitysetwindow.la libtilesetwindow.la libeditutil.la
-
-lordsawar_import_SOURCES = import.cpp
-lordsawar_import_LDADD = $(top_builddir)/src/gui/liblwgui.la \
-			$(top_builddir)/src/liblordsawargfx.la \
-			$(top_builddir)/src/liblordsawar.la \
-			$(GTKMM_LIBS) \
-			$(XMLPP_LIBS) \
-			$(XSLT_LIBS) \
-			$(ARCHIVE_LIBS) \
-			-lz \
-			-L$(top_builddir)/src
-
+noinst_LTLIBRARIES = libshieldsetwindow.la libarmysetwindow.la libcitysetwindow.la libtilesetwindow.la libeditutil.la libeditor.la
 
 libeditutil_la_SOURCES = \
 	editor-quit-dialog.cpp editor-quit-dialog.h \
@@ -71,8 +56,7 @@ libtilesetwindow_la_SOURCES = \
 	tileset-smallmap-building-colors-dialog.h\
 	image-editor-dialog.cpp image-editor-dialog.h
 
-lordsawar_editor_SOURCES = \
-	main.cpp \
+libeditor_la_SOURCES =\
 	main-window.cpp main-window.h \
 	signpost-editor-dialog.cpp signpost-editor-dialog.h \
 	temple-editor-dialog.cpp temple-editor-dialog.h \
@@ -99,33 +83,6 @@ lordsawar_editor_SOURCES = \
 	editor-splash-window.cpp editor-splash-window.h \
 	fight-order-editor-dialog.cpp fight-order-editor-dialog.h \
 	road-editor-tip.cpp road-editor-tip.h
-	
-if WINDOWS_OS
-
-lordsawar_editor_SOURCES += ${top_srcdir}/dat/lordsawar-editor.rc
-.rc.o:
-	i686-w64-mingw32-windres -I ../../ -i $< $@
-SUFFIXES=.rc
-
-endif
-
-lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
-                         $(top_builddir)/src/liblordsawargfx.la \
-                         $(top_builddir)/src/liblordsawar.la \
-			 libshieldsetwindow.la \
-			 libarmysetwindow.la \
-			 libcitysetwindow.la \
-			 libtilesetwindow.la \
-			 libeditutil.la \
-                         $(GTKMM_LIBS) \
-    			 $(XMLPP_LIBS) \
-    			 $(XSLT_LIBS) \
-    			 $(ARCHIVE_LIBS) \
-                         -lz \
-                         -L$(top_builddir)/src
-
-endif
-
 
 localedir = $(datadir)/locale
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@

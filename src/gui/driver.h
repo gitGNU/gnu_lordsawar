@@ -27,6 +27,7 @@
 #include "game-lobby-dialog.h"
 #include "new-network-game-download-window.h"
 #include "game-parameters.h"
+#include "../editor/main-window.h"
 
 class Profile;
 // takes care of setting up the splash window and the game window, the
@@ -45,6 +46,7 @@ class Driver: public sigc::trackable
     GameLobbyDialog* game_lobby_dialog;
     SplashWindow* splash_window;
     NewNetworkGameDownloadWindow* download_window;
+    MainWindow *editor_window;
     Glib::ustring d_load_filename;
     sigc::connection heartbeat_conn;
     sigc::connection upload_heartbeat_conn;
@@ -65,6 +67,8 @@ class Driver: public sigc::trackable
     void on_game_scenario_downloaded(Glib::ustring filename);
     void on_game_scenario_received(Glib::ustring path, Profile *p);
     void on_load_requested(Glib::ustring filename);
+    void on_editor_requested();
+    void on_editor_quit ();
     void on_quit_requested();
 
     void on_game_ended();

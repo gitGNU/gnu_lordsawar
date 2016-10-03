@@ -15,7 +15,7 @@
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 #   02110-1301, USA.
-SUBDIRS = gui . editor gls ghs
+SUBDIRS = editor gui . gls ghs utils
 MAINTAINERCLEANFILES= Makefile.in
 
 bin_PROGRAMS = lordsawar lordsawar-upgrade-file
@@ -175,6 +175,12 @@ lordsawar_LDADD = liblordsawar.la \
     liblordsawargfx.la \
     liblordsawargamelist.la \
     liblordsawargamehost.la \
+    editor/libeditor.la \
+    editor/libshieldsetwindow.la \
+    editor/libarmysetwindow.la \
+    editor/libcitysetwindow.la \
+    editor/libtilesetwindow.la \
+    editor/libeditutil.la \
     $(GSTREAMER_LIBS) \
     $(GTKMM_LIBS) \
     $(XMLPP_LIBS) \
@@ -185,6 +191,12 @@ lordsawar_LDADD = liblordsawar.la \
     gui/liblwgui.la
 
 lordsawar_DEPENDENCIES = \
+  editor/libeditor.la \
+  editor/libshieldsetwindow.la \
+  editor/libarmysetwindow.la \
+  editor/libcitysetwindow.la \
+  editor/libtilesetwindow.la \
+  editor/libeditutil.la \
   liblordsawar.la \
   liblordsawargfx.la \
   liblordsawargamelist.la \

@@ -72,12 +72,6 @@ AC_SUBST(HOME)
 dnl----------------------------------------------------------------------
 dnl Below here are options to modify default behaviour
 
-dnl Do we want to compile the editor?
-AC_ARG_ENABLE(editor,
-            [  --enable-editor  compile editor (default=yes)],
-            use_editor="$enableval", use_editor="yes")
-AM_CONDITIONAL([WANT_EDITOR], [test $use_editor = "yes"])
-
 dnl Do we want to compile the game list server?
 AC_ARG_ENABLE(gls,
             [  --enable-gls     compile game list server (default=yes)],
@@ -186,6 +180,7 @@ AC_CONFIG_FILES([
         src/editor/Makefile
         src/gls/Makefile
         src/ghs/Makefile
+        src/utils/Makefile
         src/gui/Makefile])
 AC_OUTPUT
 echo ""
@@ -193,7 +188,6 @@ echo "LordsAWar! is now configured. Type 'make' to compile it."
 echo ""
 echo "Configuration:"
 echo " Installation location : $prefix"
-echo " Editor compilation    : $use_editor"
 echo " Game-list Server      : $use_gls"
 echo " Game-host Server      : $use_ghs"
 echo " Enable Sounds         : $use_sound"
