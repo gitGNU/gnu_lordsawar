@@ -502,12 +502,16 @@ void ItemlistDialog::update_kill_army_type_name()
     Glib::ustring name;
     if (banish_worms_checkbutton->get_active() == true)
       {
+        kill_army_type_button->property_sensitive() = true;
         Armysetlist *asl = Armysetlist::getInstance();
 	name = asl->getArmy(neutral->getArmyset(), 
                             d_item->getArmyTypeToKill())->getName();
       }
     else
-      name = _("No army type selected");
+      {
+        name = _("No army type selected");
+        kill_army_type_button->property_sensitive() = false;
+      }
     
     kill_army_type_button->set_label(name);
 }
