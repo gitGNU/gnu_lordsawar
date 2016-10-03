@@ -37,6 +37,15 @@ RoadEditorTip::RoadEditorTip(Gtk::Widget *target, MapTipPosition mpos, Road *r)
     BuilderCache::editor_get("road-editor-tip.ui");
 
   xml->get_widget("window", window);
+  Gtk::Widget *w = target->get_ancestor (GTK_TYPE_WINDOW);
+  if (w)
+    window->set_transient_for (*dynamic_cast<Gtk::Window*>(w));
+  else
+    {
+      w = target->get_ancestor (GTK_TYPE_DIALOG);
+      if (w)
+        window->set_transient_for (*dynamic_cast<Gtk::Dialog*>(w));
+    }
   xml->get_widget("button_box", button_box);
 
   fill_road_buttons();
