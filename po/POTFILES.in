@@ -288,7 +288,6 @@ src/editor/switch-sets-dialog.cpp
 src/editor/select-army-dialog.cpp
 src/editor/map-info-dialog.cpp
 src/editor/reward-editor-dialog.cpp
-src/editor/main.cpp
 src/editor/tileset-window.cpp
 src/editor/tilestyle-organizer-dialog.cpp
 src/editor/stack-editor-dialog.cpp
@@ -304,7 +303,7 @@ src/editor/editor-splash-window.cpp
 src/editor/image-editor-dialog.cpp
 src/editor/masked-image-editor-dialog.cpp
 src/editor/fight-order-editor-dialog.cpp
-src/editor/import.cpp
+src/utils/import.cpp
 src/gui/city-info-tip.cpp
 src/gui/game-lobby-dialog.cpp
 src/gui/network-game-selector-dialog.cpp
