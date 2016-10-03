@@ -35,4 +35,4 @@ EXTRA_DIST = \
     templenames.xml.in \
     ruinnames.xml.in \
     signposts.xml.in \
-    lordsawar.desktop.in.in \
+    lordsawar.desktop.in.in
