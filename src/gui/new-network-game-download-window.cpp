@@ -18,7 +18,7 @@
 #include "defs.h"
 
 NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow(Glib::ustring title)
-: m_vbox(false,10)
+: m_vbox(Gtk::ORIENTATION_VERTICAL, 10)
 {
   set_position(Gtk::WIN_POS_CENTER);
   add(m_vbox);

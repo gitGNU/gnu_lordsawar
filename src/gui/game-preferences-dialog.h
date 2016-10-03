@@ -57,7 +57,7 @@ class GamePreferencesDialog: public LwDialog
 
     enum { BEGINNER = 0, INTERMEDIATE, ADVANCED, I_AM_THE_GREATEST, CUSTOM};
 
-    Gtk::VBox *players_vbox;
+    Gtk::Box *players_vbox;
 
     typedef std::vector<Glib::ustring> player_name_seq;
     

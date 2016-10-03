@@ -32,7 +32,7 @@ TriumphsDialog::TriumphsDialog(Gtk::Window &parent, Player *player)
  : LwDialog(parent, "triumphs-dialog.ui")
 {
   d_player = player;
-  Gtk::HBox *contents;
+  Gtk::Box *contents;
   xml->get_widget("outer_hbox", contents);
   notebook = Gtk::manage(new Gtk::Notebook());
   contents->pack_start(*notebook, true, true, 0);
@@ -100,7 +100,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   hero_image->property_pixbuf() = 
     gc->getCircledArmyPic(p->getArmyset(), hero->getId(), p, NULL, false,
                           Shield::NEUTRAL, true)->to_pixbuf();
-  Gtk::HBox *hero_hbox = new Gtk::HBox();
+  Gtk::Box *hero_hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL);
   hero_hbox->pack_start(*manage(hero_image), Gtk::PACK_SHRINK, 10);
   hero_hbox->pack_start(*manage(hero_label), Gtk::PACK_SHRINK, 10);
 
@@ -118,7 +118,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   ship_image->property_pixbuf() = 
     ImageCache::circled(gc->getShipPic(p), p->getColor(), 
                            false)->to_pixbuf();
-  Gtk::HBox *ship_hbox = new Gtk::HBox();
+  Gtk::Box *ship_hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL);
   ship_hbox->pack_start(*manage(ship_image), Gtk::PACK_SHRINK, 10);
   ship_hbox->pack_start(*manage(ship_label), Gtk::PACK_SHRINK, 10);
 
@@ -136,7 +136,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   normal_image->property_pixbuf() = 
     gc->getCircledArmyPic(p->getArmyset(), 0, p, NULL, false, Shield::NEUTRAL, 
                           true)->to_pixbuf();
-  Gtk::HBox *normal_hbox = new Gtk::HBox();
+  Gtk::Box *normal_hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL);
   normal_hbox->pack_start(*manage(normal_image), Gtk::PACK_SHRINK, 10);
   normal_hbox->pack_start(*manage(normal_label), Gtk::PACK_SHRINK, 10);
 
@@ -166,7 +166,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   special_image->property_pixbuf() = 
     gc->getCircledArmyPic(p->getArmyset(), special->getId(), p, NULL, false,
                           Shield::NEUTRAL, true)->to_pixbuf();
-  Gtk::HBox *special_hbox = new Gtk::HBox();
+  Gtk::Box *special_hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL);
   special_hbox->pack_start(*manage(special_image), Gtk::PACK_SHRINK, 10);
   special_hbox->pack_start(*manage(special_label), Gtk::PACK_SHRINK, 10);
 
@@ -185,11 +185,11 @@ void TriumphsDialog::fill_in_page(Player *p)
   flag_image->property_pixbuf() = 
     ImageCache::circled(gc->getPlantedStandardPic(p), p->getColor(), 
                            false)->to_pixbuf();
-  Gtk::HBox *flag_hbox = new Gtk::HBox();
+  Gtk::Box *flag_hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL);
   flag_hbox->pack_start(*manage(flag_image), Gtk::PACK_SHRINK, 10);
   flag_hbox->pack_start(*manage(flag_label), Gtk::PACK_SHRINK, 10);
 
-  Gtk::VBox *contents = new Gtk::VBox();
+  Gtk::Box *contents = new Gtk::Box(Gtk::ORIENTATION_VERTICAL);
   contents->add(*manage(normal_hbox));
   contents->add(*manage(special_hbox));
   contents->add(*manage(hero_hbox));

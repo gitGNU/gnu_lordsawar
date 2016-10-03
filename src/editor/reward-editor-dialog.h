@@ -69,11 +69,11 @@ class RewardEditorDialog: public LwEditorDialog
     Gtk::Button *clear_hidden_ruin_button;
     Gtk::Button *hidden_ruin_button;
 
-    Gtk::HBox *gold_hbox;
-    Gtk::HBox *item_hbox;
-    Gtk::HBox *allies_hbox;
-    Gtk::HBox *map_hbox;
-    Gtk::HBox *hidden_ruin_hbox;
+    Gtk::Box *gold_hbox;
+    Gtk::Box *item_hbox;
+    Gtk::Box *allies_hbox;
+    Gtk::Box *map_hbox;
+    Gtk::Box *hidden_ruin_hbox;
     void on_gold_toggled();
     void on_item_toggled();
     void on_allies_toggled();

@@ -1,18 +1,21 @@
 <?xml version="1.0"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="3.0"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="window1">
     <child>
-      <object class="GtkHBox" id="box">
+      <object class="GtkBox" id="box">
+        <property name="orientation">horizontal</property>
         <property name="visible">True</property>
         <child>
-          <object class="GtkHBox" id="stack_info_container">
+          <object class="GtkBox" id="stack_info_container">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="border_width">10</property>
             <property name="spacing">6</property>
             <child>
-              <object class="GtkHBox" id="stack_info_box">
+              <object class="GtkBox" id="stack_info_box">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="border_width">3</property>
                 <child>
@@ -45,7 +48,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkVBox" id="group_info_box">
+              <object class="GtkBox" id="group_info_box">
+                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <child>

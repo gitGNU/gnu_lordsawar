@@ -38,9 +38,9 @@ class SmallmapEditorDialog: public LwEditorDialog
     bool d_needs_saving;
 
     Gtk::Image *smallmap_image;
-    Gtk::HBox *modes_hbox;
-    Gtk::Table *terrain_type_table;
-    Gtk::HBox *building_types_hbox;
+    Gtk::Box *modes_hbox;
+    Gtk::Grid *terrain_type_table;
+    Gtk::Box *building_types_hbox;
     Gtk::RadioButton *road_start_radiobutton;
     Gtk::Entry *road_start_entry;
     Gtk::Entry *road_finish_entry;

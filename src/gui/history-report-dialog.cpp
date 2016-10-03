@@ -510,7 +510,7 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 
   History *history = event->getHistory();
 
-  Gtk::HBox *box = NULL;
+  Gtk::Box *box = NULL;
 
                               
   Glib::RefPtr<Gdk::Pixbuf> shield = gc->getShieldPic(1, p)->to_pixbuf();

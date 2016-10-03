@@ -109,7 +109,7 @@ class ArmySetWindow: public sigc::trackable
     Gtk::CheckButton *suballherobonus_checkbutton;
     Gtk::Button *add_army_button;
     Gtk::Button *remove_army_button;
-    Gtk::VBox *army_vbox;
+    Gtk::Box *army_vbox;
     Gtk::MenuItem *new_armyset_menuitem;
     Gtk::MenuItem *load_armyset_menuitem;
     Gtk::MenuItem *save_armyset_menuitem;

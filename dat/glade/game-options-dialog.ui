@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkListStore" id="liststore1">
     <columns>
       <!-- column-name gchararray1 -->
@@ -79,12 +79,13 @@
     <property name="title" translatable="yes">Game Options</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox">
+      <object class="GtkBox" id="dialog-vbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">12</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
@@ -123,9 +124,10 @@
             <property name="top_padding">6</property>
             <property name="left_padding">12</property>
             <child>
-              <object class="GtkVBox" id="optionbox">
+              <object class="GtkBox" id="optionbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="label20">
@@ -149,13 +151,11 @@
                     <property name="border_width">7</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <object class="GtkTable" id="difficultoptionstable">
+                      <object class="GtkGrid" id="difficultoptionstable">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="n_rows">4</property>
-                        <property name="n_columns">2</property>
-                        <property name="column_spacing">7</property>
                         <property name="row_spacing">7</property>
+                        <property name="column_spacing">7</property>
                         <child>
                           <object class="GtkCheckButton" id="view_enemies_checkbutton">
                             <property name="label" translatable="yes">View Enemies</property>
@@ -166,8 +166,8 @@
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
-                            <property name="x_options">GTK_FILL</property>
-                            <property name="y_options"/>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
                           </packing>
                         </child>
                         <child>
@@ -181,13 +181,11 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
-                            <property name="x_options">GTK_FILL</property>
-                            <property name="y_options"/>
+                            <property name="top_attach">0</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox5">
+                          <object class="GtkBox" id="hbox5">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
@@ -222,12 +220,8 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
+                            <property name="left_attach">0</property>
                             <property name="top_attach">2</property>
-                            <property name="bottom_attach">3</property>
-                            <property name="x_options">GTK_FILL</property>
-                            <property name="y_options">GTK_FILL</property>
                           </packing>
                         </child>
                         <child>
@@ -240,10 +234,8 @@
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
+                            <property name="left_attach">1</property>
                             <property name="top_attach">2</property>
-                            <property name="bottom_attach">3</property>
-                            <property name="x_options">GTK_FILL</property>
-                            <property name="y_options"/>
                           </packing>
                         </child>
                         <child>
@@ -256,14 +248,12 @@
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
+                            <property name="left_attach">0</property>
                             <property name="top_attach">3</property>
-                            <property name="bottom_attach">4</property>
-                            <property name="x_options">GTK_FILL</property>
-                            <property name="y_options"/>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox7">
+                          <object class="GtkBox" id="hbox7">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
@@ -299,11 +289,7 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
                             <property name="top_attach">3</property>
-                            <property name="bottom_attach">4</property>
-                            <property name="x_options">GTK_FILL</property>
-                            <property name="y_options">GTK_FILL</property>
                           </packing>
                         </child>
                         <child>
@@ -316,21 +302,18 @@
                             <property name="draw_indicator">True</property>
                           </object>
                           <packing>
+                            <property name="left_attach">1</property>
                             <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                            <property name="x_options">GTK_FILL</property>
-                            <property name="y_options"/>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox2">
+                          <object class="GtkBox" id="hbox2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
                               <object class="GtkLabel" id="label2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="xalign">0</property>
                                 <property name="label" translatable="yes">Quests:</property>
                               </object>
                               <packing>
@@ -359,11 +342,8 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
+                            <property name="left_attach">0</property>
                             <property name="top_attach">1</property>
-                            <property name="bottom_attach">2</property>
-                            <property name="y_options">GTK_FILL</property>
                           </packing>
                         </child>
                       </object>
@@ -397,17 +377,16 @@
                     <property name="border_width">7</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <object class="GtkVBox" id="vbox6">
+                      <object class="GtkBox" id="vbox6">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkTable" id="notdifficultoptionstable">
+                          <object class="GtkGrid" id="notdifficultoptionstable">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="n_rows">2</property>
-                            <property name="n_columns">2</property>
-                            <property name="column_spacing">7</property>
                             <property name="row_spacing">7</property>
+                            <property name="column_spacing">7</property>
                             <child>
                               <object class="GtkCheckButton" id="intense_combat_checkbutton">
                                 <property name="label" translatable="yes">Intense Combat</property>
@@ -418,8 +397,8 @@
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"/>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
                               </packing>
                             </child>
                             <child>
@@ -432,10 +411,8 @@
                                 <property name="draw_indicator">True</property>
                               </object>
                               <packing>
+                                <property name="left_attach">0</property>
                                 <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"/>
                               </packing>
                             </child>
                             <child>
@@ -449,15 +426,11 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
                                 <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                                <property name="x_options">GTK_FILL</property>
-                                <property name="y_options"/>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHBox" id="hbox1">
+                              <object class="GtkBox" id="hbox1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <child>
@@ -493,8 +466,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
-                                <property name="y_options">GTK_FILL</property>
+                                <property name="top_attach">0</property>
                               </packing>
                             </child>
                           </object>

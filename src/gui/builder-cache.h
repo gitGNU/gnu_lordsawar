@@ -54,7 +54,7 @@ class BuilderCache: public std::map<Glib::ustring, Glib::RefPtr<Gtk::Builder> >
 
     private:
 
-        void preloadAllBuilders();
+        void preloadAllBuilders(Glib::ustring dir);
 
 	// DATA
 

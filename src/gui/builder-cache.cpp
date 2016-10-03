@@ -17,6 +17,7 @@
 
 #include <sigc++/functors/mem_fun.h>
 
+#include <iostream>
 #include "builder-cache.h"
 #include "File.h"
 
@@ -38,23 +39,29 @@ void BuilderCache::deleteInstance()
     s_instance = 0;
 }
 
-void BuilderCache::preloadAllBuilders()
+void BuilderCache::preloadAllBuilders(Glib::ustring dir)
 {
-  std::list<Glib::ustring> f = 
-    File::scanForFiles(File::add_slash_if_necessary(File::getMiscFile("glade")), ".ui");
+  std::list<Glib::ustring> f = File::scanForFiles(dir, ".ui");
   for (std::list<Glib::ustring>::iterator i = f.begin(); i != f.end(); i++)
     {
       //for some reason when we load about-dialog.ui, it gets shown.
       if (File::get_basename ((*i)) == "about-dialog")
         continue;
-      Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(*i);
-      (*this)[File::get_basename(*i, true)] = Glib::RefPtr<Gtk::Builder>(xml);
+      try 
+        {
+          Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(*i);
+          (*this)[File::get_basename(*i, true)] = Glib::RefPtr<Gtk::Builder>(xml);
+        } catch (const Glib::Error &ex)
+      {
+        fprintf(stderr, "Error, couldn't load builder file `%s' (%s)\n", (*i).c_str(), ex.what().c_str());
+        exit (1);
+      }
     }
 }
 
 BuilderCache::BuilderCache()
 {
-  preloadAllBuilders();
+  preloadAllBuilders(File::add_slash_if_necessary(File::getMiscFile("glade")));
 }
 
 BuilderCache::~BuilderCache()

@@ -34,7 +34,7 @@ class ArmyGainsLevelDialog: public LwDialog
     Army::Stat get_selected_stat() { return selected_stat; }
     
  private:
-    Gtk::VBox *stats_vbox;
+    Gtk::Box *stats_vbox;
 
     Hero *hero;
     Army::Stat selected_stat;

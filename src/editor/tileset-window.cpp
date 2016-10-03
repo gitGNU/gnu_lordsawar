@@ -65,7 +65,7 @@ TileSetWindow::TileSetWindow(Glib::ustring load_filename)
     tile_name_entry->signal_changed().connect
       (sigc::mem_fun(this, &TileSetWindow::on_tile_name_changed));
 
-    Gtk::HBox *type_combo_container;
+    Gtk::Box *type_combo_container;
     xml->get_widget("type_combo_container", type_combo_container);
     tile_type_combobox = new Gtk::ComboBoxText();
     tile_type_combobox->append(Tile::tileTypeToFriendlyName(Tile::GRASS));
@@ -79,7 +79,7 @@ TileSetWindow::TileSetWindow(Glib::ustring load_filename)
     tile_type_combobox->signal_changed().connect
       (sigc::mem_fun(this, &TileSetWindow::on_tile_type_changed));
 
-    Gtk::HBox *tilestyle_combo_container;
+    Gtk::Box *tilestyle_combo_container;
     xml->get_widget("tilestyle_combo_container", tilestyle_combo_container);
     tilestyle_combobox = new Gtk::ComboBoxText();
     tilestyle_combobox->append(_("Lone"));
@@ -105,7 +105,7 @@ TileSetWindow::TileSetWindow(Glib::ustring load_filename)
     tilestyle_combobox->signal_changed().connect
       (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_changed));
 
-    Gtk::HBox *pattern_container;
+    Gtk::Box *pattern_container;
     xml->get_widget("pattern_container", pattern_container);
     tile_smallmap_pattern_combobox = new Gtk::ComboBoxText();
     tile_smallmap_pattern_combobox->append(_("Solid"));

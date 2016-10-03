@@ -38,7 +38,7 @@ class TilesetFlagEditorDialog: public LwEditorDialog
  private:
     Gtk::FileChooserButton *flag_filechooserbutton;
     Gtk::ComboBoxText *shield_theme_combobox;
-    Gtk::Table *preview_table;
+    Gtk::Grid *preview_table;
     Tileset *d_tileset;
     Glib::ustring selected_filename;
     std::list<Glib::ustring> delfiles;

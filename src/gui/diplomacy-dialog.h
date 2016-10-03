@@ -37,8 +37,8 @@ class DiplomacyDialog: public LwDialog
 
     Player *d_player;
 
-    Gtk::Table *d_proposals_table;
-    Gtk::Table *d_offers_table;
+    Gtk::Grid *d_proposals_table;
+    Gtk::Grid *d_offers_table;
     Gtk::Label *d_player_label;
     Gtk::Image *d_player_shield_image;
     Gtk::Button *d_report_button;

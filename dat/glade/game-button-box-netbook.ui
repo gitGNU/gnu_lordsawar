@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="3.0"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkHBox" id="box">
+      <object class="GtkBox" id="box">
+        <property name="orientation">horizontal</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">7</property>
         <property name="spacing">3</property>
         <child>
-          <object class="GtkVBox" id="control_panel_vbox">
+          <object class="GtkBox" id="control_panel_vbox">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">3</property>
             <child>
-              <object class="GtkHBox" id="first_row_hbox">
+              <object class="GtkBox" id="first_row_hbox">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">4</property>
@@ -80,7 +83,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="second_row_hbox">
+              <object class="GtkBox" id="second_row_hbox">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">4</property>
@@ -144,12 +148,14 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="third_row_hbox">
+              <object class="GtkBox" id="third_row_hbox">
+                <property name="orientation">horizontal</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">4</property>
                 <child>
-                  <object class="GtkVBox" id="vbox1">
+                  <object class="GtkBox" id="vbox1">
+                    <property name="orientation">vertical</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -173,7 +179,8 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkVBox" id="vbox2">
+                  <object class="GtkBox" id="vbox2">
+                    <property name="orientation">vertical</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -217,15 +224,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox3">
+          <object class="GtkBox" id="vbox3">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkTable" id="keypad_table">
+              <object class="GtkGrid" id="keypad_table">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="n_rows">3</property>
-                <property name="n_columns">3</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -238,8 +244,8 @@
                     <accelerator key="KP_7" signal="clicked"/>
                   </object>
                   <packing>
-                    <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"/>
+                    <property name="top_attach">0</property>
+                    <property name="left_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -251,10 +257,8 @@
                     <accelerator key="KP_8" signal="clicked"/>
                   </object>
                   <packing>
+                    <property name="top_attach">0</property>
                     <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -266,10 +270,8 @@
                     <accelerator key="KP_9" signal="clicked"/>
                   </object>
                   <packing>
+                    <property name="top_attach">0</property>
                     <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                    <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -282,9 +284,7 @@
                   </object>
                   <packing>
                     <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                    <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"/>
+                    <property name="left_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -297,11 +297,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
                     <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                    <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -314,9 +310,7 @@
                   </object>
                   <packing>
                     <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
-                    <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"/>
+                    <property name="left_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -329,11 +323,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
                     <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
-                    <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -346,11 +336,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
                     <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
-                    <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"/>
                   </packing>
                 </child>
               </object>

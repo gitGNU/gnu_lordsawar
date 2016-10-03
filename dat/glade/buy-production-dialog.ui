@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkDialog" id="dialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
@@ -12,13 +12,14 @@
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox">
+      <object class="GtkBox" id="dialog-vbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_ENTER_NOTIFY_MASK</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">18</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_ENTER_NOTIFY_MASK</property>
@@ -64,9 +65,10 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="contents_vbox">
+          <object class="GtkBox" id="contents_vbox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">12</property>
             <child>
               <object class="GtkAlignment" id="productions_alignment">
@@ -75,27 +77,17 @@
                 <property name="top_padding">12</property>
                 <property name="left_padding">12</property>
                 <child>
-                  <object class="GtkVBox" id="productions_vbox">
+                  <object class="GtkBox" id="productions_vbox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">18</property>
                     <child>
-                      <object class="GtkTable" id="production_toggles_table">
+                      <object class="GtkGrid" id="production_toggles_table">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="n_rows">2</property>
-                        <property name="n_columns">3</property>
-                        <property name="column_spacing">6</property>
                         <property name="row_spacing">6</property>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
+                        <property name="column_spacing">6</property>
                         <child>
                           <placeholder/>
                         </child>
@@ -131,7 +123,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkHBox" id="production_info_hbox">
+                      <object class="GtkBox" id="production_info_hbox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="spacing">12</property>
@@ -139,7 +131,6 @@
                           <object class="GtkLabel" id="production_info_label1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -151,7 +142,6 @@
                           <object class="GtkLabel" id="production_info_label2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>

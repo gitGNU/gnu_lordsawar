@@ -41,7 +41,7 @@ class TilesetSelectorEditorDialog: public LwEditorDialog
     Gtk::RadioButton *small_selector_radiobutton;
     Gtk::FileChooserButton *selector_filechooserbutton;
     Gtk::ComboBoxText *shield_theme_combobox;
-    Gtk::Table *preview_table;
+    Gtk::Grid *preview_table;
     Tileset *d_tileset;
     std::list<Glib::ustring> delfiles;
 

@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="3.0"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="window1">
     <child>
-      <object class="GtkVBox" id="box">
+      <object class="GtkBox" id="box">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <child>
@@ -18,7 +19,8 @@
                 <property name="receives_default">True</property>
                 <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK</property>
                 <child>
-                  <object class="GtkVBox" id="vbox">
+                  <object class="GtkBox" id="vbox">
+                    <property name="orientation">vertical</property>
                     <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <child>
@@ -48,7 +50,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="stack_button_container">
+          <object class="GtkBox" id="stack_button_container">
+            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
             <child>

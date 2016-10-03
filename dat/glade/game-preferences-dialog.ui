@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkListStore" id="model1">
     <columns>
       <!-- column-name gchararray -->
@@ -29,16 +29,18 @@
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
     <property name="title" translatable="yes">New Game</property>
+    <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkBox" id="dialog-vbox1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">24</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
@@ -82,7 +84,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox7">
+          <object class="GtkBox" id="hbox7">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
@@ -107,8 +109,6 @@
                 <property name="invisible_char">●</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
-                <property name="primary_icon_sensitive">True</property>
-                <property name="secondary_icon_sensitive">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -124,14 +124,15 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="contents_hbox">
+          <object class="GtkBox" id="contents_hbox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">18</property>
             <child>
-              <object class="GtkVBox" id="left_vbox">
+              <object class="GtkBox" id="left_vbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">18</property>
                 <child>
                   <object class="GtkAlignment" id="alignment1">
@@ -142,14 +143,16 @@
                     <property name="top_padding">6</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <object class="GtkVBox" id="players_vbox">
+                      <object class="GtkBox" id="players_vbox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">4</property>
                         <child>
-                          <object class="GtkVBox" id="vbox6">
+                          <object class="GtkBox" id="vbox6">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -177,9 +180,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkVBox" id="vbox7">
+              <object class="GtkBox" id="vbox7">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">8</property>
                 <child>
                   <object class="GtkAlignment" id="alignment2">
@@ -187,12 +191,13 @@
                     <property name="can_focus">False</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <object class="GtkVBox" id="vbox8">
+                      <object class="GtkBox" id="vbox8">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">8</property>
                         <child>
-                          <object class="GtkHBox" id="difficulty_hbox">
+                          <object class="GtkBox" id="difficulty_hbox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="spacing">7</property>
@@ -289,9 +294,10 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox1">
+          <object class="GtkBox" id="vbox1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
             <child>
               <placeholder/>
             </child>

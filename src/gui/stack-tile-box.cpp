@@ -105,7 +105,7 @@ StackTileBox::StackTileBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk::B
       //we put them in a vbox so that the buttons don't expand horizontally.
       StackArmyButton *button = StackArmyButton::create(Configuration::s_ui_form_factor);
       button->get_parent()->remove(*button);
-      Gtk::VBox *box = new Gtk::VBox();
+      Gtk::Box *box = new Gtk::Box(Gtk::ORIENTATION_VERTICAL);
       box->pack_start(*Gtk::manage(button), Gtk::PACK_SHRINK);
       button->reparent(*box);
       stack_army_buttons.push_back(button);

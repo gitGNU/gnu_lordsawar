@@ -46,7 +46,7 @@ BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)
     xml->get_widget("production_info_label2", production_info_label2);
     xml->get_widget("buy_button", buy_button);
 
-    Gtk::Table *toggles_table; 
+    Gtk::Grid *toggles_table; 
     xml->get_widget("production_toggles_table", toggles_table);
     
     const Armysetlist* al = Armysetlist::getInstance();
@@ -85,8 +85,7 @@ BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)
 	production_toggles.push_back(toggle);
 	int x = i % no_columns;
 	int y = i / no_columns;
-	toggles_table->attach(*toggle, x, x + 1, y, y + 1,
-			      Gtk::SHRINK, Gtk::SHRINK);
+	toggles_table->attach(*toggle, x, y, 1 , 1);
 	toggle->show_all();
 
 	toggle->signal_toggled().connect(

@@ -38,7 +38,7 @@ class ItemlistDialog: public LwEditorDialog
     Gtk::TreeView *items_treeview;
     Gtk::Button *add_item_button;
     Gtk::Button *remove_item_button;
-    Gtk::VBox *item_vbox;
+    Gtk::Box *item_vbox;
     Gtk::CheckButton *add1str_checkbutton;
     Gtk::CheckButton *add2str_checkbutton;
     Gtk::CheckButton *add3str_checkbutton;

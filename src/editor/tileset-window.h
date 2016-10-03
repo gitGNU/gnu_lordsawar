@@ -55,7 +55,7 @@ class TileSetWindow: public sigc::trackable
     Gtk::TreeView *tiles_treeview;
     Gtk::Button *add_tile_button;
     Gtk::Button *remove_tile_button;
-    Gtk::VBox *tile_vbox;
+    Gtk::Box *tile_vbox;
     Gtk::Entry *tile_name_entry;
     Gtk::ComboBoxText *tile_type_combobox;
     Gtk::SpinButton *tile_moves_spinbutton;

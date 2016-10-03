@@ -55,7 +55,7 @@ class NewMapDialog: public LwEditorDialog
     
  private:
     Gtk::ComboBox *map_size_combobox;
-    Gtk::Table *custom_size_table;
+    Gtk::Grid *custom_size_table;
     Gtk::SpinButton *width_spinbutton;
     Gtk::SpinButton *height_spinbutton;
     Gtk::ComboBoxText *fill_style_combobox;

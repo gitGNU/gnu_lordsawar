@@ -70,8 +70,8 @@ class FightWindow: public sigc::trackable
     
     // add an army to the window
     void add_army(Army *army, int initial_hp,
-                  std::vector<Gtk::HBox *> &hboxes,
-		  Gtk::VBox *vbox, int current_no);
+                  std::vector<Gtk::Box *> &hboxes,
+		  Gtk::Box *vbox, int current_no);
 
     void on_key_release_event();
 

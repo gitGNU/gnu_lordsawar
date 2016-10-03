@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
 <interface>
-  <requires lib="gtk+" version="2.16"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkDialog" id="dialog">
     <property name="can_focus">False</property>
     <property name="border_width">6</property>
@@ -9,12 +9,13 @@
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox">
+      <object class="GtkBox" id="dialog-vbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">12</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
@@ -58,14 +59,15 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="outer_hbox">
+          <object class="GtkBox" id="outer_hbox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">24</property>
             <child>
-              <object class="GtkVBox" id="left_vbox">
+              <object class="GtkBox" id="left_vbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkAlignment" id="alignment1">
                     <property name="visible">True</property>
@@ -78,8 +80,6 @@
                           <object class="GtkImage" id="map_image">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="xalign">0</property>
-                            <property name="yalign">0</property>
                             <property name="stock">gtk-missing-image</property>
                           </object>
                         </child>
@@ -100,20 +100,19 @@
               </packing>
             </child>
             <child>
-              <object class="GtkVBox" id="right_vbox">
+              <object class="GtkBox" id="right_vbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
-                  <object class="GtkHBox" id="image_hbox">
+                  <object class="GtkBox" id="image_hbox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkImage" id="hero_image">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
-                        <property name="yalign">0</property>
                         <property name="stock">gtk-missing-image</property>
                       </object>
                       <packing>
@@ -134,8 +133,6 @@
                     <property name="width_request">250</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0</property>
                     <property name="wrap">True</property>
                   </object>
                   <packing>
@@ -145,7 +142,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="gender_hbox">
+                  <object class="GtkBox" id="gender_hbox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">12</property>
@@ -189,7 +186,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="name_hbox">
+                  <object class="GtkBox" id="name_hbox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">6</property>
@@ -197,7 +194,6 @@
                       <object class="GtkLabel" id="name_label">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Name:</property>
                       </object>
                       <packing>
@@ -213,8 +209,6 @@
                         <property name="invisible_char">●</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">True</property>
-                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>

@@ -48,8 +48,8 @@ FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
     
     window->signal_key_release_event().connect_notify(sigc::hide(sigc::mem_fun(*this, &FightWindow::on_key_release_event)));
 
-    Gtk::VBox *attacker_close_vbox;
-    Gtk::VBox *defender_close_vbox;
+    Gtk::Box *attacker_close_vbox;
+    Gtk::Box *defender_close_vbox;
     xml->get_widget("attacker_close_vbox", attacker_close_vbox);
     xml->get_widget("defender_close_vbox", defender_close_vbox);
 
@@ -60,7 +60,7 @@ FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
     Fight::orderArmies (fight.getDefenders(), defenders);
 
     // add the armies
-    std::vector<Gtk::HBox *> close_hboxes;
+    std::vector<Gtk::Box *> close_hboxes;
     int close;
     std::map<guint32, guint32> initial_hps = fight.getInitialHPs();
 
@@ -137,10 +137,10 @@ void FightWindow::run(bool *quick)
 }
 
 void FightWindow::add_army(Army *army, int initial_hp,
-			   std::vector<Gtk::HBox *> &hboxes,
-			   Gtk::VBox *vbox, int current_no)
+			   std::vector<Gtk::Box *> &hboxes,
+			   Gtk::Box *vbox, int current_no)
 {
-    Gtk::VBox *army_box;
+    Gtk::Box *army_box;
     Gtk::Image *army_image;
     Gtk::DrawingArea *water_drawingarea;
     Gtk::EventBox *eventbox;
@@ -172,7 +172,7 @@ void FightWindow::add_army(Army *army, int initial_hp,
     if (current_row >= int(hboxes.size()))
     {
 	// add an hbox
-	Gtk::HBox *hbox = manage(new Gtk::HBox);
+	Gtk::Box *hbox = manage(new Gtk::Box (Gtk::ORIENTATION_HORIZONTAL));
 	hbox->set_spacing(6);
 	hboxes.push_back(hbox);
 
@@ -181,9 +181,9 @@ void FightWindow::add_army(Army *army, int initial_hp,
 	vbox->pack_start(*a, Gtk::PACK_SHRINK);
     }
 
-    Gtk::HBox *hbox = hboxes[current_row];
+    Gtk::Box *hbox = hboxes[current_row];
     army_box->get_parent()->remove(*army_box);
-    Gtk::VBox *box = new Gtk::VBox();
+    Gtk::Box *box = new Gtk::Box(Gtk::ORIENTATION_VERTICAL );
     box->pack_start(*army_box, Gtk::PACK_SHRINK);
     army_box->reparent(*box);
     hbox->pack_start(*Gtk::manage(box), Gtk::PACK_SHRINK);

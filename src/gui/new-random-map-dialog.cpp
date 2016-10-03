@@ -46,7 +46,6 @@ NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
     xml->get_widget("dialog-vbox1", dialog_vbox);
     xml->get_widget("dialog-action_area1", dialog_action_area);
     xml->get_widget("map_size_combobox", map_size_combobox);
-    xml->get_widget("random_map_container", random_map_container);
     xml->get_widget("grass_scale", grass_scale);
     xml->get_widget("water_scale", water_scale);
     xml->get_widget("swamp_scale", swamp_scale);
@@ -90,7 +89,7 @@ NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
     
     guint32 counter = 0;
     guint32 default_id = 0;
-    Gtk::HBox *box;
+    Gtk::Box *box;
 
     //fill in tile sizes combobox
     tile_size_combobox = manage(new Gtk::ComboBoxText);

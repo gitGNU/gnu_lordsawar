@@ -82,7 +82,7 @@ class HistoryReportDialog: public LwDialog
   
     std::list<Gdk::RGBA> d_colours; //player colours
     
-    Gtk::VBox *events_list_box;
+    Gtk::Box *events_list_box;
 
     void addHistoryEvent(NetworkHistory *event);
     void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);

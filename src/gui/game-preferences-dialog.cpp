@@ -169,7 +169,7 @@ void GamePreferencesDialog::add_player(GameParameters::Player::Type type,
 {
   //okay, add a new hbox, with a combo and an entry in it
   //add it to players_vbox
-  Gtk::HBox *player_hbox = new Gtk::HBox();
+  Gtk::Box *player_hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL);
   Gtk::ComboBoxText *player_type = new Gtk::ComboBoxText();
   player_type->append(HUMAN_PLAYER_TYPE);
   player_type->append(EASY_PLAYER_TYPE);
@@ -237,7 +237,7 @@ void GamePreferencesDialog::update_shields()
       player_shield->property_pixbuf() = 
         ImageCache::getInstance()->getShieldPic(d_shieldset, 2, i)->to_pixbuf();
       player_shields.push_back(player_shield);
-      Gtk::HBox *player_hbox = static_cast<Gtk::HBox*>(list[i+1]);
+      Gtk::Box *player_hbox = static_cast<Gtk::Box*>(list[i+1]);
       player_hbox->pack_start(*manage(player_shield), Gtk::PACK_SHRINK, 10);
       player_hbox->reorder_child(*player_shield, 0);
       player_hbox->show_all();

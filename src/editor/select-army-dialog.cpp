@@ -112,7 +112,8 @@ void SelectArmyDialog::fill_in_army_toggles()
     // fill in army options
     army_toggles.clear();
     toggles_table->foreach(sigc::mem_fun(toggles_table, &Gtk::Container::remove));
-    toggles_table->resize(1, 1);
+    toggles_table->insert_row (0);
+    toggles_table->insert_column (0);
     const int no_columns = 4;
     for (unsigned int i = 0; i < selectable.size(); ++i)
       {
@@ -127,8 +128,7 @@ void SelectArmyDialog::fill_in_army_toggles()
 	army_toggles.push_back(toggle);
 	int x = i % no_columns;
 	int y = i / no_columns;
-	toggles_table->attach(*toggle, x, x + 1, y, y + 1,
-			      Gtk::SHRINK, Gtk::SHRINK);
+	toggles_table->attach(*toggle, x, y, 1 , 1);
 	toggle->show_all();
 
 	toggle->signal_toggled().connect(

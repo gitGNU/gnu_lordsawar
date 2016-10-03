@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
 <interface>
-  <!-- interface-requires gtk+ 2.12 -->
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkWindow" id="window">
     <property name="can_focus">False</property>
     <property name="modal">True</property>
@@ -10,41 +10,24 @@
     <property name="decorated">False</property>
     <property name="gravity">static</property>
     <child>
-      <object class="GtkTable" id="table">
+      <object class="GtkGrid" id="table">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">24</property>
-        <property name="n_rows">4</property>
-        <property name="n_columns">2</property>
-        <property name="column_spacing">24</property>
         <property name="row_spacing">18</property>
-        <child>
-          <object class="GtkHSeparator" id="hseparator1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
-            <property name="top_attach">2</property>
-            <property name="bottom_attach">3</property>
-            <property name="x_options">GTK_FILL</property>
-          </packing>
-        </child>
+        <property name="column_spacing">24</property>
         <child>
           <object class="GtkLabel" id="rounds_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
           </object>
           <packing>
+            <property name="left_attach">0</property>
             <property name="top_attach">2</property>
-            <property name="bottom_attach">3</property>
-            <property name="x_options">GTK_FILL</property>
-            <property name="y_options"/>
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="defender_hbox">
+          <object class="GtkBox" id="defender_hbox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">24</property>
@@ -52,9 +35,10 @@
               <placeholder/>
             </child>
             <child>
-              <object class="GtkVBox" id="defender_close_vbox">
+              <object class="GtkBox" id="defender_close_vbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
                   <placeholder/>
@@ -75,15 +59,11 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
             <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-            <property name="x_options">GTK_SHRINK</property>
-            <property name="y_options">GTK_SHRINK</property>
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="attacker_hbox">
+          <object class="GtkBox" id="attacker_hbox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">24</property>
@@ -91,9 +71,10 @@
               <placeholder/>
             </child>
             <child>
-              <object class="GtkVBox" id="attacker_close_vbox">
+              <object class="GtkBox" id="attacker_close_vbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
                   <placeholder/>
@@ -114,15 +95,8 @@
           </object>
           <packing>
             <property name="left_attach">1</property>
-            <property name="right_attach">2</property>
             <property name="top_attach">3</property>
-            <property name="bottom_attach">4</property>
-            <property name="x_options">GTK_SHRINK</property>
-            <property name="y_options">GTK_SHRINK</property>
           </packing>
-        </child>
-        <child>
-          <placeholder/>
         </child>
         <child>
           <object class="GtkImage" id="defender_shield_image">
@@ -131,10 +105,8 @@
             <property name="stock">gtk-missing-image</property>
           </object>
           <packing>
+            <property name="left_attach">0</property>
             <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-            <property name="x_options">GTK_FILL</property>
-            <property name="y_options">GTK_FILL</property>
           </packing>
         </child>
         <child>
@@ -144,11 +116,49 @@
             <property name="stock">gtk-missing-image</property>
           </object>
           <packing>
+            <property name="left_attach">0</property>
             <property name="top_attach">3</property>
-            <property name="bottom_attach">4</property>
-            <property name="x_options">GTK_FILL</property>
-            <property name="y_options">GTK_FILL</property>
           </packing>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <placeholder/>

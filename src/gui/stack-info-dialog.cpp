@@ -87,7 +87,7 @@ void StackInfoDialog::addStack(Stack *s, guint32 &idx)
     }
 }
 
-void StackInfoDialog::addArmy (bool first, Stack *s, Army *h, guint32 modified_strength, int idx, guint32 colour_id)
+void StackInfoDialog::addArmy (bool first, Stack *s, Army *h, guint32 modified_strength, guint32 idx, guint32 colour_id)
 {
   ImageCache *gc = ImageCache::getInstance();
   Player *player = h->getOwner();
@@ -155,24 +155,16 @@ void StackInfoDialog::addArmy (bool first, Stack *s, Army *h, guint32 modified_s
       radio->signal_toggled().connect
 	(sigc::bind(sigc::mem_fun(this, &StackInfoDialog::on_stack_toggled), 
 		    radio, s));
-      stack_table->attach(*manage(radio), 0, 1, idx, idx + 1,
-			  Gtk::SHRINK, Gtk::SHRINK);
+      stack_table->attach(*manage(radio), 0, idx, 1, 1);
     }
 
-  stack_table->attach(*manage(toggle), 1, 2, idx, idx + 1,
-		      Gtk::SHRINK, Gtk::SHRINK);
-  stack_table->attach(*manage(name), 2, 3, idx, idx + 1,
-		      Gtk::SHRINK, Gtk::SHRINK);
-  stack_table->attach(*manage(strength), 3, 4, idx, idx+1,
-		      Gtk::SHRINK, Gtk::SHRINK);
-  stack_table->attach(*manage(moves), 4, 5, idx, idx+1,
-		      Gtk::SHRINK, Gtk::SHRINK);
+  stack_table->attach(*manage(toggle), 1, idx, 1, 1);
+  stack_table->attach(*manage(name), 2, idx, 1, 1);
+  stack_table->attach(*manage(strength), 3, idx, 1, 1);
+  stack_table->attach(*manage(moves), 4, idx, 1, 1);
   if (image)
-    stack_table->attach(*manage(image), 5, 6, idx, idx+1,
-			Gtk::SHRINK, Gtk::SHRINK);
-  stack_table->attach(*manage(bonus), 6, 7, idx, idx + 1,
-		      Gtk::SHRINK, Gtk::SHRINK);
-          
+    stack_table->attach(*manage(image), 5, idx, 1, 1);
+  stack_table->attach(*manage(bonus), 6, idx, 1, 1);
 }
        
 void StackInfoDialog::on_group_clicked()
@@ -201,22 +193,25 @@ void StackInfoDialog::fill_stack_info()
   toggles.clear();
   radios.clear();
   stack_table->foreach(sigc::mem_fun(stack_table, &Gtk::Container::remove));
-  stack_table->resize(6, MAX_ARMIES_ON_A_SINGLE_TILE);
+  for (int i = 0; i < 6; i++)
+    stack_table->insert_row (i);
+  for (unsigned int i = 0; i < MAX_ARMIES_ON_A_SINGLE_TILE; i++)
+    stack_table->insert_column (i);
 
   Pango::AttrList attrs;
   Pango::Attribute weight = Pango::Attribute::create_attr_weight(Pango::WEIGHT_BOLD);
   attrs.insert(weight);
   Gtk::Label *str = new Gtk::Label(_("Str"));
   str->set_attributes(attrs);
-  stack_table->attach(*manage(str), 3, 4, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
+  stack_table->attach(*manage(str), 3, 0, 1, 1);
 
   Gtk::Label *moves = new Gtk::Label(_("Move"));
   moves->set_attributes(attrs);
-  stack_table->attach(*manage(moves), 4, 5, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
+  stack_table->attach(*manage(moves), 4, 0, 1, 1);
 
   Gtk::Label *bonus = new Gtk::Label(_("Bonus"));
   bonus->set_attributes(attrs);
-  stack_table->attach(*manage(bonus), 6, 7, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
+  stack_table->attach(*manage(bonus), 6, 0, 1, 1);
 
   std::list<Stack*> stks;
   stks = stile->getFriendlyStacks(Playerlist::getActiveplayer());

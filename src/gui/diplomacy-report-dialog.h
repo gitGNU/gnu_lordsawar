@@ -34,7 +34,7 @@ class DiplomacyReportDialog: public LwDialog
 
  private:
     Player *d_player;
-    Gtk::Table *d_table;
+    Gtk::Grid *d_table;
 };
 
 #endif

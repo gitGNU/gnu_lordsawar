@@ -36,7 +36,7 @@ class RoadEditorTip: public sigc::trackable
 
  private:
     Gtk::Window* window;
-    Gtk::HBox *button_box;
+    Gtk::Box *button_box;
     Gtk::RadioButton* buttons[ROAD_TYPES];
     Gtk::RadioButton::Group group;
     Road *road;

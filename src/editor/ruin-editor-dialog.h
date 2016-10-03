@@ -47,7 +47,7 @@ class RuinEditorDialog: public LwEditorDialog
     Gtk::Button *randomize_keeper_button;
     Gtk::CheckButton *hidden_button;
     Gtk::ComboBoxText *player_combobox;
-    Gtk::HBox *new_reward_hbox;
+    Gtk::Box *new_reward_hbox;
     Gtk::RadioButton *new_reward_radiobutton;
     Gtk::RadioButton *random_reward_radiobutton;
     Gtk::Button *reward_button;

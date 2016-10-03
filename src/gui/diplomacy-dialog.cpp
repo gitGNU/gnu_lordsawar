@@ -58,11 +58,10 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
       Glib::RefPtr<Gdk::Pixbuf> pixbuf= gc->getShieldPic(2, p)->to_pixbuf();
       Gtk::Image *im = new Gtk::Image();
       im->property_pixbuf() = pixbuf;
-      d_proposals_table->attach(*manage(im), i + 0, i + 1, 0, 1, 
-				Gtk::SHRINK, Gtk::SHRINK);
+      d_proposals_table->attach(*manage(im), i, 0, 1, 1);
       i++;
     }
-  d_proposals_table->set_col_spacings (16);
+  d_proposals_table->set_column_spacing (16);
     
   d_player_shield_image->property_pixbuf() = gc->getShieldPic(2, d_player)->to_pixbuf();
 
@@ -90,8 +89,7 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
       Glib::RefPtr<Gdk::Pixbuf> pixbuf= gc->getDiplomacyPic(1, state)->to_pixbuf();
       Gtk::Image *im = new Gtk::Image();
       im->property_pixbuf() = pixbuf;
-      d_proposals_table->attach(*manage(im), i + 0, i + 1, j + 1, j + 2, 
-				Gtk::SHRINK, Gtk::SHRINK);
+      d_proposals_table->attach(*manage(im), i, j + 1, 1, 1);
       Player::DiplomaticProposal proposal = p->getDiplomaticProposal (d_player);
       if (proposal != Player::NO_PROPOSAL)
 	{
@@ -114,8 +112,7 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
 
 	  Gtk::Image *im2 = manage(new Gtk::Image());
 	  im2->property_pixbuf() = pixbuf2;
-	  d_proposals_table->attach(*manage(im2), i + 0, i + 1, j + 1, j + 2, 
-				    Gtk::SHRINK, Gtk::SHRINK);
+	  d_proposals_table->attach(*manage(im2), i , j + 1, 1, 1);
 	}
       i++;
     }
@@ -153,8 +150,7 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
 	    sigc::bind(sigc::mem_fun
 		       (this, &DiplomacyDialog::on_proposal_toggled),
 		       radio1, p, Player::PROPOSE_PEACE));
-      d_offers_table->attach(*radio1, i, i + 1, j + 0, j + 1,
-			     Gtk::SHRINK, Gtk::SHRINK);
+      d_offers_table->attach(*radio1, i, j ,1, 1);
 
       j = 1;
       Gtk::RadioButton *radio2= manage(new Gtk::RadioButton);
@@ -174,8 +170,7 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
 	    sigc::bind(sigc::mem_fun(this, 
 				     &DiplomacyDialog::on_proposal_toggled),
 		       radio2, p, Player::PROPOSE_WAR_IN_FIELD));
-      d_offers_table->attach(*radio2, i, i + 1, j + 0, j + 1,
-			     Gtk::SHRINK, Gtk::SHRINK);
+      d_offers_table->attach(*radio2, i, j, 1 , 1);
 
       j = 2;
       Gtk::RadioButton *radio3= manage(new Gtk::RadioButton);
@@ -195,8 +190,7 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
 	    sigc::bind(sigc::mem_fun(this, 
 				     &DiplomacyDialog::on_proposal_toggled),
 		       radio3, p, Player::PROPOSE_WAR));
-      d_offers_table->attach(*radio3, i, i + 1, j + 0, j + 1,
-			     Gtk::SHRINK, Gtk::SHRINK);
+      d_offers_table->attach(*radio3, i, j, 1, 1);
       i++;
     }
 }

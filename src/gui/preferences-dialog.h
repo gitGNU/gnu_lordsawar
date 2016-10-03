@@ -47,7 +47,7 @@ class PreferencesDialog: public LwDialog
     Gtk::CheckButton *play_music_checkbutton;
     Gtk::Scale *music_volume_scale;
     Gtk::Box *music_volume_hbox;
-    Gtk::VBox *players_vbox;
+    Gtk::Box *players_vbox;
 
     bool d_readonly;
     void on_show_commentator_toggled();

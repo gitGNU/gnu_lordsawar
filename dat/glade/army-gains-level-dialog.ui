@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="3.0"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="dialog">
     <property name="can_focus">False</property>
@@ -8,13 +8,15 @@
     <property name="title" translatable="yes">Army Gained Level</property>
     <property name="type_hint">normal</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox">
+      <object class="GtkBox" id="dialog-vbox">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_ENTER_NOTIFY_MASK</property>
         <property name="spacing">12</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkButtonBox" id="dialog-action_area1">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_ENTER_NOTIFY_MASK</property>
@@ -46,7 +48,8 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="contents_hbox">
+          <object class="GtkBox" id="contents_hbox">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
@@ -62,12 +65,14 @@
               </packing>
             </child>
             <child>
-              <object class="GtkVBox" id="contents_vbox">
+              <object class="GtkBox" id="contents_vbox">
+                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">12</property>
                 <child>
-                  <object class="GtkHBox" id="image_hbox">
+                  <object class="GtkBox" id="image_hbox">
+                    <property name="orientation">horizontal</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -108,7 +113,8 @@
                     <property name="left_padding">12</property>
                     <property name="right_padding">12</property>
                     <child>
-                      <object class="GtkVBox" id="stats_vbox">
+                      <object class="GtkBox" id="stats_vbox">
+                        <property name="orientation">vertical</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>

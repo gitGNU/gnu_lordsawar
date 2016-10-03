@@ -63,7 +63,7 @@ class StackArmyButton: public Gtk::Box
     Gtk::Label *army_label;
     Gtk::Button *stack_button;
     Gtk::Image *stack_image;
-    Gtk::VBox *stack_button_container;
+    Gtk::Box *stack_button_container;
     Gtk::EventBox *eventbox;
     ArmyInfoTip *army_info_tip;
 

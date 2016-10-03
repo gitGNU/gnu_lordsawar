@@ -40,7 +40,7 @@ class ArmyInfoTip: public sigc::trackable
 
  private:
     Gtk::Window* window;
-    void set_transient (Gtk::Widget *target);
+    void init (Gtk::Widget *target, Glib::RefPtr<Gdk::Pixbuf> image, guint32 move_bonus, Glib::ustring info);
 };
 
 #endif

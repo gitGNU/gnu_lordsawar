@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="3.0"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkAboutDialog" id="dialog">
     <property name="visible">True</property>
@@ -65,10 +65,12 @@ J. W. Bjerk
 David Baumgart
 Max Von Juntz (Music)</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkBox" id="dialog-vbox1">
+        <property name="orientation">vertical</property>
         <property name="can_focus">False</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkButtonBox" id="dialog-action_area1">
+            <property name="orientation">horizontal</property>
             <property name="can_focus">False</property>
           </object>
           <packing>

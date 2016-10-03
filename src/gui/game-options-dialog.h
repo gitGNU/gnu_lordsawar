@@ -37,8 +37,8 @@ class GameOptionsDialog: public LwDialog
     sigc::signal<void> difficulty_option_changed;
 
  private:
-    Gtk::Table *difficultoptionstable;
-    Gtk::Table *notdifficultoptionstable;
+    Gtk::Grid *difficultoptionstable;
+    Gtk::Grid *notdifficultoptionstable;
     Gtk::ComboBox *quests_combobox;
     Gtk::CheckButton *view_enemies_checkbutton;
     Gtk::CheckButton *view_production_checkbutton;

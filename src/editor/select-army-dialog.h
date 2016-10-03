@@ -46,7 +46,7 @@ class SelectArmyDialog: public LwEditorDialog
     ArmyInfoTip* army_info_tip;
     Gtk::Label *army_info_label1;
     Gtk::Label *army_info_label2;
-    Gtk::Table *toggles_table;
+    Gtk::Grid *toggles_table;
     Gtk::Button *select_button;
     std::vector<guint32> armysets;
 

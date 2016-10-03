@@ -62,7 +62,6 @@ static Glib::ustring create_and_dump_scenario(const Glib::ustring &file,
     Gtk::ButtonBox *dialog_action_area;
     Gtk::ComboBox *map_size_combobox;
     Gtk::ProgressBar *progressbar;
-    Gtk::Widget *random_map_container;
     Gtk::ComboBoxText *tile_size_combobox;
     Gtk::ComboBoxText *tile_theme_combobox;
     Gtk::ComboBoxText *city_theme_combobox;

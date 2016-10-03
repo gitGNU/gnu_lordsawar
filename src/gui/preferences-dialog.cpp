@@ -56,7 +56,7 @@ PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
 	  continue;
 	if (p == Playerlist::getInstance()->getNeutral())
 	  continue;
-	Gtk::HBox *player_hbox = new Gtk::HBox();
+	Gtk::Box *player_hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL);
 	Gtk::Image *image = new Gtk::Image();
 	image->property_pixbuf() = gc->getShieldPic(2, p)->to_pixbuf();
 	Gtk::ComboBoxText *type = new Gtk::ComboBoxText();

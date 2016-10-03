@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="3.0"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="dialog">
     <property name="can_focus">False</property>
@@ -11,7 +11,8 @@
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox">
+      <object class="GtkBox" id="dialog-vbox">
+        <property name="orientation">vertical</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="spacing">18</property>
@@ -46,11 +47,13 @@
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="contents_hbox">
+          <object class="GtkBox" id="contents_hbox">
+            <property name="orientation">horizontal</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkVBox" id="map_vbox">
+              <object class="GtkBox" id="map_vbox">
+                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="spacing">12</property>
@@ -86,7 +89,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkVBox" id="ops_vbox">
+              <object class="GtkBox" id="ops_vbox">
+                <property name="orientation">vertical</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -102,7 +106,8 @@
                         <property name="resize_mode">queue</property>
                         <property name="shadow_type">none</property>
                         <child>
-                          <object class="GtkHBox" id="modes_hbox">
+                          <object class="GtkBox" id="modes_hbox">
+                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
@@ -250,7 +255,7 @@
                     <property name="hscrollbar_policy">automatic</property>
                     <property name="vscrollbar_policy">automatic</property>
                     <child>
-                      <object class="GtkTable" id="terrain_type_table">
+                      <object class="GtkGrid" id="terrain_type_table">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
@@ -290,7 +295,8 @@
                         <property name="resize_mode">queue</property>
                         <property name="shadow_type">none</property>
                         <child>
-                          <object class="GtkHBox" id="building_types_hbox">
+                          <object class="GtkBox" id="building_types_hbox">
+                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
@@ -373,7 +379,8 @@
                     <property name="can_focus">False</property>
                     <property name="left_padding">12</property>
                     <child>
-                      <object class="GtkVBox" id="vbox1">
+                      <object class="GtkBox" id="vbox1">
+                        <property name="orientation">vertical</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
@@ -392,11 +399,9 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkTable" id="table1">
+                          <object class="GtkGrid" id="table1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="n_rows">2</property>
-                            <property name="n_columns">3</property>
                             <property name="column_spacing">5</property>
                             <property name="row_spacing">5</property>
                             <child>
@@ -414,7 +419,7 @@
                               </object>
                               <packing>
                                 <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
+                                <property name="left_attach">0</property>
                               </packing>
                             </child>
                             <child>
@@ -431,7 +436,6 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
                               </packing>
                             </child>
                             <child>
@@ -448,9 +452,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
                                 <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
                               </packing>
                             </child>
                             <child>
@@ -464,7 +466,6 @@
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
-                                <property name="right_attach">3</property>
                               </packing>
                             </child>
                             <child>
@@ -478,9 +479,7 @@
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
-                                <property name="right_attach">3</property>
                                 <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
                               </packing>
                             </child>
                           </object>
@@ -491,7 +490,8 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkHBox" id="hbox1">
+                          <object class="GtkBox" id="hbox1">
+                            <property name="orientation">horizontal</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>

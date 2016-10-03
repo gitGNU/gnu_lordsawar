@@ -26,7 +26,7 @@ class NewNetworkGameDownloadWindow : public Gtk::Window
 
   private:
 
-    Gtk::VBox        m_vbox;
+    Gtk::Box        m_vbox;
     Gtk::Label       m_label;
  
     Gtk::ProgressBar m_pbar;

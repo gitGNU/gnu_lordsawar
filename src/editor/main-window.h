@@ -53,6 +53,7 @@ class MainWindow: public sigc::trackable
     void show_initial_map();
     Gtk::Window &get_window() { return *window; }
 
+    sigc::signal<void> editor_quit;
 
  private:
     Gtk::Window* window;
@@ -102,7 +103,7 @@ class MainWindow: public sigc::trackable
     Gtk::Image *smallmap_image;
     Glib::ustring current_save_filename;
     bool needs_saving;
-    Gtk::Table *terrain_type_table;
+    Gtk::Grid *terrain_type_table;
     Gtk::Label *mouse_position_label;
     Gtk::RadioToolButton *pointer_radiobutton;
     Gtk::Box *players_hbox;

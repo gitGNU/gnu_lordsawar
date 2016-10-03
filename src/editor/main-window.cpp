@@ -373,8 +373,7 @@ void MainWindow::setup_terrain_radiobuttons()
 
 	int row = i / no_columns, column = i % no_columns;
 	
-	terrain_type_table->attach(*item.button, column, column + 1,
-				   row, row + 1, Gtk::SHRINK);
+	terrain_type_table->attach(*item.button, column, row, 1, 1);
 	item.button->signal_toggled().connect(
 	    sigc::mem_fun(this, &MainWindow::on_terrain_radiobutton_toggled));
 
@@ -987,6 +986,7 @@ bool MainWindow::quit()
     }
   else
     window->hide();
+  editor_quit.emit();
   return true;
 }
 

@@ -57,7 +57,7 @@ namespace UBoxPrivate
     Composition &arg(const T &obj);
 
     // compose and return string
-    Gtk::HBox *box() const;
+    Gtk::Box *box() const;
 
   private:
     //Glib::ustring str() const;
@@ -219,9 +219,9 @@ namespace UBoxPrivate
       output.push_back(fmt.substr(b, i - b));
   }
 
-  inline Gtk::HBox* Composition::box() const
+  inline Gtk::Box* Composition::box() const
   {
-    Gtk::HBox *hbox = new Gtk::HBox();
+    Gtk::Box *hbox = new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL);
     for (output_list::const_iterator i = output.begin(), end = output.end();
 	 i != end; ++i)
       {
@@ -250,7 +250,7 @@ namespace Box
   // more %2 less %3" and a number of templated parameters and spits out the
   // composited string
   template <typename T1>
-  inline Gtk::HBox* ucompose(const Glib::ustring &fmt, const T1 &o1)
+  inline Gtk::Box* ucompose(const Glib::ustring &fmt, const T1 &o1)
   {
     UBoxPrivate::Composition c(fmt);
     c.arg(o1);
@@ -258,7 +258,7 @@ namespace Box
   }
 
   template <typename T1, typename T2>
-  inline Gtk::HBox* ucompose(const Glib::ustring &fmt,
+  inline Gtk::Box* ucompose(const Glib::ustring &fmt,
 				const T1 &o1, const T2 &o2)
   {
     UBoxPrivate::Composition c(fmt);
@@ -267,7 +267,7 @@ namespace Box
   }
 
   template <typename T1, typename T2, typename T3>
-  inline Gtk::HBox* ucompose(const Glib::ustring &fmt,
+  inline Gtk::Box* ucompose(const Glib::ustring &fmt,
 				const T1 &o1, const T2 &o2, const T3 &o3)
   {
     UBoxPrivate::Composition c(fmt);
@@ -276,7 +276,7 @@ namespace Box
   }
 
   template <typename T1, typename T2, typename T3, typename T4>
-  inline Gtk::HBox* ucompose(const Glib::ustring &fmt,
+  inline Gtk::Box* ucompose(const Glib::ustring &fmt,
 				const T1 &o1, const T2 &o2, const T3 &o3,
 				const T4 &o4)
   {
@@ -286,7 +286,7 @@ namespace Box
   }
 
   template <typename T1, typename T2, typename T3, typename T4, typename T5>
-  inline Gtk::HBox* ucompose(const Glib::ustring &fmt,
+  inline Gtk::Box* ucompose(const Glib::ustring &fmt,
 				const T1 &o1, const T2 &o2, const T3 &o3,
 				const T4 &o4, const T5 &o5)
   {

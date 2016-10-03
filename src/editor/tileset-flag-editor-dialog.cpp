@@ -198,7 +198,10 @@ void TilesetFlagEditorDialog::update_flag_panel()
 void TilesetFlagEditorDialog::on_heartbeat()
 {
   preview_table->foreach(sigc::mem_fun(preview_table, &Gtk::Container::remove));
-  preview_table->resize(4, 2);
+  for (int i = 0; i < 4; i++)
+    preview_table->insert_row (i);
+  for (int i = 0; i < 2; i++)
+    preview_table->insert_column (i);
 
   int x = 0;
   int y = 0;
@@ -218,7 +221,7 @@ void TilesetFlagEditorDialog::on_heartbeat()
 	case 6: x = 1; y = 2; break;
 	case 7: x = 1; y = 3; break;
 	}
-      preview_table->attach(*manage(new Gtk::Image(*frame[count])), y, y+1, x, x+1, Gtk::SHRINK, Gtk::SHRINK, 8, 8);
+      preview_table->attach(*manage(new Gtk::Image(*frame[count])), y, x, 1,1);
   
       frame[count]++;
       if (frame[count] == flags[count]->end())
