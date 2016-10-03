@@ -440,6 +440,7 @@
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
                 <property name="active">True</property>
+                <property name="group">draw_1_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -453,6 +454,7 @@
                 <property name="tooltip_text" translatable="yes">Draw 1x1 terrain</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -466,6 +468,7 @@
                 <property name="tooltip_text" translatable="yes">Draw 2x2 terrain</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -479,6 +482,7 @@
                 <property name="tooltip_text" translatable="yes">Draw 3x3 terrain</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -492,6 +496,7 @@
                 <property name="tooltip_text" translatable="yes">Draw 6x6 terrain</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -505,6 +510,7 @@
                 <property name="tooltip_text" translatable="yes">Remove object</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -518,6 +524,7 @@
                 <property name="tooltip_text" translatable="yes">Move object</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -531,6 +538,7 @@
                 <property name="tooltip_text" translatable="yes">Add a stack</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -544,6 +552,7 @@
                 <property name="tooltip_text" translatable="yes">Add a city</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -557,6 +566,7 @@
                 <property name="tooltip_text" translatable="yes">Add a ruin</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -570,6 +580,7 @@
                 <property name="tooltip_text" translatable="yes">Add a temple</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -583,6 +594,7 @@
                 <property name="tooltip_text" translatable="yes">Add a port</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -596,6 +608,7 @@
                 <property name="tooltip_text" translatable="yes">Add a sign</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -609,6 +622,7 @@
                 <property name="tooltip_text" translatable="yes">Add a road</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -622,6 +636,7 @@
                 <property name="tooltip_text" translatable="yes">Add a bridge</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gkt-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -635,6 +650,7 @@
                 <property name="tooltip_text" translatable="yes">Add a bag</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
                 <property name="expand">False</property>
