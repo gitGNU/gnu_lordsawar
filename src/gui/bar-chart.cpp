@@ -51,7 +51,7 @@ bool BarChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     // the portion of the window that needs to be redrawn
     cr->rectangle(0, 0, width, height);
     cr->clip();
-    cr->set_source_rgb (0.8, 0.8, 0.8);
+    cr->set_source_rgb (0.11328125, 0.11328125, 0.11328125);
     cr->set_line_width(1000.0);
     cr->move_to(0,0);
     cr->line_to(width, height);
@@ -117,7 +117,7 @@ bool BarChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
 		    i + lw + voffs);
 	cr->stroke();
       }
-    cr->set_source_rgb (0.2, 0.2, 0.2);
+    cr->set_source_rgb (1.0, 1.0, 1.0);
     lw = 2;
     cr->set_line_width((double)lw);
 
@@ -150,7 +150,7 @@ bool BarChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
 
     // labels
     cr->move_to(hoffs + 1 - (w / 2), i + lw + voffs + (voffs / 2) + 1);
-    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_source_rgb (1.0, 1.0, 1.0);
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
@@ -158,7 +158,7 @@ bool BarChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     layout->get_pixel_size (w, h);
     cr->move_to(((float)0.5 * ((float)width - (hoffs * 2.0))) + (hoffs / 2) - 
 		( w/2), i + lw + voffs + (voffs / 2) + 1);
-    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_source_rgb (1.0, 1.0, 1.0);
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
@@ -166,7 +166,7 @@ bool BarChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     layout->get_pixel_size (w, h);
     cr->move_to(((float)1.0 * ((float)width - ((float)hoffs * 2.0))) - 1 - 
 		(w / 2), i + lw + voffs + (voffs / 2) + 1);
-    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_source_rgb (1.0, 1.0, 1.0);
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
   }

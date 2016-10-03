@@ -52,7 +52,7 @@ bool LineChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     // the portion of the window that needs to be redrawn
     cr->rectangle(0, 0, width, height);
     cr->clip();
-    cr->set_source_rgb (0.8, 0.8, 0.8);
+    cr->set_source_rgb (0.11328125, 0.11328125, 0.11328125);
     cr->set_line_width(1000.0);
     cr->move_to(0,0);
     cr->line_to(width,height);
@@ -118,7 +118,7 @@ bool LineChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
       }
 
     //draw horizontal axis
-    cr->set_source_rgb(0.3, 0.3, 0.3);
+    cr->set_source_rgb (1.0, 1.0, 1.0);
     cr->move_to(origin_x + hoffs, origin_y - voffs);
     cr->line_to((width - (hoffs * 2)) + hoffs, origin_y - voffs);
     cr->stroke();
@@ -171,7 +171,7 @@ bool LineChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     layout->get_pixel_size (w, h);
     cr->move_to((width - (hoffs * 2)) + hoffs - (w / 2), 
 		origin_y - voffs + (voffs / 4) + 1);
-    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_source_rgb (1.0, 1.0, 1.0);
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
@@ -188,14 +188,14 @@ bool LineChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     layout->set_text("0");
     layout->get_pixel_size (w, h);
     cr->move_to(origin_x + hoffs - (hoffs / 4) - 1 - w, origin_y - voffs - (h/2));
-    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_source_rgb (1.0, 1.0, 1.0);
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
     layout->set_text(String::ucompose("%1", d_max_height_value));
     layout->get_pixel_size (w, h);
     cr->move_to(origin_x + hoffs - (hoffs / 4) - 1 - w, voffs + 1 - (h/2));
-    cr->set_source_rgb (0.0, 0.0, 0.0);
+    cr->set_source_rgb (1.0, 1.0, 1.0);
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
