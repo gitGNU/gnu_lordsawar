@@ -62,6 +62,7 @@ int main(int argc, char* argv[])
                                               sigc::ptr_fun(on_timer_registered));
 
   Gtk::Main kit(argc, argv);
+  Gtk::Settings::get_default()->property_gtk_application_prefer_dark_theme() = true;
   if (argc > 1)
     {
       for (int i = 2; i <= argc; i++)
