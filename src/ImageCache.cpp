@@ -299,7 +299,7 @@ bool ImageCache::loadGameButtonImages()
                            NUM_GAME_BUTTON_IMAGES, broken);
   if (broken)
     return false;
-  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_LARGE_TOOLBAR), w, h);
+  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_DIALOG), w, h);
   for (unsigned int i = 0; i < NUM_GAME_BUTTON_IMAGES; i++)
     PixMask::scale(images[i], w, h); 
   for (unsigned int i = 0; i < NUM_GAME_BUTTON_IMAGES; i++)

@@ -69,6 +69,8 @@ Main::Main(int &argc, char **&argv)
 
 	g_set_application_name("LordsAWar!");
 
+        Gtk::Settings::get_default()->property_gtk_application_prefer_dark_theme() = true;
+
 	Timing::instance().timer_registered.connect(
 	    sigc::mem_fun(*impl, &Main::Impl::on_timer_registered));
     }
