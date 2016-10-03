@@ -137,10 +137,13 @@ AC_CONFIG_FILES([make-windows-zip.sh],[chmod +x make-windows-zip.sh])
 AC_CONFIG_FILES([
         dat/Makefile 
         dat/icons/Makefile 
+        dat/icons/16x16/Makefile 
+        dat/icons/22x22/Makefile 
+        dat/icons/24x24/Makefile 
         dat/icons/32x32/Makefile 
+        dat/icons/48x48/Makefile 
         dat/icons/64x64/Makefile 
         dat/lordsawar.desktop.in
-        dat/lordsawar-editor.desktop.in
         dat/army/Makefile 
         dat/army/default/Makefile 
         dat/army/bigdefault/Makefile 

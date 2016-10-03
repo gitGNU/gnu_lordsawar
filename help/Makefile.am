@@ -4,7 +4,7 @@ EXTRA_DIST = $(noinst_DATA) $(man_MANS)
 
 noinst_DATA = legal.xml lordsawar.xml manual.map
 
-man_MANS = lordsawar.6 lordsawar-editor.6 \
+man_MANS = lordsawar.6 \
 	   lordsawar-game-list-server.6 lordsawar-game-list-client.6 \
 	   lordsawar-game-host-server.6 lordsawar-game-host-client.6 \
 	   lordsawar-import.6
