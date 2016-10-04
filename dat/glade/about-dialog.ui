@@ -14,8 +14,8 @@
 so we can have new artwork created.  
 Our fundraising goal is $2000 USD.
 </property>
-    <property name="website">www.lordsawar.com</property>
-    <property name="website_label" translatable="yes">www.lordsawar.com </property>
+    <property name="website">lordsawar.nongnu.org</property>
+    <property name="website_label" translatable="yes">lordsawar.nongnu.org</property>
     <property name="license" translatable="yes">LordsAWar! is licensed under the GNU General Public License version 3,
 or (at your option) any later version of the license.  This license extends 
 to all source code, artwork assets and music and sound assets.
