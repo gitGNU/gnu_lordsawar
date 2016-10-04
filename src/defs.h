@@ -22,6 +22,7 @@
 
 //This file contains the various macros used within lordsawar.
 
+#pragma once
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 

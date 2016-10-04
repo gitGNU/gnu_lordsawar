@@ -15,14 +15,15 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+
+#pragma once
+#ifndef TARHELPER_H
+#define TARHELPER_H
 #include <archive.h>
 #include <glibmm.h>
 #include <iosfwd>
 #include <list>
 #include <cstdio>
-
-#ifndef TARHELPER_H
-#define TARHELPER_H
 
 //! An interface for operating on tar archive files.
 class Tar_Helper

@@ -70,6 +70,7 @@
   * functions. They should make the point somewhat clearer.
   */
 
+#pragma once
 #ifndef XML_HELPER_H
 #define XML_HELPER_H
 

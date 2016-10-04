@@ -15,6 +15,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#pragma once
 #ifndef MASKED_IMAGE_EDITOR_DIALOG_H
 #define MASKED_IMAGE_EDITOR_DIALOG_H
 

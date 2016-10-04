@@ -16,6 +16,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#pragma once
 #ifndef GUI_SPLASH_WINDOW_H
 #define GUI_SPLASH_WINDOW_H
 

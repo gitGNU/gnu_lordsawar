@@ -204,7 +204,7 @@ lordsawar_DEPENDENCIES = \
   liblordsawarnet.la \
   gui/liblwgui.la
 
-AM_CXXFLAGS = -Wall -Wshadow -Wextra -pedantic
+AM_CXXFLAGS = -Wall -Wshadow -Wextra -pedantic -Wno-deprecated-declarations
 AM_CPPFLAGS = $(GSTREAMER_CFLAGS) \
     $(GTKMM_CFLAGS) \
     $(XMLPP_CFLAGS) \

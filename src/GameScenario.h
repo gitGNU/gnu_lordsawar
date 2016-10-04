@@ -19,6 +19,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#pragma once
 #ifndef GAME_SCENARIO_H
 #define GAME_SCENARIO_H
 

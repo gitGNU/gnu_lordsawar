@@ -32,6 +32,7 @@
 //   Box::ucompose("This is a %1x%2 matrix.", rows, cols);
 //
 
+#pragma once
 #ifndef BOX_UCOMPOSE_H
 #define BOX_UCOMPOSE_H
 

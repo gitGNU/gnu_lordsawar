@@ -14,7 +14,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
-
+ 
+#pragma once
 #ifndef USE_ITEM_ON_CITY_DIALOG_H
 #define USE_ITEM_ON_CITY_DIALOG_H
 

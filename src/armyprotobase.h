@@ -19,6 +19,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#pragma once
 #ifndef ARMY_PROTO_BASE_H
 #define ARMY_PROTO_BASE_H
 

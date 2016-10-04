@@ -15,6 +15,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#pragma once
 #ifndef GAME_BUTTON_BOX_H
 #define GAME_BUTTON_BOX_H
 

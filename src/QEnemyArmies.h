@@ -18,6 +18,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#pragma once
 #ifndef QUEST_ENEMY_ARMIES_H
 #define QUEST_ENEMY_ARMIES_H
 

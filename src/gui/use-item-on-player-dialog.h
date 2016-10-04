@@ -15,6 +15,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#pragma once
 #ifndef USE_ITEM_ON_PLAYER_DIALOG_H
 #define USE_ITEM_ON_PLAYER_DIALOG_H
 

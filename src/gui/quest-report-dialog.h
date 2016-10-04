@@ -15,6 +15,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#pragma once
 #ifndef QUEST_REPORT_DIALOG_H
 #define QUEST_REPORT_DIALOG_H
 

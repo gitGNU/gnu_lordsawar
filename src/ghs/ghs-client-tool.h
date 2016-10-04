@@ -15,6 +15,10 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+
+#pragma once
+#ifndef GHS_CLIENT_TOOL_H
+#define GHS_CLIENT_TOOL_H
 #include "config.h"
 #include <memory>
 #include <string>
@@ -24,9 +28,6 @@
 #include <gtkmm.h>
 #include <sigc++/trackable.h>
 #include <sigc++/functors/mem_fun.h>
-
-#ifndef GHS_CLIENT_TOOL_H
-#define GHS_CLIENT_TOOL_H
 class Profile;
 class RecentlyPlayedGameList;
 class RecentlyPlayedGame;

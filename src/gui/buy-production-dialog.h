@@ -16,6 +16,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#pragma once
 #ifndef BUY_PRODUCTION_DIALOG_H
 #define BUY_PRODUCTION_DIALOG_H
 

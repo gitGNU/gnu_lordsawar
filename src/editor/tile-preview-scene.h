@@ -14,6 +14,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
+
+#pragma once
 #ifndef TILE_PREVIEW_SCENE_H
 #define TILE_PREVIEW_SCENE_H
 

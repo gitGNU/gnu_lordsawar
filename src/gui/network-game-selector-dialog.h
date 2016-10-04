@@ -15,6 +15,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#pragma once
 #ifndef NETWORK_GAME_SELECTOR_DIALOG_H
 #define NETWORK_GAME_SELECTOR_DIALOG_H
 
