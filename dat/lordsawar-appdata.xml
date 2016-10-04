@@ -9,7 +9,7 @@
       You can play against the computer or over the network, and you can make your own scenarios in the scenario editor.
     </p>
   </description>
-  <url type="homepage">http://www.lordsawar.com</url>
+  <url type="homepage">http://lordsawar.nongnu.org</url>
   <screenshots>
     <screenshot type="default">http://www.nongnu.org/lordsawar/screenshot3.png</screenshot>
     <screenshot>http://www.nongnu.org/lordsawar/screenshot2.png</screenshot>
