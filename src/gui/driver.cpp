@@ -930,6 +930,8 @@ void Driver::on_editor_requested()
   if (editor_window)
     delete editor_window;
 
+  Snd::getInstance()->halt();
+  Snd::getInstance()->disableBackground();
   EditorSplashWindow d;
   d.run();
   d.hide();
