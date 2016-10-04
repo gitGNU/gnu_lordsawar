@@ -494,7 +494,7 @@ class ImageCache
 	PixMask* d_small_ruin_explored;
 	PixMask* d_small_temple;
         PixMask *d_waypoint[NUM_WAYPOINTS];
-        PixMask *d_gamebuttons[2][NUM_GAME_BUTTON_IMAGES];
+        PixMask *d_gamebuttons[3][NUM_GAME_BUTTON_IMAGES];
         PixMask *d_arrow[2][NUM_ARROW_IMAGES];
 };
 

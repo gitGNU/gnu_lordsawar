@@ -259,7 +259,7 @@ bool Cityset::save(XML_Helper *helper) const
 
   retval &= helper->openTag(d_tag);
   retval &= Set::save(helper);
-  retval &= helper->saveData("tilesize", getTileSize());
+  retval &= helper->saveData("tilesize", getUnscaledTileSize());
   retval &= helper->saveData("cities", d_cities_filename);
   retval &= helper->saveData("razed_cities", d_razedcities_filename);
   retval &= helper->saveData("port", d_port_filename);

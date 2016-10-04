@@ -89,6 +89,7 @@
 #include "temple.h"
 #include "templelist.h"
 #include "city.h"
+#include "cityset.h"
 #include "Quest.h"
 #include "stack.h"
 #include "ImageCache.h"
@@ -129,6 +130,7 @@ GameWindow::GameWindow()
   stack_tip = NULL;
   game = NULL;
   game_button_box = NULL;
+  last_box = Gtk::Allocation(0,0,1,1);
     
   Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("game-window.ui");
 
@@ -242,6 +244,12 @@ GameWindow::GameWindow()
     xml->get_widget("preferences_menuitem", preferences_menuitem);
     preferences_menuitem->signal_activate().connect
       (sigc::mem_fun(*this, &GameWindow::on_preferences_activated));
+    xml->get_widget("zoom_in_menuitem", zoom_in_menuitem);
+    zoom_in_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_zoom_in_activated));
+    xml->get_widget("zoom_out_menuitem", zoom_out_menuitem);
+    zoom_out_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_zoom_out_activated));
 
     xml->get_widget("show_lobby_menuitem", show_lobby_menuitem);
     show_lobby_menuitem->signal_activate().connect
@@ -845,13 +853,12 @@ bool GameWindow::on_mouse_entered_smallmap()
 
 void GameWindow::on_bigmap_surface_changed(Gtk::Allocation box)
 {
-  static Gtk::Allocation last_box = Gtk::Allocation(0,0,1,1);
-
   if (game) 
     {
       if (box.get_width() != last_box.get_width() || 
           box.get_height() != last_box.get_height())
         {
+          printf("trying\n");
           game->get_bigmap().screen_size_changed(bigmap_image->get_allocation());
           game->redraw();
         }
@@ -1207,6 +1214,30 @@ void GameWindow::on_production_activated()
 
   on_city_visited(city);
   return;
+}
+
+void GameWindow::zoom (double scale)
+{
+  if (scale < 0.4)
+    scale = 0.4;
+  if (scale > 3.0)
+    scale = 3.0;
+  GameMap::getInstance()->getTileset()->set_scale (scale);
+  GameMap::getInstance()->getCityset()->set_scale (scale);
+  for (auto& i : *Playerlist::getInstance())
+    Armysetlist::getInstance()->get((*i).getArmyset())->set_scale (scale);
+  game->get_bigmap().screen_size_changed(bigmap_image->get_allocation());
+  game->redraw();
+}
+
+void GameWindow::on_zoom_in_activated()
+{
+  zoom (GameMap::getInstance()->getTileset()->get_scale () + ZOOM_STEP);
+}
+
+void GameWindow::on_zoom_out_activated()
+{
+  zoom (GameMap::getInstance()->getTileset()->get_scale () - ZOOM_STEP);
 }
 
 void GameWindow::on_preferences_activated()

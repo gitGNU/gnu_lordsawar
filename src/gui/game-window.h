@@ -159,6 +159,8 @@ class GameWindow: public sigc::trackable
     Gtk::MenuItem *winning_report_menuitem;
     Gtk::MenuItem *quests_menuitem;
     Gtk::MenuItem *preferences_menuitem;
+    Gtk::MenuItem *zoom_in_menuitem;
+    Gtk::MenuItem *zoom_out_menuitem;
     Gtk::Image *smallmap_image;
     Gtk::Image *bigmap_image;
 
@@ -222,6 +224,9 @@ class GameWindow: public sigc::trackable
 
     void on_fullscreen_activated();
     void on_preferences_activated();
+    void on_zoom_in_activated();
+    void on_zoom_out_activated();
+    void zoom (double scale);
     void on_group_ungroup_activated();
     
     void on_fight_order_activated();
@@ -336,6 +341,7 @@ public:
     std::list<Hero*> d_heroes;
     Glib::ustring d_player_name;
     Glib::ustring d_load_filename;
+    Gtk::Allocation last_box;
 };
 
 #endif

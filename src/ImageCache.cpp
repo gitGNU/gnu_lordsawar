@@ -299,11 +299,20 @@ bool ImageCache::loadGameButtonImages()
                            NUM_GAME_BUTTON_IMAGES, broken);
   if (broken)
     return false;
-  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_DIALOG), w, h);
+  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_LARGE_TOOLBAR), w, h);
   for (unsigned int i = 0; i < NUM_GAME_BUTTON_IMAGES; i++)
     PixMask::scale(images[i], w, h); 
   for (unsigned int i = 0; i < NUM_GAME_BUTTON_IMAGES; i++)
     d_gamebuttons[1][i] = images[i];
+
+  images.clear();
+  images = disassemble_row(File::getVariousFile("buttons-medium.png"), 
+                           NUM_GAME_BUTTON_IMAGES, broken);
+  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_DIALOG), w, h);
+  for (unsigned int i = 0; i < NUM_GAME_BUTTON_IMAGES; i++)
+    PixMask::scale(images[i], w, h); 
+  for (unsigned int i = 0; i < NUM_GAME_BUTTON_IMAGES; i++)
+    d_gamebuttons[2][i] = images[i];
   return true;
 }
 
@@ -396,6 +405,7 @@ ImageCache::~ImageCache()
     {
       delete d_gamebuttons[0][i];
       delete d_gamebuttons[1][i];
+      delete d_gamebuttons[2][i];
     }
 
   for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
@@ -1633,6 +1643,7 @@ PixMask *TilePixMaskCacheItem::generate(TilePixMaskCacheItem i)
 {
   PixMask *s;
   Tileset *t = Tilesetlist::getInstance()->get(i.tileset);
+  guint32 uts = t->getUnscaledTileSize();
   if (i.fog_type_id == FogMap::ALL)
     s = t->getFogImage(i.fog_type_id - 1)->copy();
   else
@@ -1647,26 +1658,26 @@ PixMask *TilePixMaskCacheItem::generate(TilePixMaskCacheItem i)
         case Maptile::CITY:
             {
               player = Playerlist::getInstance()->getPlayer(i.building_player_id);
-              ImageCache::getInstance()->getCityPic(i.building_subtype, player, i.cityset)->blit(i.building_tile, i.tilesize, pixmap);
+              ImageCache::getInstance()->getCityPic(i.building_subtype, player, i.cityset)->blit(i.building_tile, uts, pixmap);
             }
           break;
         case Maptile::RUIN:
-          ImageCache::getInstance()->getRuinPic(i.building_subtype, i.cityset)->blit(i.building_tile, i.tilesize, pixmap); 
+          ImageCache::getInstance()->getRuinPic(i.building_subtype, i.cityset)->blit(i.building_tile, uts, pixmap); 
           break;
         case Maptile::TEMPLE:
-          ImageCache::getInstance()->getTemplePic(i.building_subtype, i.cityset)->blit(i.building_tile, i.tilesize, pixmap); 
+          ImageCache::getInstance()->getTemplePic(i.building_subtype, i.cityset)->blit(i.building_tile, uts, pixmap); 
           break;
         case Maptile::SIGNPOST:
-          ImageCache::getInstance()->getSignpostPic(i.cityset)->blit(i.building_tile, i.tilesize, pixmap); 
+          ImageCache::getInstance()->getSignpostPic(i.cityset)->blit(i.building_tile, uts, pixmap); 
           break;
         case Maptile::ROAD:
-          ImageCache::getInstance()->getRoadPic(i.building_subtype)->blit(i.building_tile, i.tilesize, pixmap); 
+          ImageCache::getInstance()->getRoadPic(i.building_subtype)->blit(i.building_tile, uts, pixmap); 
           break;
         case Maptile::PORT:
-          ImageCache::getInstance()->getPortPic(i.cityset)->blit(i.building_tile, i.tilesize, pixmap); 
+          ImageCache::getInstance()->getPortPic(i.cityset)->blit(i.building_tile, uts, pixmap); 
           break;
         case Maptile::BRIDGE:
-          ImageCache::getInstance()->getBridgePic(i.building_subtype)->blit(i.building_tile, i.tilesize, pixmap); 
+          ImageCache::getInstance()->getBridgePic(i.building_subtype)->blit(i.building_tile, uts, pixmap); 
           break;
         case Maptile::NONE: default:
           break;
@@ -1682,7 +1693,7 @@ PixMask *TilePixMaskCacheItem::generate(TilePixMaskCacheItem i)
         {
           PixMask *pic = ImageCache::getInstance()->getBagPic();
           Vector<int>bagsize = Vector<int>(pic->get_width(), pic->get_height());
-          pic->blit(pixmap, Vector<int>(i.tilesize,i.tilesize)-bagsize);
+          pic->blit(pixmap, Vector<int>(uts,uts)-bagsize);
         }
 
       if (i.stack_player_id > -1)
@@ -1705,10 +1716,10 @@ PixMask *TilePixMaskCacheItem::generate(TilePixMaskCacheItem i)
           Cairo::RefPtr<Cairo::Context> context = s->get_gc();
           context->set_source_rgba(GRID_BOX_COLOUR.get_red(), GRID_BOX_COLOUR.get_blue(), GRID_BOX_COLOUR.get_green(), GRID_BOX_COLOUR.get_alpha());
           context->move_to(0, 0);
-          context->rel_line_to(i.tilesize, 0);
-          context->rel_line_to(0, i.tilesize);
-          context->rel_line_to(-i.tilesize, 0);
-          context->rel_line_to(0, -i.tilesize);
+          context->rel_line_to(uts, 0);
+          context->rel_line_to(0, uts);
+          context->rel_line_to(-uts, 0);
+          context->rel_line_to(0, -uts);
           context->set_line_width(1.0);
           context->stroke();
         }
@@ -1716,6 +1727,9 @@ PixMask *TilePixMaskCacheItem::generate(TilePixMaskCacheItem i)
       if (i.fog_type_id)
         t->getFogImage(i.fog_type_id - 1)->blit(pixmap);
     }
+  int ts = t->getTileSize();
+  if (s->get_width () != ts)
+    s->scale (s, ts, ts);
   return s;
 }
 

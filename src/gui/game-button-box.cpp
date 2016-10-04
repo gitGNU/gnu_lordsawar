@@ -221,7 +221,7 @@ int GameButtonBox::get_icon_size(guint32 factor)
       s = 0;
       break;
     case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
-      s = 1;
+      s = 2;
       break;
     }
   return s;

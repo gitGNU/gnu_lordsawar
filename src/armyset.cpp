@@ -139,7 +139,7 @@ bool Armyset::save(XML_Helper* helper) const
     retval &= helper->openTag(d_tag);
 
     retval &= Set::save(helper);
-    retval &= helper->saveData("tilesize", getTileSize());
+    retval &= helper->saveData("tilesize", getUnscaledTileSize());
     retval &= helper->saveData("stackship", d_stackship_name);
     retval &= helper->saveData("plantedstandard", d_standard_name);
     retval &= helper->saveData("bag", d_bag_name);

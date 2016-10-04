@@ -304,7 +304,7 @@ bool Tileset::save(XML_Helper *helper) const
 
   retval &= helper->openTag(d_tag);
   retval &= Set::save(helper);
-  retval &= helper->saveData("tilesize", getTileSize());
+  retval &= helper->saveData("tilesize", getUnscaledTileSize());
   retval &= helper->saveData("large_selector", d_large_selector);
   retval &= helper->saveData("small_selector", d_small_selector);
   retval &= helper->saveData("explosion", d_explosion);

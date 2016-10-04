@@ -862,10 +862,12 @@ void GameBigMap::after_draw()
 	  canMoveThere = (pathcount < stack->getPath()->getMovesExhaustedAtPoint());
           PixMask *waypoint;
 	  if (canMoveThere)
-            waypoint = gc->getWaypointImage(0);
+            waypoint = gc->getWaypointImage(0)->copy();
 	  else
-            waypoint = gc->getWaypointImage(1);
+            waypoint = gc->getWaypointImage(1)->copy();
+          waypoint->scale (waypoint, tilesize, tilesize);
           waypoint->blit_centered (buffer, pos + (Vector<int>(tilesize,tilesize)/2));
+          delete waypoint;
 	  pathcount++;
 
 	}
@@ -876,9 +878,11 @@ void GameBigMap::after_draw()
 	  Path::iterator it = stack->getPath()->end();
 	  it--;
 	  //this is where the ghosted army unit picture goes.
-	  PixMask *armypic = gc->getArmyPic(*stack->begin(), true);
+	  PixMask *armypic = gc->getArmyPic(*stack->begin(), true)->copy();
+          armypic->scale (armypic, tilesize, tilesize);
 	  pos = tile_to_buffer_pos(*it);
 	  armypic->blit_centered(buffer, pos + (Vector<int>(tilesize,tilesize)/2));
+          delete armypic;
 	}
     }
 
@@ -908,17 +912,21 @@ void GameBigMap::after_draw()
 
 	  PixMask *tmp = NULL;
 	  if (stack->size() > 1)
-	    tmp = gc->getSelectorPic(0, bigframe, stack->getOwner());
+	    tmp = gc->getSelectorPic(0, bigframe, stack->getOwner())->copy();
 	  else
-	    tmp = gc->getSelectorPic(1, smallframe, stack->getOwner());
+	    tmp = gc->getSelectorPic(1, smallframe, stack->getOwner())->copy();
+          tmp->scale(tmp, tilesize, tilesize);
 	  tmp->blit(buffer, p);
+          delete tmp;
 	  //now re-fog it up because we just drew over the fog.
 	  if (viewer->getFogMap()->isFogged(stack->getPos()))
 	    {
 	      int fog_type_id = 
 		viewer->getFogMap()->getShadeTile(stack->getPos());
-	      PixMask *fog = gc->getFogPic(fog_type_id);
+	      PixMask *fog = gc->getFogPic(fog_type_id)->copy();
+              fog->scale(fog, tilesize, tilesize);
 	      fog->blit(buffer, p);
+              delete fog;
 	    }
 	}
     }

@@ -41,133 +41,139 @@ public:
     Glib::ustring getFile(Glib::ustring file) const;
     Glib::ustring getConfigurationFile() const;
 
-        //! Returns the width and height in pixels of a square on the map.
-        guint32 getTileSize() const {return d_tileSize;}
+    //! Returns the width and height in pixels of a square on the map.
+    guint32 getTileSize() const {return d_tileSize * (double)d_scale;}
+    guint32 getUnscaledTileSize() const {return d_tileSize;}
 
-        void setTileSize(guint32 tile_size) {d_tileSize = tile_size;}
+    void setTileSize(guint32 tile_size) {d_tileSize = tile_size;}
 
+    //! Get the unique identifier for this set.
+    /**
+     * Analagous to the <d_id> XML entity in the set 
+     * configuration file.
+     */
+    guint32 getId() const {return d_id;}
 
-	//! Get the unique identifier for this set.
-	/**
-	 * Analagous to the <d_id> XML entity in the set 
-	 * configuration file.
-	 */
-        guint32 getId() const {return d_id;}
+    //! Set the unique identifier for this set.
+    void setId(guint32 id) {d_id = id;}
 
-	//! Set the unique identifier for this set.
-        void setId(guint32 id) {d_id = id;}
+    //! Returns the name of the set.
+    /** 
+     * Analagous to the <d_name> XML entity in the set 
+     * configuration file.
+     *
+     * @return The name or an empty string on error.
+     */
+    Glib::ustring getName() const {return _(d_name.c_str());}
 
-	//! Returns the name of the set.
-        /** 
-	 * Analagous to the <d_name> XML entity in the set 
-	 * configuration file.
-	 *
-         * @return The name or an empty string on error.
-         */
-        Glib::ustring getName() const {return _(d_name.c_str());}
+    //! Set the name of the set.
+    /**
+     * @note This method is only used in the scenario editor.
+     */
+    void setName(Glib::ustring name) {d_name = name;}
 
-	//! Set the name of the set.
-	/**
-	 * @note This method is only used in the scenario editor.
-	 */
-        void setName(Glib::ustring name) {d_name = name;}
+    //! Get the copyright holders for this set.
+    Glib::ustring getCopyright() const {return d_copyright;};
 
-	//! Get the copyright holders for this set.
-	Glib::ustring getCopyright() const {return d_copyright;};
+    //! Set the copyright holders on the set.
+    void setCopyright(Glib::ustring copy) {d_copyright = copy;};
 
-	//! Set the copyright holders on the set.
-	void setCopyright(Glib::ustring copy) {d_copyright = copy;};
+    //! Get the license of this set.
+    Glib::ustring getLicense() const {return d_license;};
 
-	//! Get the license of this set.
-	Glib::ustring getLicense() const {return d_license;};
+    //! Returns the description of the set.
+    Glib::ustring getInfo() const {return _(d_info.c_str());}
 
-        //! Returns the description of the set.
-        Glib::ustring getInfo() const {return _(d_info.c_str());}
+    //! Set the license for this set.
+    void setLicense(Glib::ustring license) {d_license = license;};
 
-	//! Set the license for this set.
-	void setLicense(Glib::ustring license) {d_license = license;};
+    //! Set the description of the set.
+    /**
+     * @note This method is only used in the scenario editor.
+     */
+    void setInfo(Glib::ustring info) {d_info = info;}
 
-	//! Set the description of the set.
-	/**
-	 * @note This method is only used in the scenario editor.
-	 */
-        void setInfo(Glib::ustring info) {d_info = info;}
+    //! Get the base name of the set.
+    /**
+     * This value does not contain a path (e.g. no slashes).  It is the
+     * name of an set directory inside army/ or shield/ etc.
+     *
+     * @return The basename of the file that the set is held in.
+     */
+    Glib::ustring getBaseName() const {return d_basename;}
 
-	//! Get the base name of the set.
-	/**
-	 * This value does not contain a path (e.g. no slashes).  It is the
-	 * name of an set directory inside army/ or shield/ etc.
-	 *
-	 * @return The basename of the file that the set is held in.
-	 */
-        Glib::ustring getBaseName() const {return d_basename;}
+    //! Set the base name of the file that the set is in.
+    void setBaseName(Glib::ustring bname) {d_basename = bname;}
 
-	//! Set the base name of the file that the set is in.
-        void setBaseName(Glib::ustring bname) {d_basename = bname;}
+    bool save(XML_Helper *helper) const;
 
+    Glib::ustring getFileFromConfigurationFile(Glib::ustring file);
+    bool replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file);
+    bool addFileInConfigurationFile(Glib::ustring new_file);
 
-        bool save(XML_Helper *helper) const;
+    void clean_tmp_dir() const;
 
-        Glib::ustring getFileFromConfigurationFile(Glib::ustring file);
-        bool replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file);
-        bool addFileInConfigurationFile(Glib::ustring new_file);
+    bool saveTar(Glib::ustring tmpfile, Glib::ustring tmptar, Glib::ustring dest) const;
+    //!Get the zoom level.
+    double get_scale () const {return d_scale;};
 
-        void clean_tmp_dir() const;
-
-        bool saveTar(Glib::ustring tmpfile, Glib::ustring tmptar, Glib::ustring dest) const;
+    //!Set the zoom level.
+    void set_scale (double d) {d_scale = d;};
 private:
 
     Origin origin;
     Glib::ustring dir;
 
-	//! The unique Id of this set.
-	/**
-	 * This Id is unique among all other sets.
-	 * It is analgous to <d_id> in the set configuration files.
-	 */
-        guint32 d_id;
+    //! The unique Id of this set.
+    /**
+     * This Id is unique among all other sets.
+     * It is analgous to <d_id> in the set configuration files.
+     */
+    guint32 d_id;
 
-	//! The name of the set.
-	/**
-	 * This value appears in game configuration dialogs.
-	 * It is analgous to <d_name> in a set configuration file.
-	 */
-        Glib::ustring d_name;
+    //! The name of the set.
+    /**
+     * This value appears in game configuration dialogs.
+     * It is analgous to <d_name> in a set configuration file.
+     */
+    Glib::ustring d_name;
 
-	//! The set has these copyright holders.
-	Glib::ustring d_copyright;
+    //! The set has these copyright holders.
+    Glib::ustring d_copyright;
 
-	//! The license of the set.
-	Glib::ustring d_license;
+    //! The license of the set.
+    Glib::ustring d_license;
 
-	//! The basename of the set.
-	/**
-	 * This is the base name of the file that the set files are
-	 * residing in.  It does not contain a path (e.g. no slashes).
-	 * set files sit in the army/, or shield/ etc directory.
-	 */
-        Glib::ustring d_basename;
+    //! The basename of the set.
+    /**
+     * This is the base name of the file that the set files are
+     * residing in.  It does not contain a path (e.g. no slashes).
+     * set files sit in the army/, or shield/ etc directory.
+     */
+    Glib::ustring d_basename;
 
-	//! The description of the set.
-	/**
-	 * Equates to the <d_info> XML entity in the set
-	 * configuration file.
-	 * This value is not used.
-	 */
-        Glib::ustring d_info;
+    //! The description of the set.
+    /**
+     * Equates to the <d_info> XML entity in the set
+     * configuration file.
+     * This value is not used.
+     */
+    Glib::ustring d_info;
 
-        //! The file extension of the set.
-        Glib::ustring extension;
+    //! The file extension of the set.
+    Glib::ustring extension;
 
-	//! The size of the graphic tiles in the Tileset.
-	/**
-	 * Equates to the tileset.d_tilesize XML entity in the tileset
-	 * configuration file.
-	 * It represents the size in pixels of the width and height of tile
-	 * imagery onscreen.
-	 */
-        guint32 d_tileSize;
+    //! The size of the graphic tiles in the Tileset.
+    /**
+     * Equates to the tileset.d_tilesize XML entity in the tileset
+     * configuration file.
+     * It represents the size in pixels of the width and height of tile
+     * imagery onscreen (but then it is multipled by scale).
+     */
+    guint32 d_tileSize;
 
+    //! The zoom level of tiles.  A number between 0 and 1.
+    double d_scale;
 };
 
 #endif

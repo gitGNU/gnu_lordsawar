@@ -31,12 +31,14 @@
 #include "stacktile.h"
 #include "GameScenarioOptions.h"
 #include "playerlist.h"
+#include "GameMap.h"
 
 StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *stile)
 {
     ImageCache *gc = ImageCache::getInstance();
     Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("stack-info-window.ui");
 
+    guint32 ts = GameMap::getInstance()->getTileSize();
     xml->get_widget("window", window);
     Gtk::Widget *w = target->get_ancestor (GTK_TYPE_WINDOW);
     if (w)
@@ -65,7 +67,10 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *
       for (Stack::iterator it = (*i)->begin(); it != (*i)->end(); it++)
 	{
 	  Gtk::Image *image = new Gtk::Image();
-	  image->property_pixbuf() = gc->getArmyPic(*it)->to_pixbuf();
+          PixMask *armypic = gc->getArmyPic(*it)->copy();
+          armypic->scale (armypic, ts, ts);
+	  image->property_pixbuf() = armypic->to_pixbuf();
+          delete armypic;
 	  image_hbox->add(*manage(image));
 	}
 

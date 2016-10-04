@@ -20,14 +20,14 @@
 
 Set::Set(Glib::ustring ext, guint32 id, Glib::ustring name, guint32 ts)
   : origin(SYSTEM), dir(""), d_id(id), d_name(name), d_license(""), 
-    d_basename(""), d_info(""), extension(ext), d_tileSize(ts)
+    d_basename(""), d_info(""), extension(ext), d_tileSize(ts), d_scale (1.0)
 {
 }
 
 Set::Set(const Set &s)
   : origin(s.origin), dir(s.dir), d_id(s.d_id), d_name(s.d_name), 
     d_license(s.d_license), d_basename(s.d_basename), d_info(s.d_info),
-    extension(s.extension), d_tileSize(s.d_tileSize)
+    extension(s.extension), d_tileSize(s.d_tileSize), d_scale(s.d_scale)
 {
 }
 
@@ -37,6 +37,7 @@ Glib::ustring Set::getFile(Glib::ustring file) const
 }
 
 Set::Set(Glib::ustring ext, XML_Helper* helper)
+ :d_scale(1.0)
 {
   extension = ext;
   helper->getData(d_id, "id");

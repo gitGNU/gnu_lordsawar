@@ -171,6 +171,7 @@ const Gdk::RGBA BEVELED_CIRCLE_LIGHT(LIGHT_GREY_COLOUR);
 const int SPEED_DELAY = 0;
 #else
 const int SPEED_DELAY = 3000;
+const double ZOOM_STEP = 0.1;
 #endif
 
 #endif // DEFINITIONS_H

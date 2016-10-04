@@ -210,15 +210,9 @@ void BigMap::screen_size_changed(Gtk::Allocation box)
       {
 	new_view.pos = clip(Vector<int>(0,0), new_view.pos,
 			    GameMap::get_dim() - new_view.dim);
-
-	if (image.get_width() != box.get_width() ||
-	    image.get_height() != box.get_height() ||
-	    new_view != view)
-	  {
-	    image = box;
-	    set_view(new_view);
-	    view_changed.emit(view);
-	  }
+	image = box;
+	set_view(new_view);
+	view_changed.emit(view);
       }
     image = box;
 }
@@ -320,6 +314,7 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface)
   ImageCache *gc = ImageCache::getInstance();
   Vector<int> p = s->getPos();
   Player *player = s->getOwner();
+  int tilesize = GameMap::getInstance()->getTileSize();
 
   // check if the object lies in the viewed part of the map
   // otherwise we shouldn't draw it
@@ -339,7 +334,10 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface)
       //we don't show the army or the flag if we're in fortified tent.
       if (s->hasShip())
 	{
-	  gc->getShipPic(player)->blit(surface, p);
+          PixMask *ship = gc->getShipPic(player)->copy();
+          ship->scale (ship, tilesize, tilesize);
+          ship->blit(surface, p);
+          delete ship;
 	}
       else
 	{
@@ -353,7 +351,12 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface)
 	      if (tile->getBuilding() != Maptile::CITY &&
 		  tile->getBuilding() != Maptile::RUIN &&
 		  tile->getBuilding() != Maptile::TEMPLE)
-		gc->getTowerPic(player)->blit(surface, p);
+                {
+                  PixMask *tower = gc->getTowerPic(player)->copy();
+                  tower->scale (tower, tilesize, tilesize);
+                  tower->blit(surface, p);
+                  delete tower;
+                }
 	      else
 		show_army = true;
 	    }
@@ -361,7 +364,10 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface)
 	  if (show_army == true)
 	    {
 	      Army *a = *s->begin();
-	      gc->getArmyPic(a)->blit(surface, p);
+	      PixMask *armypic = gc->getArmyPic(a)->copy();
+              armypic->scale (armypic, tilesize, tilesize);
+              armypic->blit(surface, p);
+              delete armypic;
 	    }
 	}
 
@@ -380,7 +386,13 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface)
           if (stacksize > MAX_STACK_SIZE)
             stacksize = MAX_STACK_SIZE;
           if (stacksize > 0)
-            gc->getFlagPic(stacksize, player)->blit(surface, p);
+            {
+              PixMask *flag = gc->getFlagPic(stacksize, player)->copy();
+              flag->scale (flag, tilesize, tilesize);
+              flag->blit(surface, p);
+              delete flag;
+
+            }
         }
     }
 }
