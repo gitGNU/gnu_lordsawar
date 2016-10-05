@@ -71,6 +71,7 @@
               <object class="GtkLabel" id="label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="justify">center</property>
                 <property name="wrap">True</property>
               </object>
               <packing>
