@@ -157,7 +157,12 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
       Stack* stack = Playerlist::getActiveplayer()->getActivestack();
 
       if (d_cursor == ImageCache::HAND)
-	return;
+        {
+          d_cursor = ImageCache::CLOSED_HAND;
+          cursor_changed.emit (d_cursor);
+        }
+      if (d_cursor == ImageCache::CLOSED_HAND)
+        return;
 
       if (stack)
 	{
@@ -409,6 +414,11 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
   else if (e.button == MouseButtonEvent::LEFT_BUTTON
       && e.state == MouseButtonEvent::RELEASED)
     {
+      if (d_cursor == ImageCache::CLOSED_HAND)
+        {
+          d_cursor = ImageCache::HAND;
+	  cursor_changed.emit(d_cursor);
+        }
       if (mouse_state == DRAGGING_ENDPOINT)
 	{
 	  mouse_state = NONE;
@@ -547,7 +557,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
       d_cursor = ImageCache::HAND;
     }
   else if (mouse_state == DRAGGING_MAP)
-    d_cursor = ImageCache::HAND;
+    d_cursor = ImageCache::CLOSED_HAND;
   else if (stack && 
 	   (mouse_state == DRAGGING_STACK || mouse_state == DRAGGING_ENDPOINT))
     {
@@ -723,7 +733,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
   if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
       && (mouse_state == NONE || mouse_state == SHOWING_STACK) && 
-      stack && stack->getPos() == tile && viewing->getFogMap()->isCompletelyObscuredFogTile(tile) == false && d_cursor != ImageCache::HAND)
+      stack && stack->getPos() == tile && viewing->getFogMap()->isCompletelyObscuredFogTile(tile) == false && (d_cursor != ImageCache::HAND && d_cursor != ImageCache::CLOSED_HAND))
     {
       //initial dragging of stack from it's tile
       mouse_state = DRAGGING_STACK;
@@ -735,7 +745,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       mouse_state = DRAGGING_ENDPOINT;
     }
   else if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
-	   && (mouse_state == NONE || mouse_state == DRAGGING_MAP) && d_cursor == ImageCache::HAND)
+	   && (mouse_state == NONE || mouse_state == DRAGGING_MAP) && (d_cursor == ImageCache::HAND || d_cursor == ImageCache::CLOSED_HAND))
     {
       Vector<int> delta = -(e.pos - prev_mouse_pos);
 

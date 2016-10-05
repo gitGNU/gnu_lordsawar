@@ -108,7 +108,8 @@ class ImageCache
       SWORD,
       QUESTION,
       HEART,
-      GOTO_ARROW
+      GOTO_ARROW,
+      CLOSED_HAND,
     };
   enum GameButtonType
     {
