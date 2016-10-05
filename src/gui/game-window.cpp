@@ -858,7 +858,6 @@ void GameWindow::on_bigmap_surface_changed(Gtk::Allocation box)
       if (box.get_width() != last_box.get_width() || 
           box.get_height() != last_box.get_height())
         {
-          printf("trying\n");
           game->get_bigmap().screen_size_changed(bigmap_image->get_allocation());
           game->redraw();
         }
