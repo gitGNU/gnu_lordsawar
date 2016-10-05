@@ -536,6 +536,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		{
 		  Playerlist::getActiveplayer()->setActivestack(0);
 		  unselect_active_stack();
+                  path_turns.emit (Vector<int>(-1,-1), 0);
 		  mouse_state = NONE;
 		  determine_mouse_cursor(NULL, current_tile);
 		}
