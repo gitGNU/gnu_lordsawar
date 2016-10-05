@@ -150,7 +150,7 @@ GameWindow::GameWindow()
     xml->get_widget("bigmap_eventbox", bigmap_eventbox);
     bigmap_eventbox->add_events(Gdk::KEY_PRESS_MASK | 
 		  Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-	          Gdk::POINTER_MOTION_MASK | Gdk::SCROLL_MASK);
+	          Gdk::POINTER_MOTION_MASK | Gdk::SMOOTH_SCROLL_MASK);
     bigmap_eventbox->signal_key_press_event().connect(
 	sigc::mem_fun(*this, &GameWindow::on_bigmap_key_event));
     bigmap_eventbox->signal_key_release_event().connect(

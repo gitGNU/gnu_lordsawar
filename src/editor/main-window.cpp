@@ -124,7 +124,7 @@ MainWindow::MainWindow(Glib::ustring load_filename)
 				Gdk::BUTTON_RELEASE_MASK | 
 				Gdk::POINTER_MOTION_MASK |
 				Gdk::KEY_PRESS_MASK | 
-                                Gdk::SCROLL_MASK);
+                                Gdk::SMOOTH_SCROLL_MASK);
     bigmap_eventbox->signal_button_press_event().connect(
 	sigc::mem_fun(*this, &MainWindow::on_bigmap_mouse_button_event));
     bigmap_eventbox->signal_button_release_event().connect(

@@ -658,37 +658,51 @@ bool BigMap::scroll(GdkEventScroll *event)
     return true;
   Rectangle n = view;
   int amt = 1;
-  int max_height = GameMap::getHeight() * GameMap::getInstance()->getTileSize();
-  int max_width = GameMap::getWidth() * GameMap::getInstance()->getTileSize();
   switch (event->direction)
     {
     case GDK_SCROLL_UP:
-      if (n.y > amt)
-        n.y -= amt;
-      else
-        n.y = 0;
-      break;
+      n.y -= amt;
       break;
     case GDK_SCROLL_DOWN:
-      if (n.y + amt < max_height)
-        n.y += amt;
-      else
-        n.y = max_height;
+      n.y += amt;
       break;
     case GDK_SCROLL_RIGHT:
-      if (n.x + amt < max_width)
-        n.x += amt;
-      else
-        n.x = max_width;
+      n.x += amt;
       break;
     case GDK_SCROLL_LEFT:
-      if (n.x > amt)
-        n.x -= amt;
-      else
-        n.x = 0;
+      n.x -= amt;
+      break;
+    case GDK_SCROLL_SMOOTH:
+        {
+          double dx, dy;
+          if (gdk_event_get_scroll_deltas ((GdkEvent*)event, &dx, &dy))
+            {
+              deltax += dx;
+              deltay += dy;
+              if (deltax <= -1.0 || deltax >= 1.0)
+                {
+                  n.x += deltax;
+                  deltax += (int)deltax * -1;
+                }
+              if (deltay <= -1.0 || deltay >= 1.0)
+                {
+                  n.y += deltay;
+                  deltay += (int)deltay * -1;
+                }
+            }
+        }
+      break;
     default:
       break;
     }
+  if (n.x < 0)
+    n.x = 0;
+  else if (n.x > GameMap::getWidth()-1)
+    n.x = GameMap::getWidth()-1;
+  if (n.y < 0)
+    n.y = 0;
+  else if (n.y > GameMap::getHeight()-1)
+    n.y = GameMap::getHeight()-1;
   set_view(n);
   view_changed.emit(view);
   return true;

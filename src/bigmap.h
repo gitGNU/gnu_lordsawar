@@ -106,6 +106,8 @@ class BigMap: public sigc::trackable
 
     bool d_grid_toggled;
     Gtk::Allocation image;
+    double deltax; //for smooth scrolling
+    double deltay;
 
     // helpers
     Vector<int> mouse_pos_to_tile(Vector<int> pos);
