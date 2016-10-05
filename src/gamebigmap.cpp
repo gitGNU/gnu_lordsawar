@@ -462,7 +462,12 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	{
 	  if (viewing->getFogMap()->isCompletelyObscuredFogTile(tile) == true)
 	    return;
-	  if (City* c = GameMap::getCity(tile))
+          Stack *selected_stack = Playerlist::getActiveplayer()->getActivestack();
+          if (selected_stack != NULL && tile == selected_stack->getPos())
+            {
+              popup_stack_actions_menu.emit (selected_stack);
+            }
+          else if (City* c = GameMap::getCity(tile))
 	    {
 	      city_queried.emit (tile, c);
 	      mouse_state = SHOWING_CITY;

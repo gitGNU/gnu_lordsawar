@@ -280,6 +280,8 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 	sigc::mem_fun(this, &Game::on_stack_unqueried));
     bigmap->path_turns.connect(
 	sigc::mem_fun(this, &Game::on_show_path_turns));
+    bigmap->popup_stack_actions_menu.connect(
+	sigc::mem_fun(popup_stack_actions_menu, &sigc::signal<void, Stack*>::emit));
 
     // init the smallmap
     smallmap.reset(new SmallMap);
@@ -829,7 +831,7 @@ void Game::on_ruin_queried (Ruin* r, bool brief)
 	    str += _("Unexplored");
 
 	  MapTipPosition mpos = bigmap->map_tip_position(r->getArea());
-	  map_tip_changed.emit(str, mpos);
+	  map_tip_changed.emit(str, mpos, false);
 	}
       else
 	{
@@ -837,7 +839,7 @@ void Game::on_ruin_queried (Ruin* r, bool brief)
 	}
     }
   else
-    map_tip_changed.emit("", MapTipPosition());
+    map_tip_changed.emit("", MapTipPosition(), false);
 }
 
 void Game::on_signpost_queried (Signpost* s)
@@ -849,10 +851,10 @@ void Game::on_signpost_queried (Signpost* s)
       str = s->getName();
 
       MapTipPosition mpos = bigmap->map_tip_position(s->getArea());
-      map_tip_changed.emit(str, mpos);
+      map_tip_changed.emit(str, mpos, false);
     }
   else
-    map_tip_changed.emit("", MapTipPosition());
+    map_tip_changed.emit("", MapTipPosition(), false);
 }
 
 void Game::on_show_path_turns (Vector<int> tile, guint32 turns)
@@ -862,10 +864,10 @@ void Game::on_show_path_turns (Vector<int> tile, guint32 turns)
       //The number of turns is always going to be plural here.
       Glib::ustring str = Glib::ustring::compose (_("%1 turns"), turns);
       MapTipPosition mpos = bigmap->map_tip_position(tile);
-      map_tip_changed.emit (str, mpos);
+      map_tip_changed.emit (str, mpos, true);
     }
   else
-    map_tip_changed.emit("", MapTipPosition());
+    map_tip_changed.emit("", MapTipPosition(), false);
 }
 
 void Game::on_stack_unqueried ()
@@ -889,7 +891,7 @@ void Game::on_temple_queried (Temple* t, bool brief)
 	  str = t->getName();
 
 	  MapTipPosition mpos = bigmap->map_tip_position(t->getArea());
-	  map_tip_changed.emit(str, mpos);
+	  map_tip_changed.emit(str, mpos, false);
 	}
       else
 	{
@@ -897,7 +899,7 @@ void Game::on_temple_queried (Temple* t, bool brief)
 	}
     }
   else
-    map_tip_changed.emit("", MapTipPosition());
+    map_tip_changed.emit("", MapTipPosition(), false);
 }
 
 void Game::looting_city(City* city, int &gold)

@@ -150,7 +150,8 @@ GameWindow::GameWindow()
     xml->get_widget("bigmap_eventbox", bigmap_eventbox);
     bigmap_eventbox->add_events(Gdk::KEY_PRESS_MASK | 
 		  Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-	          Gdk::POINTER_MOTION_MASK | Gdk::SMOOTH_SCROLL_MASK);
+	          Gdk::POINTER_MOTION_MASK | Gdk::SMOOTH_SCROLL_MASK |
+                  Gdk::LEAVE_NOTIFY_MASK);
     bigmap_eventbox->signal_key_press_event().connect(
 	sigc::mem_fun(*this, &GameWindow::on_bigmap_key_event));
     bigmap_eventbox->signal_key_release_event().connect(
@@ -163,6 +164,8 @@ GameWindow::GameWindow()
      (sigc::mem_fun(*this, &GameWindow::on_bigmap_mouse_motion_event));
     bigmap_eventbox->signal_scroll_event().connect
       (sigc::mem_fun(*this, &GameWindow::on_bigmap_scrolled));
+    bigmap_eventbox->signal_leave_notify_event().connect
+      (sigc::hide(sigc::mem_fun(*this, &GameWindow::hide_map_tip)));
 
     xml->get_widget("status_box_container", status_box_container);
 
@@ -701,6 +704,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   connections.push_back
     (game->stack_teleported.connect
      (sigc::mem_fun(*this, &GameWindow::on_stack_teleported)));
+  connections.push_back
+    (game->popup_stack_actions_menu.connect
+     (sigc::mem_fun(*this, &GameWindow::on_popup_stack_menu)));
 
   // misc callbacks
   QuestsManager *q = QuestsManager::getInstance();
@@ -1633,7 +1639,6 @@ void GameWindow::on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map)
 
 void GameWindow::on_smallmap_slid ()
 {
-  hide_map_tip();
   on_smallmap_changed(game->get_smallmap().get_surface());
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 }
@@ -1664,16 +1669,17 @@ void GameWindow::on_stack_tip_changed(StackTile *stile, MapTipPosition mpos)
     }
 }
 
-void GameWindow::on_bigmap_tip_changed(Glib::ustring tip, MapTipPosition pos)
+void GameWindow::on_bigmap_tip_changed(Glib::ustring tip, MapTipPosition pos, bool timeout)
 {
   if (tip.empty())
     hide_map_tip();
   else
-    show_map_tip(tip, pos);
+    show_map_tip(tip, pos, timeout);
 }
 
-void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
+void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos, bool timeout)
 {
+  map_tip_timer.disconnect ();
   // init the map tip
   if (map_tip != NULL)
     delete map_tip;
@@ -1724,10 +1730,16 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
   // and action
   map_tip->move(p.x, p.y);
   map_tip->show();
+  if (timeout)
+    {
+      map_tip_timer = Glib::signal_timeout().connect
+        (sigc::mem_fun(this, &GameWindow::hide_map_tip), 1400);
+    }
 }
 
 bool GameWindow::hide_map_tip()
 {
+  map_tip_timer.disconnect ();
   if (map_tip != NULL)
     {
       delete map_tip;
@@ -3020,4 +3032,58 @@ bool GameWindow::on_bigmap_scrolled(GdkEventScroll* event)
   bool ret = game->get_bigmap().scroll(event);
   game->get_bigmap().update_mouse_cursor();
   return ret;
+}
+
+void GameWindow::on_popup_stack_menu (Stack *stack)
+{
+  Gtk::Menu *menu = manage(new Gtk::Menu);
+  Glib::ustring s = _("Info");
+  Gtk::MenuItem *item = manage(new Gtk::MenuItem(s));
+  item->signal_activate().connect
+    (sigc::mem_fun(this, &GameWindow::on_stack_info_activated));
+  item->show();
+  menu->add(*item);
+
+  StackTile *st = GameMap::getStacks (stack->getPos());
+  if (st->size () > 1)
+    s = _("Group");
+  else
+    s = _("Ungroup");
+  item = manage(new Gtk::MenuItem(s));
+  item->signal_activate().connect
+    (sigc::mem_fun(this, &GameWindow::on_group_ungroup_activated));
+  item->show();
+  menu->add(*item);
+  if (stack->hasPath() && stack->enoughMoves())
+    {
+      s = _("Travel Along Path");
+      item = manage(new Gtk::MenuItem(s));
+      item->signal_activate().connect
+        (sigc::mem_fun(game, &Game::move_selected_stack_along_path));
+      item->show();
+      menu->add(*item);
+    }
+
+   s = _("Stay Here");
+   item = manage(new Gtk::MenuItem(s));
+   item->signal_activate().connect
+     (sigc::mem_fun(game, &Game::park_selected_stack));
+   item->show();
+   menu->add(*item);
+
+  s = _("Defend");
+  item = manage(new Gtk::MenuItem(s));
+  item->signal_activate().connect
+    (sigc::mem_fun(game, &Game::defend_selected_stack));
+  item->show();
+  menu->add(*item);
+
+  s = _("Disband");
+  item = manage(new Gtk::MenuItem(s));
+  item->signal_activate().connect
+    (sigc::mem_fun(this, &GameWindow::on_disband_activated));
+  item->show();
+  menu->add(*item);
+  //menu->set_parent_window (window->get_window());
+  menu->popup(3, 0);
 }

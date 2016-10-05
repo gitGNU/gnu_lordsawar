@@ -74,6 +74,7 @@ class GameBigMap: public BigMap
     sigc::signal<void> stack_unqueried;
     sigc::signal<void, Temple*, bool> temple_queried; //true=>show brief info
     sigc::signal<void, Vector<int>, guint32> path_turns;
+    sigc::signal<void, Stack*> popup_stack_actions_menu;
 
     // emitted when a path for a stack is set
     sigc::signal<void> path_set;

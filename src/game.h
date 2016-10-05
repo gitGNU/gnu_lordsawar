@@ -130,7 +130,7 @@ class Game
 	city_too_poor_to_produce,
 	can_end_turn;
     sigc::signal<void, Stack *> stack_info_changed;
-    sigc::signal<void, Glib::ustring, MapTipPosition> map_tip_changed;
+    sigc::signal<void, Glib::ustring, MapTipPosition, bool> map_tip_changed;
     sigc::signal<void, StackTile *, MapTipPosition> stack_tip_changed;
     sigc::signal<void,  City *, MapTipPosition> city_tip_changed;
     sigc::signal<void, Ruin*, Stack*, Reward*> ruin_searched;
@@ -181,6 +181,7 @@ class Game
     sigc::signal<void, Hero *, Glib::ustring, Glib::ustring, guint32> city_defended;
     sigc::signal<void, Hero *, Glib::ustring, guint32> city_persuaded;
     sigc::signal<void, Hero *, Glib::ustring> stack_teleported;
+    sigc::signal<void, Stack*> popup_stack_actions_menu;
     
     void addPlayer(Player *p);
 

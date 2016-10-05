@@ -259,7 +259,7 @@ class GameWindow: public sigc::trackable
     void on_bigmap_cursor_changed(ImageCache::CursorType cursor);
     void on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map);
     void on_stack_info_changed(Stack *s);
-    void on_bigmap_tip_changed(Glib::ustring tip, MapTipPosition pos);
+    void on_bigmap_tip_changed(Glib::ustring tip, MapTipPosition pos, bool timeout);
     void on_stack_tip_changed(StackTile *stile, MapTipPosition pos);
     void on_city_tip_changed(City *city, MapTipPosition pos);
     void on_ruin_searched(Ruin *ruin, Stack *s, Reward *reward);
@@ -309,13 +309,14 @@ class GameWindow: public sigc::trackable
     Player *on_select_item_victim_player();
     City *on_select_city_to_use_item_on(SelectCityMap::Type type);
     bool on_bigmap_scrolled(GdkEventScroll* event);
+    void on_popup_stack_menu (Stack *stack);
 
     // quest manager callbacks
     void on_quest_completed(Quest *quest, Reward *reward);
     void on_quest_expired(Quest *quest);
     
     // helpers
-    void show_map_tip(Glib::ustring msg, MapTipPosition pos);
+    void show_map_tip(Glib::ustring msg, MapTipPosition pos, bool timeout = false);
     void on_city_looted(City *city, int gold);
     bool hide_map_tip();
     void show_city_production_report (bool destitute);
@@ -342,6 +343,7 @@ public:
     Glib::ustring d_player_name;
     Glib::ustring d_load_filename;
     Gtk::Allocation last_box;
+    sigc::connection map_tip_timer;
 };
 
 #endif

@@ -155,7 +155,7 @@
                           <object class="GtkMenuItem" id="leave_menuitem">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Leave Here</property>
+                            <property name="label" translatable="yes">Stay Here</property>
                             <property name="use_underline">True</property>
                             <signal name="activate" handler="on_leave_menuitem_activate" swapped="no"/>
                             <accelerator key="Escape" signal="activate"/>
