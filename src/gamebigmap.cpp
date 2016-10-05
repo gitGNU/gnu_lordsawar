@@ -929,6 +929,15 @@ void GameBigMap::after_draw()
               delete fog;
 	    }
 	}
+	  
+      if (current_tile != stack->getPos())
+        {
+          PixMask *armypic = gc->getArmyPic(*stack->begin(), true)->copy();
+          armypic->scale (armypic, tilesize, tilesize);
+          Vector<int> pos = tile_to_buffer_pos(current_tile);
+          armypic->blit_centered(buffer, pos + (Vector<int>(tilesize,tilesize)/2));
+          delete armypic;
+        }
     }
 
   if (d_fighting.getPos() != Vector<int>(-1,-1))
