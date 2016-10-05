@@ -1679,6 +1679,9 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
     delete map_tip;
   map_tip = new Gtk::Window(Gtk::WINDOW_POPUP);
 
+  map_tip->add_events (Gdk::POINTER_MOTION_MASK);
+  map_tip->signal_motion_notify_event().connect
+    (sigc::hide(sigc::mem_fun(this, &GameWindow::hide_map_tip)));
   map_tip->set_transient_for (*window);
   Gtk::Frame *f = manage(new Gtk::Frame);
   f->property_shadow_type() = Gtk::SHADOW_ETCHED_OUT;
@@ -1723,13 +1726,14 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
   map_tip->show();
 }
 
-void GameWindow::hide_map_tip()
+bool GameWindow::hide_map_tip()
 {
   if (map_tip != NULL)
     {
       delete map_tip;
       map_tip = NULL;
     }
+  return true;
 }
 
 Reward* GameWindow::on_sage_visited (Ruin *ruin, Sage *sage, Stack *stack)

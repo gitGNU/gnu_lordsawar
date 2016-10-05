@@ -317,7 +317,7 @@ class GameWindow: public sigc::trackable
     // helpers
     void show_map_tip(Glib::ustring msg, MapTipPosition pos);
     void on_city_looted(City *city, int gold);
-    void hide_map_tip();
+    bool hide_map_tip();
     void show_city_production_report (bool destitute);
 
     bool setup_game(GameScenario *game_scenario, NextTurn *nextTurn);
