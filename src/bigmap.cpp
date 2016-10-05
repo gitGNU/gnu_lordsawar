@@ -657,26 +657,25 @@ bool BigMap::scroll(GdkEventScroll *event)
   if (input_locked)
     return true;
   Rectangle n = view;
-  int amt = 1;
   switch (event->direction)
     {
-    case GDK_SCROLL_UP:
-      n.y -= amt;
-      break;
-    case GDK_SCROLL_DOWN:
-      n.y += amt;
-      break;
-    case GDK_SCROLL_RIGHT:
-      n.x += amt;
-      break;
-    case GDK_SCROLL_LEFT:
-      n.x -= amt;
-      break;
     case GDK_SCROLL_SMOOTH:
         {
           double dx, dy;
           if (gdk_event_get_scroll_deltas ((GdkEvent*)event, &dx, &dy))
             {
+              if (event->state & GDK_SHIFT_MASK)
+                {
+                  dx*=-1;
+                  dy*=-1;
+                }
+              if (event->state & GDK_CONTROL_MASK)
+                {
+                  double swap;
+                  swap = dx;
+                  dx = dy;
+                  dy = swap;
+                }
               deltax += dx;
               deltay += dy;
               if (deltax <= -1.0 || deltax >= 1.0)
