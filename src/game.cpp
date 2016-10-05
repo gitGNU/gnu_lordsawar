@@ -278,6 +278,8 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 	sigc::mem_fun(this, &Game::on_stack_queried));
     bigmap->stack_unqueried.connect(
 	sigc::mem_fun(this, &Game::on_stack_unqueried));
+    bigmap->path_turns.connect(
+	sigc::mem_fun(this, &Game::on_show_path_turns));
 
     // init the smallmap
     smallmap.reset(new SmallMap);
@@ -848,6 +850,19 @@ void Game::on_signpost_queried (Signpost* s)
 
       MapTipPosition mpos = bigmap->map_tip_position(s->getArea());
       map_tip_changed.emit(str, mpos);
+    }
+  else
+    map_tip_changed.emit("", MapTipPosition());
+}
+
+void Game::on_show_path_turns (Vector<int> tile, guint32 turns)
+{
+  if (tile != Vector<int>(-1,-1))
+    {
+      //The number of turns is always going to be plural here.
+      Glib::ustring str = Glib::ustring::compose (_("%1 turns"), turns);
+      MapTipPosition mpos = bigmap->map_tip_position(tile);
+      map_tip_changed.emit (str, mpos);
     }
   else
     map_tip_changed.emit("", MapTipPosition());

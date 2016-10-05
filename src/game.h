@@ -215,6 +215,7 @@ class Game
     void on_ruin_queried (Ruin* r, bool brief);
     void on_temple_queried (Temple* t, bool brief);
     void on_signpost_queried (Signpost* s);
+    void on_show_path_turns (Vector<int> tile, guint32 turns);
     void on_stack_queried (Vector<int> tile);
     void on_stack_unqueried ();
     void on_city_visited(City *city); // for city window

@@ -1633,6 +1633,7 @@ void GameWindow::on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map)
 
 void GameWindow::on_smallmap_slid ()
 {
+  hide_map_tip();
   on_smallmap_changed(game->get_smallmap().get_surface());
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 }

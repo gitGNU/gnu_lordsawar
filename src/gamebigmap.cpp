@@ -942,11 +942,26 @@ void GameBigMap::after_draw()
 	  
       if (current_tile != stack->getPos())
         {
+          //this is where the ghosted army unit picture goes.
           PixMask *armypic = gc->getArmyPic(*stack->begin(), true)->copy();
           armypic->scale (armypic, tilesize, tilesize);
           Vector<int> pos = tile_to_buffer_pos(current_tile);
           armypic->blit_centered(buffer, pos + (Vector<int>(tilesize,tilesize)/2));
           delete armypic;
+          static Vector<int> prev_current_tile;
+          if (current_tile != prev_current_tile)
+            {
+              PathCalculator pc(stack);
+              guint32 moves, turns, left;
+              pc.calculate (current_tile, moves, turns, left);
+              if (turns >= 1 && left == stack->getMaxMoves ())
+                turns--;
+              if (turns > 0)
+                path_turns.emit (current_tile, turns+1);
+              else
+                path_turns.emit (Vector<int>(-1,-1), 0);
+              prev_current_tile = current_tile;
+            }
         }
     }
 
