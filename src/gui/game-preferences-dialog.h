@@ -55,6 +55,7 @@ class GamePreferencesDialog: public LwDialog
     Gtk::Entry *game_name_entry;
     Gtk::Label *difficulty_label;
     Gtk::ComboBox *difficulty_combobox;
+    Gtk::SpinButton *num_players_spinbutton;
 
     enum { BEGINNER = 0, INTERMEDIATE, ADVANCED, I_AM_THE_GREATEST, CUSTOM};
 
@@ -75,6 +76,8 @@ class GamePreferencesDialog: public LwDialog
     void on_edit_options_clicked();
     void on_player_type_changed();
     void on_player_name_changed();
+    void on_num_players_text_changed();
+    void on_num_players_changed();
     bool is_beginner();
     bool is_intermediate();
     bool is_advanced();
@@ -85,6 +88,7 @@ class GamePreferencesDialog: public LwDialog
     void update_buttons();
     Glib::ustring d_filename;
     guint32 d_shieldset;
+    guint32 d_max_players;
 };
 
 #endif

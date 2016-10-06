@@ -38,26 +38,32 @@ static bool inhibit_difficulty_combobox = false;
 void GamePreferencesDialog::init(Glib::ustring filename)
 {
   d_filename = filename;
+  d_max_players = 0;
   bool broken = false;
-    xml->get_widget("dialog-vbox1", dialog_vbox);
-    xml->get_widget("start_game_button", start_game_button);
-    xml->get_widget("difficulty_label", difficulty_label);
-    xml->get_widget("difficulty_combobox", difficulty_combobox);
+  xml->get_widget("dialog-vbox1", dialog_vbox);
+  xml->get_widget("start_game_button", start_game_button);
+  xml->get_widget("difficulty_label", difficulty_label);
+  xml->get_widget("difficulty_combobox", difficulty_combobox);
 
-    xml->get_widget("players_vbox", players_vbox);
-    xml->get_widget("game_name_label", game_name_label);
-    xml->get_widget("game_name_entry", game_name_entry);
+  xml->get_widget("players_vbox", players_vbox);
+  xml->get_widget("game_name_label", game_name_label);
+  xml->get_widget("game_name_entry", game_name_entry);
+  xml->get_widget("num_players_spinbutton", num_players_spinbutton);
+  num_players_spinbutton->signal_changed().connect
+  (sigc::mem_fun(this, &GamePreferencesDialog::on_num_players_changed));
+  num_players_spinbutton->signal_insert_text().connect
+  (sigc::hide(sigc::hide(sigc::mem_fun(this, &GamePreferencesDialog::on_num_players_text_changed))));
 
-    difficulty_combobox->set_active(CUSTOM);
-    difficulty_combobox->signal_changed().connect(
-	sigc::mem_fun(*this, &GamePreferencesDialog::on_difficulty_changed));
+  difficulty_combobox->set_active(CUSTOM);
+  difficulty_combobox->signal_changed().connect
+    (sigc::mem_fun(*this, &GamePreferencesDialog::on_difficulty_changed));
 
-    start_game_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &GamePreferencesDialog::on_start_game_clicked));
+  start_game_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &GamePreferencesDialog::on_start_game_clicked));
 
-    xml->get_widget("edit_options_button", edit_options_button);
-    edit_options_button->signal_clicked().connect(
-	sigc::mem_fun(*this, &GamePreferencesDialog::on_edit_options_clicked));
+  xml->get_widget("edit_options_button", edit_options_button);
+  edit_options_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &GamePreferencesDialog::on_edit_options_clicked));
 
   game_options_dialog = new GameOptionsDialog(*dialog, false);
   game_options_dialog->difficulty_option_changed.connect(
@@ -99,7 +105,10 @@ void GamePreferencesDialog::init(Glib::ustring filename)
       (*c)->set_active((*i).type);
       (*e)->set_sensitive(true);
       (*e)->set_text((*i).name);
+      d_max_players++;
     }
+  num_players_spinbutton->set_range (2, d_max_players);
+  num_players_spinbutton->set_value (d_max_players);
   start_game_button->property_can_focus() = true;
   start_game_button->property_has_focus() = true;
   start_game_button->get_receives_default();
@@ -439,7 +448,7 @@ void GamePreferencesDialog::on_difficulty_changed()
 	  std::list<Gtk::ComboBoxText*>::iterator c = player_types.begin();
 	  for (; c != player_types.end(); c++)
 	    {
-	      if ((*c)->get_active_row_number() != 3)
+	      if ((*c)->get_active_row_number() != 3) //if OFF
 		(*c)->set_active (type_num);
 	    }
 	}
@@ -497,4 +506,40 @@ bool GamePreferencesDialog::is_greatest()
 	  GameScenarioOptions::s_razing_cities == GameParameters::NEVER &&
 	  GameScenarioOptions::s_diplomacy == true &&
 	  GameScenarioOptions::s_cusp_of_war == true);
+}
+
+void GamePreferencesDialog::on_num_players_text_changed()
+{
+  num_players_spinbutton->set_value(atoi(num_players_spinbutton->get_text().c_str()));
+  on_num_players_changed();
+}
+
+void GamePreferencesDialog::on_num_players_changed()
+{
+  if (num_players_spinbutton->get_value() < 2)
+    {
+      num_players_spinbutton->set_value(2);
+      return;
+    }
+  else if (num_players_spinbutton->get_value() > d_max_players)
+    {
+      num_players_spinbutton->set_value(d_max_players);
+      return;
+    }
+  std::list<Gtk::ComboBoxText*>::iterator c = player_types.begin();
+  std::list<Gtk::Entry *>::iterator e = player_names.begin();
+  int count = num_players_spinbutton->get_value ();
+  for (; c != player_types.end(); c++, e++)
+    {
+      if ((*c)->property_sensitive () == false)
+        continue;
+      if (count)
+        {
+          if ((*c)->get_active_row_number() == 3) //if OFF
+            (*c)->set_active(GameParameters::Player::HUMAN);
+          count--;
+        }
+      else
+        (*c)->set_active(GameParameters::Player::OFF);
+    }
 }
