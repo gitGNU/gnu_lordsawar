@@ -171,6 +171,7 @@ GameWindow::GameWindow()
 
     status_box = StatusBox::create(Configuration::s_ui_form_factor);
     status_box->reparent(*status_box_container);
+    status_box->property_hexpand() = true;
 
     // the map image
     xml->get_widget("smallmap_image", smallmap_image);
@@ -1281,6 +1282,7 @@ void GameWindow::on_ui_form_factor_changed()
 
   status_box = StatusBox::create(Configuration::s_ui_form_factor);
   status_box->reparent(*status_box_container);
+  status_box->property_hexpand() = true;
   status_box->stack_composition_modified.connect
       (sigc::mem_fun(game, &Game::recalculate_moves_for_stack));
   connections.push_back
