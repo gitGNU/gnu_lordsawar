@@ -89,6 +89,7 @@ class GamePreferencesDialog: public LwDialog
     Glib::ustring d_filename;
     guint32 d_shieldset;
     guint32 d_max_players;
+    bool d_inhibit_change;
 };
 
 #endif

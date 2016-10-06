@@ -39,6 +39,7 @@ void GamePreferencesDialog::init(Glib::ustring filename)
 {
   d_filename = filename;
   d_max_players = 0;
+  d_inhibit_change = false;
   bool broken = false;
   xml->get_widget("dialog-vbox1", dialog_vbox);
   xml->get_widget("start_game_button", start_game_button);
@@ -107,12 +108,12 @@ void GamePreferencesDialog::init(Glib::ustring filename)
       (*e)->set_text((*i).name);
       d_max_players++;
     }
-  num_players_spinbutton->set_range (2, d_max_players);
+  num_players_spinbutton->set_range (0, d_max_players);
   num_players_spinbutton->set_value (d_max_players);
   start_game_button->property_can_focus() = true;
   start_game_button->property_has_focus() = true;
   start_game_button->get_receives_default();
-      
+
   //load the game options from the config file.
   GameScenarioOptions::s_see_opponents_stacks = 
     Configuration::s_see_opponents_stacks;
@@ -257,6 +258,18 @@ void GamePreferencesDialog::update_shields()
 
 void GamePreferencesDialog::on_player_type_changed()
 {
+  std::list<Gtk::ComboBoxText*>::iterator c = player_types.begin();
+  int count = 0;
+  for (; c != player_types.end(); c++)
+    {
+      if ((*c)->property_sensitive () == false)
+        continue;
+      if ((*c)->get_active_row_number() != 3) //if not OFF
+        count++;
+    }
+  d_inhibit_change = true;
+  num_players_spinbutton->set_value (count);
+  d_inhibit_change = false;
   update_buttons();
   update_difficulty_rating();
 }
@@ -516,9 +529,11 @@ void GamePreferencesDialog::on_num_players_text_changed()
 
 void GamePreferencesDialog::on_num_players_changed()
 {
-  if (num_players_spinbutton->get_value() < 2)
+  if (d_inhibit_change)
+    return;
+  if (num_players_spinbutton->get_value() < 0)
     {
-      num_players_spinbutton->set_value(2);
+      num_players_spinbutton->set_value(0);
       return;
     }
   else if (num_players_spinbutton->get_value() > d_max_players)
@@ -527,9 +542,8 @@ void GamePreferencesDialog::on_num_players_changed()
       return;
     }
   std::list<Gtk::ComboBoxText*>::iterator c = player_types.begin();
-  std::list<Gtk::Entry *>::iterator e = player_names.begin();
   int count = num_players_spinbutton->get_value ();
-  for (; c != player_types.end(); c++, e++)
+  for (; c != player_types.end(); c++)
     {
       if ((*c)->property_sensitive () == false)
         continue;
