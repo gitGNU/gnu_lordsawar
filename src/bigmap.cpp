@@ -2,7 +2,7 @@
 // Copyright (C) 2003, 2004, 2005, 2006, 2007 Ulf Lorenz
 // Copyright (C) 2004, 2005 Bryan Duff
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2014, 2015 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2014, 2015, 2016 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
