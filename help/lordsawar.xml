@@ -2,9 +2,9 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
   <!ENTITY legal SYSTEM "legal.xml">
 <!ENTITY app "<application>LordsAWar!</application>">
-<!ENTITY appversion "0.3.0">
+<!ENTITY appversion "0.3.2">
 <!ENTITY date "May 2014">
-<!ENTITY manrevision "0.3.0">
+<!ENTITY manrevision "0.3.2">
 ]>
 
 <article id="index" lang="en"> 
@@ -12,7 +12,7 @@
 <articleinfo> 
 	<title>LordsAWar! User's Manual &manrevision;</title> 
 	<copyright> 
-		<year>2008, 2009, 2010, 2011, 2014</year>
+		<year>2008, 2009, 2010, 2011, 2014, 2016</year>
 		<holder>Ben Asselstine</holder> 
  	</copyright>
 	<publisher> 
@@ -42,7 +42,7 @@
 	<legalnotice id="alternatives"> 
 		<title>Alternative to Reading</title> 
 		<para>
-                        Watch the <ulink type="help" url="https://vimeo.com/95806152">introductory video.</ulink>  Because hey, maybe you don't want to read this manual.  You can watch a nine minute introduction video instead! The video is not as detailed as this manual is, but it serves as an introduction to the game.
+                        Watch the <ulink type="help" url="https://vimeo.com/95806152">introductory video.</ulink>  Because hey, maybe you don't want to read this manual.  You can watch a nine minute introduction video instead! The video is not as detailed as this manual is, but it serves as a simple introduction to the game.
 		</para>
 	</legalnotice>
 </articleinfo>
