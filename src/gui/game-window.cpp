@@ -1253,54 +1253,11 @@ void GameWindow::on_preferences_activated()
   if (game->getScenario()->getPlayMode() == GameScenario::NETWORKED)
     readonly = true;
   PreferencesDialog d(*window, readonly);
-  d.ui_form_factor_changed.connect(sigc::hide(sigc::mem_fun(this, &GameWindow::on_ui_form_factor_changed)));
   d.run(game);
   d.hide();
   game->get_bigmap().set_control_key_down (false);
   if (current != Playerlist::getInstance()->getActiveplayer())
     game->end_turn();
-}
-
-void GameWindow::on_ui_form_factor_changed()
-{
-  if (game_button_box)
-    {
-      delete game_button_box;
-      control_panel_viewport->remove();
-    }
-  game_button_box = GameButtonBox::create(Configuration::s_ui_form_factor);
-  game_button_box->reparent(*control_panel_viewport);
-  game_button_box->setup_signals(game, Configuration::s_ui_form_factor);
-  game_button_box->show_all();
-
-
-  if (status_box)
-    {
-      status_box_container->remove(*status_box);
-      delete status_box;
-    }
-
-  status_box = StatusBox::create(Configuration::s_ui_form_factor);
-  status_box->reparent(*status_box_container);
-  status_box->property_hexpand() = true;
-  status_box->stack_composition_modified.connect
-      (sigc::mem_fun(game, &Game::recalculate_moves_for_stack));
-  connections.push_back
-    (game->stack_info_changed.connect
-     (sigc::mem_fun(*status_box, &StatusBox::on_stack_info_changed)));
-  status_box->stack_tile_group_toggle.connect
-    (sigc::mem_fun(this, &GameWindow::on_group_stack_toggled));
-  status_box->setHeightFudgeFactor(turn_label->get_height());
-  status_box->enforce_height();
-  game->update_sidebar_stats();
-  if (Playerlist::getActiveplayer()->getActivestack())
-    status_box->on_stack_info_changed
-      (Playerlist::getActiveplayer()->getActivestack());
-  else
-    status_box->show_stats();
-    
-  game->get_smallmap().resize();
-  game->redraw();
 }
 
 void GameWindow::on_group_ungroup_activated()

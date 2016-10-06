@@ -332,7 +332,6 @@ class GameWindow: public sigc::trackable
 
     Player *game_winner;
     void give_some_cheese(Player *game_winner);
-    void on_ui_form_factor_changed();
 
 public:
     bool d_quick_fights; //do we speed up fights for this player's turn?
