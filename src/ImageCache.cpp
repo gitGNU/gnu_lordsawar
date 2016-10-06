@@ -333,7 +333,7 @@ bool ImageCache::loadArrowImages()
   for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
     d_arrow[0][i] = images[i];
   images.clear();
-  images = disassemble_row(File::getVariousFile("arrows-medium.png"), 
+  images = disassemble_row(File::getVariousFile("arrows-medium.png"),
                            NUM_ARROW_IMAGES, broken);
   if (broken)
     return false;
@@ -345,6 +345,20 @@ bool ImageCache::loadArrowImages()
 
   for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
     d_arrow[1][i] = images[i];
+
+  images.clear();
+  images = disassemble_row(File::getVariousFile("arrows-medium.png"),
+                           NUM_ARROW_IMAGES, broken);
+  if (broken)
+    return false;
+  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_DIALOG), w, h);
+  w /= 2;
+  h /= 2;
+  for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
+    PixMask::scale(images[i], w, h);
+
+  for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
+    d_arrow[2][i] = images[i];
   return true;
 }
 
@@ -412,6 +426,7 @@ ImageCache::~ImageCache()
     {
       delete d_arrow[0][i];
       delete d_arrow[1][i];
+      delete d_arrow[2][i];
     }
   reset();
 }

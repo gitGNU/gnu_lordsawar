@@ -81,6 +81,7 @@ class GameButtonBox: public Gtk::Box
     void add_pictures_to_buttons(guint32 factor);
     void drop_connections();
     void pad_image(Gtk::Image *image);
+    void add_picture_to_button (guint32 icontype, Gtk::Button *button, bool arrow = false);
 };
 
 #endif // GAME_BUTTON_BOX

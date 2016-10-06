@@ -130,8 +130,8 @@ class ImageCache
       NORTHWEST = 0,
       NORTH,
       NORTHEAST,
-      EAST,
       WEST,
+      EAST,
       SOUTHWEST,
       SOUTH,
       SOUTHEAST
@@ -496,7 +496,7 @@ class ImageCache
 	PixMask* d_small_temple;
         PixMask *d_waypoint[NUM_WAYPOINTS];
         PixMask *d_gamebuttons[3][NUM_GAME_BUTTON_IMAGES];
-        PixMask *d_arrow[2][NUM_ARROW_IMAGES];
+        PixMask *d_arrow[3][NUM_ARROW_IMAGES];
 };
 
 //! Helper class for selector box items in the ImageCache.

@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.0"/>
-  <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkBox" id="box">
-        <property name="orientation">horizontal</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">7</property>
         <property name="spacing">3</property>
         <child>
           <object class="GtkBox" id="control_panel_vbox">
-            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">3</property>
             <child>
-              <object class="GtkBox" id="first_row_hbox">
-                <property name="orientation">horizontal</property>
+              <object class="GtkGrid">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">4</property>
+                <property name="row_spacing">4</property>
+                <property name="column_spacing">4</property>
+                <property name="row_homogeneous">True</property>
+                <property name="column_homogeneous">True</property>
                 <child>
                   <object class="GtkButton" id="move_button">
                     <property name="visible">True</property>
@@ -31,9 +32,8 @@
                     <property name="tooltip_text" translatable="yes">Move this stack along its path.</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">0</property>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -44,9 +44,8 @@
                     <property name="tooltip_text" translatable="yes">Select the next stack that can move.</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">1</property>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -57,9 +56,8 @@
                     <property name="tooltip_text" translatable="yes">Finish moving this stack.</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">2</property>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -70,24 +68,10 @@
                     <property name="tooltip_text" translatable="yes">Deselect this stack.</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">3</property>
+                    <property name="left_attach">3</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox" id="second_row_hbox">
-                <property name="orientation">horizontal</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="spacing">4</property>
                 <child>
                   <object class="GtkButton" id="center_button">
                     <property name="visible">True</property>
@@ -96,9 +80,8 @@
                     <property name="tooltip_text" translatable="yes">Center the map on this stack.</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">0</property>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -109,9 +92,8 @@
                     <property name="tooltip_text" translatable="yes">Diplomacy</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">1</property>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -122,9 +104,8 @@
                     <property name="tooltip_text" translatable="yes">Put this stack in a defensive posture.</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">2</property>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -135,73 +116,36 @@
                     <property name="tooltip_text" translatable="yes">Search a temple or ruin.</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">3</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox" id="third_row_hbox">
-                <property name="orientation">horizontal</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="spacing">4</property>
-                <child>
-                  <object class="GtkBox" id="vbox1">
-                    <property name="orientation">vertical</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkButton" id="move_all_button">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Move all stacks along their routes.</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">0</property>
+                    <property name="left_attach">3</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="vbox2">
-                    <property name="orientation">vertical</property>
+                  <object class="GtkButton" id="move_all_button">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkButton" id="end_turn_button">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">End your turn.</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Move all stacks along their routes.</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">1</property>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
                   </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="end_turn_button">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">End your turn.</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
@@ -210,11 +154,8 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">2</property>
+                <property name="position">0</property>
               </packing>
-            </child>
-            <child>
-              <placeholder/>
             </child>
           </object>
           <packing>
@@ -225,16 +166,13 @@
         </child>
         <child>
           <object class="GtkBox" id="vbox3">
-            <property name="orientation">vertical</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
             <child>
               <object class="GtkGrid" id="keypad_table">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
                 <child>
                   <object class="GtkButton" id="nw_keypad_button">
                     <property name="visible">True</property>
@@ -244,8 +182,8 @@
                     <accelerator key="KP_7" signal="clicked"/>
                   </object>
                   <packing>
-                    <property name="top_attach">0</property>
                     <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -257,8 +195,8 @@
                     <accelerator key="KP_8" signal="clicked"/>
                   </object>
                   <packing>
-                    <property name="top_attach">0</property>
                     <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -270,8 +208,8 @@
                     <accelerator key="KP_9" signal="clicked"/>
                   </object>
                   <packing>
-                    <property name="top_attach">0</property>
                     <property name="left_attach">2</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -283,8 +221,8 @@
                     <accelerator key="KP_4" signal="clicked"/>
                   </object>
                   <packing>
-                    <property name="top_attach">1</property>
                     <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
                 <child>
@@ -309,8 +247,8 @@
                     <accelerator key="KP_1" signal="clicked"/>
                   </object>
                   <packing>
-                    <property name="top_attach">2</property>
                     <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
                   </packing>
                 </child>
                 <child>
@@ -338,6 +276,9 @@
                     <property name="left_attach">2</property>
                     <property name="top_attach">2</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
               </object>
               <packing>
