@@ -1,0 +1,10 @@
+
+LordsAWar! version 0.3.2, a clone of the turn-based strategy game Warlords II, has been released with the following changes:
+
+ * using a new dark theme.
+ * moved the scenario builder to the main menu.
+ * added zoom in/out on the main map.
+ * added 2-finger scrolling.
+ * added a popup context menu for stacks.
+
+Please donate to the LordsAWar project so that we can get better artwork! Click on the donate button here: http://lordsawar.nongnu.org
