@@ -39,93 +39,89 @@ HeroDialog::HeroDialog(Gtk::Window &parent, Hero *h, Vector<int> p)
  : LwDialog(parent, "hero-dialog.ui")
 {
   inhibit_hero_changed = false;
-    hero = h;
-    pos = p;
-    
-    xml->get_widget("map_image", map_image);
+  hero = h;
+  pos = p;
 
-    std::list<Hero*> heroes;
-    heroes = Playerlist::getActiveplayer()->getHeroes();
-    heroesmap = new HeroesMap(heroes);
-    if (hero)
+  xml->get_widget("map_image", map_image);
+
+  std::list<Hero*> heroes = Playerlist::getActiveplayer()->getHeroes();
+  heroesmap = new HeroesMap(heroes);
+  if (hero)
+    heroesmap->setSelectedHero(hero);
+  else
+    {
+      hero = *heroes.begin();
+      pos = Playerlist::getActiveplayer()->getPositionOfArmyById(hero->getId());
       heroesmap->setSelectedHero(hero);
-    else
-      {
-	Player *player = Playerlist::getActiveplayer();
-	hero = *heroes.begin();
-	pos = player->getPositionOfArmyById(hero->getId());
-	heroesmap->setSelectedHero(hero);
-      }
-    heroesmap->map_changed.connect(
-	sigc::mem_fun(this, &HeroDialog::on_map_changed));
-    Gtk::EventBox *map_eventbox;
-    xml->get_widget("map_eventbox", map_eventbox);
-    map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
-    map_eventbox->signal_button_press_event().connect(
-	sigc::mem_fun(*this, &HeroDialog::on_map_mouse_button_event));
+    }
+  heroesmap->map_changed.connect
+    (sigc::mem_fun(this, &HeroDialog::on_map_changed));
+  Gtk::EventBox *map_eventbox;
+  xml->get_widget("map_eventbox", map_eventbox);
+  map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
+  map_eventbox->signal_button_press_event().connect
+    (sigc::mem_fun(*this, &HeroDialog::on_map_mouse_button_event));
 
-    xml->get_widget("info_label1", info_label1);
-    xml->get_widget("info_label2", info_label2);
+  xml->get_widget("info_label1", info_label1);
+  xml->get_widget("info_label2", info_label2);
 
-    xml->get_widget("drop_button", drop_button);
-    xml->get_widget("pickup_button", pickup_button);
-    drop_button->signal_clicked()
-	.connect(sigc::mem_fun(this, &HeroDialog::on_drop_clicked));
-    pickup_button->signal_clicked()
-	.connect(sigc::mem_fun(this, &HeroDialog::on_pickup_clicked));
-    
-    xml->get_widget("next_button", next_button);
-    xml->get_widget("prev_button", prev_button);
-    next_button->signal_clicked()
-	.connect(sigc::mem_fun(this, &HeroDialog::on_next_clicked));
-    prev_button->signal_clicked()
-	.connect(sigc::mem_fun(this, &HeroDialog::on_prev_clicked));
-    if (heroes.size() <= 1)
-      {
-	next_button->set_sensitive(false);
-	prev_button->set_sensitive(false);
-      }
+  xml->get_widget("drop_button", drop_button);
+  xml->get_widget("pickup_button", pickup_button);
+  drop_button->signal_clicked()
+    .connect(sigc::mem_fun(this, &HeroDialog::on_drop_clicked));
+  pickup_button->signal_clicked()
+    .connect(sigc::mem_fun(this, &HeroDialog::on_pickup_clicked));
 
-    heroes_list = Gtk::ListStore::create(heroes_columns);
-    xml->get_widget("heroes_treeview", heroes_treeview);
-    heroes_treeview->set_model(heroes_list);
-    heroes_treeview->append_column(_("Hero"), heroes_columns.name);
+  xml->get_widget("next_button", next_button);
+  xml->get_widget("prev_button", prev_button);
+  next_button->signal_clicked()
+    .connect(sigc::mem_fun(this, &HeroDialog::on_next_clicked));
+  prev_button->signal_clicked()
+    .connect(sigc::mem_fun(this, &HeroDialog::on_prev_clicked));
+  if (heroes.size() <= 1)
+    {
+      next_button->set_sensitive(false);
+      prev_button->set_sensitive(false);
+    }
 
-    heroes_list->clear();
-    guint32 count = 0;
-    for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end();
-	 it++)
-      {
-	add_hero (*it);
+  heroes_list = Gtk::ListStore::create(heroes_columns);
+  xml->get_widget("heroes_treeview", heroes_treeview);
+  heroes_treeview->set_model(heroes_list);
+  heroes_treeview->append_column(_("Hero"), heroes_columns.name);
+
+  heroes_list->clear();
+  guint32 count = 0;
+  for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); it++)
+    {
+      add_hero (*it);
       if (*it == hero)
-	{
-	  Gtk::TreeModel::Row row;
-	  row = heroes_treeview->get_model()->children()[count];
-	  heroes_treeview->get_selection()->select(row);
-	}
+        {
+          Gtk::TreeModel::Row row = heroes_treeview->get_model()->children()[count];
+          heroes_treeview->get_selection()->select(row);
+        }
       count++;
-      }
-    heroes_treeview->get_selection()->signal_changed()
-	.connect(sigc::mem_fun(this, &HeroDialog::on_hero_changed));
+    }
+  heroes_treeview->get_selection()->signal_changed()
+    .connect(sigc::mem_fun(this, &HeroDialog::on_hero_changed));
 
-    item_list = Gtk::ListStore::create(item_columns);
-    xml->get_widget("treeview", item_treeview);
-    item_treeview->set_model(item_list);
-    item_treeview->append_column("", item_columns.image);
-    item_treeview->append_column(_("Name"), item_columns.name);
-    item_treeview->append_column(_("Attributes"), item_columns.attributes);
-    item_treeview->append_column(_("Status"), item_columns.status);
+  item_list = Gtk::ListStore::create(item_columns);
+  xml->get_widget("treeview", item_treeview);
+  item_treeview->set_model(item_list);
+  item_treeview->append_column("", item_columns.image);
+  item_treeview->append_column(_("Name"), item_columns.name);
+  item_treeview->append_column(_("Attributes"), item_columns.attributes);
+  item_treeview->append_column(_("Status"), item_columns.status);
 
-    item_treeview->get_selection()->signal_changed()
-	.connect(sigc::mem_fun(this, &HeroDialog::on_item_selection_changed));
+  item_treeview->get_selection()->signal_changed()
+    .connect(sigc::mem_fun(this, &HeroDialog::on_item_selection_changed));
 
-    events_list = Gtk::ListStore::create(events_columns);
-    xml->get_widget("events_treeview", events_treeview);
-    events_treeview->append_column("", events_columns.desc);
-    events_treeview->set_model(events_list);
-    events_list->clear();
+  events_list = Gtk::ListStore::create(events_columns);
+  xml->get_widget("events_treeview", events_treeview);
+  events_treeview->append_column("", events_columns.desc);
+  events_treeview->set_model(events_list);
+  events_list->clear();
 
-    on_item_selection_changed();
+  on_item_selection_changed();
 }
 
 HeroDialog::~HeroDialog()
@@ -142,68 +138,68 @@ void HeroDialog::addHistoryEvent(History *history)
     {
     case History::FOUND_SAGE: 
 	{
-	  History_FoundSage *ev;
-	  ev = static_cast<History_FoundSage *>(history);
+	  History_FoundSage *ev =
+            static_cast<History_FoundSage *>(history);
 	  s = String::ucompose(_("%1 finds a sage!"), ev->getHeroName());
 	  break;
 	}
     case History::HERO_EMERGES:
 	{
-	  History_HeroEmerges *ev;
-	  ev = static_cast<History_HeroEmerges *>(history);
+	  History_HeroEmerges *ev =
+            static_cast<History_HeroEmerges *>(history);
 	  s = String::ucompose(_("%1 emerges in %2!"), ev->getHeroName(),
 			       ev->getCityName());
 	  break;
 	}
     case History::HERO_QUEST_STARTED:
 	{
-	  History_HeroQuestStarted *ev;
-	  ev = static_cast<History_HeroQuestStarted*>(history);
+	  History_HeroQuestStarted *ev =
+            static_cast<History_HeroQuestStarted*>(history);
 	  s = String::ucompose(_("%1 begins a quest!"), ev->getHeroName());
 	  break;
 	}
     case History::HERO_QUEST_COMPLETED:
 	{
-	  History_HeroQuestCompleted *ev;
-	  ev = static_cast<History_HeroQuestCompleted *>(history);
+	  History_HeroQuestCompleted *ev =
+            static_cast<History_HeroQuestCompleted *>(history);
 	  s = String::ucompose(_("%1 finishes a quest!"), ev->getHeroName());
 	  break;
 	}
     case History::HERO_KILLED_IN_CITY:
 	{
-	  History_HeroKilledInCity *ev;
-	  ev = static_cast<History_HeroKilledInCity *>(history);
+	  History_HeroKilledInCity *ev =
+            static_cast<History_HeroKilledInCity *>(history);
 	  s = String::ucompose(_("%1 is killed in %2!"), ev->getHeroName(),
 			       ev->getCityName());
 	  break;
 	}
     case History::HERO_KILLED_IN_BATTLE:
 	{
-	  History_HeroKilledInBattle *ev;
-	  ev = static_cast<History_HeroKilledInBattle *>(history);
+	  History_HeroKilledInBattle *ev =
+            static_cast<History_HeroKilledInBattle *>(history);
 	  s = String::ucompose(_("%1 is killed in battle!"), ev->getHeroName());
 	  break;
 	}
     case History::HERO_KILLED_SEARCHING:
 	{
-	  History_HeroKilledSearching *ev;
-	  ev = static_cast<History_HeroKilledSearching *>(history);
+	  History_HeroKilledSearching *ev =
+            static_cast<History_HeroKilledSearching *>(history);
 	  s = String::ucompose(_("%1 is killed while searching!"), 
 			       ev->getHeroName());
 	  break;
 	}
     case History::HERO_CITY_WON:
 	{
-	  History_HeroCityWon *ev;
-	  ev = static_cast<History_HeroCityWon *>(history);
+	  History_HeroCityWon *ev =
+            static_cast<History_HeroCityWon *>(history);
 	  s = String::ucompose(_("%1 conquers %2!"), ev->getHeroName(), 
 			       ev->getCityName());
 	  break;
 	}
     case History::HERO_FINDS_ALLIES:
 	{
-	  History_HeroFindsAllies *ev;
-	  ev = static_cast<History_HeroFindsAllies*>(history);
+	  History_HeroFindsAllies *ev =
+            static_cast<History_HeroFindsAllies*>(history);
 	  s = String::ucompose(_("%1 finds allies!"), ev->getHeroName());
 	  break;
 	}
@@ -244,20 +240,19 @@ void HeroDialog::run()
 void HeroDialog::update_hero_list()
 {
   inhibit_hero_changed = true;
-    std::list<Hero*> heroes;
-    heroes = Playerlist::getActiveplayer()->getHeroes();
-    guint32 count = 0;
-    for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end();
-	 it++)
-      {
+  std::list<Hero*> heroes;
+  heroes = Playerlist::getActiveplayer()->getHeroes();
+  guint32 count = 0;
+  for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); it++)
+    {
       if (*it == hero)
-	{
-	  Gtk::TreeModel::Row row;
-	  row = heroes_treeview->get_model()->children()[count];
-	  heroes_treeview->get_selection()->select(row);
-	}
+        {
+          Gtk::TreeModel::Row row;
+          row = heroes_treeview->get_model()->children()[count];
+          heroes_treeview->get_selection()->select(row);
+        }
       count++;
-      }
+    }
   inhibit_hero_changed = false;
 }
 
@@ -277,41 +272,40 @@ void HeroDialog::on_hero_changed()
       show_hero();
       heroesmap->draw(Playerlist::getActiveplayer());
     }
-
 }
 
 void HeroDialog::on_item_selection_changed()
 {
-    Gtk::TreeIter i = item_treeview->get_selection()->get_selected();
-    if (i)
+  Gtk::TreeIter i = item_treeview->get_selection()->get_selected();
+  if (i)
     {
-	bool droppable = (*i)[item_columns.status] == _("In backpack");
-	drop_button->set_sensitive(droppable);
-	pickup_button->set_sensitive(!droppable);
+      bool droppable = (*i)[item_columns.status] == _("In backpack");
+      drop_button->set_sensitive(droppable);
+      pickup_button->set_sensitive(!droppable);
     }
-    else
+  else
     {
-	drop_button->set_sensitive(false);
-	pickup_button->set_sensitive(false);
+      drop_button->set_sensitive(false);
+      pickup_button->set_sensitive(false);
     }
 }
 
 void HeroDialog::on_drop_clicked()
 {
-    Gtk::TreeIter i = item_treeview->get_selection()->get_selected();
-    if (i)
-      {
-        bool splash = false;
-	Item *item = (*i)[item_columns.item];
-	hero->getOwner()->heroDropItem (hero, item, pos, splash);
-        if (splash == false)
-          (*i)[item_columns.status] = _("On the ground");
-        else
-          item_list->erase(i); //splash
-            
-        on_item_selection_changed();
-	fill_in_info_labels();
-      }
+  Gtk::TreeIter i = item_treeview->get_selection()->get_selected();
+  if (i)
+    {
+      bool splash = false;
+      Item *item = (*i)[item_columns.item];
+      hero->getOwner()->heroDropItem (hero, item, pos, splash);
+      if (splash == false)
+        (*i)[item_columns.status] = _("On the ground");
+      else
+        item_list->erase(i); //splash
+
+      on_item_selection_changed();
+      fill_in_info_labels();
+    }
 }
 
 void HeroDialog::on_next_clicked()
@@ -350,95 +344,96 @@ void HeroDialog::on_prev_clicked()
     }
   update_hero_list();
 }
+
 void HeroDialog::on_pickup_clicked()
 {
-    Gtk::TreeIter i = item_treeview->get_selection()->get_selected();
-    if (i)
+  Gtk::TreeIter i = item_treeview->get_selection()->get_selected();
+  if (i)
     {
-	Item *item = (*i)[item_columns.item];
-        if (item->getPlanted() == true)
-          item->setPlanted(false);
-	hero->getOwner()->heroPickupItem (hero, item, pos);
-	(*i)[item_columns.status] = _("In backpack");
-	on_item_selection_changed();
-	fill_in_info_labels();
+      Item *item = (*i)[item_columns.item];
+      if (item->getPlanted() == true)
+        item->setPlanted(false);
+      hero->getOwner()->heroPickupItem (hero, item, pos);
+      (*i)[item_columns.status] = _("In backpack");
+      on_item_selection_changed();
+      fill_in_info_labels();
     }
 }
 
 void HeroDialog::add_hero(Hero *h)
 {
-    Gtk::TreeIter i = heroes_list->append();
-    (*i)[heroes_columns.name] = h->getName();
-    (*i)[heroes_columns.hero] = h;
+  Gtk::TreeIter i = heroes_list->append();
+  (*i)[heroes_columns.name] = h->getName();
+  (*i)[heroes_columns.hero] = h;
 }
 
 void HeroDialog::add_item(Item *item, bool in_backpack)
 {
-    Gtk::TreeIter i = item_list->append();
-    (*i)[item_columns.name] = item->getName();
+  Gtk::TreeIter i = item_list->append();
+  (*i)[item_columns.name] = item->getName();
 
-    (*i)[item_columns.attributes] = item->getBonusDescription();
-    
-    if (in_backpack)
-	(*i)[item_columns.status] = _("In backpack");
-    else
-	(*i)[item_columns.status] = _("On the ground");
+  (*i)[item_columns.attributes] = item->getBonusDescription();
 
-    (*i)[item_columns.item] = item;
+  if (in_backpack)
+    (*i)[item_columns.status] = _("In backpack");
+  else
+    (*i)[item_columns.status] = _("On the ground");
+
+  (*i)[item_columns.item] = item;
 }
 
 void HeroDialog::fill_in_info_labels()
 {
-    guint32 bonus = 0;
-    Glib::ustring s;
-    // fill in first column
-    Backpack *backpack = hero->getBackpack();
-    for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
-      {
-        if ((*i)->getBonus(Item::ADD1STR))
-          bonus += 1;
-        if ((*i)->getBonus(Item::ADD2STR))
-          bonus += 2;
-        if ((*i)->getBonus(Item::ADD3STR))
-          bonus += 3;
-      }
-    s += String::ucompose(_("Battle: %1"), bonus);
-    s += "\n";
+  guint32 bonus = 0;
+  Glib::ustring s;
+  // fill in first column
+  Backpack *backpack = hero->getBackpack();
+  for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
+    {
+      if ((*i)->getBonus(Item::ADD1STR))
+        bonus += 1;
+      if ((*i)->getBonus(Item::ADD2STR))
+        bonus += 2;
+      if ((*i)->getBonus(Item::ADD3STR))
+        bonus += 3;
+    }
+  s += String::ucompose(_("Battle: %1"), bonus);
+  s += "\n";
 
-    bonus = 0;
-    for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
-      {
-        if ((*i)->getBonus(Item::ADD1STACK))
-          bonus += 1;
-        if ((*i)->getBonus(Item::ADD2STACK))
-          bonus += 2;
-        if ((*i)->getBonus(Item::ADD3STACK))
-          bonus += 3;
-      }
+  bonus = 0;
+  for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
+    {
+      if ((*i)->getBonus(Item::ADD1STACK))
+        bonus += 1;
+      if ((*i)->getBonus(Item::ADD2STACK))
+        bonus += 2;
+      if ((*i)->getBonus(Item::ADD3STACK))
+        bonus += 3;
+    }
 
-    //now add natural command
-    bonus += hero->calculateNaturalCommand ();
+  //now add natural command
+  bonus += hero->calculateNaturalCommand ();
 
-    s += String::ucompose(_("Command: %1"), bonus);
-    s += "\n";
-    s += String::ucompose(_("Level: %1"), hero->getLevel());
-    s += "\n";
-    s += String::ucompose(_("Experience: %1"),
-			  std::setprecision(3), hero->getXP());
-    info_label1->set_text(s);
+  s += String::ucompose(_("Command: %1"), bonus);
+  s += "\n";
+  s += String::ucompose(_("Level: %1"), hero->getLevel());
+  s += "\n";
+  s += String::ucompose(_("Experience: %1"),
+                        std::setprecision(3), hero->getXP());
+  info_label1->set_text(s);
 
-    // fill in second column
-    s = "";
-    // note to translators: %1 is melee strength, %2 is ranged strength
-    s += String::ucompose(_("Strength: %1"),
-			  hero->getStat(Army::STRENGTH));
-    s += "\n";
-    // note to translators: %1 is remaining moves, %2 is total moves
-    s += String::ucompose(_("Moves: %1/%2"),
-			  hero->getMoves(), hero->getStat(Army::MOVES));
-    s += "\n";
-    s += String::ucompose(_("Upkeep: %1"), hero->getUpkeep());
-    info_label2->set_text(s);
+  // fill in second column
+  s = "";
+  // note to translators: %1 is melee strength, %2 is ranged strength
+  s += String::ucompose(_("Strength: %1"),
+                        hero->getStat(Army::STRENGTH));
+  s += "\n";
+  // note to translators: %1 is remaining moves, %2 is total moves
+  s += String::ucompose(_("Moves: %1/%2"),
+                        hero->getMoves(), hero->getStat(Army::MOVES));
+  s += "\n";
+  s += String::ucompose(_("Upkeep: %1"), hero->getUpkeep());
+  info_label2->set_text(s);
 }
 
 void HeroDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
@@ -466,25 +461,25 @@ bool HeroDialog::on_map_mouse_button_event(GdkEventButton *e)
 
 void HeroDialog::show_hero()
 {
-    dialog->set_title(hero->getName());
+  dialog->set_title(hero->getName());
 
-    fill_in_info_labels();
-    std::list<History* > events;
-    events = hero->getOwner()->getHistoryForHeroId(hero->getId());
-    events_list->clear();
-    for (std::list<History*>::iterator i = events.begin(); i != events.end();
-	 i++)
-      addHistoryEvent(*i);
-	
-    // populate the item list
-    item_list->clear();
-    Backpack *backpack = hero->getBackpack();
-    for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
-	add_item(*i, true);
+  fill_in_info_labels();
+  std::list<History* > events;
+  events = hero->getOwner()->getHistoryForHeroId(hero->getId());
+  events_list->clear();
+  for (std::list<History*>::iterator i = events.begin(); i != events.end();
+       i++)
+    addHistoryEvent(*i);
 
-    MapBackpack *ground = GameMap::getInstance()->getTile(pos)->getBackpack();
-    for (MapBackpack::iterator i = ground->begin(); i != ground->end(); i++)
-      add_item(*i, false);
+  // populate the item list
+  item_list->clear();
+  Backpack *backpack = hero->getBackpack();
+  for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
+    add_item(*i, true);
+
+  MapBackpack *ground = GameMap::getInstance()->getTile(pos)->getBackpack();
+  for (MapBackpack::iterator i = ground->begin(); i != ground->end(); i++)
+    add_item(*i, false);
 
   return;
 }

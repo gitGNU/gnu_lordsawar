@@ -19,10 +19,8 @@
 
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
-
 #include "SightMap.h"
 #include "quest-report-dialog.h"
-
 #include "ucompose.hpp"
 #include "hero.h"
 #include "defs.h"
@@ -34,12 +32,9 @@ QuestReportDialog::QuestReportDialog(Gtk::Window &parent, std::vector<Quest *>q,
   quests = q;
 
   xml->get_widget("map_image", map_image);
-
   questmap = NULL;
-
   Gtk::EventBox *map_eventbox;
   xml->get_widget("map_eventbox", map_eventbox);
-
   xml->get_widget("label", label);
   xml->get_widget("hero_label", hero_label);
 
@@ -73,9 +68,9 @@ QuestReportDialog::QuestReportDialog(Gtk::Window &parent, std::vector<Quest *>q,
 
 void QuestReportDialog::add_questing_hero(Quest *q, Hero *h)
 {
-    Gtk::TreeIter i = heroes_list->append();
-    (*i)[heroes_columns.hero_name] = h->getName();
-    (*i)[heroes_columns.quest] = q;
+  Gtk::TreeIter i = heroes_list->append();
+  (*i)[heroes_columns.hero_name] = h->getName();
+  (*i)[heroes_columns.quest] = q;
 }
 
 void QuestReportDialog::fill_quest_info(Quest *q)
@@ -96,7 +91,6 @@ void QuestReportDialog::fill_quest_info(Quest *q)
   if (q)
     {
       dialog->set_title(String::ucompose(_("Quest for %1"), q->getHero()->getName()));
-
       s = q->getDescription();
       s += "\n\n";
       s += q->getProgress();
@@ -133,7 +127,6 @@ void QuestReportDialog::on_hero_changed()
       Quest *q = row[heroes_columns.quest];
       fill_quest_info(q);
     }
-
 }
 
 QuestReportDialog::~QuestReportDialog()
@@ -162,9 +155,8 @@ void QuestReportDialog::run()
 
 void QuestReportDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+  map_image->property_pixbuf() =
     Gdk::Pixbuf::create(map, 0, 0, 
                         questmap->get_width(), questmap->get_height());
-    map_image->property_pixbuf() = pixbuf;
 }
 

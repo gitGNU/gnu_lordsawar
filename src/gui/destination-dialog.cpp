@@ -40,45 +40,45 @@ DestinationDialog::DestinationDialog(Gtk::Window &parent, City *c, bool *see_all
  : LwDialog(parent, "destination-dialog.ui")
 {
   d_see_all = see_all;
-    city = c;
-    
-    xml->get_widget("map_image", map_image);
-    xml->get_widget("see_all_togglebutton", see_all_toggle);
-    xml->get_widget("vector_togglebutton", vector_toggle);
-    xml->get_widget("change_togglebutton", change_toggle);
-    xml->get_widget("current_label", current_label);
-    xml->get_widget("current_image", current_image);
-    xml->get_widget("turns_label", turns_label);
-    xml->get_widget("one_turn_away_image", one_turn_away_image);
-    xml->get_widget("two_turns_away_image", two_turns_away_image);
-    xml->get_widget("next_turn_1_image", next_turn_1_image);
-    xml->get_widget("next_turn_2_image", next_turn_2_image);
-    xml->get_widget("next_turn_3_image", next_turn_3_image);
-    xml->get_widget("next_turn_4_image", next_turn_4_image);
-    xml->get_widget("turn_after_1_image", turn_after_1_image);
-    xml->get_widget("turn_after_2_image", turn_after_2_image);
-    xml->get_widget("turn_after_3_image", turn_after_3_image);
-    xml->get_widget("turn_after_4_image", turn_after_4_image);
+  city = c;
 
-    see_all_toggle->signal_toggled().connect(
-      sigc::bind(sigc::mem_fun(this, &DestinationDialog::on_see_all_toggled),
-                               see_all_toggle));
-    vector_toggle->signal_toggled().connect(
-      sigc::bind(sigc::mem_fun(this, &DestinationDialog::on_vector_toggled),
-                               vector_toggle));
-    change_toggle->signal_toggled().connect(
-      sigc::bind(sigc::mem_fun(this, &DestinationDialog::on_change_toggled),
-                               change_toggle));
+  xml->get_widget("map_image", map_image);
+  xml->get_widget("see_all_togglebutton", see_all_toggle);
+  xml->get_widget("vector_togglebutton", vector_toggle);
+  xml->get_widget("change_togglebutton", change_toggle);
+  xml->get_widget("current_label", current_label);
+  xml->get_widget("current_image", current_image);
+  xml->get_widget("turns_label", turns_label);
+  xml->get_widget("one_turn_away_image", one_turn_away_image);
+  xml->get_widget("two_turns_away_image", two_turns_away_image);
+  xml->get_widget("next_turn_1_image", next_turn_1_image);
+  xml->get_widget("next_turn_2_image", next_turn_2_image);
+  xml->get_widget("next_turn_3_image", next_turn_3_image);
+  xml->get_widget("next_turn_4_image", next_turn_4_image);
+  xml->get_widget("turn_after_1_image", turn_after_1_image);
+  xml->get_widget("turn_after_2_image", turn_after_2_image);
+  xml->get_widget("turn_after_3_image", turn_after_3_image);
+  xml->get_widget("turn_after_4_image", turn_after_4_image);
 
-    vectormap = new VectorMap(c, VectorMap::SHOW_ORIGIN_CITY_VECTORING, false);
-    vectormap->map_changed.connect(
-	sigc::mem_fun(this, &DestinationDialog::on_map_changed));
+  see_all_toggle->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun(this, &DestinationDialog::on_see_all_toggled),
+                see_all_toggle));
+  vector_toggle->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun(this, &DestinationDialog::on_vector_toggled),
+                vector_toggle));
+  change_toggle->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun(this, &DestinationDialog::on_change_toggled),
+                change_toggle));
 
-    Gtk::EventBox *map_eventbox;
-    xml->get_widget("map_eventbox", map_eventbox);
-    map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
-    map_eventbox->signal_button_press_event().connect(
-	sigc::mem_fun(*this, &DestinationDialog::on_map_mouse_button_event));
+  vectormap = new VectorMap(c, VectorMap::SHOW_ORIGIN_CITY_VECTORING, false);
+  vectormap->map_changed.connect
+    (sigc::mem_fun(this, &DestinationDialog::on_map_changed));
+
+  Gtk::EventBox *map_eventbox;
+  xml->get_widget("map_eventbox", map_eventbox);
+  map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
+  map_eventbox->signal_button_press_event().connect
+    (sigc::mem_fun(*this, &DestinationDialog::on_map_mouse_button_event));
   fill_in_vectoring_info();
 }
 
@@ -94,20 +94,18 @@ void DestinationDialog::hide()
 
 void DestinationDialog::run()
 {
-    vectormap->resize();
-    vectormap->draw(Playerlist::getActiveplayer());
-    see_all_toggle->set_active(*d_see_all);
-    dialog->show();
-    dialog->run();
+  vectormap->resize();
+  vectormap->draw(Playerlist::getActiveplayer());
+  see_all_toggle->set_active(*d_see_all);
+  dialog->show();
+  dialog->run();
 }
 
 void DestinationDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
   if (vectormap->getClickAction() == VectorMap::CLICK_SELECTS &&
       vector_toggle->get_active() == true)
-    {
-      vector_toggle->set_active(false);
-    }
+    vector_toggle->set_active(false);
   else
     {
       city = vectormap->getCity();

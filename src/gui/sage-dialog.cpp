@@ -34,33 +34,31 @@
 SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Hero *h, Ruin *r)
  : LwDialog(parent, "sage-dialog.ui")
 {
-    ruin = r;
-    hero = h;
-    
-    rewards_list = Gtk::ListStore::create(rewards_columns);
-    xml->get_widget("rewardtreeview", rewards_treeview);
-    rewards_treeview->set_model(rewards_list);
-    rewards_treeview->append_column("", rewards_columns.name);
-    rewards_treeview->get_selection()->signal_changed().connect
-      (sigc::mem_fun(*this, &SageDialog::on_reward_selected));
+  ruin = r;
+  hero = h;
 
-    xml->get_widget("map_image", map_image);
-    xml->get_widget("continue_button", continue_button);
+  rewards_list = Gtk::ListStore::create(rewards_columns);
+  xml->get_widget("rewardtreeview", rewards_treeview);
+  rewards_treeview->set_model(rewards_list);
+  rewards_treeview->append_column("", rewards_columns.name);
+  rewards_treeview->get_selection()->signal_changed().connect
+    (sigc::mem_fun(*this, &SageDialog::on_reward_selected));
 
-    ruinmap = new RuinMap(ruin);
-    ruinmap->map_changed.connect(
-	sigc::mem_fun(this, &SageDialog::on_map_changed));
+  xml->get_widget("map_image", map_image);
+  xml->get_widget("continue_button", continue_button);
 
-    Gtk::EventBox *map_eventbox;
-    xml->get_widget("map_eventbox", map_eventbox);
+  ruinmap = new RuinMap(ruin);
+  ruinmap->map_changed.connect(sigc::mem_fun(this, &SageDialog::on_map_changed));
 
-    dialog->set_title(_("A Sage!"));
+  Gtk::EventBox *map_eventbox;
+  xml->get_widget("map_eventbox", map_eventbox);
 
-    for(Sage::iterator it = sage->begin(); it != sage->end(); it++)
-      addReward(*it);
+  dialog->set_title(_("A Sage!"));
+
+  for(Sage::iterator it = sage->begin(); it != sage->end(); it++)
+    addReward(*it);
 
   continue_button->set_sensitive(false);
-
 }
 
 SageDialog::~SageDialog()
@@ -70,11 +68,10 @@ SageDialog::~SageDialog()
 
 Reward *SageDialog::grabSelectedReward()
 {
-    Glib::RefPtr<Gtk::TreeView::Selection> sel;
-    sel = rewards_treeview->get_selection();
-    Gtk::TreeModel::iterator it = sel->get_selected();
-    Gtk::TreeModel::Row row = *it;
-    return row[rewards_columns.reward];
+  Glib::RefPtr<Gtk::TreeView::Selection> sel = rewards_treeview->get_selection();
+  Gtk::TreeModel::iterator it = sel->get_selected();
+  Gtk::TreeModel::Row row = *it;
+  return row[rewards_columns.reward];
 }
 
 void SageDialog::hide()
@@ -83,40 +80,39 @@ void SageDialog::hide()
 
 Reward *SageDialog::run()
 {
-    ruinmap->resize();
-    ruinmap->draw(Playerlist::getActiveplayer());
+  ruinmap->resize();
+  ruinmap->draw(Playerlist::getActiveplayer());
 
-    Snd::getInstance()->play("hero", 1);
-    dialog->show_all();
-    dialog->run();
-    Snd::getInstance()->halt();
-    //okay, we have a reward selected
-   //now we return it (somehow)
-  
-    Reward *reward = grabSelectedReward();
-    //is this in our one-time list anywhere?
+  Snd::getInstance()->play("hero", 1);
+  dialog->show_all();
+  dialog->run();
+  Snd::getInstance()->halt();
+  //okay, we have a reward selected
+  //now we return it (somehow)
 
-    Rewardlist *rlist = Rewardlist::getInstance();
-    Rewardlist::iterator it = 
-      std::find (rlist->begin(), rlist->end(), reward);
-    if (it != rlist->end())
-      {
-	//yes, it's something on our one-time reward list!
-	//take if off our list, so we can't award it again
-	rlist->erase(it);
-      }
+  Reward *reward = grabSelectedReward();
+  //is this in our one-time list anywhere?
 
-    // fixme: remove all common rewards that isn't the one we selected
-    // the contents of the common rewards are a memory leak
+  Rewardlist *rlist = Rewardlist::getInstance();
+  Rewardlist::iterator it = 
+    std::find (rlist->begin(), rlist->end(), reward);
+  if (it != rlist->end())
+    {
+      //yes, it's something on our one-time reward list!
+      //take if off our list, so we can't award it again
+      rlist->erase(it);
+    }
 
-    return reward;
+  // fixme: remove all common rewards that isn't the one we selected
+  // the contents of the common rewards are a memory leak
+
+  return reward;
 }
 
 void SageDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+  map_image->property_pixbuf() =
     Gdk::Pixbuf::create(map, 0, 0, ruinmap->get_width(), ruinmap->get_height());
-  map_image->property_pixbuf() = pixbuf;
 }
 
 void SageDialog::addReward(Reward *reward)
@@ -132,9 +128,8 @@ void SageDialog::addReward(Reward *reward)
       break;
     case Reward::MAP:
 	{
-	  Glib::ustring name;
 	  Reward_Map *m = static_cast<Reward_Map*>(reward);
-	  name  = m->getName();
+	  Glib::ustring name = m->getName();
 	  if (name == "")
 	    {
 	      switch (Rnd::rand() % 6)
@@ -147,7 +142,6 @@ void SageDialog::addReward(Reward *reward)
 		case 5: name = _("blood-stained map"); break;
 		}
 	    }
-	    
 	  (*i)[rewards_columns.name] = name;
 	}
 

@@ -42,15 +42,15 @@ StackInfoDialog::StackInfoDialog(Gtk::Window &parent, Vector<int> pos)
   army_info_tip = NULL;
   tile = pos;
   currently_selected_stack = NULL;
-    
-    xml->get_widget("stack_table", stack_table);
-    xml->get_widget("group_button", group_button);
-    group_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &StackInfoDialog::on_group_clicked));
-    xml->get_widget("ungroup_button", ungroup_button);
-    ungroup_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &StackInfoDialog::on_ungroup_clicked));
-    fill_stack_info();
+
+  xml->get_widget("stack_table", stack_table);
+  xml->get_widget("group_button", group_button);
+  group_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &StackInfoDialog::on_group_clicked));
+  xml->get_widget("ungroup_button", ungroup_button);
+  ungroup_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &StackInfoDialog::on_ungroup_clicked));
+  fill_stack_info();
 }
 
 StackInfoDialog::~StackInfoDialog()
@@ -127,15 +127,12 @@ void StackInfoDialog::addArmy (bool first, Stack *s, Army *h, guint32 modified_s
   toggle->add(*manage(army_image));
 
   Gtk::Label *name = new Gtk::Label(h->getName());
-  Glib::ustring str = "";
-   
   unsigned int strength_value = h->getStat(Army::STRENGTH);
-  str = String::ucompose("%1", strength_value);
+  Glib::ustring str = String::ucompose("%1", strength_value);
   if (modified_strength != strength_value)
     str += String::ucompose(" (%1)", modified_strength);
       
   Gtk::Label *strength = new Gtk::Label(str);
-
   Gtk::Label *bonus = new Gtk::Label(h->getArmyBonusDescription());
   Gtk::Label *moves = new Gtk::Label(String::ucompose("%1", h->getMoves()));
 	
@@ -185,7 +182,6 @@ void StackInfoDialog::on_ungroup_clicked()
 
 void StackInfoDialog::fill_stack_info()
 {
-      
   StackTile *stile = GameMap::getStacks(tile);
   guint32 idx = 1;
 
@@ -225,8 +221,8 @@ void StackInfoDialog::fill_stack_info()
 bool StackInfoDialog::on_army_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle)
 {
   MouseButtonEvent event = to_input_event(e);
-  if (event.button == MouseButtonEvent::RIGHT_BUTTON
-      && event.state == MouseButtonEvent::PRESSED) 
+  if (event.button == MouseButtonEvent::RIGHT_BUTTON && 
+      event.state == MouseButtonEvent::PRESSED) 
     {
       int slot = -1;
       for (unsigned int i = 0; i < toggles.size(); ++i) 
@@ -246,8 +242,8 @@ bool StackInfoDialog::on_army_button_event(GdkEventButton *e, Gtk::ToggleButton 
 	}
       return true;
     }
-  else if (event.button == MouseButtonEvent::RIGHT_BUTTON
-	   && event.state == MouseButtonEvent::RELEASED) 
+  else if (event.button == MouseButtonEvent::RIGHT_BUTTON && 
+           event.state == MouseButtonEvent::RELEASED) 
     {
       if (army_info_tip != NULL)
 	{

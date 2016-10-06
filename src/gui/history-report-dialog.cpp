@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014, 2015, 2016 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -90,7 +90,7 @@ HistoryReportDialog::HistoryReportDialog(Gtk::Window &parent, Player *p, History
 
   generatePastCityCounts();
   city_chart = new LineChart(past_citycounts, d_colours, 
-			     Citylist::getInstance()->size(),
+                             Citylist::getInstance()->size(),
 			     _("Cities"), _("Turns"));
   city_alignment->add(*manage(city_chart));
 
@@ -525,8 +525,8 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 	}
     case History::HERO_EMERGES:
 	{
-	  History_HeroEmerges *ev;
-	  ev = static_cast<History_HeroEmerges *>(history);
+	  History_HeroEmerges *ev = 
+            static_cast<History_HeroEmerges *>(history);
           box = Box::ucompose(_("%1 %2 emerges in %3"), shield,
                               ev->getHeroName(), ev->getCityName());
 	  break;

@@ -43,113 +43,112 @@ SplashWindow::SplashWindow()
 {
   network_game_nickname = "";
 
-    Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("splash-window.ui");
+  Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("splash-window.ui");
 
-    xml->get_widget("window", window);
-    window->set_icon_from_file(File::getVariousFile("castle_icon.png"));
-    window->signal_delete_event().connect
-      (sigc::hide(sigc::mem_fun(*this, &SplashWindow::on_delete_event)));
-    
+  xml->get_widget("window", window);
+  window->set_icon_from_file(File::getVariousFile("castle_icon.png"));
+  window->signal_delete_event().connect
+    (sigc::hide(sigc::mem_fun(*this, &SplashWindow::on_delete_event)));
 
-    xml->get_widget("load_game_button", load_game_button);
-    load_game_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &SplashWindow::on_load_game_clicked));
-    xml->get_widget("load_scenario_button", load_scenario_button);
-    load_scenario_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &SplashWindow::on_load_scenario_clicked));
-    xml->get_widget("quit_button", quit_button);
-    quit_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &SplashWindow::on_quit_clicked));
-    xml->get_widget("new_network_game_button", new_network_game_button);
-    new_network_game_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &SplashWindow::on_new_network_game_clicked));
-    xml->get_widget("preferences_button", preferences_button);
-    preferences_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &SplashWindow::on_preferences_clicked));
-    xml->get_widget("editor_button", editor_button);
-    editor_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &SplashWindow::on_editor_clicked));
-    Snd::getInstance()->play("intro");
 
-    xml->get_widget("box", main_box);
-    xml->get_widget("eventbox", eventbox);
-    eventbox->signal_draw().connect
-      (sigc::mem_fun(*this, &SplashWindow::on_draw));
-    xml->get_widget("button_box", button_box);
-    if (Configuration::s_autosave_policy == 1)
-      {
-  
-	Glib::ustring filename = File::getSaveFile("autosave" + SAVE_EXT);
-	FILE *fileptr = fopen (filename.c_str(), "r");
-	if (fileptr)
-	  {
-	    bool broken = false;
-	    fclose (fileptr);
-	    GameScenario::PlayMode mode = 
-	      GameScenario::loadPlayMode(File::getSaveFile("autosave" + SAVE_EXT),
-					 broken);
-	    if (mode == GameScenario::HOTSEAT && broken == false)
-	      {
-		crash_button = Gtk::manage(new Gtk::Button());
-		crash_button->set_label(_("Rescue Crashed Game"));
-		button_box->pack_start(*crash_button, true, true, 0);
-		crash_button->signal_clicked().connect(sigc::mem_fun(*this, &SplashWindow::on_rescue_crashed_game_clicked));
-		button_box->reorder_child(*crash_button, 0);
-	      }
-            else if (broken == true)
-              File::erase (File::getSaveFile("autosave" + SAVE_EXT));
-	  }
-      }
+  xml->get_widget("load_game_button", load_game_button);
+  load_game_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &SplashWindow::on_load_game_clicked));
+  xml->get_widget("load_scenario_button", load_scenario_button);
+  load_scenario_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &SplashWindow::on_load_scenario_clicked));
+  xml->get_widget("quit_button", quit_button);
+  quit_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &SplashWindow::on_quit_clicked));
+  xml->get_widget("new_network_game_button", new_network_game_button);
+  new_network_game_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &SplashWindow::on_new_network_game_clicked));
+  xml->get_widget("preferences_button", preferences_button);
+  preferences_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &SplashWindow::on_preferences_clicked));
+  xml->get_widget("editor_button", editor_button);
+  editor_button->signal_clicked().connect
+    (sigc::mem_fun(*this, &SplashWindow::on_editor_clicked));
+  Snd::getInstance()->play("intro");
 
-    //set the window size.
-    bool broken = false;
-    bg = PixMask::create (File::getVariousFile("splash_screen.jpg"), broken);
-    if (broken == false)
-      {
-        int decorations = 24 * 3;
-        if (Gdk::Screen::get_default()->get_height() - decorations < 
-            bg->get_height())
-          window->set_default_size(Gdk::Screen::get_default()->get_width(),
-                         Gdk::Screen::get_default()->get_height());
-        else
-          window->set_default_size(bg->get_width(), bg->get_height());
-      }
+  xml->get_widget("box", main_box);
+  xml->get_widget("eventbox", eventbox);
+  eventbox->signal_draw().connect
+    (sigc::mem_fun(*this, &SplashWindow::on_draw));
+  xml->get_widget("button_box", button_box);
+  if (Configuration::s_autosave_policy == 1)
+    {
+      Glib::ustring filename = File::getSaveFile("autosave" + SAVE_EXT);
+      FILE *fileptr = fopen (filename.c_str(), "r");
+      if (fileptr)
+        {
+          bool broken = false;
+          fclose (fileptr);
+          GameScenario::PlayMode mode = 
+            GameScenario::loadPlayMode(File::getSaveFile("autosave" + SAVE_EXT),
+                                       broken);
+          if (mode == GameScenario::HOTSEAT && broken == false)
+            {
+              crash_button = Gtk::manage(new Gtk::Button());
+              crash_button->set_label(_("Rescue Crashed Game"));
+              button_box->pack_start(*crash_button, true, true, 0);
+              crash_button->signal_clicked().connect(sigc::mem_fun(*this, &SplashWindow::on_rescue_crashed_game_clicked));
+              button_box->reorder_child(*crash_button, 0);
+            }
+          else if (broken == true)
+            File::erase (File::getSaveFile("autosave" + SAVE_EXT));
+        }
+    }
+
+  //set the window size.
+  bool broken = false;
+  bg = PixMask::create (File::getVariousFile("splash_screen.jpg"), broken);
+  if (broken == false)
+    {
+      int decorations = 24 * 3;
+      if (Gdk::Screen::get_default()->get_height() - decorations < 
+          bg->get_height())
+        window->set_default_size(Gdk::Screen::get_default()->get_width(),
+                                 Gdk::Screen::get_default()->get_height());
+      else
+        window->set_default_size(bg->get_width(), bg->get_height());
+    }
 }
 
 bool SplashWindow::on_draw(const ::Cairo::RefPtr< ::Cairo::Context >& cr)
 {
- cr->set_source(bg->get_pixmap(), 0, 0);
- cr->rectangle(0, 0, bg->get_width(), bg->get_height());
- cr->fill();
-    
- Gtk::Allocation box = main_box->get_allocation();
- cr->rectangle(box.get_x(), box.get_y(), box.get_width(), box.get_height());
- gtk_widget_draw (GTK_WIDGET(main_box->gobj()), cr->cobj());
- return true;
+  cr->set_source(bg->get_pixmap(), 0, 0);
+  cr->rectangle(0, 0, bg->get_width(), bg->get_height());
+  cr->fill();
+
+  Gtk::Allocation box = main_box->get_allocation();
+  cr->rectangle(box.get_x(), box.get_y(), box.get_width(), box.get_height());
+  gtk_widget_draw (GTK_WIDGET(main_box->gobj()), cr->cobj());
+  return true;
 }
 
 SplashWindow::~SplashWindow()
 {
-    Snd::deleteInstance();
-    delete bg;
-    //clearData();
-    delete window;
+  Snd::deleteInstance();
+  delete bg;
+  //clearData();
+  delete window;
 }
 
 void SplashWindow::show()
 {
-    window->show_all();
+  window->show_all();
 }
 
 void SplashWindow::hide()
 {
-    window->hide();
+  window->hide();
 }
 
 bool SplashWindow::on_delete_event()
 {
-    quit_requested.emit();
-    return true;
+  quit_requested.emit();
+  return true;
 }
 
 void SplashWindow::on_quit_clicked()
@@ -166,25 +165,25 @@ void SplashWindow::on_rescue_crashed_game_clicked()
 
 void SplashWindow::on_load_game_clicked()
 {
-    Gtk::FileChooserDialog chooser(*window, _("Choose Game to Load"));
-    Glib::RefPtr<Gtk::FileFilter> sav_filter = Gtk::FileFilter::create();
-    sav_filter->set_name(_("LordsAWar Saved Games (*.sav)"));
-    sav_filter->add_pattern("*" + SAVE_EXT);
-    chooser.add_filter(sav_filter);
-    chooser.set_current_folder(Configuration::s_savePath);
+  Gtk::FileChooserDialog chooser(*window, _("Choose Game to Load"));
+  Glib::RefPtr<Gtk::FileFilter> sav_filter = Gtk::FileFilter::create();
+  sav_filter->set_name(_("LordsAWar Saved Games (*.sav)"));
+  sav_filter->add_pattern("*" + SAVE_EXT);
+  chooser.add_filter(sav_filter);
+  chooser.set_current_folder(Configuration::s_savePath);
 
-    chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
-    chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
-	
-    chooser.show_all();
-    int res = chooser.run();
-    
-    if (res == Gtk::RESPONSE_ACCEPT)
+  chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
+  chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+
+  chooser.show_all();
+  int res = chooser.run();
+
+  if (res == Gtk::RESPONSE_ACCEPT)
     {
-	Glib::ustring filename = chooser.get_filename();
-	chooser.hide();	
-	load_requested.emit(filename);
+      Glib::ustring filename = chooser.get_filename();
+      chooser.hide();	
+      load_requested.emit(filename);
     }
 }
 
@@ -231,8 +230,6 @@ void SplashWindow::on_new_network_game_clicked()
     }
   else
     nngd.hide();
-
-
 }
 
 void SplashWindow::on_load_scenario_clicked()

@@ -27,10 +27,10 @@
 SurrenderRefusedDialog::SurrenderRefusedDialog(Gtk::Window &parent)
  : LwDialog(parent, "surrender-refused-dialog.ui")
 {
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    xml->get_widget("image", image);
-    
-    label->set_text(_("Off with their heads!  I want it ALL!"));
-    image->property_file() = File::getVariousFile("parley_refused.png");
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  xml->get_widget("image", image);
+
+  label->set_text(_("Off with their heads!  I want it ALL!"));
+  image->property_file() = File::getVariousFile("parley_refused.png");
 }

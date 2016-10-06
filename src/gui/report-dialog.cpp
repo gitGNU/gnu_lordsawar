@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2011, 2012, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2012, 2014, 2015, 2016 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -166,31 +166,21 @@ void ReportDialog::on_switch_page(guint number)
   switch (number)
     {
     case ARMY:
-        {
-          Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
-            Gdk::Pixbuf::create(armymap->get_surface(), 0, 0, 
-                                armymap->get_width(), citymap->get_height());
-          map_image->property_pixbuf() = pixbuf;
-        }
+      map_image->property_pixbuf() =
+        Gdk::Pixbuf::create(armymap->get_surface(), 0, 0, 
+                            armymap->get_width(), citymap->get_height());
       break;
     case CITY: 
     case GOLD: 
     case WINNING:
-        {
-          Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
-            Gdk::Pixbuf::create(citymap->get_surface(), 0, 0, 
-                                citymap->get_width(), citymap->get_height());
-          map_image->property_pixbuf() = pixbuf;
-        }
+      map_image->property_pixbuf() =
+        Gdk::Pixbuf::create(citymap->get_surface(), 0, 0,
+                            citymap->get_width(), citymap->get_height());
       break;
     case PRODUCTION:
-        {
-          Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
-            Gdk::Pixbuf::create(vectormap->get_surface(), 0, 0, 
-                                vectormap->get_width(), 
-                                vectormap->get_height());
-          map_image->property_pixbuf() = pixbuf;
-        }
+      map_image->property_pixbuf() =
+        Gdk::Pixbuf::create(vectormap->get_surface(), 0, 0,
+                            vectormap->get_width(), vectormap->get_height());
       break;
     }
   fill_in_info();
@@ -238,12 +228,9 @@ void ReportDialog::updateArmyChart()
       colour = p->getColor();
       colours.push_back(colour);
       if (p == d_player)
-	{
-	  s = String::ucompose(ngettext("You have %1 army!",
-					"You have %1 armies!",
-					total), total);
-	  army_label->set_text(s);
-	}
+        army_label->set_text
+          (String::ucompose(ngettext("You have %1 army!", "You have %1 armies!",
+                                     total), total));
     }
 
   army_chart = new BarChart(bars, colours, 0);
@@ -270,12 +257,9 @@ void ReportDialog::updateCityChart()
       colour = p->getColor();
       colours.push_back(colour);
       if (p == d_player)
-	{
-	  s = String::ucompose(ngettext("You have %1 city!",
-					"You have %1 cities!",
-					total), total);
-	  city_label->set_text(s);
-	}
+        city_label->set_text
+          (String::ucompose(ngettext("You have %1 city!", "You have %1 cities!",
+                                     total), total));
 
     }
   city_chart = new BarChart(bars, colours, Citylist::getInstance()->size());
@@ -302,12 +286,9 @@ void ReportDialog::updateGoldChart()
       colour = p->getColor();
       colours.push_back(colour);
       if (p == d_player)
-	{
-	  s = String::ucompose(ngettext("You have %1 gold piece!",
-					"You have %1 gold pieces!",
-					total), total);
-	  gold_label->set_text(s);
-	}
+        gold_label->set_text
+          (String::ucompose(ngettext("You have %1 gold piece!",
+                                     "You have %1 gold pieces!", total), total));
     }
   gold_chart = new BarChart(bars, colours, 0);
   gold_alignment->add(*manage(gold_chart));
@@ -400,8 +381,8 @@ void ReportDialog::addProduction(const Action *action)
     }
   else if (action->getType() == Action::PRODUCE_VECTORED_UNIT)
     {
-      const Action_ProduceVectored *act;
-      act = dynamic_cast<const Action_ProduceVectored*>(action);
+      const Action_ProduceVectored *act = 
+        dynamic_cast<const Action_ProduceVectored*>(action);
       army_type = act->getArmy()->getTypeId();
       Vector<int> pos = act->getDestination();
       City *c = GameMap::getCity(pos);
@@ -439,5 +420,4 @@ void ReportDialog::on_army_selected()
 	if (c)
 	  vectormap->setCity(c);
     }
-
 }

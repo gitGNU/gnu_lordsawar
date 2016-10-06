@@ -108,26 +108,24 @@ void StackArmyButton::update_stack_button(bool selected)
 bool StackArmyButton::on_army_button_event(GdkEventButton *e)
 {
   MouseButtonEvent ev = to_input_event(e);
-  if (ev.button == MouseButtonEvent::RIGHT_BUTTON
-      && ev.state == MouseButtonEvent::PRESSED) {
-
-    if (army_info_tip)
-      delete army_info_tip;
-    army_info_tip = new ArmyInfoTip(army_button, d_army);
-
-    return true;
-  }
-  else if (ev.button == MouseButtonEvent::RIGHT_BUTTON
-	   && ev.state == MouseButtonEvent::RELEASED) {
-      {
-	if (army_info_tip)
-	  {
-	    delete army_info_tip;
-	    army_info_tip = NULL;
-	  }
-      }
-    return true;
-  }
+  if (ev.button == MouseButtonEvent::RIGHT_BUTTON && 
+      ev.state == MouseButtonEvent::PRESSED) 
+    {
+      if (army_info_tip)
+        delete army_info_tip;
+      army_info_tip = new ArmyInfoTip(army_button, d_army);
+      return true;
+    }
+  else if (ev.button == MouseButtonEvent::RIGHT_BUTTON && 
+           ev.state == MouseButtonEvent::RELEASED) 
+    {
+      if (army_info_tip)
+        {
+          delete army_info_tip;
+          army_info_tip = NULL;
+        }
+      return true;
+    }
 
   return false;
 }
@@ -199,7 +197,6 @@ void StackArmyButton::clear_signals()
 
 void StackArmyButton::setup_signals()
 {
-
   clear_signals();
   if (d_stack)
     stack_conn = stack_button->signal_clicked().connect

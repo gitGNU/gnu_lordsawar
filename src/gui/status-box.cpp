@@ -178,24 +178,23 @@ void StatusBox::update_sidebar_stats(SidebarStats s)
   upkeep_stats_label->set_markup(String::ucompose("<b>%1</b>", s.upkeep));
 
   Glib::ustring tip;
-  tip = String::ucompose(
-			 ngettext("You have %1 city!",
-				  "You have %1 cities!", s.cities), s.cities);
+  tip = String::ucompose(ngettext("You have %1 city!",
+                                  "You have %1 cities!", s.cities), s.cities);
   cities_stats_image->set_tooltip_text(tip);
   cities_stats_label->set_tooltip_text(tip);
-  tip = String::ucompose(
-			 ngettext("You have %1 gold piece in your treasury!",
-				  "You have %1 gold pieces in your treasury!", s.gold), s.gold);
+  tip = String::ucompose(ngettext("You have %1 gold piece in your treasury!",
+				  "You have %1 gold pieces in your treasury!", 
+                                  s.gold), s.gold);
   gold_stats_image->set_tooltip_text(tip);
   gold_stats_label->set_tooltip_text(tip);
-  tip = String::ucompose(
-			 ngettext("You earn %1 gold piece in income!",
-				  "You earn %1 gold pieces in income!", s.income), s.income);
+  tip = String::ucompose(ngettext("You earn %1 gold piece in income!",
+				  "You earn %1 gold pieces in income!", s.income), 
+                         s.income);
   income_stats_image->set_tooltip_text(tip);
   income_stats_label->set_tooltip_text(tip);
-  tip = String::ucompose(
-			 ngettext("You pay %1 gold piece in upkeep!",
-				  "You pay %1 gold pieces in upkeep!", s.upkeep), s.upkeep);
+  tip = String::ucompose(ngettext("You pay %1 gold piece in upkeep!",
+				  "You pay %1 gold pieces in upkeep!", s.upkeep), 
+                         s.upkeep);
   upkeep_stats_image->set_tooltip_text(tip);
   upkeep_stats_label->set_tooltip_text(tip);
 }
@@ -223,8 +222,9 @@ void StatusBox::toggle_group_ungroup()
 
 void StatusBox::enforce_height()
 {
-  Armysetlist *al = Armysetlist::getInstance();
-  int height = al->getTileSize(Playerlist::getActiveplayer()->getArmyset());
+  int height = 
+    Armysetlist::getInstance()->getTileSize(Playerlist::getActiveplayer
+                                            ()->getArmyset());
   height += d_height_fudge_factor;
   height += 30; //button border pixels + radio button height.
 

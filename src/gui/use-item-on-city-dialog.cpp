@@ -35,15 +35,15 @@ UseItemOnCityDialog::UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Typ
   xml->get_widget("continue_button", continue_button);
 
   citymap = new SelectCityMap(type);
-  citymap->map_changed.connect(
-                               sigc::mem_fun(this, &UseItemOnCityDialog::on_map_changed));
+  citymap->map_changed.connect
+    (sigc::mem_fun(this, &UseItemOnCityDialog::on_map_changed));
   citymap->city_selected.connect(sigc::hide(sigc::mem_fun(this, &UseItemOnCityDialog::on_city_selected)));
 
   Gtk::EventBox *map_eventbox;
   xml->get_widget("map_eventbox", map_eventbox);
   map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
   map_eventbox->signal_button_press_event().connect
-    ( sigc::mem_fun(*this, &UseItemOnCityDialog::on_map_mouse_button_event));
+    (sigc::mem_fun(*this, &UseItemOnCityDialog::on_map_mouse_button_event));
 
   continue_button->set_sensitive(false);
 
@@ -63,7 +63,6 @@ UseItemOnCityDialog::UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Typ
       label->set_text(_("Select a neutral city to target."));
       break;
     }
-
 }
 
 UseItemOnCityDialog::~UseItemOnCityDialog()
@@ -78,18 +77,17 @@ void UseItemOnCityDialog::hide()
 
 City* UseItemOnCityDialog::run()
 {
-    citymap->resize();
-    citymap->draw(Playerlist::getActiveplayer());
-    dialog->show_all();
-    dialog->run();
-    return citymap->get_selected_city();
+  citymap->resize();
+  citymap->draw(Playerlist::getActiveplayer());
+  dialog->show_all();
+  dialog->run();
+  return citymap->get_selected_city();
 }
 
 void UseItemOnCityDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+  map_image->property_pixbuf() =
     Gdk::Pixbuf::create(map, 0, 0, citymap->get_width(), citymap->get_height());
-  map_image->property_pixbuf() = pixbuf;
 }
 
 void UseItemOnCityDialog::on_city_selected()
