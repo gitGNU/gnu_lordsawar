@@ -125,17 +125,6 @@ class ImageCache
       STACK_SEARCH,
       END_TURN
     };
-  enum ArrowType
-    {
-      NORTHWEST = 0,
-      NORTH,
-      NORTHEAST,
-      WEST,
-      EAST,
-      SOUTHWEST,
-      SOUTH,
-      SOUTHEAST
-    };
 
         //! Method for getting/creating the soliton instance.
         static ImageCache* getInstance();
@@ -415,8 +404,6 @@ class ImageCache
         PixMask* getSmallStrongholdUnexploredImage();
         //! get an image for one of the buttons on the main game window.
         PixMask* getGameButtonImage(guint32 type, int size);
-        //! get an image for one of an arrow, for the main game window.
-        PixMask* getArrowImage(guint32 type, int size);
         PixMask* getWaypointImage(guint32 type);
 
 	static PixMask* applyMask(PixMask* image, PixMask* mask, const Player* p);
@@ -443,7 +430,6 @@ class ImageCache
         bool loadMedalImages();
         bool loadWaypointImages();
         bool loadGameButtonImages();
-        bool loadArrowImages();
 
         //the data
         static ImageCache* s_instance;
@@ -496,7 +482,6 @@ class ImageCache
 	PixMask* d_small_temple;
         PixMask *d_waypoint[NUM_WAYPOINTS];
         PixMask *d_gamebuttons[3][NUM_GAME_BUTTON_IMAGES];
-        PixMask *d_arrow[3][NUM_ARROW_IMAGES];
 };
 
 //! Helper class for selector box items in the ImageCache.

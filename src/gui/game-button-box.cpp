@@ -75,17 +75,11 @@ void GameButtonBox::pad_image(Gtk::Image *image)
   image->property_ypad() = padding;
 }
 
-void GameButtonBox::add_picture_to_button (guint32 icontype, Gtk::Button *button, bool arrow)
+void GameButtonBox::add_picture_to_button (guint32 icontype, Gtk::Button *button)
 {
   int s = get_icon_size(d_factor);
   Gtk::Image *image = new Gtk::Image();
-  PixMask *pixmask;
-  if (arrow)
-    pixmask = ImageCache::getInstance()->getArrowImage(icontype, s);
-  else
-    pixmask = ImageCache::getInstance()->getGameButtonImage(icontype, s);
-  if (pixmask == NULL)
-    return;
+  PixMask *pixmask = ImageCache::getInstance()->getGameButtonImage(icontype, s);
   image->property_pixbuf() = pixmask->to_pixbuf();
   pad_image(image);
   button->add(*manage(image));
@@ -104,14 +98,6 @@ void GameButtonBox::add_pictures_to_buttons(guint32 factor)
   add_picture_to_button (ImageCache::STACK_MOVE, move_button);
   add_picture_to_button (ImageCache::MOVE_ALL_STACKS, move_all_button);
   add_picture_to_button (ImageCache::END_TURN, end_turn_button);
-  add_picture_to_button (ImageCache::NORTHWEST, nw_keypad_button, true);
-  add_picture_to_button (ImageCache::NORTH, n_keypad_button, true);
-  add_picture_to_button (ImageCache::NORTHEAST, ne_keypad_button, true);
-  add_picture_to_button (ImageCache::WEST, w_keypad_button, true);
-  add_picture_to_button (ImageCache::EAST, e_keypad_button, true);
-  add_picture_to_button (ImageCache::SOUTHWEST, sw_keypad_button, true);
-  add_picture_to_button (ImageCache::SOUTH, s_keypad_button, true);
-  add_picture_to_button (ImageCache::SOUTHEAST, se_keypad_button, true);
 }
 
 GameButtonBox::GameButtonBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk::Builder> &xml)
@@ -127,14 +113,6 @@ GameButtonBox::GameButtonBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk:
   xml->get_widget("move_button", move_button);
   xml->get_widget("move_all_button", move_all_button);
   xml->get_widget("end_turn_button", end_turn_button);
-  xml->get_widget("nw_keypad_button", nw_keypad_button);
-  xml->get_widget("n_keypad_button", n_keypad_button);
-  xml->get_widget("ne_keypad_button", ne_keypad_button);
-  xml->get_widget("e_keypad_button", e_keypad_button);
-  xml->get_widget("w_keypad_button", w_keypad_button);
-  xml->get_widget("sw_keypad_button", sw_keypad_button);
-  xml->get_widget("s_keypad_button", s_keypad_button);
-  xml->get_widget("se_keypad_button", se_keypad_button);
 }
 
 void GameButtonBox::drop_connections()
@@ -199,30 +177,6 @@ void GameButtonBox::setup_signals(Game *game, guint32 factor)
   setup_button(center_button,
                sigc::mem_fun(game, &Game::center_selected_stack),
                game->can_center_selected_stack);
-  setup_button(nw_keypad_button,
-               sigc::mem_fun(game, &Game::move_selected_stack_northwest),
-               game->can_end_turn);
-  setup_button(n_keypad_button,
-               sigc::mem_fun(game, &Game::move_selected_stack_north),
-               game->can_end_turn);
-  setup_button(ne_keypad_button,
-               sigc::mem_fun(game, &Game::move_selected_stack_northeast),
-               game->can_end_turn);
-  setup_button(e_keypad_button,
-               sigc::mem_fun(game, &Game::move_selected_stack_east),
-               game->can_end_turn);
-  setup_button(w_keypad_button,
-               sigc::mem_fun(game, &Game::move_selected_stack_west),
-               game->can_end_turn);
-  setup_button(sw_keypad_button,
-               sigc::mem_fun(game, &Game::move_selected_stack_southwest),
-               game->can_end_turn);
-  setup_button(s_keypad_button,
-               sigc::mem_fun(game, &Game::move_selected_stack_south),
-               game->can_end_turn);
-  setup_button(se_keypad_button,
-               sigc::mem_fun(game, &Game::move_selected_stack_southeast),
-               game->can_end_turn);
   connections.push_back 
     (game->received_diplomatic_proposal.connect 
      (sigc::mem_fun(*this, &GameButtonBox::change_diplomacy_button_image)));

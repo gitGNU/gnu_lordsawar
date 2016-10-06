@@ -62,14 +62,6 @@ class GameButtonBox: public Gtk::Box
     Gtk::Button *move_button;
     Gtk::Button *move_all_button;
     Gtk::Button *end_turn_button;
-    Gtk::Button *nw_keypad_button;
-    Gtk::Button *n_keypad_button;
-    Gtk::Button *ne_keypad_button;
-    Gtk::Button *e_keypad_button;
-    Gtk::Button *w_keypad_button;
-    Gtk::Button *sw_keypad_button;
-    Gtk::Button *s_keypad_button;
-    Gtk::Button *se_keypad_button;
     static Glib::ustring get_file(Configuration::UiFormFactor factor);
 
     void setup_button(Gtk::Button *button, sigc::slot<void> slot,
@@ -81,7 +73,7 @@ class GameButtonBox: public Gtk::Box
     void add_pictures_to_buttons(guint32 factor);
     void drop_connections();
     void pad_image(Gtk::Image *image);
-    void add_picture_to_button (guint32 icontype, Gtk::Button *button, bool arrow = false);
+    void add_picture_to_button (guint32 icontype, Gtk::Button *button);
 };
 
 #endif // GAME_BUTTON_BOX

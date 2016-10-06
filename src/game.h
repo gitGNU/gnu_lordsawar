@@ -77,14 +77,6 @@ class Game
     void select_item_to_use();
     void search_stack(Stack *stack, bool &gotquest, bool &stackdied);
     void move_selected_stack_along_path();
-    void move_selected_stack_northwest();
-    void move_selected_stack_north();
-    void move_selected_stack_northeast();
-    void move_selected_stack_east();
-    void move_selected_stack_west();
-    void move_selected_stack_southwest();
-    void move_selected_stack_south();
-    void move_selected_stack_southeast();
     void move_all_stacks();
     void end_turn();
     void recalculate_moves_for_stack(Stack *s);
@@ -190,10 +182,6 @@ class Game
     void endOfGameRoaming(Player *winner);
  private:
     static Game *current_game;
-
-    // move the selected stack one tile in a given direction
-    void move_selected_stack_dir(int diffx, int diffy);
-    void move_map_dir(int diffx, int diffy);
 
     // centers the map on a city of the active player
     void center_view_on_city();

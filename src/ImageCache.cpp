@@ -103,7 +103,6 @@ ImageCache::ImageCache()
     loadDefaultTileStyleImages();
     loadWaypointImages(); //only for game.  not for editors.
     loadGameButtonImages(); //only for game.  not for editors.
-    loadArrowImages(); //only for game.  not for editors.
 }
 
 bool ImageCache::loadDiplomacyImages()
@@ -316,52 +315,6 @@ bool ImageCache::loadGameButtonImages()
   return true;
 }
 
-bool ImageCache::loadArrowImages()
-{
-  bool broken = false;
-  std::vector<PixMask*> images = 
-    disassemble_row(File::getVariousFile("arrows.png"), 
-                    NUM_ARROW_IMAGES, broken);
-  if (broken)
-    return false;
-  int w = 0, h = 0;
-  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_SMALL_TOOLBAR), w, h);
-  w /= 2;
-  h /= 2;
-  for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
-    PixMask::scale(images[i], w, h); 
-  for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
-    d_arrow[0][i] = images[i];
-  images.clear();
-  images = disassemble_row(File::getVariousFile("arrows-medium.png"),
-                           NUM_ARROW_IMAGES, broken);
-  if (broken)
-    return false;
-  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_LARGE_TOOLBAR), w, h);
-  w /= 2;
-  h /= 2;
-  for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
-    PixMask::scale(images[i], w, h); 
-
-  for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
-    d_arrow[1][i] = images[i];
-
-  images.clear();
-  images = disassemble_row(File::getVariousFile("arrows-medium.png"),
-                           NUM_ARROW_IMAGES, broken);
-  if (broken)
-    return false;
-  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_DIALOG), w, h);
-  w /= 2;
-  h /= 2;
-  for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
-    PixMask::scale(images[i], w, h);
-
-  for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
-    d_arrow[2][i] = images[i];
-  return true;
-}
-
 PixMask* ImageCache::loadMiscImage(Glib::ustring pngfile)
 {
   bool broken = false;
@@ -422,12 +375,6 @@ ImageCache::~ImageCache()
       delete d_gamebuttons[2][i];
     }
 
-  for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
-    {
-      delete d_arrow[0][i];
-      delete d_arrow[1][i];
-      delete d_arrow[2][i];
-    }
   reset();
 }
 
@@ -1242,11 +1189,6 @@ PixMask *ImageCache::getNewLevelImage(bool female, bool mask)
 PixMask* ImageCache::getGameButtonImage(guint32 type, int size)
 {
   return d_gamebuttons[size][type];
-}
-
-PixMask* ImageCache::getArrowImage(guint32 type, int size)
-{
-  return d_arrow[size][type];
 }
 
 PixMask* ImageCache::getWaypointImage(guint32 type)
