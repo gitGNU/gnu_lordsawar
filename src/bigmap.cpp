@@ -58,6 +58,9 @@ BigMap::BigMap()
     view.x = view.y = 0;
     view.w = 0;
     view.h = 0;
+    deltax = 0;
+    deltay = 0;
+    view_pos = Vector<int>(0,0);
     input_locked = false;
     d_grid_toggled = false;
 

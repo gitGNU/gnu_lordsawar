@@ -3037,7 +3037,7 @@ bool GameWindow::on_bigmap_scrolled(GdkEventScroll* event)
 void GameWindow::on_popup_stack_menu (Stack *stack)
 {
   Gtk::Menu *menu = manage(new Gtk::Menu);
-  Glib::ustring s = _("Info");
+  Glib::ustring s = _("Info...");
   Gtk::MenuItem *item = manage(new Gtk::MenuItem(s));
   item->signal_activate().connect
     (sigc::mem_fun(this, &GameWindow::on_stack_info_activated));
@@ -3078,7 +3078,7 @@ void GameWindow::on_popup_stack_menu (Stack *stack)
   item->show();
   menu->add(*item);
 
-  s = _("Disband");
+  s = _("Disband...");
   item = manage(new Gtk::MenuItem(s));
   item->signal_activate().connect
     (sigc::mem_fun(this, &GameWindow::on_disband_activated));
