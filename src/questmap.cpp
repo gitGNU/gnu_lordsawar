@@ -66,8 +66,8 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
   start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
   end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
 
-  int xsize = 8;
-  int ysize = 8;
+  int xsize = 11;
+  int ysize = 11;
   //which corner do we connect the line to?
   if (start.x >= end.x)
     {
