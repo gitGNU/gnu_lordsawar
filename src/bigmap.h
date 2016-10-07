@@ -94,8 +94,6 @@ class BigMap: public sigc::trackable
     Cairo::RefPtr<Cairo::Surface> buffer;	// the buffer we draw things in
     Cairo::RefPtr<Cairo::Surface> outgoing; //goes out to the gtk::image
     Cairo::RefPtr<Cairo::Context> buffer_gc;
-    Cairo::RefPtr<Cairo::Surface> magnified_buffer;	// the zoomed buffer;
-    double magnification_factor; //how much we're zoomed
     Rectangle buffer_view;	// current view of the buffer, in tiles
 
     bool input_locked;
@@ -124,7 +122,6 @@ class BigMap: public sigc::trackable
     void draw_buffer_tiles(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface);
 
     void draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> surface);
-    Cairo::RefPtr<Cairo::Surface> magnify(Cairo::RefPtr<Cairo::Surface> orig);
     void clip_viewable_buffer(Cairo::RefPtr<Cairo::Surface> pixmap, Vector<int> pos, Cairo::RefPtr<Cairo::Surface> out);
 };
 

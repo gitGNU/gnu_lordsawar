@@ -52,7 +52,7 @@
 #define debug(x)
 
 BigMap::BigMap()
-    : d_renderer(0), buffer(0), magnified_buffer(0), magnification_factor(1.0)
+    : d_renderer(0), buffer(0)
 {
     // note: we are not fully initialized before set_view is called
     view.x = view.y = 0;
@@ -72,9 +72,6 @@ BigMap::~BigMap()
 {
     if (buffer == true)
       buffer.clear();
-
-    if (magnified_buffer == true)
-      magnified_buffer.clear();
 
     delete d_renderer;
 }
@@ -171,21 +168,10 @@ void BigMap::draw(Player *player, bool redraw_buffer)
       draw_buffer();
 
     // blit the visible part of buffer to the screen
-    Vector<int> p = view_pos - (buffer_view.pos * tilesize * magnification_factor);
+    Vector<int> p = view_pos - (buffer_view.pos * tilesize);
     outgoing.clear();
     outgoing = Cairo::Surface::create(buffer, Cairo::CONTENT_COLOR_ALPHA, image.get_width(), image.get_height());
-    //Glib::RefPtr<Gdk::Pixmap> outgoing;
-    if (magnification_factor != 1.0)
-      {
-	if (magnified_buffer == true)
-	  magnified_buffer.clear();
-	magnified_buffer = magnify(buffer);
-	clip_viewable_buffer(magnified_buffer, p, outgoing);
-      }
-    else
-      {
-	clip_viewable_buffer(buffer, p, outgoing);
-      }
+    clip_viewable_buffer(buffer, p, outgoing);
 
     if (blank_screen)
       {
@@ -205,8 +191,8 @@ void BigMap::screen_size_changed(Gtk::Allocation box)
 
     Rectangle new_view = view;
     
-    new_view.w = box.get_width() / (ts * magnification_factor) + 0;
-    new_view.h = box.get_height() / (ts * magnification_factor) + 0;
+    new_view.w = box.get_width() / ts;
+    new_view.h = box.get_height() / ts;
 
     if (new_view.w <= GameMap::getWidth() && new_view.h <= GameMap::getHeight()
 	&& new_view.w >= 0 && new_view.h >= 0)
@@ -226,8 +212,8 @@ Vector<int> BigMap::get_view_pos_from_view()
     int ts = GameMap::getInstance()->getTileSize();
 
     // clip to make sure we don't see a black border at the bottom and right
-    return clip(Vector<int>(0, 0), view.pos * ts * magnification_factor,
-		GameMap::get_dim() * ts * magnification_factor - screen_dim);
+    return clip(Vector<int>(0, 0), view.pos * ts,
+		GameMap::get_dim() * ts - screen_dim);
 }
 
 Vector<int> BigMap::tile_to_buffer_pos(Vector<int> tile)
@@ -239,13 +225,13 @@ Vector<int> BigMap::tile_to_buffer_pos(Vector<int> tile)
 Vector<int> BigMap::mouse_pos_to_tile(Vector<int> pos)
 {
     int ts = GameMap::getInstance()->getTileSize();
-    return (view_pos + pos) / (ts * magnification_factor);
+    return (view_pos + pos) / ts;
 }
 
 Vector<int> BigMap::mouse_pos_to_tile_offset(Vector<int> pos)
 {
     int ts = GameMap::getInstance()->getTileSize();
-    return (view_pos + pos) % (int)rint(ts * magnification_factor);
+    return (view_pos + pos) % ts;
 }
 
 MapTipPosition BigMap::map_tip_position(Vector<int> tile)
@@ -258,8 +244,8 @@ MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
     // convert area to pixels on the screen
     int tilesize = GameMap::getInstance()->getTileSize();
 
-    Rectangle area(tile_area.pos * tilesize * magnification_factor - view_pos,
-		   tile_area.dim * tilesize * magnification_factor);
+    Rectangle area(tile_area.pos * tilesize - view_pos,
+		   tile_area.dim * tilesize);
 
     // calculate screen edge distances
     int left, right, top, bottom;
@@ -617,25 +603,6 @@ void BigMap::draw_buffer_tiles(Rectangle map_view, Cairo::RefPtr<Cairo::Surface>
 void BigMap::draw_buffer(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface)
 {
   draw_buffer_tiles(map_view, surface);
-}
-
-//here we want to magnify the entire buffer, not a subset
-Cairo::RefPtr<Cairo::Surface> BigMap::magnify(Cairo::RefPtr<Cairo::Surface> orig)
-{
-  //magnify the buffer into a buffer of the correct size
-
-  int width = image.get_width();
-  int height = image.get_height();
-  if (width == 0 || height == 0)
-    return orig;
-  Cairo::RefPtr<Cairo::Surface> result = 
-    Cairo::Surface::create(orig, Cairo::CONTENT_COLOR_ALPHA,
-                           width * magnification_factor,
-                           height * magnification_factor);
-  Glib::RefPtr<Gdk::Pixbuf> unzoomed_buffer;
-  unzoomed_buffer = Gdk::Pixbuf::create(orig, 0, 0, width, height);
-
-  return result;
 }
 
 void BigMap::toggle_grid()

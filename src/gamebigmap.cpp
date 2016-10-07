@@ -68,7 +68,6 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
      TIMER_BIGMAP_SELECTOR);
   shift_key_is_down = false;
   control_key_is_down = false;
-  magnification_factor = 1.0;
 }
 
 GameBigMap::~GameBigMap()
@@ -764,10 +763,10 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       Vector<int> screen_dim(image.get_width(), image.get_height());
       view_pos = clip(Vector<int>(0, 0),
 		      view_pos + delta,
-		      GameMap::get_dim() * ts *magnification_factor - screen_dim);
+		      GameMap::get_dim() * ts - screen_dim);
 
       // calculate new view position in tiles, rounding up
-      Vector<int> new_view = (view_pos + Vector<int>(ts * magnification_factor - 1, ts * magnification_factor - 1)) / (ts * magnification_factor);
+      Vector<int> new_view = (view_pos + Vector<int>(ts - 1, ts - 1)) / ts;
 
       if (new_view != view.pos)
 	{
