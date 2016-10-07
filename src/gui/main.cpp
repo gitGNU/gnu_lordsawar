@@ -93,19 +93,6 @@ Main &Main::instance()
     return *singleton;
 }
 
-bool Main::iterate_main_loop()
-{
-    try
-    {
-	impl->gtk_main->iteration(false);
-    }
-    catch (const Glib::Error &ex) {
-	std::cerr << ex.what() << std::endl;
-    }
-
-    return true;
-}
-
 void Main::start_main_loop()
 {
   if (random_number_seed)
