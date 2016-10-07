@@ -52,9 +52,6 @@ NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
     xml->get_widget("hills_scale", hills_scale);
     xml->get_widget("mountains_scale", mountains_scale);
     xml->get_widget("cities_scale", cities_scale);
-    xml->get_widget("ruins_scale", ruins_scale);
-    xml->get_widget("temples_scale", temples_scale);
-    xml->get_widget("signposts_scale", signposts_scale);
     xml->get_widget("progressbar", progressbar);
     xml->get_widget("accept2_button", accept_button);
     accept_button->signal_clicked().connect
@@ -152,20 +149,6 @@ NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
     map_size_combobox->signal_changed().connect(
 						sigc::mem_fun(*this, &NewRandomMapDialog::on_map_size_changed));
 
-    Gtk::Label *temples_label;
-    xml->get_widget("temples_label", temples_label);
-    temples_label->set_sensitive(false);
-    temples_scale->set_sensitive(false);
-
-    Gtk::Label *signposts_label;
-    xml->get_widget("signposts_label", signposts_label);
-    signposts_label->set_sensitive(false);
-    signposts_scale->set_sensitive(false);
-
-    Gtk::Label *ruins_label;
-    xml->get_widget("ruins_label", ruins_label);
-    ruins_label->set_sensitive(false);
-    ruins_scale->set_sensitive(false);
 
     xml->get_widget("cities_can_produce_allies_checkbutton", 
 		    cities_can_produce_allies_checkbutton);
@@ -176,7 +159,6 @@ NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
     hills_scale->set_value(5);
     mountains_scale->set_value(5);
     on_map_size_changed();
-    grass_scale->signal_value_changed().connect(sigc::mem_fun(*this, &NewRandomMapDialog::on_grass_changed));
     dialog_response = Gtk::RESPONSE_CANCEL;
 }
 
@@ -199,16 +181,12 @@ void NewRandomMapDialog::on_map_size_changed()
     map.width = MAP_SIZE_SMALL_WIDTH;
     map.height = MAP_SIZE_SMALL_HEIGHT;
     cities_scale->set_value(15);
-    ruins_scale->set_value(20);
-    temples_scale->set_value(4);
     break;
 
   case MAP_SIZE_TINY:
     map.width = MAP_SIZE_TINY_WIDTH;
     map.height = MAP_SIZE_TINY_HEIGHT;
     cities_scale->set_value(10);
-    ruins_scale->set_value(15);
-    temples_scale->set_value(4);
     break;
 
   case MAP_SIZE_NORMAL:
@@ -216,14 +194,8 @@ void NewRandomMapDialog::on_map_size_changed()
     map.width = MAP_SIZE_NORMAL_WIDTH;
     map.height = MAP_SIZE_NORMAL_HEIGHT;
     cities_scale->set_value(20);
-    ruins_scale->set_value(25);
-    temples_scale->set_value(4);
     break;
   }
-  int num_signposts = 
-      CreateScenario::calculateNumberOfSignposts(map.width, map.height,
-                                                 int(grass_scale->get_value()));
-  signposts_scale->set_value(num_signposts);
 }
 
 guint32 NewRandomMapDialog::get_active_tile_size()
@@ -334,28 +306,28 @@ GameParameters NewRandomMapDialog::getParams()
   case MAP_SIZE_SMALL:
     g.map.width = MAP_SIZE_SMALL_WIDTH;
     g.map.height = MAP_SIZE_SMALL_HEIGHT;
-    g.map.ruins = int(ruins_scale->get_value());
-    g.map.temples = int(temples_scale->get_value());
-    g.map.signposts = int(signposts_scale->get_value());
+    g.map.ruins = 20;
+    g.map.temples = 4;
     break;
 
   case MAP_SIZE_TINY:
     g.map.width = MAP_SIZE_TINY_WIDTH;
     g.map.height = MAP_SIZE_TINY_HEIGHT;
-    g.map.ruins = int(ruins_scale->get_value());
-    g.map.temples = int(temples_scale->get_value());
-    g.map.signposts = int(signposts_scale->get_value());
+    g.map.ruins = 15;
+    g.map.temples = 4;
     break;
 
   case MAP_SIZE_NORMAL:
   default:
     g.map.width = MAP_SIZE_NORMAL_WIDTH;
     g.map.height = MAP_SIZE_NORMAL_HEIGHT;
-    g.map.ruins = int(ruins_scale->get_value());
-    g.map.temples = int(temples_scale->get_value());
-    g.map.signposts = int(signposts_scale->get_value());
+    g.map.ruins = 25;
+    g.map.temples = 4;
     break;
   }
+  g.map.signposts =
+    CreateScenario::calculateNumberOfSignposts(g.map.width, g.map.height,
+                                               int(grass_scale->get_value()));
 
   if (grass_random_togglebutton->get_active())
     g.map.grass =  
@@ -569,50 +541,6 @@ void NewRandomMapDialog::on_accept_clicked()
   progressbar->pulse();
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
-  switch (map_size_combobox->get_active_row_number()) {
-  case MAP_SIZE_SMALL:
-    map.width = MAP_SIZE_SMALL_WIDTH;
-    map.height = MAP_SIZE_SMALL_HEIGHT;
-    break;
-
-  case MAP_SIZE_TINY:
-    map.width = MAP_SIZE_TINY_WIDTH;
-    map.height = MAP_SIZE_TINY_HEIGHT;
-    break;
-
-  case MAP_SIZE_NORMAL:
-  default:
-    map.width = MAP_SIZE_NORMAL_WIDTH;
-    map.height = MAP_SIZE_NORMAL_HEIGHT;
-    break;
-  }
-
-  map.tileset = Tilesetlist::getInstance()->getSetDir
-    (Glib::filename_from_utf8(tile_theme_combobox->get_active_text()),
-     get_active_tile_size());
-
-  map.shieldset = Shieldsetlist::getInstance()->getSetDir
-    (Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
-
-  map.cityset = Citysetlist::getInstance()->getSetDir
-    (Glib::filename_from_utf8(city_theme_combobox->get_active_text()),
-     get_active_tile_size());
-
-  map.armyset = Armysetlist::getInstance()->getSetDir
-    (Glib::filename_from_utf8(army_theme_combobox->get_active_text()),
-     get_active_tile_size());
-
-  map.grass = int(grass_scale->get_value());
-  map.water = int(water_scale->get_value());
-  map.swamp = int(swamp_scale->get_value());
-  map.forest = int(forest_scale->get_value());
-  map.hills = int(hills_scale->get_value());
-  map.mountains = int(mountains_scale->get_value());
-  map.cities = int(cities_scale->get_value());
-  map.ruins = int(ruins_scale->get_value());
-  map.temples = int(temples_scale->get_value());
-  map.signposts = int(signposts_scale->get_value());
-
   GameParameters g = getParams();
   progressbar->pulse();
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
@@ -634,12 +562,4 @@ void NewRandomMapDialog::pulse()
 {
   progressbar->pulse();
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
-}
-    
-void NewRandomMapDialog::on_grass_changed()
-{
-  int num_signposts = 
-      CreateScenario::calculateNumberOfSignposts(map.width, map.height,
-                                                 int(grass_scale->get_value()));
-  signposts_scale->set_value(num_signposts);
 }

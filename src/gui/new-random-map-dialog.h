@@ -75,9 +75,6 @@ static Glib::ustring create_and_dump_scenario(const Glib::ustring &file,
     Gtk::Scale *hills_scale;
     Gtk::Scale *mountains_scale;
     Gtk::Scale *cities_scale;
-    Gtk::Scale *ruins_scale;
-    Gtk::Scale *temples_scale;
-    Gtk::Scale *signposts_scale;
     Gtk::Button *accept_button;
     Gtk::Button *cancel_button;
     Gtk::ToggleButton *grass_random_togglebutton;
@@ -106,7 +103,6 @@ static Glib::ustring create_and_dump_scenario(const Glib::ustring &file,
 
     guint32 get_active_tile_size();
     void on_tile_size_changed();
-    void on_grass_changed();
     int dialog_response;
     Glib::ustring d_filename;
 };
