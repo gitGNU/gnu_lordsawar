@@ -129,7 +129,6 @@ void RuinMap::mouse_button_event(MouseButtonEvent e)
       if (nearestRuin)
 	{
 	  ruin = nearestRuin;
-	  location_changed.emit (ruin);
           draw(Playerlist::getViewingplayer());
 	}
       else
@@ -138,7 +137,6 @@ void RuinMap::mouse_button_event(MouseButtonEvent e)
           if (nearestTemple)
 	    {
 	      ruin = nearestTemple;
-	      location_changed.emit (ruin);
               draw(Playerlist::getViewingplayer());
 	    }
 	}

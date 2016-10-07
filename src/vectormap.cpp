@@ -329,7 +329,6 @@ void VectorMap::draw_square_around_active_city()
 
 void VectorMap::mouse_button_event(MouseButtonEvent e)
 {
-  Player *active = Playerlist::getActiveplayer();
   if (e.button == MouseButtonEvent::LEFT_BUTTON && 
       e.state == MouseButtonEvent::PRESSED)
     {
@@ -371,15 +370,11 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	    }
 	  if (dest != city->getVectoring() && dest != Vector<int>(-1, -1))
 	    {
-	      if (active->vectorFromCity(city, dest) == true)
-		destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
 	      draw(Playerlist::getViewingplayer());
 	    }
 	  else if (dest == Vector<int>(-1, -1)) //stop vectoring
 	    {
-	      if (active->vectorFromCity(city, dest) == true)
-		destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
 	      draw(Playerlist::getViewingplayer());
 	    }
@@ -423,7 +418,6 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	      //we were doing change destination,
 	      //and we clicked back on our own city
 	      //this is the same thing as a cancel.
-	      destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
 	      draw(Playerlist::getViewingplayer());
 	      return;
@@ -443,8 +437,6 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	  //why do we care if it's one of our sources anyway?
 	  if (is_source_city == false)
 	    {
-	      if (active->changeVectorDestination(city->getPos(), dest) == true)
-		destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
 	      draw(Playerlist::getViewingplayer());
 	      if (dest != planted_standard)

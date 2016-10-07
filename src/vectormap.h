@@ -93,9 +93,6 @@ public:
     //! Realize a mouse button event.
     void mouse_button_event(MouseButtonEvent e);
 
-    // Emitted whenever a city is selected.
-    sigc::signal<void, Vector<int> > destination_chosen;
-
     // Emitted whenever something is drawn on to the miniature map graphic.
     sigc::signal<void, Cairo::RefPtr<Cairo::Surface> > map_changed;
 

@@ -66,9 +66,6 @@ class RuinMap : public OverviewMap
 
      // Signals
 
-     //! Emitted when a new Ruin or Temple object has been clicked.
-     sigc::signal<void, NamedLocation *> location_changed;
-
      //! Emitted when the objects are finished being drawn on the map surface.
      /**
       * Classes that use RuinMap must catch this signal to display the map.
