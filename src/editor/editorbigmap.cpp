@@ -68,7 +68,6 @@ EditorBigMap::EditorBigMap()
     pointer_size = 1;
     pointer_terrain = Tile::GRASS;
     pointer_tile_style_id = -1;
-    show_tile_types_instead_of_tile_styles = false;
 }
 
 void EditorBigMap::set_pointer(Pointer p, int size, Tile::Type t, 
@@ -612,28 +611,6 @@ void EditorBigMap::after_draw()
 {
     int tilesize = GameMap::getInstance()->getTileSize();
     std::vector<Vector<int> > tiles;
-
-    if (show_tile_types_instead_of_tile_styles)
-      {
-        buffer_gc->reset_clip();
-	tiles = get_screen_tiles();
-	for (std::vector<Vector<int> >::iterator i = tiles.begin(),
-	     end = tiles.end(); i != end; ++i)
-	  {
-	    Vector<int> pos = tile_to_buffer_pos(*i);
-	    buffer_gc->set_source_rgba(GameMap::getInstance()->getTile(*i)->getColor().get_red(),
-                                       GameMap::getInstance()->getTile(*i)->getColor().get_green(),
-                                       GameMap::getInstance()->getTile(*i)->getColor().get_blue(),
-                                       GameMap::getInstance()->getTile(*i)->getColor().get_alpha());
-	    int x = pos.x;
-	    int y = pos.y;
-	    int ts = tilesize;
-            buffer_gc->rectangle(x, y, ts, ts);
-            buffer_gc->clip();
-            buffer_gc->paint();
-            buffer_gc->reset_clip();
-	  }
-      }
 
     if (mouse_pos == Vector<int>(-1,-1))
       return;

@@ -60,8 +60,6 @@ class EditorBigMap: public BigMap
     void mouse_motion_event(MouseMotionEvent e);
     void mouse_leave_event();
 
-    void toggleViewStylesOrTypes() { show_tile_types_instead_of_tile_styles = 
-      !show_tile_types_instead_of_tile_styles;};
     // something was selected
     typedef std::vector<UniquelyIdentified*> map_selection_seq;
     sigc::signal<void, map_selection_seq> objects_selected;
@@ -101,7 +99,6 @@ class EditorBigMap: public BigMap
     std::vector<Vector<int> > get_cursor_tiles();
     Rectangle get_cursor_rectangle();
     std::vector<Vector<int> > get_screen_tiles();
-    bool show_tile_types_instead_of_tile_styles;
     void bring_up_details();
     void display_moving_building(Vector<int> src, Vector<int> dest);
 };

@@ -249,9 +249,6 @@ MainWindow::MainWindow(Glib::ustring load_filename)
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
     fullscreen_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_fullscreen_activated));
-    xml->get_widget("toggle_tile_graphics_menuitem", toggle_tile_graphics_menuitem);
-    toggle_tile_graphics_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_tile_graphics_toggled));
     xml->get_widget("toggle_grid_menuitem", toggle_grid_menuitem);
     toggle_grid_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_grid_toggled));
@@ -1123,12 +1120,6 @@ void MainWindow::on_fullscreen_activated()
 	window->fullscreen();
     else
 	window->unfullscreen();
-}
-
-void MainWindow::on_tile_graphics_toggled()
-{
-  bigmap->toggleViewStylesOrTypes();
-  bigmap->draw(Playerlist::getViewingplayer());
 }
 
 void MainWindow::on_grid_toggled()

@@ -151,7 +151,6 @@ class MainWindow: public sigc::trackable
     void on_edit_fight_order_activated();
 
     void on_fullscreen_activated();
-    void on_tile_graphics_toggled();
     void on_grid_toggled();
 
     void on_random_all_cities_activated();
