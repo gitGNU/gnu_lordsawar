@@ -3003,6 +3003,14 @@ void GameWindow::on_popup_stack_menu (Stack *stack)
   item->show();
   menu->add(*item);
 
+  s = _("Search");
+  item = manage(new Gtk::MenuItem(s));
+  item->signal_activate().connect
+    (sigc::mem_fun(game, &Game::search_selected_stack));
+  item->set_sensitive(GameMap::can_search (stack));
+  item->show();
+  menu->add(*item);
+
   StackTile *st = GameMap::getStacks (stack->getPos());
   if (st->size () > 1)
     s = _("Group");
