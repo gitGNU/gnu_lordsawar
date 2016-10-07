@@ -153,7 +153,7 @@ int ProdSlotlist::getFreeSlot()  const
 
 bool ProdSlotlist::hasProductionBase(const ArmyProto * army) const
 {
-  return hasProductionBase(army->getId(), army->getArmyset());
+  return hasProductionBase(army->getId());
 }
 
 void ProdSlotlist::addProductionBase(int idx, ArmyProdBase *army)
@@ -203,12 +203,8 @@ void ProdSlotlist::removeProductionBase(int idx)
         setActiveProductionSlot(-1);
 }
 
-bool ProdSlotlist::hasProductionBase(int type, guint32 set) const
+bool ProdSlotlist::hasProductionBase(int type) const
 {
-  if (set)
-    {
-      ;
-    }
   if (type < 0)
     return false;
   for (unsigned int i = 0; i < size(); i++)

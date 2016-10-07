@@ -98,13 +98,10 @@ class ProdSlotlist: public std::vector<ProdSlot*>
 	 * prototype.
 	 *
 	 * @param type      The index of the Army prototype in the Armyset.
-	 * @param armyset   The unique Id of the armyset for which to check
-	 *                  if the given type is already a production base
-	 *                  in this list.
 	 * @return True if the given army prototype is already a production
 	 *         base in the list.  Otherwise false.
 	 */
-        bool hasProductionBase(int type, guint32 armyset) const;
+        bool hasProductionBase(int type) const;
 
         //! Returns the maximum number of production bases in the list.
 	/**

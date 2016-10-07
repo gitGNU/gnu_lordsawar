@@ -1422,9 +1422,6 @@ class Player: public sigc::trackable
 	//! Signal raised when a stack is considering an act of treachery.
         sigc::signal<bool, Stack *, Player *, Vector<int> > streacheryStack;
 
-	//! Signal raised when a human player is deciding.
-        //sigc::signal<bool, Stack *, Player *, Vector<int> > streachery;
-
         //! Player would like to end the turn.
         sigc::signal<void> ending_turn;
 

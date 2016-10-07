@@ -306,7 +306,7 @@ int AI_Smart::chooseArmyTypeToBuy(City *c, bool quick)
         if ((int)proto->getNewProductionCost() > d_gold)
           continue;
         
-       if (c->hasProductionBase(proto->getId(), getArmyset())==false)
+       if (c->hasProductionBase(proto->getId())==false)
        {
          int score;
          if (quick)

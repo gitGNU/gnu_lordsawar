@@ -1837,7 +1837,7 @@ bool Player::cityBuyProduction(City* c, int slot, int type)
     return false;
 
   // return if the city already has the production
-  if (c->hasProductionBase(type, as))
+  if (c->hasProductionBase(type))
     return false;
 
   // can't put it in that slot

@@ -71,9 +71,6 @@ class NextTurnNetworked: public NextTurn
         //! Run this to calculate the next active player.
         Player* next();
 
-        //! Emitted when the next player has been calculated
-        //sigc::signal<void, Player*> snextPlayer;
-
         /**
            \brief The function for all actions which are taken at the end of a
            Game Turn.
