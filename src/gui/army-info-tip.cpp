@@ -81,8 +81,7 @@ void ArmyInfoTip::init (Gtk::Widget *target, Glib::RefPtr<Gdk::Pixbuf> image, gu
 
 ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
 {
-  Glib::ustring s;
-  s += army->getName();
+  Glib::ustring s = army->getName();
   s += "\n";
   // note to translators: %1 is ranged strength
   s += String::ucompose(_("Strength: %1"),
@@ -108,8 +107,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
 ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army, 
 			 City *city)
 {
-  Glib::ustring s;
-  s += army->getName();
+  Glib::ustring s = army->getName();
   s += "\n";
   // note to translators: %1 is melee strength
   s += String::ucompose(_("Strength: %1"),
@@ -133,8 +131,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
 
 ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
 {
-  Glib::ustring s;
-  s += army->getName();
+  Glib::ustring s = army->getName();
   s += "\n";
   // note to translators: %1 is melee strength, %2 is ranged strength
   s += String::ucompose(_("Strength: %1"),

@@ -18,7 +18,6 @@
 
 #include <config.h>
 
-#include <assert.h>
 #include <numeric>
 #include <vector>
 #include <gtkmm.h>

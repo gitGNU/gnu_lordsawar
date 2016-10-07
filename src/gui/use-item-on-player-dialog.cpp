@@ -30,32 +30,31 @@
 UseItemOnPlayerDialog::UseItemOnPlayerDialog(Gtk::Window &parent)
  : LwDialog(parent, "use-item-on-player-dialog.ui")
 {
-    players_list = Gtk::ListStore::create(players_columns);
-    xml->get_widget("playertreeview", player_treeview);
-    player_treeview->set_model(players_list);
-    player_treeview->append_column("", players_columns.image);
-    player_treeview->append_column("", players_columns.name);
-    player_treeview->get_selection()->signal_changed().connect
-      (sigc::mem_fun(*this, &UseItemOnPlayerDialog::on_player_selected));
+  players_list = Gtk::ListStore::create(players_columns);
+  xml->get_widget("playertreeview", player_treeview);
+  player_treeview->set_model(players_list);
+  player_treeview->append_column("", players_columns.image);
+  player_treeview->append_column("", players_columns.name);
+  player_treeview->get_selection()->signal_changed().connect
+    (sigc::mem_fun(*this, &UseItemOnPlayerDialog::on_player_selected));
 
-    xml->get_widget("map_image", map_image);
-    xml->get_widget("continue_button", continue_button);
+  xml->get_widget("map_image", map_image);
+  xml->get_widget("continue_button", continue_button);
 
-    citymap = new CityMap();
-    citymap->map_changed.connect(
-	sigc::mem_fun(this, &UseItemOnPlayerDialog::on_map_changed));
+  citymap = new CityMap();
+  citymap->map_changed.connect
+    (sigc::mem_fun(this, &UseItemOnPlayerDialog::on_map_changed));
 
-    Gtk::EventBox *map_eventbox;
-    xml->get_widget("map_eventbox", map_eventbox);
+  Gtk::EventBox *map_eventbox;
+  xml->get_widget("map_eventbox", map_eventbox);
 
-    Playerlist *pl = Playerlist::getInstance();
-    for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-      if ((*it) != pl->getActiveplayer() && pl->getNeutral() != (*it) &&
-          (*it)->isDead() == false)
-        addPlayer(*it);
+  Playerlist *pl = Playerlist::getInstance();
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+    if ((*it) != pl->getActiveplayer() && pl->getNeutral() != (*it) &&
+        (*it)->isDead() == false)
+      addPlayer(*it);
 
   continue_button->set_sensitive(false);
-
 }
 
 UseItemOnPlayerDialog::~UseItemOnPlayerDialog()
@@ -65,15 +64,14 @@ UseItemOnPlayerDialog::~UseItemOnPlayerDialog()
 
 Player *UseItemOnPlayerDialog::grabSelectedPlayer()
 {
-    Glib::RefPtr<Gtk::TreeView::Selection> sel;
-    sel = player_treeview->get_selection();
-    if (sel)
-      {
-        Gtk::TreeModel::iterator it = sel->get_selected();
-        Gtk::TreeModel::Row row = *it;
-        return row[players_columns.player];
-      }
-    return NULL;
+  Glib::RefPtr<Gtk::TreeView::Selection> sel = player_treeview->get_selection();
+  if (sel)
+    {
+      Gtk::TreeModel::iterator it = sel->get_selected();
+      Gtk::TreeModel::Row row = *it;
+      return row[players_columns.player];
+    }
+  return NULL;
 }
 
 void UseItemOnPlayerDialog::hide()
@@ -83,30 +81,27 @@ void UseItemOnPlayerDialog::hide()
 
 Player*UseItemOnPlayerDialog::run()
 {
-    citymap->resize();
-    citymap->draw(Playerlist::getActiveplayer());
+  citymap->resize();
+  citymap->draw(Playerlist::getActiveplayer());
 
-    dialog->show_all();
-    dialog->run();
-  
-    Player *player = grabSelectedPlayer();
+  dialog->show_all();
+  dialog->run();
 
-    return player;
+  return grabSelectedPlayer();
 }
 
 void UseItemOnPlayerDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+  map_image->property_pixbuf() =
     Gdk::Pixbuf::create(map, 0, 0, citymap->get_width(), citymap->get_height());
-  map_image->property_pixbuf() = pixbuf;
 }
 
 void UseItemOnPlayerDialog::addPlayer(Player *player)
 {
-  ImageCache *gc = ImageCache::getInstance();
   Gtk::TreeIter i = players_list->append();
   (*i)[players_columns.name] = player->getName();
-  (*i)[players_columns.image] = gc->getShieldPic(2, player)->to_pixbuf();
+  (*i)[players_columns.image] = 
+    ImageCache::getInstance()->getShieldPic(2, player)->to_pixbuf();
   (*i)[players_columns.player] = player;
 }
 

@@ -47,17 +47,18 @@ disassemble_row(const Glib::ustring &file, int no, bool &broken)
     int w = row->get_width() / no;
 
     // disassemble row
-    for (int x = 0; x < no; ++x) {
-	Glib::RefPtr<Gdk::Pixbuf> buf
-	    = Gdk::Pixbuf::create(row->get_colorspace(),
-				  row->get_has_alpha(),
-				  row->get_bits_per_sample(),
-				  w, h);
+    for (int x = 0; x < no; ++x) 
+      {
+        Glib::RefPtr<Gdk::Pixbuf> buf
+          = Gdk::Pixbuf::create(row->get_colorspace(),
+                                row->get_has_alpha(),
+                                row->get_bits_per_sample(),
+                                w, h);
 
-	row->copy_area(x * w, 0, w, h, buf, 0, 0);
-    
-	images.push_back(buf);
-    }
+        row->copy_area(x * w, 0, w, h, buf, 0, 0);
+
+        images.push_back(buf);
+      }
     
     std::vector<PixMask*> pixmasks;
     for (unsigned int i = 0; i < images.size(); i++)
@@ -95,28 +96,24 @@ disassemble_row(const Glib::ustring &file, int no, bool first_half_height, bool 
     if (first_half_height == false)
       s = h;
     // disassemble row
-    for (int x = 0; x < no; ++x) {
-	Glib::RefPtr<Gdk::Pixbuf> buf
-	    = Gdk::Pixbuf::create(row->get_colorspace(),
-				  row->get_has_alpha(),
-				  row->get_bits_per_sample(),
-				  w, h);
+    for (int x = 0; x < no; ++x) 
+      {
+        Glib::RefPtr<Gdk::Pixbuf> buf
+          = Gdk::Pixbuf::create(row->get_colorspace(),
+                                row->get_has_alpha(),
+                                row->get_bits_per_sample(),
+                                w, h);
 
-	row->copy_area(x * w, s, w, h, buf, 0, 0);
-    
-	images.push_back(buf);
-    }
+        row->copy_area(x * w, s, w, h, buf, 0, 0);
+
+        images.push_back(buf);
+      }
     
     std::vector<PixMask*> pixmasks;
     for (unsigned int i = 0; i < images.size(); i++)
       pixmasks.push_back(PixMask::create(images[i]));
     return pixmasks;
 }
-//Glib::RefPtr<Gdk::Pixmap> scale (Glib::RefPtr<Gdk::Pixmap> pixmap, int w, int h)
-//{
-  //return pixmap;
-  //return to_pixmap(to_pixbuf(pixmap)->scale_simple(w, h, Gdk::INTERP_BILINEAR));
-//}
 
 bool image_width_is_multiple_of_image_height(const Glib::ustring file)
 {

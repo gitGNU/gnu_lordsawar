@@ -18,23 +18,21 @@
 #include <config.h>
 
 #include <gtkmm.h>
-
 #include "surrender-dialog.h"
-
 #include "defs.h"
 #include "File.h"
 
 SurrenderDialog::SurrenderDialog(Gtk::Window &parent, int numEnemies)
  : LwDialog (parent, "surrender-dialog.ui")
 {
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    xml->get_widget("image", image);
-    
-    Glib::ustring s = ngettext("Your enemy grudgingly surrenders!\n",
-                               "Your enemies respectfully surrender!\n",
-                               numEnemies);
-    s += _("Do you accept?");
-    label->set_text(s);
-    image->property_file() = File::getVariousFile("parley_offered.png");
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  xml->get_widget("image", image);
+
+  Glib::ustring s = ngettext("Your enemy grudgingly surrenders!\n",
+                             "Your enemies respectfully surrender!\n",
+                             numEnemies);
+  s += _("Do you accept?");
+  label->set_text(s);
+  image->property_file() = File::getVariousFile("parley_offered.png");
 }

@@ -29,31 +29,30 @@
 MainPreferencesDialog::MainPreferencesDialog(Gtk::Window &parent)
  : LwDialog(parent, "main-preferences-dialog.ui")
 {
-    xml->get_widget("show_turn_popup_checkbutton", show_turn_popup_checkbutton);
-    xml->get_widget("commentator_checkbutton", commentator_checkbutton);
-    xml->get_widget("ui_combobox", ui_combobox);
-    ui_combobox->signal_changed().connect(
-	sigc::mem_fun(this, &MainPreferencesDialog::on_ui_form_factor_changed));
+  xml->get_widget("show_turn_popup_checkbutton", show_turn_popup_checkbutton);
+  xml->get_widget("commentator_checkbutton", commentator_checkbutton);
+  xml->get_widget("ui_combobox", ui_combobox);
+  ui_combobox->signal_changed().connect
+    (sigc::mem_fun(this, &MainPreferencesDialog::on_ui_form_factor_changed));
 
-    xml->get_widget("play_music_checkbutton", play_music_checkbutton);
-    xml->get_widget("music_volume_scale", music_volume_scale);
-    xml->get_widget("music_volume_hbox", music_volume_hbox);
-    show_turn_popup_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &MainPreferencesDialog::on_show_turn_popup_toggled));
-    commentator_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &MainPreferencesDialog::on_show_commentator_toggled));
-    play_music_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &MainPreferencesDialog::on_play_music_toggled));
-    music_volume_scale->signal_value_changed().connect(
-	sigc::mem_fun(this, &MainPreferencesDialog::on_music_volume_changed));
+  xml->get_widget("play_music_checkbutton", play_music_checkbutton);
+  xml->get_widget("music_volume_scale", music_volume_scale);
+  xml->get_widget("music_volume_hbox", music_volume_hbox);
+  show_turn_popup_checkbutton->signal_toggled().connect
+    (sigc::mem_fun(this, &MainPreferencesDialog::on_show_turn_popup_toggled));
+  commentator_checkbutton->signal_toggled().connect
+    (sigc::mem_fun(this, &MainPreferencesDialog::on_show_commentator_toggled));
+  play_music_checkbutton->signal_toggled().connect
+    (sigc::mem_fun(this, &MainPreferencesDialog::on_play_music_toggled));
+  music_volume_scale->signal_value_changed().connect
+    (sigc::mem_fun(this, &MainPreferencesDialog::on_music_volume_changed));
 
-    show_turn_popup_checkbutton->set_active(Configuration::s_showNextPlayer);
-    commentator_checkbutton->set_active(Configuration::s_displayCommentator);
-    play_music_checkbutton->set_active(Configuration::s_musicenable);
-    music_volume_hbox->set_sensitive(Configuration::s_musicenable);
-    music_volume_scale->set_value(Configuration::s_musicvolume * 100.0 / 128);
-    ui_combobox->set_active(Configuration::s_ui_form_factor);
-    
+  show_turn_popup_checkbutton->set_active(Configuration::s_showNextPlayer);
+  commentator_checkbutton->set_active(Configuration::s_displayCommentator);
+  play_music_checkbutton->set_active(Configuration::s_musicenable);
+  music_volume_hbox->set_sensitive(Configuration::s_musicenable);
+  music_volume_scale->set_value(Configuration::s_musicvolume * 100.0 / 128);
+  ui_combobox->set_active(Configuration::s_ui_form_factor);
 }
 
 void MainPreferencesDialog::hide()
@@ -63,37 +62,35 @@ void MainPreferencesDialog::hide()
 
 void MainPreferencesDialog::run()
 {
-    dialog->show();
-    dialog->run();
-    
-    Configuration::saveConfigurationFile(Configuration::configuration_file_path);
-    dialog->hide();
+  dialog->show();
+  dialog->run();
+
+  Configuration::saveConfigurationFile(Configuration::configuration_file_path);
+  dialog->hide();
 }
 
 void MainPreferencesDialog::on_show_turn_popup_toggled()
 {
-    Configuration::s_showNextPlayer = show_turn_popup_checkbutton->get_active();
+  Configuration::s_showNextPlayer = show_turn_popup_checkbutton->get_active();
 }
 
 void MainPreferencesDialog::on_play_music_toggled()
 {
-    bool play_music = play_music_checkbutton->get_active();
+  Configuration::s_musicenable = play_music_checkbutton->get_active();
 
-    Configuration::s_musicenable = play_music;
-
-    if (play_music)
-      Snd::getInstance()->play("intro", -1, false);
-    else
-      Snd::getInstance()->halt(false);
-    music_volume_hbox->set_sensitive(Configuration::s_musicenable);
+  if (play_music_checkbutton->get_active())
+    Snd::getInstance()->play("intro", -1, false);
+  else
+    Snd::getInstance()->halt(false);
+  music_volume_hbox->set_sensitive(Configuration::s_musicenable);
 }
 
 void MainPreferencesDialog::on_music_volume_changed()
 {
-    int volume = int(music_volume_scale->get_value() / 100 * 128);
-    
-    Configuration::s_musicvolume = volume;
-    Snd::getInstance()->updateVolume();
+  int volume = int(music_volume_scale->get_value() / 100 * 128);
+
+  Configuration::s_musicvolume = volume;
+  Snd::getInstance()->updateVolume();
 }
 
 void MainPreferencesDialog::on_show_commentator_toggled()

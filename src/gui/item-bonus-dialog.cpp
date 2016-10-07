@@ -31,21 +31,21 @@
 ItemBonusDialog::ItemBonusDialog(Gtk::Window &parent)
  : LwDialog(parent, "item-bonus-dialog.ui")
 {
-    dialog->set_transient_for(parent);
-    items_list = Gtk::ListStore::create(items_columns);
-    xml->get_widget("treeview", items_treeview);
-    items_treeview->set_model(items_list);
-    items_treeview->append_column("", items_columns.name);
-    items_treeview->append_column(_("Bonus"), items_columns.bonus);
+  dialog->set_transient_for(parent);
+  items_list = Gtk::ListStore::create(items_columns);
+  xml->get_widget("treeview", items_treeview);
+  items_treeview->set_model(items_list);
+  items_treeview->append_column("", items_columns.name);
+  items_treeview->append_column(_("Bonus"), items_columns.bonus);
 
-    Itemlist::iterator iter = Itemlist::getInstance()->begin();
-    for (;iter != Itemlist::getInstance()->end(); iter++)
-      addItemProto((*iter).second);
+  Itemlist::iterator iter = Itemlist::getInstance()->begin();
+  for (;iter != Itemlist::getInstance()->end(); iter++)
+    addItemProto((*iter).second);
 }
 
 void ItemBonusDialog::addItemProto(ItemProto *itemproto)
 {
-    Gtk::TreeIter i = items_list->append();
-    (*i)[items_columns.name] = itemproto->getName();
-    (*i)[items_columns.bonus] = itemproto->getBonusDescription();
+  Gtk::TreeIter i = items_list->append();
+  (*i)[items_columns.name] = itemproto->getName();
+  (*i)[items_columns.bonus] = itemproto->getBonusDescription();
 }

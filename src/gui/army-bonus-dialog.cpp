@@ -30,46 +30,46 @@
 ArmyBonusDialog::ArmyBonusDialog(Gtk::Window &parent, Player *p)
  :LwDialog(parent, "army-bonus-dialog.ui")
 {
-    d_player = p;
+  d_player = p;
 
-    armies_list = Gtk::ListStore::create(armies_columns);
-    xml->get_widget("treeview", armies_treeview);
-    armies_treeview->set_model(armies_list);
-    armies_treeview->append_column("", armies_columns.image);
-    armies_treeview->append_column("", armies_columns.name);
-    armies_treeview->append_column(_("Str"), armies_columns.str);
-    armies_treeview->append_column(_("Move"), armies_columns.move);
-    armies_treeview->append_column("", armies_columns.move_image);
-    armies_treeview->append_column(_("Bonus"), armies_columns.bonus);
-    armies_treeview->set_headers_visible(true);
+  armies_list = Gtk::ListStore::create(armies_columns);
+  xml->get_widget("treeview", armies_treeview);
+  armies_treeview->set_model(armies_list);
+  armies_treeview->append_column("", armies_columns.image);
+  armies_treeview->append_column("", armies_columns.name);
+  armies_treeview->append_column(_("Str"), armies_columns.str);
+  armies_treeview->append_column(_("Move"), armies_columns.move);
+  armies_treeview->append_column("", armies_columns.move_image);
+  armies_treeview->append_column(_("Bonus"), armies_columns.bonus);
+  armies_treeview->set_headers_visible(true);
 
-    Armyset *as=Armysetlist::getInstance()->get(d_player->getArmyset());
-    for (Armyset::iterator i = as->begin(); i != as->end(); ++i)
-      addArmyType((*i)->getId());
+  Armyset *as = Armysetlist::getInstance()->get(d_player->getArmyset());
+  for (Armyset::iterator i = as->begin(); i != as->end(); ++i)
+    addArmyType((*i)->getId());
 }
 
 void ArmyBonusDialog::addArmyType(guint32 army_type)
 {
-    ImageCache *gc = ImageCache::getInstance();
-    Player *p = d_player;
-    const ArmyProto *a;
-    a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
-    if (a->isHero())
-      return; //we don't want to show heroes in this list
-    Gtk::TreeIter i = armies_list->append();
-    (*i)[armies_columns.name] = a->getName();
-    (*i)[armies_columns.image] = 
-      gc->getCircledArmyPic(p->getArmyset(), army_type, p, NULL, false,
-                            p->getId(), true)->to_pixbuf();
-    (*i)[armies_columns.str] = a->getStrength();
-    (*i)[armies_columns.move] = a->getMaxMoves();
-    guint32 b = a->getMoveBonus();
-    (*i)[armies_columns.move_image] = gc->getMoveBonusPic(b, false)->to_pixbuf();
-    (*i)[armies_columns.bonus] = "-";
+  ImageCache *gc = ImageCache::getInstance();
+  Player *p = d_player;
+  const ArmyProto *a = 
+    Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
+  if (a->isHero())
+    return; //we don't want to show heroes in this list
+  Gtk::TreeIter i = armies_list->append();
+  (*i)[armies_columns.name] = a->getName();
+  (*i)[armies_columns.image] = 
+    gc->getCircledArmyPic(p->getArmyset(), army_type, p, NULL, false,
+                          p->getId(), true)->to_pixbuf();
+  (*i)[armies_columns.str] = a->getStrength();
+  (*i)[armies_columns.move] = a->getMaxMoves();
+  guint32 b = a->getMoveBonus();
+  (*i)[armies_columns.move_image] = gc->getMoveBonusPic(b, false)->to_pixbuf();
+  (*i)[armies_columns.bonus] = "-";
 
-    Glib::ustring s = a->getArmyBonusDescription();
-    if (s == "")
-      (*i)[armies_columns.bonus] = "-";
-    else
-      (*i)[armies_columns.bonus] = s;
+  Glib::ustring s = a->getArmyBonusDescription();
+  if (s == "")
+    (*i)[armies_columns.bonus] = "-";
+  else
+    (*i)[armies_columns.bonus] = s;
 }

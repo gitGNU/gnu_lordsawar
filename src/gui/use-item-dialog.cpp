@@ -18,37 +18,34 @@
 #include <config.h>
 
 #include <gtkmm.h>
-#include <assert.h>
-
 #include "use-item-dialog.h"
-
 #include "ucompose.hpp"
 #include "Item.h"
 
 UseItemDialog::UseItemDialog(Gtk::Window &parent, std::list<Item*> items)
  : LwDialog(parent, "use-item-dialog.ui")
 {
-    selected_item = 0;
-    
-    xml->get_widget("select_button", select_button);
-    xml->get_widget("items_treeview", items_treeview);
-    items_list = Gtk::ListStore::create(items_columns);
-    items_treeview->set_model(items_list);
-    items_treeview->append_column("", items_columns.name);
-    items_treeview->set_headers_visible(false);
+  selected_item = 0;
 
-    std::list<Item*>::iterator iter = items.begin();
-    for (;iter != items.end(); iter++)
-      addItem(*iter);
-      
-    guint32 max = items.size();
-    if (max)
-      {
-	Gtk::TreeModel::Row row;
-	row = items_treeview->get_model()->children()[0];
-	if(row)
-	  items_treeview->get_selection()->select(row);
-      }
+  xml->get_widget("select_button", select_button);
+  xml->get_widget("items_treeview", items_treeview);
+  items_list = Gtk::ListStore::create(items_columns);
+  items_treeview->set_model(items_list);
+  items_treeview->append_column("", items_columns.name);
+  items_treeview->set_headers_visible(false);
+
+  std::list<Item*>::iterator iter = items.begin();
+  for (;iter != items.end(); iter++)
+    addItem(*iter);
+
+  guint32 max = items.size();
+  if (max)
+    {
+      Gtk::TreeModel::Row row;
+      row = items_treeview->get_model()->children()[0];
+      if(row)
+        items_treeview->get_selection()->select(row);
+    }
 }
 
 void UseItemDialog::addItem(Item *item)
@@ -66,22 +63,22 @@ void UseItemDialog::hide()
 
 void UseItemDialog::run()
 {
-    dialog->show_all();
-    int response = dialog->run();
+  dialog->show_all();
+  int response = dialog->run();
 
-    if (response != Gtk::RESPONSE_ACCEPT)
-	selected_item = 0;
-    else
-      {
-	Glib::RefPtr<Gtk::TreeSelection> selection = 
-	  items_treeview->get_selection();
-	Gtk::TreeModel::iterator iterrow = selection->get_selected();
+  if (response != Gtk::RESPONSE_ACCEPT)
+    selected_item = 0;
+  else
+    {
+      Glib::RefPtr<Gtk::TreeSelection> selection = 
+        items_treeview->get_selection();
+      Gtk::TreeModel::iterator iterrow = selection->get_selected();
 
-	if (iterrow) 
-	  {
-	    Gtk::TreeModel::Row row = *iterrow;
-	    selected_item = row[items_columns.item];
-	  }
-      }
+      if (iterrow) 
+        {
+          Gtk::TreeModel::Row row = *iterrow;
+          selected_item = row[items_columns.item];
+        }
+    }
 }
 

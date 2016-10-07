@@ -29,11 +29,6 @@ LwDialog::LwDialog(Gtk::Window &parent, Glib::ustring file)
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(parent);
   dialog->property_gravity() = Gdk::GRAVITY_STATIC;
-        
-  //Glib::RefPtr<Gtk::CssProvider> css = Gtk::CssProvider::get_named("", "");
-  //Glib::RefPtr<Gdk::Screen> screen = Gdk::Screen::get_default();
-  //Glib::RefPtr<Gtk::StyleContext> ctx = dialog->get_style_context();
-  //ctx->add_provider_for_screen(screen, css, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
 LwDialog::~LwDialog()

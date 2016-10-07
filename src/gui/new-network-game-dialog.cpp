@@ -19,9 +19,7 @@
 
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
-
 #include "new-network-game-dialog.h"
-
 #include "Configuration.h"
 #include "defs.h"
 #include "ucompose.hpp"
@@ -101,17 +99,16 @@ void NewNetworkGameDialog::select_preferred_profile(Glib::ustring user)
         }
     }
 
-  Gtk::TreeModel::Row row;
-  row = profiles_treeview->get_model()->children()[0];
+  Gtk::TreeModel::Row row = profiles_treeview->get_model()->children()[0];
   if(row)
     profiles_treeview->get_selection()->select(row);
 }
 
 void NewNetworkGameDialog::add_profile(Profile *profile)
 {
-    Gtk::TreeIter i = profiles_list->append();
-    (*i)[profiles_columns.nickname] = profile->getNickname();
-    (*i)[profiles_columns.profile] = profile;
+  Gtk::TreeIter i = profiles_list->append();
+  (*i)[profiles_columns.nickname] = profile->getNickname();
+  (*i)[profiles_columns.profile] = profile;
 }
 	    
 void NewNetworkGameDialog::update_buttons()
@@ -142,7 +139,6 @@ void NewNetworkGameDialog::update_buttons()
       advertise_checkbutton->set_active(false);
       advertise_checkbutton->set_sensitive(false);
     }
-
 }
 
 void NewNetworkGameDialog::hide()

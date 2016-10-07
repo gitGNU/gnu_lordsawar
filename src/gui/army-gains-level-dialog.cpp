@@ -35,85 +35,85 @@
 ArmyGainsLevelDialog::ArmyGainsLevelDialog(Gtk::Window &parent, Hero *a, bool show_sight_stat)
  : LwDialog(parent, "army-gains-level-dialog.ui")
 {
-    ImageCache *gc = ImageCache::getInstance();
-    hero = a;
-    
-    Gtk::Image *image;
-    xml->get_widget("image", image);
-    image->property_pixbuf() = 
-      gc->getCircledArmyPic(hero, false, Shield::NEUTRAL, true)->to_pixbuf();
-    Gtk::Image *hero_image;
-    xml->get_widget("hero_image", hero_image);
-    hero_image->property_pixbuf() = 
-      gc->getNewLevelPic(Playerlist::getActiveplayer(),
-			 dynamic_cast<Hero*>(a)->getGender())->to_pixbuf();
-    
-    Gtk::Label *label;
-    xml->get_widget("label", label);
-    Glib::ustring s;
-    s = String::ucompose(_("%1 has advanced to level %2!"), a->getName(),
-			 a->getLevel() + 1);
-    dialog->set_title(s);
-    s += "\n\n";
-    s += _("Choose an attribute to improve:");
-    label->set_text(s);
+  ImageCache *gc = ImageCache::getInstance();
+  hero = a;
 
-    xml->get_widget("stats_vbox", stats_vbox);
+  Gtk::Image *image;
+  xml->get_widget("image", image);
+  image->property_pixbuf() = 
+    gc->getCircledArmyPic(hero, false, Shield::NEUTRAL, true)->to_pixbuf();
+  Gtk::Image *hero_image;
+  xml->get_widget("hero_image", hero_image);
+  hero_image->property_pixbuf() = 
+    gc->getNewLevelPic(Playerlist::getActiveplayer(),
+                       dynamic_cast<Hero*>(a)->getGender())->to_pixbuf();
 
-    add_item(Army::MOVES, _("Moves: %1"));
-    if (show_sight_stat == true)
-      add_item(Army::SIGHT, _("Sight: %1"));
-    if (a->getStat(Army::STRENGTH, false) < MAX_ARMY_STRENGTH)
-      add_item(Army::STRENGTH, _("Strength: %1"));
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s = 
+    String::ucompose(_("%1 has advanced to level %2!"), a->getName(),
+                     a->getLevel() + 1);
+  dialog->set_title(s);
+  s += "\n\n";
+  s += _("Choose an attribute to improve:");
+  label->set_text(s);
 
-    stat_items[0].radio->set_active(true);
-    on_stat_toggled();
+  xml->get_widget("stats_vbox", stats_vbox);
+
+  add_item(Army::MOVES, _("Moves: %1"));
+  if (show_sight_stat == true)
+    add_item(Army::SIGHT, _("Sight: %1"));
+  if (a->getStat(Army::STRENGTH, false) < MAX_ARMY_STRENGTH)
+    add_item(Army::STRENGTH, _("Strength: %1"));
+
+  stat_items[0].radio->set_active(true);
+  on_stat_toggled();
 }
 
 void ArmyGainsLevelDialog::add_item(Army::Stat stat, Glib::ustring desc)
 {
-    StatItem item;
-    item.stat = stat;
-    item.desc = desc;
-    if (stat_items.empty())
-	item.radio = manage(new Gtk::RadioButton);
-    else
+  StatItem item;
+  item.stat = stat;
+  item.desc = desc;
+  if (stat_items.empty())
+    item.radio = manage(new Gtk::RadioButton);
+  else
     {
-	Gtk::RadioButton::Group group = stat_items[0].radio->get_group();
-	item.radio = manage(new Gtk::RadioButton(group));
+      Gtk::RadioButton::Group group = stat_items[0].radio->get_group();
+      item.radio = manage(new Gtk::RadioButton(group));
     }
 
-    stat_items.push_back(item);
+  stat_items.push_back(item);
 
-    item.radio->signal_toggled().connect(
-	sigc::mem_fun(this, &ArmyGainsLevelDialog::on_stat_toggled));
+  item.radio->signal_toggled().connect
+    (sigc::mem_fun(this, &ArmyGainsLevelDialog::on_stat_toggled));
 
-    stats_vbox->pack_start(*item.radio, Gtk::PACK_SHRINK);
+  stats_vbox->pack_start(*item.radio, Gtk::PACK_SHRINK);
 }
 
 void ArmyGainsLevelDialog::on_stat_toggled()
 {
-    for (unsigned int i = 0; i < stat_items.size(); ++i)
-	if (stat_items[i].radio->get_active())
-	{
-	    selected_stat = stat_items[i].stat;
-	    break;
-	}
-    	    
-    fill_in_descriptions();
+  for (unsigned int i = 0; i < stat_items.size(); ++i)
+    if (stat_items[i].radio->get_active())
+      {
+        selected_stat = stat_items[i].stat;
+        break;
+      }
+
+  fill_in_descriptions();
 }
 
 void ArmyGainsLevelDialog::fill_in_descriptions()
 {
-    for (unsigned int i = 0; i < stat_items.size(); ++i)
+  for (unsigned int i = 0; i < stat_items.size(); ++i)
     {
-	StatItem &item = stat_items[i];
+      StatItem &item = stat_items[i];
 
-	int v = hero->getStat(item.stat, false);
+      int v = hero->getStat(item.stat, false);
 
-	if (item.radio->get_active())
-	    v += hero->computeLevelGain(item.stat);
-	    
-	item.radio->set_label(String::ucompose(item.desc, v));
+      if (item.radio->get_active())
+        v += hero->computeLevelGain(item.stat);
+
+      item.radio->set_label(String::ucompose(item.desc, v));
     }
 }

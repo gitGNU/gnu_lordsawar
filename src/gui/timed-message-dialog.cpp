@@ -17,7 +17,6 @@
 
 #include <config.h>
 
-#include <assert.h>
 #include <gtkmm.h>
 
 #include "timed-message-dialog.h"
@@ -33,8 +32,6 @@ TimedMessageDialog::TimedMessageDialog(Gtk::Window &parent, Glib::ustring messag
   d_grace = grace;
     
   window = new Gtk::MessageDialog(message); 
-  //Gtk::MessageDialog dialog(parent, message);
-  //window.reset(&dialog);
   window->set_message(message);
   window->signal_response().connect
        (sigc::hide(sigc::mem_fun(*this, &TimedMessageDialog::on_response)));
@@ -57,12 +54,12 @@ void TimedMessageDialog::run_and_hide()
   if (d_timeout > 0)
     {
       Timing::instance().register_timer
-	(sigc::mem_fun(this, &TimedMessageDialog::tick), 1000);
+        (sigc::mem_fun(this, &TimedMessageDialog::tick), 1000);
     }
-    
-    window->show_all();
-    main_loop = Glib::MainLoop::create();
-    main_loop->run();
+
+  window->show_all();
+  main_loop = Glib::MainLoop::create();
+  main_loop->run();
   window->hide();
 }
 
@@ -81,10 +78,10 @@ bool TimedMessageDialog::tick()
   else
     {
       int secs = d_timeout - d_timer_count;
-      Glib::ustring s;
-      s = String::ucompose(ngettext("This message will disappear in %1 second.",
-				    "This message will disappear in %1 seconds.",
-				    secs), secs);
+      Glib::ustring s = 
+        String::ucompose(ngettext("This message will disappear in %1 second.",
+                                  "This message will disappear in %1 seconds.",
+                                  secs), secs);
       window->set_secondary_text(s);
     }
 

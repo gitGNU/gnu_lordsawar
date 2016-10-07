@@ -18,7 +18,6 @@
 
 #include <config.h>
 
-#include <assert.h>
 #include <sigc++/functors/mem_fun.h>
 #include <gtkmm.h>
 

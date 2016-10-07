@@ -34,19 +34,19 @@
 RuinRewardedDialog::RuinRewardedDialog(Gtk::Window &parent, Reward_Ruin *reward)
 : LwDialog(parent, "ruin-rewarded-dialog.ui")
 {
-    xml->get_widget("map_image", map_image);
+  xml->get_widget("map_image", map_image);
 
-    ruinmap = new RuinMap(reward->getRuin());
-    ruinmap->map_changed.connect(
-	sigc::mem_fun(this, &RuinRewardedDialog::on_map_changed));
+  ruinmap = new RuinMap(reward->getRuin());
+  ruinmap->map_changed.connect
+    (sigc::mem_fun(this, &RuinRewardedDialog::on_map_changed));
 
-    Gtk::EventBox *map_eventbox;
-    xml->get_widget("map_eventbox", map_eventbox);
+  Gtk::EventBox *map_eventbox;
+  xml->get_widget("map_eventbox", map_eventbox);
 
-    xml->get_widget("label", label);
-    dialog->set_title(_("A Sage!"));
+  xml->get_widget("label", label);
+  dialog->set_title(_("A Sage!"));
 
-    d_reward = reward;
+  d_reward = reward;
 }
 
 RuinRewardedDialog::~RuinRewardedDialog()
@@ -64,9 +64,9 @@ void RuinRewardedDialog::run()
   ruinmap->resize();
   ruinmap->draw(Playerlist::getActiveplayer());
 
-  Glib::ustring s;
-  s += String::ucompose(_("The sages show thee the site of %1\n"),
-			d_reward->getRuin()->getName());
+  Glib::ustring s = 
+    String::ucompose(_("The sages show thee the site of %1\n"),
+                     d_reward->getRuin()->getName());
   Reward *reward = d_reward->getRuin()->getReward();
   if (reward->getType() == Reward::ALLIES)
     s += _("where powerful allies can be found!");
@@ -92,7 +92,6 @@ void RuinRewardedDialog::run()
 
 void RuinRewardedDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+  map_image->property_pixbuf() =
     Gdk::Pixbuf::create(map, 0, 0, ruinmap->get_width(), ruinmap->get_height());
-  map_image->property_pixbuf() = pixbuf;
 }

@@ -25,18 +25,18 @@ BuilderCache* BuilderCache::s_instance = 0;
 
 BuilderCache* BuilderCache::getInstance()
 {
-    if (s_instance == 0)
-        s_instance = new BuilderCache();
+  if (s_instance == 0)
+    s_instance = new BuilderCache();
 
-    return s_instance;
+  return s_instance;
 }
 
 void BuilderCache::deleteInstance()
 {
-    if (s_instance)
-        delete s_instance;
+  if (s_instance)
+    delete s_instance;
 
-    s_instance = 0;
+  s_instance = 0;
 }
 
 void BuilderCache::preloadAllBuilders(Glib::ustring dir)

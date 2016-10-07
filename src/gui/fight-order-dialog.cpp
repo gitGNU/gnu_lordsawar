@@ -29,25 +29,25 @@
 FightOrderDialog::FightOrderDialog(Gtk::Window &parent, Player *theplayer)
  : LwDialog(parent, "fight-order-dialog.ui")
 {
-    player = theplayer;
-    
-    armies_list = Gtk::ListStore::create(armies_columns);
-    xml->get_widget("treeview", armies_treeview);
-    armies_treeview->set_model(armies_list);
-    armies_treeview->append_column("", armies_columns.image);
-    armies_treeview->append_column("", armies_columns.name);
+  player = theplayer;
 
-    std::list<guint32> fight_order = theplayer->getFightOrder();
-    std::list<guint32>::iterator it = fight_order.begin();
-    for (; it != fight_order.end(); it++)
-      addArmyType(*it);
-    armies_treeview->set_reorderable(true);
-    xml->get_widget("reverse_button", reverse_button);
-    reverse_button->signal_clicked().connect
-      (sigc::mem_fun (*this, &FightOrderDialog::on_reverse_button_clicked));
-    xml->get_widget("reset_button", reset_button);
-    reset_button->signal_clicked().connect
-      (sigc::mem_fun (*this, &FightOrderDialog::on_reset_button_clicked));
+  armies_list = Gtk::ListStore::create(armies_columns);
+  xml->get_widget("treeview", armies_treeview);
+  armies_treeview->set_model(armies_list);
+  armies_treeview->append_column("", armies_columns.image);
+  armies_treeview->append_column("", armies_columns.name);
+
+  std::list<guint32> fight_order = theplayer->getFightOrder();
+  std::list<guint32>::iterator it = fight_order.begin();
+  for (; it != fight_order.end(); it++)
+    addArmyType(*it);
+  armies_treeview->set_reorderable(true);
+  xml->get_widget("reverse_button", reverse_button);
+  reverse_button->signal_clicked().connect
+    (sigc::mem_fun (*this, &FightOrderDialog::on_reverse_button_clicked));
+  xml->get_widget("reset_button", reset_button);
+  reset_button->signal_clicked().connect
+    (sigc::mem_fun (*this, &FightOrderDialog::on_reset_button_clicked));
 }
 
 void FightOrderDialog::hide()
@@ -57,30 +57,29 @@ void FightOrderDialog::hide()
 
 void FightOrderDialog::run()
 {
-    dialog->show();
-    int response = dialog->run();
+  dialog->show();
+  int response = dialog->run();
 
-    if (response == Gtk::RESPONSE_ACCEPT)
-      {
-        std::list<guint32> fight_order;
-        for (Gtk::TreeIter i = armies_list->children().begin(),
-	     end = armies_list->children().end(); i != end; ++i) 
-          fight_order.push_back((*i)[armies_columns.army_type]);
-        player->setFightOrder(fight_order);
-      }
+  if (response == Gtk::RESPONSE_ACCEPT)
+    {
+      std::list<guint32> fight_order;
+      for (Gtk::TreeIter i = armies_list->children().begin(),
+           end = armies_list->children().end(); i != end; ++i) 
+        fight_order.push_back((*i)[armies_columns.army_type]);
+      player->setFightOrder(fight_order);
+    }
 }
 
 void FightOrderDialog::addArmyType(guint32 army_type)
 {
-    ImageCache *gc = ImageCache::getInstance();
-    Gtk::TreeIter i = armies_list->append();
-    Armysetlist *alist = Armysetlist::getInstance();
-    const ArmyProto *a = alist->getArmy(player->getArmyset(), army_type);
-    (*i)[armies_columns.name] = a->getName();
-    (*i)[armies_columns.image] = 
-      gc->getCircledArmyPic(player->getArmyset(), army_type, player, NULL,
-                            false, player->getId(), true)->to_pixbuf();
-    (*i)[armies_columns.army_type] = a->getId();
+  Gtk::TreeIter i = armies_list->append();
+  Armysetlist *alist = Armysetlist::getInstance();
+  const ArmyProto *a = alist->getArmy(player->getArmyset(), army_type);
+  (*i)[armies_columns.name] = a->getName();
+  (*i)[armies_columns.image] = ImageCache::getInstance
+    ()->getCircledArmyPic(player->getArmyset(), army_type, player, NULL,
+                          false, player->getId(), true)->to_pixbuf();
+  (*i)[armies_columns.army_type] = a->getId();
 }
 
 void FightOrderDialog::on_reverse_button_clicked()
