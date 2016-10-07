@@ -487,7 +487,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         bool isOnCity() const;
     private:    
 
-        std::list<guint32> determineArmiesByStrength(bool strongest, float strength) const;
+        std::list<guint32> determineArmiesByStrength(float strength) const;
 
 static bool compareIds(const Army *lhs, const Army *rhs);
 	//! Private constructor.

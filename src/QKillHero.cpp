@@ -81,10 +81,7 @@ QuestKillHero::QuestKillHero(QuestsManager& q_mgr, guint32 hero, guint32 victim)
 
 bool QuestKillHero::isFeasible(guint32 heroId)
 {
-  if (heroId)
-    {
-      ;
-    }
+  (void) heroId;
   // chooseToKill returns 0 if no enemy heroes exist
   return (chooseToKill() != 0);
 }
@@ -200,8 +197,8 @@ void QuestKillHero::armyDied(Army *a, bool heroIsCulprit)
 void QuestKillHero::cityAction(City *c, CityDefeatedAction action, 
 			       bool heroIsCulprit, int gold)
 {
-  if (c || action || heroIsCulprit || gold)
-    {
-      ;//this quest doesn't care what happens to cities
-    }
+  (void) c;
+  (void) action;
+  (void) heroIsCulprit;
+  (void) gold;
 }

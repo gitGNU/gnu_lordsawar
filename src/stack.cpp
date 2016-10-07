@@ -774,12 +774,8 @@ bool Stack::canJoin(const Stack *stack) const
 }
 
 //take the weakest units where their strengths add up to strength.
-std::list<guint32> Stack::determineArmiesByStrength(bool strongest, float strength) const
+std::list<guint32> Stack::determineArmiesByStrength(float strength) const
 {
-  if (strongest)
-    {
-      ;
-    }
   std::list<guint32> armies;
   float remaining = strength; 
   Stack *stack = new Stack(*this);
@@ -801,12 +797,12 @@ std::list<guint32> Stack::determineArmiesByStrength(bool strongest, float streng
 
 std::list<guint32> Stack::determineStrongArmies(float strength) const
 {
-  return determineArmiesByStrength(true, strength);
+  return determineArmiesByStrength(strength);
 }
 
 std::list<guint32> Stack::determineWeakArmies(float strength) const
 {
-  return determineArmiesByStrength(false, strength);
+  return determineArmiesByStrength(strength);
 }
 
 std::list<guint32> Stack::determineReachableArmies(Vector<int> dest) const

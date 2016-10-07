@@ -1481,12 +1481,8 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
   return reward;
 }
 
-int Player::doStackVisitTemple(Stack *s, Temple *t)
+int Player::doStackVisitTemple(Stack *s)
 {
-  if (t)
-    {
-      ;
-    }
   // you have your stack blessed (+1 strength)
   int count = s->bless();
 
@@ -1501,15 +1497,11 @@ int Player::stackVisitTemple(Stack* s, Temple* t)
 
   addAction(new Action_Temple(t,s));
   
-  return doStackVisitTemple(s, t);
+  return doStackVisitTemple(s);
 }
 
-Quest* Player::doHeroGetQuest(Hero *hero, Temple* t, bool except_raze)
+Quest* Player::doHeroGetQuest(Hero *hero, bool except_raze)
 {
-  if (t)
-    {
-      ;
-    }
   QuestsManager *qm = QuestsManager::getInstance();
 
   std::vector<Quest*> quests = qm->getPlayerQuests(Playerlist::getActiveplayer());
@@ -1533,7 +1525,7 @@ Quest* Player::heroGetQuest(Hero *hero, Temple* t, bool except_raze)
 {
   debug("Player::stackGetQuest")
 
-  Quest *q = doHeroGetQuest(hero, t, except_raze);
+  Quest *q = doHeroGetQuest(hero, except_raze);
   if (q == NULL)
     return q;
 

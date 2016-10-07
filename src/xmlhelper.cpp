@@ -824,24 +824,6 @@ void XML_Helper::on_characters(const Glib::ustring& text)
   my_cdata += text;
 }
 
-void XML_Helper::on_fatal_error (const Glib::ustring & text)
-{
-  if (text != "")
-    {
-      ;
-    }
-  d_failed = true;
-}
-
-void XML_Helper::on_error (const Glib::ustring & text)
-{
-  if (text != "")
-    {
-      ;
-    }
-  d_failed = true;
-}
-
 guint32 XML_Helper::flagsFromString(Glib::ustring flags, guint32 (*flagStrToNum)(Glib::ustring))
 {
   guint32 total = 0;

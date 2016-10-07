@@ -281,10 +281,9 @@ class QuestsManager : public sigc::trackable
 
         //! This method performs cleanup of the marked quests
 	/**
-	 * Remove the quests marked as deactivated, and have heroes that belong
-	 * to players of the given type.
+	 * Remove the quests marked as deactivated.
 	 */
-        void cleanup(Player::Type type = Player::HUMAN);
+        void cleanup();
 
 	//! Callback when a city is conquered.
 	/**

@@ -133,10 +133,7 @@ void QuestEnemyArmies::getSuccessMsg(std::queue<Glib::ustring>& msgs) const
 
 void QuestEnemyArmies::getExpiredMsg(std::queue<Glib::ustring>& msgs) const
 {
-  if (msgs.size())
-    {
-      ;
-    }
+  (void) msgs;
   // This quest should never expire, so this is just a dummy function
 }
 
@@ -178,10 +175,10 @@ void QuestEnemyArmies::armyDied(Army *a, bool heroIsCulprit)
 void QuestEnemyArmies::cityAction(City *c, CityDefeatedAction action, 
 				  bool heroIsCulprit, int gold)
 {
-  if (c || action || heroIsCulprit || gold)
-    {
-      ;//this quest doesn't care what happens to cities
-    }
+  (void) c;
+  (void) action;
+  (void) heroIsCulprit;
+  (void) gold;
 }
     
 guint32 QuestEnemyArmies::getVictimPlayerId()

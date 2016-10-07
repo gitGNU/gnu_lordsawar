@@ -82,10 +82,7 @@ void QuestPillageGold::getSuccessMsg(std::queue<Glib::ustring>& msgs) const
 
 void QuestPillageGold::getExpiredMsg(std::queue<Glib::ustring>& msgs) const
 {
-  if (msgs.size())
-    {
-      ;
-    }
+  (void) msgs;
     // This quest should never expire, so this is just a dummy function
 }
 
@@ -96,19 +93,15 @@ void QuestPillageGold::initDescription()
 	
 void QuestPillageGold::armyDied(Army *a, bool heroIsCulprit)
 {
-  if (a || heroIsCulprit)
-    {
-      ; //this quest does nothing when an army dies
-    }
+  (void) a;
+  (void) heroIsCulprit;
 }
 
 void QuestPillageGold::cityAction(City *c, CityDefeatedAction action, 
 				  bool heroIsCulprit, int gold)
 {
-  if (c || gold)
-    {
-      ;
-    }
+  (void) c;
+  (void) gold;
   if (isPendingDeletion())
     return;
   Hero *h = getHero();

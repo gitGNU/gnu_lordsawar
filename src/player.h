@@ -1612,7 +1612,7 @@ class Player: public sigc::trackable
         Stack *doStackSplit(Stack *s);
 	bool doStackSplitArmy(Stack *s, Army *a, Stack *& new_stack);
         void doStackJoin(Stack* receiver, Stack* joining);
-        int doStackVisitTemple(Stack *s, Temple *t);
+        int doStackVisitTemple(Stack *s);
         void doCityOccupy(City *c);
         void doCityPillage(City *c, int& gold, int* pillaged_army_type);
         void doCitySack(City *c, int& gold, std::list<guint32> *sacked_types);
@@ -1657,7 +1657,7 @@ class Player: public sigc::trackable
 	bool doStackSplitArmies(Stack *stack, std::list<guint32> armies,
 				Stack *&new_stack);
 
-        Quest* doHeroGetQuest(Hero *hero, Temple* t, bool except_raze);
+        Quest* doHeroGetQuest(Hero *hero, bool except_raze);
 
         void doStackSort(Stack *s, std::list<guint32> army_ids);
 

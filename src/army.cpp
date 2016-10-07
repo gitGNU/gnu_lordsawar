@@ -409,16 +409,10 @@ bool Army::isFlyer()
 //! Sets this army as being fortified (+1 to stack)
 void Army::setFortified (bool f)
 {
-  if (getFortified() == true && f == true)
-    ; // do nothing
-  else if (getFortified() == true && f == false)
+  if (getFortified() == true && f == false)
     d_army_bonus ^= Army::FORTIFY;
   else if (getFortified() == false && f == true)
     d_army_bonus |= Army::FORTIFY;
-  else if (getFortified() == false && f == false)
-    {
-      ; // do nothing
-    }
 }
 
 //! get the fortify flag for this army

@@ -89,10 +89,8 @@ bool OverviewMap::isShadowed(Tile::Type type, int i, int j)
 static int 
 prand(int i, int j)
 {
-  if (i || j)
-    {
-      ;
-    }
+  (void)i;
+  (void)j;
   return (Rnd::rand () % 3);
 }
 

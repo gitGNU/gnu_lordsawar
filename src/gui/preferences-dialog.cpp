@@ -205,10 +205,6 @@ void PreferencesDialog::run(Game *game)
 		game->addPlayer(new_player);
 		delete old_player;
 	      }
-	    else //computer, no change
-              {
-                ;
-              }
 	  }
       }
     dialog->hide();

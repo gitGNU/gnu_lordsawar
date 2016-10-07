@@ -212,8 +212,6 @@ class XML_Helper: public xmlpp::SaxParser
                                                                       const AttributeList& properties);
         virtual void on_end_element(const Glib::ustring& name);
         virtual void on_characters(const Glib::ustring& characters);
-        virtual void on_fatal_error (const Glib::ustring & text);
-        virtual void on_error (const Glib::ustring & text);
     private:
         /** Prepends a number of tags (depending on the number of opened tags)
           * to a line. Used for beautification.

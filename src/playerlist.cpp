@@ -541,12 +541,8 @@ void Playerlist::swap(Player *old_player, Player *new_player)
 
 bool Playerlist::randomly(const Player *lhs, const Player *rhs)  
 {
-  Playerlist *pl = Playerlist::getInstance();
-  if (rhs)
-    {
-      ;
-    }
-  if (lhs == pl->getNeutral())
+  (void) rhs;
+  if (lhs == Playerlist::getInstance()->getNeutral())
     return false;
   if (Rnd::rand() % 2 == 0)
     return true;

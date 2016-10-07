@@ -247,10 +247,7 @@ void TileStyleOrganizerDialog::on_category_selected()
 
 void TileStyleOrganizerDialog::on_categories_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext> &context, int x, int y, const Gtk::SelectionData& selection_data, guint c, guint time)
 {
-  if (c)
-    {
-      ;
-    }
+  (void) c;
   const int length = selection_data.get_length();
   if (length >= 0 && selection_data.get_format() == 8)
     {
@@ -289,10 +286,9 @@ void TileStyleOrganizerDialog::on_categories_drop_drag_data_received(const Glib:
 
 void TileStyleOrganizerDialog::on_category_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext> &context, int a, int b, const Gtk::SelectionData& selection_data, guint c, guint time)
 {
-  if (a || b || c)
-    {
-      ;
-    }
+  (void) a;
+  (void) b;
+  (void) c;
   const int length = selection_data.get_length();
   if (length >= 0 && selection_data.get_format() == 8)
     {
@@ -325,10 +321,9 @@ void TileStyleOrganizerDialog::on_category_drop_drag_data_received(const Glib::R
 
 void TileStyleOrganizerDialog::on_unsorted_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext> &context, int a, int b, const Gtk::SelectionData& selection_data, guint c, guint time)
 {
-  if (a || b || c)
-    {
-      ;
-    }
+  (void) a;
+  (void) b;
+  (void) c;
   const int length = selection_data.get_length();
   if (length >= 0 && selection_data.get_format() == 8)
     {

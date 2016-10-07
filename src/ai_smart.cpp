@@ -466,29 +466,24 @@ void AI_Smart::examineCities()
 
 bool AI_Smart::chooseTreachery (Stack *stack, Player *player, Vector <int> pos)
 {
-  if (stack || player || pos != Vector<int>(-1,-1))
-    {
-      ;
-    }
+  (void) stack;
+  (void) player;
+  (void) pos;
   return true;
 }
 
 bool AI_Smart::chooseHero(HeroProto *hero, City *city, int gold)
 {
-  if (hero || city || gold)
-    {
-      ;
-    }
-
+  (void) hero;
+  (void) city;
+  (void) gold;
   return true;
 }
 
 Reward *AI_Smart::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
 {
-  if (ruin || stack)
-    {
-      ;
-    }
+  (void) ruin;
+  (void) stack;
   //always pick the money.
   for (Sage::iterator it = sage->begin(); it != sage->end(); it++)
     if ((*it)->getType() == Reward::GOLD)
@@ -505,19 +500,13 @@ Army::Stat AI_Smart::chooseStat(Hero *hero)
 
 bool AI_Smart::chooseQuest(Hero *hero)
 {
-  if (hero)
-    {
-      ;
-    }
+  (void) hero;
   return true;
 }
 
 bool AI_Smart::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
-  if (turns)
-    {
-      ;
-    }
+  (void) turns;
   if (stack->isOnCity() == true)
     {
       if (moves <= stack->getMoves())
@@ -537,10 +526,7 @@ bool AI_Smart::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 m
 
 bool AI_Smart::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
-  if (turns)
-    {
-      ;
-    }
+  (void) turns;
   City *enemy = GameMap::getEnemyCity(dest);
   if (enemy != NULL && enemy->isBurnt() == false)
     return false;
@@ -583,10 +569,7 @@ bool AI_Smart::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 m
 
 bool AI_Smart::computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
-  if (turns)
-    {
-      ;
-    }
+  (void) turns;
   if (stack->isOnCity() == true)
     {
       if (moves * 2 <= stack->getMoves())
@@ -611,10 +594,7 @@ bool AI_Smart::computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> de
 
 bool AI_Smart::computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
-  if (turns)
-    {
-      ;
-    }
+  (void) turns;
   if (stack->size() == 1)
     return false;
 
@@ -635,10 +615,10 @@ bool AI_Smart::computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest,
 
 bool AI_Smart::computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<int> dest, guint32 moves, guint32 turns)
 {
-  if (stack || quest || dest != Vector<int>(-1,-1) || moves)
-    {
-      ;
-    }
+  (void) stack;
+  (void) quest;
+  (void) dest;
+  (void) moves;
   if (turns > 4)
     return false;
   return true;

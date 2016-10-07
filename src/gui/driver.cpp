@@ -1281,7 +1281,6 @@ void Driver::on_keep_network_play_going()
           //we are waiting for a player to finish their turn
           //or they are unavailable.
           break;
-          ;
         }
     }
 }

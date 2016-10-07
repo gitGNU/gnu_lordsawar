@@ -100,11 +100,6 @@ void Main::start_main_loop()
   else
     Rnd::set_seed(time(NULL));
 
-  if (Configuration::s_decorated)
-    {
-      ;
-    }
-
   try
     {
       if (impl->driver != NULL)
