@@ -421,11 +421,6 @@ void BigMap::draw_buffer()
 
 }
 
-bool BigMap::saveUnderlyingMapAsBitmap(Glib::ustring filename)
-{
-  return d_renderer->saveAsBitmap(filename);
-}
-
 bool BigMap::saveAsBitmap(Glib::ustring filename)
 {
   int tilesize = GameMap::getInstance()->getTileSize();

@@ -81,9 +81,6 @@ class BigMap: public sigc::trackable
     //! Save the whole map as one big image (bmp file).
     bool saveAsBitmap(Glib::ustring filename);
 
-    //! Save the whole map, but not the game objects on top of it.
-    bool saveUnderlyingMapAsBitmap(Glib::ustring filename);
-
     void toggle_grid();
     bool scroll(GdkEventScroll *event);
     

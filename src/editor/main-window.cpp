@@ -214,10 +214,6 @@ MainWindow::MainWindow(Glib::ustring load_filename)
     xml->get_widget("export_as_bitmap_menuitem", export_as_bitmap_menuitem);
     export_as_bitmap_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_export_as_bitmap_activated));
-    xml->get_widget("export_as_bitmap_no_game_objects_menuitem",
-		    export_as_bitmap_no_game_objects_menuitem);
-    export_as_bitmap_no_game_objects_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_export_as_bitmap_no_game_objects_activated));
     xml->get_widget("validate_menuitem", validate_menuitem);
     validate_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_validate_activated));
@@ -889,38 +885,6 @@ void MainWindow::on_export_as_bitmap_activated()
 	chooser.hide();
 
 	bool success = bigmap->saveAsBitmap(current_save_filename);
-	if (!success)
-          {
-            TimedMessageDialog dialog(*window, _("Map was not exported!"), 0);
-            dialog.run_and_hide();
-          }
-    }
-}
-
-void MainWindow::on_export_as_bitmap_no_game_objects_activated()
-{
-    Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
-				   Gtk::FILE_CHOOSER_ACTION_SAVE);
-    Glib::RefPtr<Gtk::FileFilter> png_filter = Gtk::FileFilter::create();
-    png_filter->set_name(_("PNG files (*.png)"));
-    png_filter->add_pattern("*.png");
-    chooser.add_filter(png_filter);
-    chooser.set_current_folder(Glib::get_home_dir());
-    chooser.set_do_overwrite_confirmation();
-
-    chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
-    chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
-    
-    chooser.show_all();
-    int res = chooser.run();
-    
-    if (res == Gtk::RESPONSE_ACCEPT)
-    {
-	current_save_filename = chooser.get_filename();
-	chooser.hide();
-
-	bool success = bigmap->saveUnderlyingMapAsBitmap(current_save_filename);
 	if (!success)
           {
             TimedMessageDialog dialog(*window, _("Map was not exported!"), 0);
