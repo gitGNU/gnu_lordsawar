@@ -84,9 +84,8 @@ GameServer::GameServer()
 
 void GameServer::notifyRoundOver()
 {
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
-    network_server->send((*i)->conn, MESSAGE_TYPE_ROUND_OVER, "");
+  for (auto i: participants)
+    network_server->send(i->conn, MESSAGE_TYPE_ROUND_OVER, "");
 }
 
 bool GameServer::check_end_of_round()
@@ -121,13 +120,10 @@ void GameServer::remove_all_participants()
 {
   stopListeningForLocalEvents();
   //say goodbye to all participants
-  for (std::list<Participant *>::iterator i = participants.begin(),
-         end = participants.end(); i != end; ++i)
-    network_server->send((*i)->conn, MESSAGE_TYPE_SERVER_DISCONNECT, "bye");
-
-  for (std::list<Participant *>::iterator i = participants.begin(),
-         end = participants.end(); i != end; ++i)
-    delete *i;
+  for (auto i: participants)
+    network_server->send(i->conn, MESSAGE_TYPE_SERVER_DISCONNECT, "bye");
+  for (auto i: participants)
+    delete i;
   participants.clear();
   players_seated_locally.clear();
 }
@@ -182,9 +178,8 @@ bool GameServer::sendNextPlayer()
   Glib::ustring s = 
     String::ucompose("%1", Playerlist::getActiveplayer()->getId());
   //now we can send the start round message, and begin the round ourselves.
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i)
-    network_server->send((*i)->conn, MESSAGE_TYPE_NEXT_PLAYER, s);
+  for (auto i: participants)
+    network_server->send(i->conn, MESSAGE_TYPE_NEXT_PLAYER, s);
   Participant *part = findParticipantByPlayerId
     (Playerlist::getActiveplayer()->getId());
   if (!part)
@@ -237,9 +232,8 @@ bool GameServer::sendRoundStart()
 {
   sendTurnOrder();
   //now we can send the start round message, and begin the round ourselves.
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i)
-    network_server->send((*i)->conn, MESSAGE_TYPE_ROUND_START, "");
+  for (auto i: participants)
+    network_server->send(i->conn, MESSAGE_TYPE_ROUND_START, "");
   round_begins.emit();
   Playerlist::getInstance()->setActiveplayer(NULL);
   return nextTurn();
@@ -251,17 +245,9 @@ void GameServer::gotChat(void *conn, Glib::ustring message)
   if (part)
     {
       gotChatMessage(part->nickname, message);
-      for (std::list<Participant *>::iterator i = participants.begin(),
-	   end = participants.end(); i != end; ++i)
-	{
-	  //if ((*i)->conn != part->conn)
-	  //network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
-	  //part->nickname + ":" + message);
-	  //else
-	  network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
-			       message);
+      for (auto i: participants)
+        network_server->send(i->conn, MESSAGE_TYPE_CHATTED, message);
 
-	}
     }
   return;
 }
@@ -403,12 +389,11 @@ void GameServer::onConnectionLost(void *conn)
 
 Participant *GameServer::findParticipantByConn(void *conn)
 {
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i)
-    if ((*i)->conn == conn)
-      return *i;
+  for (auto i: participants)
+    if (i->conn == conn)
+      return i;
 
-  return 0;
+  return NULL;
 }
 
 void GameServer::onLocalNonNetworkedActionDone(NetworkAction *action)
@@ -421,16 +406,14 @@ void GameServer::onLocalNonNetworkedActionDone(NetworkAction *action)
   if (action->getAction()->getType() == Action::INIT_TURN)
     local_player_starts_move.emit(action->getOwner());
 
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
+  for (auto i: participants)
     {
-      (*i)->actions.push_back(new NetworkAction (action->getAction(),
-                                                 action->getOwnerId()));
-      sendActions(*i);
+      i->actions.push_back(new NetworkAction (action->getAction(),
+                                              action->getOwnerId()));
+      sendActions(i);
     }
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
-    clearNetworkActionlist((*i)->actions);
+  for (auto i: participants)
+    clearNetworkActionlist(i->actions);
 
   //do it here.
   delete action;
@@ -459,13 +442,12 @@ void GameServer::onLocalNonNetworkedHistoryDone(NetworkHistory *history)
   if (history->getHistory()->getType() == History::PLAYER_VANQUISHED)
     local_player_died(history->getOwner());
 
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
+  for (auto i: participants)
     {
-      (*i)->histories.push_back (new NetworkHistory (history->getHistory(), 
-                                                     history->getOwnerId()));
-      sendHistories(*i);
-      clearNetworkHistorylist((*i)->histories);
+      i->histories.push_back (new NetworkHistory (history->getHistory(), 
+                                                  history->getOwnerId()));
+      sendHistories(i);
+      clearNetworkHistorylist(i->histories);
     }
   delete history;
 }
@@ -475,23 +457,22 @@ void GameServer::onLocalNetworkedHistoryDone(NetworkHistory *history)
   //okay we only care about two locally generated history events.
   Glib::ustring desc = history->toString();
 
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
+  for (auto i: participants)
     {
-      (*i)->histories.push_back (new NetworkHistory (history->getHistory(), 
-                                                     history->getOwnerId()));
+      i->histories.push_back (new NetworkHistory (history->getHistory(), 
+                                                  history->getOwnerId()));
       if (history->getHistory()->getType() == History::GOLD_TOTAL ||
           history->getHistory()->getType() == History::SCORE)
         {
           std::cerr << String::ucompose("Game Server got locally generated networked history event: %1", desc) << std::endl;
-          sendHistories(*i);
+          sendHistories(i);
         }
       else
         {
           std::cerr << String::ucompose("Game Server got locally generated networked history event but not sending: %1", desc) << std::endl;
         }
 
-      clearNetworkHistorylist((*i)->histories);
+      clearNetworkHistorylist(i->histories);
     }
   delete history;
 }
@@ -508,29 +489,22 @@ void GameServer::onHistoryDone(NetworkHistory *history)
 void GameServer::notifyJoin(Glib::ustring nickname)
 {
   remote_participant_joins.emit(nickname);
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
-    {
-      network_server->send((*i)->conn, MESSAGE_TYPE_PARTICIPANT_CONNECTED, 
-			   nickname);
-      //network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
-      //nickname + " connected.");
-    }
+  for (auto i: participants)
+    network_server->send(i->conn, MESSAGE_TYPE_PARTICIPANT_CONNECTED, nickname);
   gotChatMessage("[server]", nickname + " connected.");
 }
 
 void GameServer::notifyDepart(void *conn, Glib::ustring nickname)
 {
   remote_participant_departs.emit(nickname);
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
+  for (auto i: participants)
     {
-      if ((*i)->conn == conn)
+      if (i->conn == conn)
 	continue;
-      network_server->send((*i)->conn, MESSAGE_TYPE_PARTICIPANT_DISCONNECTED, 
-			   nickname);
-      network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
-			   nickname + " disconnected.");
+      network_server->send(i->conn, MESSAGE_TYPE_PARTICIPANT_DISCONNECTED, 
+                           nickname);
+      network_server->send(i->conn, MESSAGE_TYPE_CHATTED, 
+                           nickname + " disconnected.");
     }
   gotChatMessage("", nickname + " disconnected.");
 }
@@ -544,13 +518,12 @@ void GameServer::notifySit(Player *player, Glib::ustring nickname)
                      1, nickname);
   player_sits.emit(player, nickname);
 
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
+  for (auto i: participants)
     {
-      network_server->send((*i)->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
-      network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
-			   nickname + " assumes control of " + 
-			   player->getName() +".");
+      network_server->send(i->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
+      network_server->send(i->conn, MESSAGE_TYPE_CHATTED, 
+                           nickname + " assumes control of " + 
+                           player->getName() +".");
     }
   gotChatMessage("", nickname + " assumes control of " + 
 		 player->getName() +".");
@@ -565,11 +538,8 @@ void GameServer::notifyTypeChange(Player *player, int type)
                      LOBBY_MESSAGE_TYPE_CHANGE_TYPE, 1, type);
   player_changes_type.emit(player, type);
 
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
-    {
-      network_server->send((*i)->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
-    }
+  for (auto i: participants)
+    network_server->send(i->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
 }
 
 void GameServer::notifyNameChange(Player *player, Glib::ustring name)
@@ -581,37 +551,32 @@ void GameServer::notifyNameChange(Player *player, Glib::ustring name)
                      LOBBY_MESSAGE_TYPE_CHANGE_NAME, 1, name);
   player_changes_name.emit(player, name);
 
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
-    {
-      network_server->send((*i)->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
-    }
+  for (auto i: participants)
+    network_server->send(i->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
 }
 
 Participant *GameServer::findParticipantByPlayerId(guint32 id)
 {
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i)
+  for (auto i: participants)
     {
       for (std::list<GameParameters::Player>::iterator j = 
-           (*i)->players.begin(); j != (*i)->players.end(); j++)
+           i->players.begin(); j != i->players.end(); j++)
         {
           if ((*j).id == id)
-            return *i;
+            return i;
         }
     }
 
-  return 0;
+  return NULL;
 }
 
 Participant *GameServer::findParticipantByNick(Glib::ustring nickname)
 {
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i)
-    if ((*i)->nickname == nickname)
-      return *i;
+  for (auto i: participants)
+    if (i->nickname == nickname)
+      return i;
 
-  return 0;
+  return NULL;
 }
 
 Glib::ustring GameServer::make_nickname_unique(Glib::ustring nickname)
@@ -619,12 +584,9 @@ Glib::ustring GameServer::make_nickname_unique(Glib::ustring nickname)
   Glib::ustring new_nickname;
   int count = 0;
   //okay, does this nickname appear twice?
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i)
-    {
-      if ((*i)->nickname == nickname)
-        count++;
-    }
+  for (auto i: participants)
+    if (i->nickname == nickname)
+      count++;
   if (nickname == d_nickname)
     count++;
   if (count <= 1)
@@ -698,11 +660,10 @@ void GameServer::depart(void *conn)
 bool GameServer::player_already_sitting(Player *p)
 {
   //check if the player p is already sitting down as a participant.
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
+  for (auto i: participants)
     {
       for (std::list<GameParameters::Player>::iterator j = 
-           (*i)->players.begin(); j != (*i)->players.end(); j++)
+           i->players.begin(); j != i->players.end(); j++)
 	{
 	  if (p->getId() == (*j).id)
 	    return true;
@@ -774,11 +735,10 @@ void GameServer::notifyStand(Player *player, Glib::ustring nickname)
                      LOBBY_MESSAGE_TYPE_STAND, 1, nickname);
   player_stands.emit(player, nickname);
 
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
+  for (auto i: participants)
     {
-      network_server->send((*i)->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
-      network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
+      network_server->send(i->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
+      network_server->send(i->conn, MESSAGE_TYPE_CHATTED, 
 			   nickname + " relinquishes control of " + 
 			   player->getName() +".");
     }
@@ -884,19 +844,17 @@ void GameServer::stand(void *conn, Player *player, Glib::ustring nickname)
 void GameServer::gotRemoteActions(void *conn, const Glib::ustring &payload)
 {
   gotActions(payload);
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
-    if ((*i)->conn != conn)
-      network_server->send((*i)->conn, MESSAGE_TYPE_SENDING_ACTIONS, payload);
+  for (auto i: participants)
+    if (i->conn != conn)
+      network_server->send(i->conn, MESSAGE_TYPE_SENDING_ACTIONS, payload);
 }
 
 void GameServer::gotRemoteHistory(void *conn, const Glib::ustring &payload)
 {
   gotHistories(payload);
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
-    if ((*i)->conn != conn)
-      network_server->send((*i)->conn, MESSAGE_TYPE_SENDING_HISTORY, payload);
+  for (auto i: participants)
+    if (i->conn != conn)
+      network_server->send(i->conn, MESSAGE_TYPE_SENDING_HISTORY, payload);
 }
 
 void GameServer::sendMap(Participant *part)
@@ -977,12 +935,11 @@ void GameServer::sendHistories(Participant *part)
 bool GameServer::dumpActionsAndHistories(XML_Helper *helper, Player *player)
 {
   Participant *part = NULL;
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i)
+  for (auto i: participants)
     {
       bool found = false;
       for (std::list<GameParameters::Player>::iterator it = 
-           (*i)->players.begin(); it != (*i)->players.end(); it++)
+           i->players.begin(); it != i->players.end(); it++)
 	{
 	  if ((*it).id == player->getId())
 	    {
@@ -993,7 +950,7 @@ bool GameServer::dumpActionsAndHistories(XML_Helper *helper, Player *player)
 
       if (found)
 	{
-	  part = *i;
+	  part = i;
 	  break;
 	}
     }
@@ -1112,9 +1069,8 @@ void GameServer::chat (Glib::ustring message)
 void GameServer::notifyChat(Glib::ustring message)
 {
   gotChatMessage(d_nickname, message);
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
-    network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, message);
+  for (auto i: participants)
+    network_server->send(i->conn, MESSAGE_TYPE_CHATTED, message);
 }
 
 void GameServer::sendSeat(void *conn, GameParameters::Player player, Glib::ustring nickname)
@@ -1141,15 +1097,14 @@ void GameServer::sendSeats(void *conn)
     return;
   //send seatedness info for remote participants
 
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
+  for (auto i: participants)
     {
-      if ((*i)->conn == part->conn)
+      if (i->conn == part->conn)
 	continue;
 
       for (std::list<GameParameters::Player>::iterator j = 
-           (*i)->players.begin(); j != (*i)->players.end(); j++)
-        sendSeat(conn, (*j), (*i)->nickname);
+           i->players.begin(); j != i->players.end(); j++)
+        sendSeat(conn, (*j), i->nickname);
     }
   //send out seatedness info for local server
   for (std::list<GameParameters::Player>::iterator j = 
@@ -1162,13 +1117,12 @@ void GameServer::sendChatRoster(void *conn)
   Participant *part = findParticipantByConn(conn);
   if (!part)
     return;
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
+  for (auto i: participants)
     {
-      if ((*i)->conn == part->conn)
+      if (i->conn == part->conn)
 	continue;
       network_server->send(part->conn, MESSAGE_TYPE_PARTICIPANT_CONNECTED, 
-			   (*i)->nickname);
+			   i->nickname);
     }
   network_server->send(part->conn, MESSAGE_TYPE_PARTICIPANT_CONNECTED, 
 		       d_nickname);
@@ -1178,9 +1132,8 @@ void GameServer::sendOffPlayer(Player *p)
 {
   std::stringstream player;
   player << p->getId();
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
-    network_server->send((*i)->conn, MESSAGE_TYPE_OFF_PLAYER, player.str());
+  for (auto i: participants)
+    network_server->send(i->conn, MESSAGE_TYPE_OFF_PLAYER, player.str());
 
   remote_player_died.emit(p);
 }
@@ -1189,9 +1142,8 @@ void GameServer::sendKillPlayer(Player *p)
 {
   std::stringstream player;
   player << p->getId();
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
-    network_server->send((*i)->conn, MESSAGE_TYPE_KILL_PLAYER, player.str());
+  for (auto i: participants)
+    network_server->send(i->conn, MESSAGE_TYPE_KILL_PLAYER, player.str());
 
   remote_player_died.emit(p);
 }
@@ -1222,9 +1174,8 @@ void GameServer::notifyClientsGameMayBeginNow()
   d_game_has_begun = true;
   syncLocalPlayers();
   //notify everyone that the game can finally start.
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i) 
-    network_server->send((*i)->conn, MESSAGE_TYPE_GAME_MAY_BEGIN, "");
+  for (auto i: participants)
+    network_server->send(i->conn, MESSAGE_TYPE_GAME_MAY_BEGIN, "");
 }
 
 void GameServer::syncLocalPlayers()
