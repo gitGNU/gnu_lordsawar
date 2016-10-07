@@ -16,7 +16,7 @@
 #   02110-1301, USA.
 MAINTAINERCLEANFILES= Makefile.in
 
-bin_PROGRAMS = lordsawar-import
+bin_PROGRAMS = lordsawar-import lordsawar-upgrade-file
 
 lordsawar_import_SOURCES = import.cpp
 lordsawar_import_LDADD = $(top_builddir)/src/gui/liblwgui.la \
@@ -28,6 +28,24 @@ lordsawar_import_LDADD = $(top_builddir)/src/gui/liblwgui.la \
 			$(ARCHIVE_LIBS) \
 			-lz \
 			-L$(top_builddir)/src
+
+lordsawar_upgrade_file_SOURCES = upgrade-file.cpp
+
+lordsawar_upgrade_file_LDADD = $(top_builddir)/src/liblordsawar.la \
+    $(top_builddir)/src/liblordsawargamelist.la \
+    $(top_builddir)/src/liblordsawargamehost.la \
+    $(GSTREAMER_LIBS) \
+    $(GTKMM_LIBS) \
+    $(XMLPP_LIBS) \
+    $(XSLT_LIBS) \
+    $(ARCHIVE_LIBS) \
+    $(LIBSIGC_LIBS) \
+    -lz
+
+lordsawar_upgrade_file_DEPENDENCIES = \
+  $(top_builddir)/src/liblordsawar.la \
+  $(top_builddir)/src/liblordsawargamelist.la \
+  $(top_builddir)/src/liblordsawargamehost.la
 
 localedir = $(datadir)/locale
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@

@@ -18,7 +18,7 @@
 SUBDIRS = editor gui . gls ghs utils
 MAINTAINERCLEANFILES= Makefile.in
 
-bin_PROGRAMS = lordsawar lordsawar-upgrade-file
+bin_PROGRAMS = lordsawar
 noinst_LTLIBRARIES = liblordsawar.la liblordsawarnet.la liblordsawargfx.la \
 		     liblordsawargamelist.la liblordsawargamehost.la
 
@@ -139,24 +139,6 @@ lordsawar_SOURCES += ${top_srcdir}/dat/lordsawar.rc
 SUFFIXES=.rc
 
 endif
-
-lordsawar_upgrade_file_SOURCES = upgrade-file.cpp
-
-lordsawar_upgrade_file_LDADD = liblordsawar.la \
-    liblordsawargamelist.la \
-    liblordsawargamehost.la \
-    $(GSTREAMER_LIBS) \
-    $(GTKMM_LIBS) \
-    $(XMLPP_LIBS) \
-    $(XSLT_LIBS) \
-    $(ARCHIVE_LIBS) \
-    $(LIBSIGC_LIBS) \
-    -lz
-
-lordsawar_upgrade_file_DEPENDENCIES = \
-  liblordsawar.la \
-  liblordsawargamelist.la \
-  liblordsawargamehost.la
 
 localedir = $(datadir)/locale
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@

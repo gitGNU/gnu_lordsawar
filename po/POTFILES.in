@@ -359,7 +359,7 @@ src/ghs/main.cpp
 src/ghs/ghs-client-main.cpp
 src/ghs/ghs-client-tool.cpp
 src/ghs/gamehost-server.cpp
-src/upgrade-file.cpp
+src/utils/upgrade-file.cpp
 src/file-compat.cpp
 src/file-compat.h
 src/game-client-decoder.cpp
