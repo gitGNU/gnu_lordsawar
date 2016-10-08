@@ -41,11 +41,8 @@ NextTurnHotseat::NextTurnHotseat(bool turnmode, bool random_turns)
 {
   continuing_turn = false;
   
-  Playerlist* plist = Playerlist::getInstance();
-  for (Playerlist::iterator i = plist->begin(); i != plist->end(); ++i) {
-    Player *p = *i;
+  for (auto p: *Playerlist::getInstance())
     p->ending_turn.connect(sigc::mem_fun(this, &NextTurn::endTurn));
-  }
 }
 
 void NextTurnHotseat::start()
@@ -175,7 +172,6 @@ void NextTurnHotseat::finishTurn()
 
 void NextTurnHotseat::finishRound()
 {
-  Playerlist *plist = Playerlist::getInstance();
   //Put everything that has to be done when a new round starts in here.
   //E.g. increase the round number in GameScenario. (this is done with
   //the snextRound signal, but useful for an example).
@@ -184,22 +180,21 @@ void NextTurnHotseat::finishRound()
     {
       //do this for all players at once
       
-      for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
+      for (auto it: *Playerlist::getInstance())
 	{
-	  if ((*it)->isDead())
+	  if (it->isDead())
 	    continue;
 
-          (*it)->collectTaxesAndPayUpkeep();
+          it->collectTaxesAndPayUpkeep();
 
 	  //reset, and heal armies
-          (*it)->stacksReset();
+          it->stacksReset();
 
 	  //vector armies (needs to preceed city's next turn)
-	  VectoredUnitlist::getInstance()->nextTurn(*it);
+	  VectoredUnitlist::getInstance()->nextTurn(it);
 
 	  //produce new armies
-	  Citylist::getInstance()->nextTurn(*it);
-
+	  Citylist::getInstance()->nextTurn(it);
 	}
     }
 
@@ -208,7 +203,7 @@ void NextTurnHotseat::finishRound()
     
   if (d_random_turns)
     {
-      plist->randomizeOrder();
+      Playerlist::getInstance()->randomizeOrder();
       nextPlayer();
     }
 

@@ -102,19 +102,14 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
 
 void QuestMap::after_draw()
 {
-  ImageCache *gc = ImageCache::getInstance();
   if (!quest)
     {
       draw_cities(true);
       map_changed.emit(surface);
       return;
     }
-  Hero *hero = quest->getHero();
-  Player *p = hero->getOwner();
-
-
-
-  Vector<int> start = p->getStacklist()->getPosition (quest->getHeroId ());
+  Vector<int> start = 
+    quest->getHero()->getOwner()->getStacklist()->getPosition (quest->getHeroId ());
 
   if (quest->isPendingDeletion() == false)
     {
@@ -152,7 +147,7 @@ void QuestMap::after_draw()
 
   start += Vector<int>(int (pixels_per_tile / 2), int (pixels_per_tile / 2));
 
-  PixMask *heropic = gc->getSmallHeroImage(true);
+  PixMask *heropic = ImageCache::getInstance()->getSmallHeroImage(true);
   heropic->blit_centered(surface, start);
   map_changed.emit(surface);
 }

@@ -247,20 +247,19 @@ void MapGenerator::makeMap(int width, int height, bool roads)
 
 void MapGenerator::placeBridge(Vector<int> pos, int type)
 {
-  Bridgelist *bl = Bridgelist::getInstance();
   if (type == NORTH_SOUTH_BRIDGE)
     {
       d_building[pos.y*d_width + pos.x] = Maptile::BRIDGE;
       d_building[(pos.y + 1)*d_width + pos.x] = Maptile::BRIDGE;
-      bl->add(new Bridge(Vector<int>(pos.x, pos.y)));
-      bl->add(new Bridge(Vector<int>(pos.x+1, pos.y)));
+      Bridgelist::getInstance()->add(new Bridge(Vector<int>(pos.x, pos.y)));
+      Bridgelist::getInstance()->add(new Bridge(Vector<int>(pos.x+1, pos.y)));
     }
   else if (type == EAST_WEST_BRIDGE)
     {
       d_building[pos.y*d_width + pos.x] = Maptile::BRIDGE;
       d_building[pos.y*d_width + pos.x + 1] = Maptile::BRIDGE;
-      bl->add(new Bridge(Vector<int>(pos.x, pos.y)));
-      bl->add(new Bridge(Vector<int>(pos.x, pos.y+1)));
+      Bridgelist::getInstance()->add(new Bridge(Vector<int>(pos.x, pos.y)));
+      Bridgelist::getInstance()->add(new Bridge(Vector<int>(pos.x, pos.y+1)));
     }
   GameMap::getInstance()->calculateBlockedAvenues();
 }
@@ -1326,9 +1325,8 @@ bool MapGenerator::placePort(int x, int y)
     {
       if (d_building[y*d_width + x] == 0)
 	{
-	  Portlist *pl = Portlist::getInstance();
 	  d_building[y*d_width + x] = Maptile::PORT;
-	  pl->add(new Port(Vector<int>(x, y)));
+          Portlist::getInstance()->add(new Port(Vector<int>(x, y)));
 	  calculateBlockedAvenue(x, y);
 	  return true;
 	}
@@ -1368,7 +1366,6 @@ bool MapGenerator::makeRoad(Vector<int> src, Vector<int>dest)
 bool MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
 {
   bool retval = true;
-  GameMap *gm = GameMap::getInstance();
   Vector<int> src(src_x, src_y);
   Vector<int> dest(dest_x, dest_y);
 
@@ -1377,25 +1374,21 @@ bool MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
 
   if (p->size() > 0)
     {
-      Roadlist *rl = Roadlist::getInstance();
-      for (Path::iterator it = p->begin(); it != p->end(); it++)
+      for (auto it: *p)
 	{
-	  int x = (*it).x;
-	  int y = (*it).y;
-	  if (gm->getTile(x, y)->getType() == Tile::WATER &&
-	      gm->getTile(x, y)->getBuilding() != Maptile::BRIDGE)
+	  if (GameMap::getInstance()->getTile(it)->getType() == Tile::WATER &&
+	      GameMap::getInstance()->getTile(it)->getBuilding() != Maptile::BRIDGE)
 	    {
 	      retval = false;
 	      break;
 	    }
-	  Citylist *cl = Citylist::getInstance();
-	  if (cl->getObjectAt(x, y) == NULL)
+	  if (Citylist::getInstance()->getObjectAt(it) == NULL)
 	    {
-	      if (d_building[y*d_width + x] == 0)
+	      if (d_building[it.y*d_width + it.x] == 0)
 		{
-		  d_building[y*d_width + x] = Maptile::ROAD;
-		  rl->add(new Road(Vector<int>(x, y)));
-		  calculateBlockedAvenue(x, y);
+		  d_building[it.y*d_width + it.x] = Maptile::ROAD;
+                  Roadlist::getInstance()->add(new Road(Vector<int>(it)));
+		  calculateBlockedAvenue(it.x, it.y);
 		}
 	    }
 	}
@@ -1442,7 +1435,6 @@ bool MapGenerator::makeAccessible(Vector<int> src, Vector<int> dest)
 bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 {
   bool retval = true;
-  GameMap *gm = GameMap::getInstance();
   Vector<int> src(src_x, src_y);
   Vector<int> dest(dest_x, dest_y);
 
@@ -1481,7 +1473,7 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 	    {
 	      d_terrain[y*d_width +x] = Tile::HILLS;
 	      Maptile *t = new Maptile(x, y, Tile::HILLS);
-	      gm->setTile(x, y, t);
+              GameMap::getInstance()->setTile(x, y, t);
 	      calculateBlockedAvenue(x, y);
 	    }
 	  if (d_terrain[y*d_width + x] == Tile::WATER &&
@@ -1625,7 +1617,6 @@ void MapGenerator::makeRoads()
   GameMap::setWidth(d_width);
   GameMap::setHeight(d_height);
   GameMap::getInstance("default", "default", cityset->getBaseName())->fill(this);
-  Roadlist::getInstance();
   //the game map class smooths the map, so let's take what it smoothed.
   for (int y = 0; y < d_height; y++)
     for (int x = 0; x < d_width; x++)
@@ -1641,17 +1632,15 @@ void MapGenerator::makeRoads()
       }
   GameMap::getInstance()->calculateBlockedAvenues();
 
-  Citylist *cl = Citylist::getInstance();
-  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+  for (auto it: *Citylist::getInstance())
     {
       if (Rnd::rand() % 2 == 0)
 	continue;
-      City *c = cl->getNearestCityPast((*it)->getPos(), 13);
+      City *c = Citylist::getInstance()->getNearestCityPast(it->getPos(), 13);
       Vector<int> dest = c->getPos();
-      Vector<int> src = (*it)->getPos();
+      Vector<int> src = it->getPos();
       //does it already have a road going to it?
-      if (Roadlist::getInstance()->getNearestObjectBefore(dest, 
-							  c->getSize() + 1))
+      if (Roadlist::getInstance()->getNearestObjectBefore(dest, c->getSize() + 1))
 	continue;
 
       makeRoad(src, dest);
@@ -1659,16 +1648,13 @@ void MapGenerator::makeRoads()
     }
   
   //make all cities accessible by allowing movement to a central city
-  Vector<int> pos = GameMap::getCenterOfMap();
-  City *center = cl->getNearestCity(pos);
-  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+  City *center = Citylist::getInstance()->getNearestCity(GameMap::getCenterOfMap());
+  for (auto it: *Citylist::getInstance())
     {
-      if (center == *it)
+      if (center == it)
 	continue;
-      if (isAccessible(center->getPos(), (*it)->getPos()) == false)
-	{
-	makeAccessible(center->getPos(), (*it)->getPos());
-	}
+      if (isAccessible(center->getPos(), it->getPos()) == false)
+	makeAccessible(center->getPos(), it->getPos());
       progress.emit(.810, _("paving roads..."));
     }
 

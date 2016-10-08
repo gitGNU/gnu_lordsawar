@@ -37,15 +37,14 @@
 int getVictimArmytype(Player *p, std::list<Vector<int> >&targets)
 {
   std::vector<Army*> specials;
-  Stacklist::const_iterator sit ;
-  Stack::iterator it ;
+  Stacklist::const_iterator sit;
+  Stack::iterator it;
   Stacklist *sl;
-  const Playerlist* pl = Playerlist::getInstance();
-  for (Playerlist::const_iterator pit = pl->begin(); pit != pl->end(); pit++)
+  for (auto pit: *Playerlist::getInstance())
     {
-      if ((*pit) == p)
+      if (pit == p)
 	continue;
-      sl = (*pit)->getStacklist();
+      sl = pit->getStacklist();
       for (sit = sl->begin(); sit != sl->end(); sit++)
 	{
 	  //is this stack not in a city?  no?  it's a target.
@@ -54,9 +53,7 @@ int getVictimArmytype(Player *p, std::list<Vector<int> >&targets)
 	  for (it = (*sit)->begin(); it != (*sit)->end(); it++)
 	    {
 	      if ((*it)->getAwardable())
-		{
-		  specials.push_back((*it));
-		}
+                specials.push_back((*it));
 	    }
 	}
     }
@@ -111,18 +108,16 @@ bool QuestEnemyArmytype::save(XML_Helper *helper) const
 
 Glib::ustring QuestEnemyArmytype::getProgress() const
 {
-  Armysetlist *al = Armysetlist::getInstance();
   guint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
-  const ArmyProto *a = al->getArmy(set, d_type_to_kill);
+  const ArmyProto *a = Armysetlist::getInstance()->getArmy(set, d_type_to_kill);
   return String::ucompose(
 			  _("You have not killed a unit of enemy %1 yet."), a->getName());
 }
 
 void QuestEnemyArmytype::getSuccessMsg(std::queue<Glib::ustring>& msgs) const
 {
-  Armysetlist *al = Armysetlist::getInstance();
   guint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
-  const ArmyProto *a = al->getArmy(set, d_type_to_kill);
+  const ArmyProto *a = Armysetlist::getInstance()->getArmy(set, d_type_to_kill);
   msgs.push(String::ucompose(_("You have killed a unit of enemy %1."), a->getName()));
   msgs.push(_("Well done!"));
 }
@@ -135,9 +130,8 @@ void QuestEnemyArmytype::getExpiredMsg(std::queue<Glib::ustring>& msgs) const
 
 void QuestEnemyArmytype::initDescription()
 {
-  Armysetlist *al = Armysetlist::getInstance();
   guint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
-  const ArmyProto *a = al->getArmy(set, d_type_to_kill);
+  const ArmyProto *a = Armysetlist::getInstance()->getArmy(set, d_type_to_kill);
   d_description = String::ucompose(_("You must destroy a unit of enemy %1."), 
 				   a->getName());
 }

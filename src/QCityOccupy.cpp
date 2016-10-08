@@ -106,12 +106,11 @@ void QuestCityOccupy::getExpiredMsg(std::queue<Glib::ustring>& msgs) const
 //=======================================================================
 City* QuestCityOccupy::getCity() const
 {
-    Citylist* cl = Citylist::getInstance();
-    for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
-        if ((*it)->getId() == d_city)
-            return (*it);
+  for (auto it: *Citylist::getInstance())
+    if (it->getId() == d_city)
+      return (it);
 
-    return 0;
+  return NULL;
 }
 //=======================================================================
 void QuestCityOccupy::initDescription()
@@ -126,11 +125,10 @@ City * QuestCityOccupy::chooseToOccupy(Player *p)
   std::vector<City*> cities;
 
   // Collect all cities
-  Citylist* cl = Citylist::getInstance();
-  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-    if (!(*it)->isBurnt() && (*it)->getOwner() != p &&
-	(*it)->getOwner() != Playerlist::getInstance()->getNeutral())
-      cities.push_back((*it));
+  for (auto i: *Citylist::getInstance())
+    if (!i->isBurnt() && i->getOwner() != p &&
+        i->getOwner() != Playerlist::getInstance()->getNeutral())
+      cities.push_back(i);
 
   // Find a suitable city for us to occupy
   if (cities.empty())

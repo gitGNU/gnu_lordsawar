@@ -125,10 +125,8 @@ void Stack::moveOneStep(bool skipping)
 bool Stack::isMovingToOrFromAShip(Vector<int> dest, bool &on_ship) const
 {
   Vector<int> pos = getPos();
-  GameMap *gm = GameMap::getInstance();
-
-  Maptile::Building src_building = gm->getBuilding(pos);
-  Maptile::Building dst_building = gm->getBuilding(dest);
+  Maptile::Building src_building = GameMap::getInstance()->getBuilding(pos);
+  Maptile::Building dst_building = GameMap::getInstance()->getBuilding(dest);
 
   bool to_city = dst_building == Maptile::CITY;
   bool on_city = src_building == Maptile::CITY;
@@ -136,8 +134,8 @@ bool Stack::isMovingToOrFromAShip(Vector<int> dest, bool &on_ship) const
   bool on_port = src_building == Maptile::PORT;
   bool on_bridge = src_building == Maptile::BRIDGE;
   bool to_bridge = dst_building == Maptile::BRIDGE;
-  bool on_water = (gm->getTerrainType(pos) == Tile::WATER);
-  bool to_water = (gm->getTerrainType(dest) == Tile::WATER);
+  bool on_water = (GameMap::getInstance()->getTerrainType(pos) == Tile::WATER);
+  bool to_water = (GameMap::getInstance()->getTerrainType(dest) == Tile::WATER);
   //here we mark the armies as being on or off a boat
   /* skipping refers to when we have to move over another friendly stack
    * of a size that's too big to join with. */
@@ -247,8 +245,7 @@ guint32 Stack::getMoves() const
 
 int Stack::getMinTileMoves() const
 {
-  GameMap *map = GameMap::getInstance();
-  Rectangle bounds = map->get_boundary();
+  Rectangle bounds = GameMap::getInstance()->get_boundary();
 
   std::vector<Vector<int> > tiles;
   tiles.push_back(Vector<int>(getPos().x + 1, getPos().y - 1));
@@ -262,11 +259,10 @@ int Stack::getMinTileMoves() const
 
   int min = -1;
 
-  for (std::vector<Vector<int> >::iterator i = tiles.begin(); i != tiles.end();
-       ++i)
-    if (is_inside(bounds, *i))
+  for (auto tile: tiles)
+    if (is_inside(bounds, tile))
       {
-	int v = map->getTile(i->x, i->y)->getMoves();
+	int v = GameMap::getInstance()->getTile(tile)->getMoves();
 	if (min == -1)
 	  min = v;
 	else
@@ -872,8 +868,7 @@ Stack* Stack::createNonUniqueStack(Player *player, Vector<int> pos)
 
 guint32 Stack::getMaxMoves() const
 {
-  GameMap *gm = GameMap::getInstance();
-  if (gm->getTile(getPos())->getType() != Tile::WATER)
+  if (GameMap::getInstance()->getTile(getPos())->getType() != Tile::WATER)
     return getMaxLandMoves();
   else
     return getMaxBoatMoves();
@@ -1179,9 +1174,8 @@ void Stack::getUsableItems(std::list<Item*> &items) const
       for (std::list<Item*>::iterator i = backpack_items.begin(); 
            i !=backpack_items.end(); i++)
         {
-          GameMap *gm = GameMap::getInstance();
-          Maptile::Building b = gm->getBuilding(getPos());
-          Ruin *ruin = gm->getRuin(getPos());
+          Maptile::Building b = GameMap::getInstance()->getBuilding(getPos());
+          Ruin *ruin = GameMap::getInstance()->getRuin(getPos());
           bool ruin_has_occupant = false;
           if (ruin)
             {
@@ -1189,7 +1183,7 @@ void Stack::getUsableItems(std::list<Item*> &items) const
                 ruin_has_occupant = true;
             }
           bool victims = Playerlist::getInstance()->countPlayersAlive() > 1;
-          if ((*i)->isCurrentlyUsable(b, gm->getBackpacks().empty() == false, 
+          if ((*i)->isCurrentlyUsable(b, !GameMap::getInstance()->getBackpacks().empty(),
                                       victims, ruin_has_occupant,
                                       GameMap::friendlyCitiesPresent(),
                                       GameMap::enemyCitiesPresent(),
@@ -1226,8 +1220,7 @@ void Stack::kill()
 bool Stack::killArmyUnitsInBoats()
 {
   bool retval = false;
-  GameMap *gm = GameMap::getInstance();
-  if (gm->getTile(getPos())->getType() != Tile::WATER)
+  if (GameMap::getInstance()->getTile(getPos())->getType() != Tile::WATER)
     return retval;
   if (isFlying())
     return retval;
@@ -1320,8 +1313,7 @@ void Stack::sortByIds(std::list<guint32> ids)
 
 void Stack::updateShipStatus(Vector<int> dest)
 {
-  GameMap *gm = GameMap::getInstance();
-  bool to_water = (gm->getTile(dest.x,dest.y)->getType() == Tile::WATER);
+  bool to_water = (GameMap::getInstance()->getTile(dest)->getType() == Tile::WATER);
   bool to_bridge = (GameMap::getBridge(dest) != NULL);
   for (Stack::iterator it = begin(); it != end(); it++)
     {

@@ -40,28 +40,27 @@ void SelectCityMap::mouse_button_event(MouseButtonEvent e)
   if (e.button == MouseButtonEvent::LEFT_BUTTON && 
       e.state == MouseButtonEvent::PRESSED)
     {
-      Playerlist *plist = Playerlist::getInstance();
       Vector<int> dest = mapFromScreen(e.pos);
-      City* nearestCity = 
-        Citylist::getInstance()->getNearestVisibleCity(dest, 4);
+      City* nearestCity = Citylist::getInstance()->getNearestVisibleCity(dest, 4);
       if (nearestCity)
         {
           bool valid = false;
+          Player *owner = nearestCity->getOwner();
           switch (d_type)
             {
             case ANY_CITY:
               valid = true;
               break;
             case NEUTRAL_CITY:
-              if (nearestCity->getOwner() == plist->getNeutral())
+              if (owner == Playerlist::getInstance()->getNeutral())
                 valid = true;
               break;
             case FRIENDLY_CITY:
-              if (nearestCity->getOwner() == plist->getActiveplayer())
+              if (owner == Playerlist::getInstance()->getActiveplayer())
                 valid = true;
               break;
             case ENEMY_CITY:
-              if (nearestCity->getOwner() != plist->getActiveplayer())
+              if (owner != Playerlist::getActiveplayer())
                 valid = true;
               break;
             }
@@ -69,8 +68,7 @@ void SelectCityMap::mouse_button_event(MouseButtonEvent e)
             {
               draw(Playerlist::getViewingplayer());
               d_selected_city = nearestCity;
-              draw_square_around_city(d_selected_city, 
-                                      SELECTED_CITY_BOX_COLOUR);
+              draw_square_around_city(d_selected_city, SELECTED_CITY_BOX_COLOUR);
               city_selected.emit(d_selected_city);
               map_changed.emit(surface);
             }

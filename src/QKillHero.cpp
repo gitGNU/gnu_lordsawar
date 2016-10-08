@@ -137,15 +137,14 @@ Hero* QuestKillHero::chooseToKill()
   std::vector<Hero*> heroes;
 
   // Collect all enemy heroes in the vector
-  const Playerlist* pl = Playerlist::getInstance();
   Player* active = Playerlist::getActiveplayer();
 
-  for (Playerlist::const_iterator pit = pl->begin(); pit != pl->end(); pit++)
+  for (auto pit: *Playerlist::getInstance())
     {
-      if ((*pit) == active)
+      if (pit == active)
 	continue;
 
-      const Stacklist* sl = (*pit)->getStacklist();
+      const Stacklist* sl = pit->getStacklist();
       for (Stacklist::const_iterator it = sl->begin(); it != sl->end(); it++)
 	for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
 	  if ((*sit)->isHero()) 

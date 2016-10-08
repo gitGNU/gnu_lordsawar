@@ -48,7 +48,6 @@ OverviewMap::OverviewMap()
 
 bool OverviewMap::isShadowed(Tile::Type type, int i, int j)
 {
-  GameMap *gm = GameMap::getInstance();
   int x = int(i / pixels_per_tile);
   int y = int(j / pixels_per_tile);
   int x2;
@@ -59,27 +58,27 @@ bool OverviewMap::isShadowed(Tile::Type type, int i, int j)
   //if yes, then maybe
   //if the tile above us or beside us is land then this might be a shadow pixel
 
-  if (gm->getTile(x,y)->getType() != type)
+  if (GameMap::getInstance()->getTile(x,y)->getType() != type)
     return false;
-  if (x > 0 && gm->getTile(x-1,y)->getType() != type)
+  if (x > 0 && GameMap::getInstance()->getTile(x-1,y)->getType() != type)
     {
       x2 = int((i-1) / pixels_per_tile);
       y2 = int(j / pixels_per_tile);
-      if (gm->getTile(x-1,y) == gm->getTile(x2,y2))
+      if (GameMap::getInstance()->getTile(x-1,y) == GameMap::getInstance()->getTile(x2,y2))
         return true;
     }
-  if (y > 0 && gm->getTile(x,y-1)->getType() != type)
+  if (y > 0 && GameMap::getInstance()->getTile(x,y-1)->getType() != type)
     {
       x2 = int(i / pixels_per_tile);
       y2 = int((j-1) / pixels_per_tile);
-      if (gm->getTile(x,y-1) == gm->getTile(x2,y2))
+      if (GameMap::getInstance()->getTile(x,y-1) == GameMap::getInstance()->getTile(x2,y2))
         return true;
     }
-  if (y > 0 && x > 0 && gm->getTile(x-1,y-1)->getType() != type)
+  if (y > 0 && x > 0 && GameMap::getInstance()->getTile(x-1,y-1)->getType() != type)
     {
       x2 = int((i-1) / pixels_per_tile);
       y2 = int((j-1) / pixels_per_tile);
-      if (gm->getTile(x-1,y-1) == gm->getTile(x2,y2))
+      if (GameMap::getInstance()->getTile(x-1,y-1) == GameMap::getInstance()->getTile(x2,y2))
         return true;
     }
 
@@ -440,8 +439,7 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
 Maptile* OverviewMap::getTile(int x, int y)
 {
   //look for something interesting so we don't skip over important tiles.
-  GameMap *gm = GameMap::getInstance();
-  Maptile *favoured_tile = gm->getTile(x,y);
+  Maptile *favoured_tile = GameMap::getInstance()->getTile(x,y);
   int xmax = x + map_tiles_per_tile - 1;
   if (xmax >= GameMap::getWidth())
     xmax = GameMap::getWidth() - 1;
@@ -452,34 +450,33 @@ Maptile* OverviewMap::getTile(int x, int y)
     for (int j = y; j < ymax; j++)
       {
         Vector<int> pos(i, j);
-        if (gm->getBuilding(pos) == Maptile::TEMPLE)
-          favoured_tile = gm->getTile(pos);
-        else if (gm->getBuilding(pos) == Maptile::RUIN)
-          favoured_tile = gm->getTile(pos);
-        else if (gm->getTerrainType(pos) == Tile::WATER)
-          favoured_tile = gm->getTile(pos);
-        else if (gm->getTerrainType(pos) == Tile::MOUNTAIN)
-          favoured_tile = gm->getTile(pos);
+        if (GameMap::getInstance()->getBuilding(pos) == Maptile::TEMPLE)
+          favoured_tile = GameMap::getInstance()->getTile(pos);
+        else if (GameMap::getInstance()->getBuilding(pos) == Maptile::RUIN)
+          favoured_tile = GameMap::getInstance()->getTile(pos);
+        else if (GameMap::getInstance()->getTerrainType(pos) == Tile::WATER)
+          favoured_tile = GameMap::getInstance()->getTile(pos);
+        else if (GameMap::getInstance()->getTerrainType(pos) == Tile::MOUNTAIN)
+          favoured_tile = GameMap::getInstance()->getTile(pos);
       }
   return favoured_tile;
 }
 
 void OverviewMap::draw_terrain_tiles(Rectangle r)
 {
-    Tileset *ts = GameMap::getTileset();
-    Gdk::RGBA rd = ts->getRoadColor();
-    for (int i = r.x; i < r.x + r.w; i+=int(map_tiles_per_tile))
-      for (int j = r.y; j < r.y + r.h; j+=int(map_tiles_per_tile))
-        {
-          int x = int(i / pixels_per_tile);
-          int y = int(j / pixels_per_tile);
-          Maptile *mtile = getTile(x,y);
+  Gdk::RGBA rd = GameMap::getTileset()->getRoadColor();
+  for (int i = r.x; i < r.x + r.w; i+=int(map_tiles_per_tile))
+    for (int j = r.y; j < r.y + r.h; j+=int(map_tiles_per_tile))
+      {
+        int x = int(i / pixels_per_tile);
+        int y = int(j / pixels_per_tile);
+        Maptile *mtile = getTile(x,y);
 
-          if (mtile->isRoadTerrain())
-            draw_pixel(static_surface_gc, i, j, rd);
-          else
-            draw_terrain_tile (mtile, i, j);
-        }
+        if (mtile->isRoadTerrain())
+          draw_pixel(static_surface_gc, i, j, rd);
+        else
+          draw_terrain_tile (mtile, i, j);
+      }
 }
 
 void OverviewMap::after_draw()
@@ -635,7 +632,6 @@ void OverviewMap::draw_cities (bool all_razed)
       csize = 1;
       break;
     }
-  ImageCache *gc = ImageCache::getInstance();
 
   // Draw all cities as shields over the city location, in the colors of
   // the players.
@@ -647,9 +643,9 @@ void OverviewMap::draw_cities (bool all_razed)
       if (c->isVisible(Playerlist::getViewingplayer()) == false)
         continue;
       if (c->isBurnt() == true || all_razed == true)
-        tmp = gc->getSmallRuinedCityImage();
+        tmp = ImageCache::getInstance()->getSmallRuinedCityImage();
       else
-        tmp = gc->getShieldPic(csize, c->getOwner());
+        tmp = ImageCache::getInstance()->getShieldPic(csize, c->getOwner());
   
       Vector<int> pos = c->getPos();
       pos = mapToSurface(pos);
@@ -665,14 +661,13 @@ void OverviewMap::blank(bool on)
 
 void OverviewMap::draw_hero(Vector<int> pos, bool white)
 {
-    ImageCache *gc = ImageCache::getInstance();
     // draw the hero picture over top of the host city
 
     Vector<int> start = mapToSurface(pos);
 
     start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
 
-    PixMask *heropic = gc->getSmallHeroImage(white);
+    PixMask *heropic = ImageCache::getInstance()->getSmallHeroImage(white);
     heropic->blit_centered(surface, start);
 }
 

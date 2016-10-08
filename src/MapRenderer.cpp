@@ -99,31 +99,30 @@ void MapRenderer::render_tile(Vector<int> draw, Vector<int> tile,
 void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 			 int columns, int rows, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context)
 {
-    GameMap* map = GameMap::getInstance();
-    int width = GameMap::getWidth();
-    int height = GameMap::getHeight();
-    int tilesize = map->getTileSize();
-    int drawY = y;
+  int width = GameMap::getWidth();
+  int height = GameMap::getHeight();
+  int tilesize = GameMap::getInstance()->getTileSize();
+  int drawY = y;
 
-    for (int tileY = tileStartY; tileY < (tileStartY + rows); tileY++)
+  for (int tileY = tileStartY; tileY < (tileStartY + rows); tileY++)
     {
-        int drawX = x;
-        for (int tileX = tileStartX; tileX < (tileStartX + columns); tileX++)
+      int drawX = x;
+      for (int tileX = tileStartX; tileX < (tileStartX + columns); tileX++)
         {
-	    // first check if we're out of the map bounds
-	    if (tileX >= width || tileY >= height) {
-		context->set_source_rgba(FOG_COLOUR.get_red(), FOG_COLOUR.get_blue(), FOG_COLOUR.get_green(), FOG_COLOUR.get_alpha());
-		context->rectangle(drawX, drawY, tilesize, tilesize);
-                context->fill();
-	    }
-	    else {
-	      render_tile(Vector<int>(drawX,drawY), Vector<int>(tileX,tileY),
-			  surface);
-	    }
-	    
-            drawX += tilesize;
+          // first check if we're out of the map bounds
+          if (tileX >= width || tileY >= height) 
+            {
+              context->set_source_rgba(FOG_COLOUR.get_red(), FOG_COLOUR.get_blue(), FOG_COLOUR.get_green(), FOG_COLOUR.get_alpha());
+              context->rectangle(drawX, drawY, tilesize, tilesize);
+              context->fill();
+            }
+          else
+            render_tile(Vector<int>(drawX,drawY), Vector<int>(tileX,tileY),
+                        surface);
+
+          drawX += tilesize;
         }
-        drawY += tilesize;
+      drawY += tilesize;
     }
 
 }

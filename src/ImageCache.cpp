@@ -1960,11 +1960,11 @@ int MoveBonusPixMaskCacheItem::comp(const MoveBonusPixMaskCacheItem item) const
 
 PixMask *ShipPixMaskCacheItem::generate(ShipPixMaskCacheItem i)
 {
-  Armysetlist *al = Armysetlist::getInstance();
-  Player *p = Playerlist::getInstance()->getPlayer(i.player_id);
   // copy the pixmap including player colors
-  return ImageCache::applyMask(al->getShipPic(i.armyset), 
-                               al->getShipMask(i.armyset), p);
+  return ImageCache::applyMask
+    (Armysetlist::getInstance()->getShipPic(i.armyset), 
+     Armysetlist::getInstance()->getShipMask(i.armyset), 
+     Playerlist::getInstance()->getPlayer(i.player_id));
 }
 
 int ShipPixMaskCacheItem::comp(const ShipPixMaskCacheItem item) const
@@ -1979,11 +1979,11 @@ int ShipPixMaskCacheItem::comp(const ShipPixMaskCacheItem item) const
 
 PixMask *PlantedStandardPixMaskCacheItem::generate(PlantedStandardPixMaskCacheItem i)
 {
-  Armysetlist *al = Armysetlist::getInstance();
-  Player *p = Playerlist::getInstance()->getPlayer(i.player_id);
   // copy the pixmap including player colors
-  return ImageCache::applyMask(al->getStandardPic(i.armyset), 
-                               al->getStandardMask(i.armyset), p);
+  return ImageCache::applyMask
+    (Armysetlist::getInstance()->getStandardPic(i.armyset), 
+     Armysetlist::getInstance()->getStandardMask(i.armyset), 
+     Playerlist::getInstance()->getPlayer(i.player_id));
 }
 
 int PlantedStandardPixMaskCacheItem::comp(const PlantedStandardPixMaskCacheItem item) const
@@ -2050,14 +2050,11 @@ int ExplosionPixMaskCacheItem::comp(const ExplosionPixMaskCacheItem item) const
 
 PixMask *NewLevelPixMaskCacheItem::generate(NewLevelPixMaskCacheItem i)
 {
-  Player *p = Playerlist::getInstance()->getPlayer(i.player_id);
-  ImageCache *ic = ImageCache::getInstance();
-  if (i.gender == Hero::FEMALE)
-    return ImageCache::applyMask(ic->getNewLevelImage(true, false), 
-                                 ic->getNewLevelImage(true, true), p);
-  else
-    return ImageCache::applyMask(ic->getNewLevelImage(false, false),
-                                 ic->getNewLevelImage(false, true), p);
+  bool female = i.gender == Hero::FEMALE;
+  return ImageCache::applyMask
+    (ImageCache::getInstance()->getNewLevelImage(female, false), 
+     ImageCache::getInstance()->getNewLevelImage(female, true), 
+     Playerlist::getInstance()->getPlayer(i.player_id));
 }
 
 int NewLevelPixMaskCacheItem::comp(const NewLevelPixMaskCacheItem item) const

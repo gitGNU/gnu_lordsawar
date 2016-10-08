@@ -42,13 +42,9 @@
 NextTurnNetworked::NextTurnNetworked(bool turnmode, bool random_turns)
     :NextTurn(turnmode, random_turns)
 {
-  Playerlist* plist = Playerlist::getInstance();
-  for (Playerlist::iterator i = plist->begin(); i != plist->end(); ++i) 
-    {
-      Player *p = *i;
-      if (p->getType() != Player::NETWORKED)
-        p->ending_turn.connect(sigc::mem_fun(this, &NextTurn::endTurn));
-    }
+  for (auto p: *Playerlist::getInstance())
+    if (p->getType() != Player::NETWORKED)
+      p->ending_turn.connect(sigc::mem_fun(this, &NextTurn::endTurn));
 }
 
 Player* NextTurnNetworked::next()
@@ -76,24 +72,23 @@ void NextTurnNetworked::start_player(Player *player)
 
 void NextTurnNetworked::start()
 {
-  Playerlist* plist = Playerlist::getInstance();
   supdating.emit();
 
   startTurn();
 
   // inform everyone about the next turn 
-  snextTurn.emit(plist->getActiveplayer());
+  snextTurn.emit(Playerlist::getActiveplayer());
 
-  if (plist->getNoOfPlayers() <= 2)
+  if (Playerlist::getInstance()->getNoOfPlayers() <= 2)
     {
-      if (plist->checkPlayers()) //end of game detected
+      if (Playerlist::getInstance()->checkPlayers()) //end of game detected
         return;
     }
 
-  splayerStart.emit(plist->getActiveplayer());
+  splayerStart.emit(Playerlist::getActiveplayer());
 
   // let the player do his or her duties...
-  bool continue_loop = plist->getActiveplayer()->startTurn();
+  bool continue_loop = Playerlist::getActiveplayer()->startTurn();
   if (!continue_loop)
     return;
 
@@ -101,7 +96,6 @@ void NextTurnNetworked::start()
   if (d_stop == true)
     return;
   finishTurn();
-
 }
 
 void NextTurnNetworked::endTurn()
@@ -174,7 +168,6 @@ void NextTurnNetworked::finishTurn()
 
 void NextTurnNetworked::finishRound()
 {
-  Playerlist *plist = Playerlist::getInstance();
   //Put everything that has to be done when a new round starts in here.
   //E.g. increase the round number in GameScenario. (this is done with
   //the snextRound signal, but useful for an example).
@@ -191,22 +184,21 @@ void NextTurnNetworked::finishRound()
     {
       //do this for all players at once
 
-      for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
+      for (auto it: *Playerlist::getInstance())
         {
-          if ((*it)->isDead())
+          if (it->isDead())
             continue;
 
-          (*it)->collectTaxesAndPayUpkeep();
+          it->collectTaxesAndPayUpkeep();
 
           //reset, and heal armies
-          (*it)->stacksReset();
+          it->stacksReset();
 
           //vector armies (needs to preceed city's next turn)
-          VectoredUnitlist::getInstance()->nextTurn(*it);
+          VectoredUnitlist::getInstance()->nextTurn(it);
 
           //produce new armies
-          Citylist::getInstance()->nextTurn(*it);
-
+          Citylist::getInstance()->nextTurn(it);
         }
     }
 
@@ -215,7 +207,7 @@ void NextTurnNetworked::finishRound()
 
   if (d_random_turns)
     {
-      plist->randomizeOrder();
+      Playerlist::getInstance()->randomizeOrder();
       nextPlayer();
     }
 

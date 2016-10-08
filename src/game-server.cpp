@@ -167,10 +167,9 @@ void GameServer::start(GameScenario *game_scenario, int port, Glib::ustring prof
   network_server->startListening(port);
 
   listenForLocalEvents(Playerlist::getInstance()->getNeutral());
-  Playerlist *pl = Playerlist::getInstance();
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-    if ((*it)->getType() == Player::NETWORKED)
-      listenForLocalEvents(*it);
+  for (auto it: *Playerlist::getInstance())
+    if (it->getType() == Player::NETWORKED)
+      listenForLocalEvents(it);
 }
 
 bool GameServer::sendNextPlayer()
@@ -834,19 +833,17 @@ void GameServer::gotRemoteHistory(void *conn, const Glib::ustring &payload)
 
 void GameServer::sendMap(Participant *part)
 {
-  Playerlist *pl = Playerlist::getInstance();
-
   // first hack the players so the player type we serialize is right
   std::vector<Player*> players;
-  for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i) 
+  for (auto i: *Playerlist::getInstance())
     {
       bool connected = false;
-      players.push_back(*i);
-      if ((*i)->isComputer() == true)
+      players.push_back(i);
+      if (i->isComputer() == true)
 	connected = true;
-      NetworkPlayer *new_p = new NetworkPlayer(**i);
+      NetworkPlayer *new_p = new NetworkPlayer(*i);
       new_p->setConnected(connected);
-      pl->swap(*i, new_p);
+      Playerlist::getInstance()->swap(i, new_p);
     }
 
 
@@ -863,9 +860,10 @@ void GameServer::sendMap(Participant *part)
 
   // unhack the players
   std::vector<Player*>::iterator j = players.begin();
-  for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i, ++j) 
+  for (auto i: *Playerlist::getInstance())
     {
-      pl->swap(*i, *j);
+      Playerlist::getInstance()->swap(i, *j);
+      j++;
       //delete *i;
     }
 }
@@ -1120,11 +1118,10 @@ void GameServer::sendTurnOrder()
 {
   std::list<guint32> ids;
   std::stringstream players;
-  Playerlist *pl = Playerlist::getInstance();
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+  for (auto it: *Playerlist::getInstance())
     {
-      players << (*it)->getId() << " ";
-      ids.push_back((*it)->getId());
+      players << it->getId() << " ";
+      ids.push_back(it->getId());
     }
   for (auto i: participants)
     network_server->send(i->conn, MESSAGE_TYPE_TURN_ORDER, players.str());

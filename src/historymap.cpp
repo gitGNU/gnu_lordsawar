@@ -43,15 +43,10 @@ void HistoryMap::after_draw()
 
 void HistoryMap::drawRuins()
 {
-  ImageCache *gc = ImageCache::getInstance();
-
   // Draw all cities as shields over the city location, in the colors of
   // the players.
-  LocationList<Ruin*>::iterator it = d_rlist->begin();
-  for (; it != d_rlist->end(); it++)
+  for (auto ruin: *d_rlist)
   {
-      Ruin *ruin = *it;
-      PixMask *tmp;
       if (ruin->isVisible(Playerlist::getViewingplayer()) == false)
         continue;
       if (ruin->isSearched() == false)
@@ -60,11 +55,11 @@ void HistoryMap::drawRuins()
           Playerlist::getInstance()->getActiveplayer())
         continue;
 
-      tmp = gc->getShieldPic(1, ruin->getOwner());
-      tmp = tmp->copy();
+      PixMask* tmp = 
+        ImageCache::getInstance()->getShieldPic(1, ruin->getOwner())->copy();
       PixMask::scale(tmp, tmp->get_width()/2, tmp->get_height()/2);
   
-      Vector<int> pos = (*it)->getPos();
+      Vector<int> pos = ruin->getPos();
       pos = mapToSurface(pos);
       tmp->blit_centered(surface, pos);
       delete tmp;
@@ -73,25 +68,22 @@ void HistoryMap::drawRuins()
 
 void HistoryMap::drawCities()
 {
-  ImageCache *gc = ImageCache::getInstance();
-
   // Draw all cities as shields over the city location, in the colors of
   // the players.
-  LocationList<City*>::iterator it = d_clist->begin();
-  for (; it != d_clist->end(); it++)
-  {
+  for (auto it: *d_clist)
+    {
       PixMask *tmp;
-      if ((*it)->isVisible(Playerlist::getViewingplayer()) == false)
+      if (it->isVisible(Playerlist::getViewingplayer()) == false)
         continue;
-      if ((*it)->isBurnt() == true)
-        tmp = gc->getSmallRuinedCityImage();
+      if (it->isBurnt() == true)
+        tmp = ImageCache::getInstance()->getSmallRuinedCityImage();
       else
-        tmp = gc->getShieldPic(0, (*it)->getOwner());
-  
-      Vector<int> pos = (*it)->getPos();
+        tmp = ImageCache::getInstance()->getShieldPic(0, it->getOwner());
+
+      Vector<int> pos = it->getPos();
       pos = mapToSurface(pos);
       tmp->blit_centered(surface, pos);
-  }
+    }
 }
 
 void HistoryMap::updateCities (LocationList<City*> *clist, LocationList<Ruin*> *rlist)

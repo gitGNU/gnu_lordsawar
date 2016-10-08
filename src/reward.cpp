@@ -117,10 +117,9 @@ guint32 Reward_Gold::getRandomGoldPieces()
 Reward_Allies::Reward_Allies(guint32 army_type, guint32 army_set, guint32 count)
     :Reward(Reward::ALLIES), d_count(count)
 {
-  Armysetlist *al = Armysetlist::getInstance();
   d_army_type = army_type;
   d_army_set = army_set;
-  d_army  = al->getArmy (army_set, army_type);
+  d_army  = Armysetlist::getInstance()->getArmy (army_set, army_type);
 }
 
 Reward_Allies::Reward_Allies(const ArmyProto *army, guint32 count)
@@ -134,11 +133,10 @@ Reward_Allies::Reward_Allies(const ArmyProto *army, guint32 count)
 Reward_Allies::Reward_Allies(XML_Helper* helper)
     :Reward(helper)
 {
-  Armysetlist *al = Armysetlist::getInstance();
   helper->getData(d_count, "num_allies");
   helper->getData(d_army_type, "ally_type");
   helper->getData(d_army_set, "ally_armyset");
-  d_army = al->getArmy (d_army_set, d_army_type);
+  d_army = Armysetlist::getInstance()->getArmy (d_army_set, d_army_type);
 }
 
 Reward_Allies::Reward_Allies (const Reward_Allies& orig)
@@ -273,9 +271,8 @@ bool Reward_Item::save(XML_Helper* helper) const
 
 Item *Reward_Item::getRandomItem()
 {
-  Itemlist *il = Itemlist::getInstance();
-  Itemlist::iterator it = il->begin();
-  guint32 id = Rnd::rand() % il->size();
+  Itemlist::iterator it = Itemlist::getInstance()->begin();
+  guint32 id = Rnd::rand() % Itemlist::getInstance()->size();
   std::advance(it, id);
   ItemProto *i = it->second;
   return new Item(*i, id);
@@ -323,24 +320,22 @@ bool Reward_Ruin::save(XML_Helper* helper) const
 Ruin *Reward_Ruin::getRandomHiddenRuin()
 {
   std::vector<Ruin *>hidden_ruins;
-  Ruinlist *rl = Ruinlist::getInstance();
-  Rewardlist *rw = Rewardlist::getInstance();
-  for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
+  for (auto it: *Ruinlist::getInstance())
     {
-      if ((*it)->isHidden())
-	if ((*it)->getOwner() == NULL || 
-	    (*it)->getOwner() == Playerlist::getInstance()->getNeutral())
+      if (it->isHidden())
+	if (it->getOwner() == NULL || 
+	    it->getOwner() == Playerlist::getInstance()->getNeutral())
 	  {
 	    //is it already being pointed to by a reward in the rewardlist?
 	    bool found = false;
-	    for (Rewardlist::iterator i = rw->begin(); i != rw->end(); i++)
+	    for (auto i: *Rewardlist::getInstance())
 	      {
-		if ((*i)->getType() == Reward::RUIN)
+		if (i->getType() == Reward::RUIN)
 		  {
-		    Ruin *r = static_cast<Reward_Ruin*>(*i)->getRuin();
+		    Ruin *r = static_cast<Reward_Ruin*>(i)->getRuin();
 		    if (r)
 		      {
-			if (r->getPos() == (*it)->getPos())
+			if (r->getPos() == it->getPos())
 			  {
 			    found = true;
 			    break;
@@ -349,7 +344,7 @@ Ruin *Reward_Ruin::getRandomHiddenRuin()
 		  }
 	      }
 	    if (found == false)
-	      hidden_ruins.push_back(*it);
+	      hidden_ruins.push_back(it);
 	  }
     }
  if (hidden_ruins.empty())

@@ -2932,13 +2932,12 @@ bool Player::AI_maybeVisitTempleForQuest(Stack *s, int dist, bool &got_quest, bo
 bool Player::AI_maybeVisitRuin(Stack *s, int dist, bool &visited_ruin, bool &stack_died)
 {
   bool stack_moved = false;
-  Ruinlist *rl = Ruinlist::getInstance();
 
   //if this stack doesn't have a hero then we can't search the ruin.
   if (s->hasHero() == false)
     return false;
 
-  Ruin *ruin = rl->getNearestUnsearchedRuin(s->getPos(), dist);
+  Ruin *ruin = Ruinlist::getInstance()->getNearestUnsearchedRuin(s->getPos(), dist);
   if (!ruin)
     return false;
 
@@ -4402,10 +4401,9 @@ void Player::doRuinsReset()
 {
   if (this != Playerlist::getInstance()->getNeutral())
     return;
-  Ruinlist* rl = Ruinlist::getInstance();
-  for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
+  for (auto it: *Ruinlist::getInstance())
     {
-      Stack* keeper = (*it)->getOccupant();
+      Stack* keeper = it->getOccupant();
       if (keeper)
         keeper->reset();
     }

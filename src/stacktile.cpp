@@ -133,10 +133,9 @@ std::list<Stack *> StackTile::getStacks() const
   std::list<Stack *> stacks;
   for (const_iterator it = begin(); it != end(); it++)
     {
-      Playerlist *pl = Playerlist::getInstance();
-      for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
+      for (auto i: *Playerlist::getInstance())
 	{
-	  Stack *stack = (*i)->getStacklist()->getStackById((*it).stack_id);
+	  Stack *stack = i->getStacklist()->getStackById((*it).stack_id);
 	  if (stack)
 	    stacks.push_back(stack);
 	}

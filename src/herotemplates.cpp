@@ -99,17 +99,16 @@ HeroProto *HeroTemplates::getRandomHero(int player_id)
 
 int HeroTemplates::loadHeroTemplates()
 {
-  const Armysetlist* al = Armysetlist::getInstance();
-
   d_male_heroes.clear();
   d_female_heroes.clear();
 
   // list all the army types that are heroes.
   Player *p = Playerlist::getInstance()->getNeutral();
-  Armyset *as = al->get(p->getArmyset());
+  Armyset *as = Armysetlist::getInstance()->get(p->getArmyset());
   for (Armyset::iterator j = as->begin(); j != as->end(); ++j)
     {
-      const ArmyProto *a = al->getArmy (p->getArmyset(), (*j)->getId());
+      const ArmyProto *a = 
+        Armysetlist::getInstance()->getArmy (p->getArmyset(), (*j)->getId());
       if (a->isHero())
 	{
 	  if (a->getGender() == Hero::FEMALE)

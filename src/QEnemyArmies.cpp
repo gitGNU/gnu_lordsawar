@@ -39,12 +39,10 @@
 Player* getVictimPlayer(Player *p)
 {
   std::vector<Player*> players;
-  const Playerlist* pl = Playerlist::getInstance();
-  for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
-    {
-      if ((*it) != p && (*it)->isDead() == false && (*it) != pl->getNeutral())
-	players.push_back((*it));
-    }
+  for (auto i: *Playerlist::getInstance())
+    if (i != p && !i->isDead() && i != Playerlist::getInstance()->getNeutral())
+      players.push_back(i);
+
   if (players.size() == 0)
     return NULL;
   else

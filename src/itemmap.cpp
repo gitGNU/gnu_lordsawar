@@ -30,14 +30,10 @@ ItemMap::ItemMap(std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> ba
 
 void ItemMap::draw_bag(Vector<int> pos)
 {
-    ImageCache *gc = ImageCache::getInstance();
     Vector<int> start = pos;
-
     start = mapToSurface(start);
-
     start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
-
-    PixMask *bagpic = gc->getSmallBagImage();
+    PixMask *bagpic = ImageCache::getInstance()->getSmallBagImage();
     bagpic->blit_centered(surface, start);
 }
 

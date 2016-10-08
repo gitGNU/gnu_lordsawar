@@ -32,8 +32,6 @@ RuinMap::RuinMap(NamedLocation *r)
 
 void RuinMap::draw_ruins (bool show_selected)
 {
-  ImageCache *gc = ImageCache::getInstance();
-
   // Draw all ruins as pictures over their location -- showing them as
   // explored/unexplored
   for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
@@ -46,13 +44,13 @@ void RuinMap::draw_ruins (bool show_selected)
         continue;
       PixMask *tmp;
       if ((*it)->isSearched())
-        tmp = gc->getSmallRuinExploredImage();
+        tmp = ImageCache::getInstance()->getSmallRuinExploredImage();
       else
         {
           if ((*it)->getType() == Ruin::STRONGHOLD)
-            tmp = gc->getSmallStrongholdUnexploredImage();
+            tmp = ImageCache::getInstance()->getSmallStrongholdUnexploredImage();
           else
-            tmp = gc->getSmallRuinUnexploredImage();
+            tmp = ImageCache::getInstance()->getSmallRuinUnexploredImage();
         }
   
       Vector<int> pos = (*it)->getPos();
@@ -74,22 +72,19 @@ void RuinMap::draw_ruins (bool show_selected)
 
 void RuinMap::draw_temples (bool show_selected)
 {
-  ImageCache *gc = ImageCache::getInstance();
-
   // Draw all temples as pictures over their location
-  for (Templelist::iterator it = Templelist::getInstance()->begin();
-      it != Templelist::getInstance()->end(); it++)
+  for (auto it: *Templelist::getInstance())
   {
-      if ((*it)->isVisible(Playerlist::getViewingplayer()) == false)
+      if (it->isVisible(Playerlist::getViewingplayer()) == false)
         continue;
   
-      Vector<int> pos = (*it)->getPos();
+      Vector<int> pos = it->getPos();
       pos = mapToSurface(pos);
-      PixMask *templepic = gc->getSmallTempleImage();
+      PixMask *templepic = ImageCache::getInstance()->getSmallTempleImage();
       templepic->blit_centered(surface, pos);
       if (show_selected)
         {
-          if ((*it)->getId() == ruin->getId()) //is this the selected ruin?
+          if (it->getId() == ruin->getId()) //is this the selected ruin?
             {
 	      Gdk::RGBA box_color = Gdk::RGBA();
 	      box_color.set_rgba(100,100,100);
@@ -118,14 +113,10 @@ void RuinMap::mouse_button_event(MouseButtonEvent e)
   if (e.button == MouseButtonEvent::LEFT_BUTTON && 
       e.state == MouseButtonEvent::PRESSED)
     {
-      Ruinlist *rl = Ruinlist::getInstance();
-      Ruin *nearestRuin;
-      Templelist *tl = Templelist::getInstance();
-      Temple *nearestTemple;
-      Vector<int> dest;
-      dest = mapFromScreen(e.pos);
+      Vector<int> dest = mapFromScreen(e.pos);
 
-      nearestRuin = rl->getNearestVisibleRuin(dest, 4);
+      Ruin *nearestRuin = 
+        Ruinlist::getInstance()->getNearestVisibleRuin(dest, 4);
       if (nearestRuin)
 	{
 	  ruin = nearestRuin;
@@ -133,7 +124,8 @@ void RuinMap::mouse_button_event(MouseButtonEvent e)
 	}
       else
 	{
-          nearestTemple = tl->getNearestVisibleTemple(dest, 4);
+          Temple *nearestTemple =
+            Templelist::getInstance()->getNearestVisibleTemple(dest, 4);
           if (nearestTemple)
 	    {
 	      ruin = nearestTemple;

@@ -422,9 +422,8 @@ void Playerlist::calculateWinners()
 	if ((*it)->isDead() == true)
 	  continue;
 
-	Citylist *clist = Citylist::getInstance();
 	float city_component = (float)
-	  ((float) clist->countCities(*it)/ (float)total_cities) * 70.0;
+	  ((float) Citylist::getInstance()->countCities(*it)/ (float)total_cities) * 70.0;
 	float gold_component = (float)
 	  ((float) (*it)->getGold() / (float)total_gold) * 10.0;
 	float army_component = (float)
@@ -586,9 +585,8 @@ void Playerlist::nextRound(bool diplomacy, bool *surrender_already_offered)
 	{
 	  if ((*it)->getType() == Player::HUMAN)
 	    {
-	      Citylist *cl = Citylist::getInstance();
-	      int target_level = cl->size() / 2;
-	      if (cl->countCities(*it) > target_level)
+	      int target_level = Citylist::getInstance()->size() / 2;
+	      if (Citylist::getInstance()->countCities(*it) > target_level)
 		{
 		  *surrender_already_offered = 1;
 		  ssurrender.emit(*it);

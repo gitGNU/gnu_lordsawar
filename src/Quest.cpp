@@ -58,26 +58,19 @@ Quest::Quest(QuestsManager& q_mgr, XML_Helper* helper)
 
 Hero* Quest::getHeroById(guint32 hero, Stack** stack)
 {
-    Playerlist* pl = Playerlist::getInstance();
-	Playerlist::const_iterator pit;
-    for (pit = pl->begin(); pit != pl->end(); pit++)
-    {
-        Stacklist* sl = (*pit)->getStacklist();
-        for (Stacklist::const_iterator it = sl->begin(); it != sl->end(); it++)
+  for (auto pit: *Playerlist::getInstance())
+    for (auto it: *pit->getStacklist())
+      for (auto sit: *it)
         {
-            for (Stack::const_iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
+          if ( (sit->isHero()) && (sit->getId() == hero))
             {
-                if ( ((*sit)->isHero()) && ((*sit)->getId() == hero) )
-                {
-                    if (stack)
-                        *stack = (*it);
-                    // isHero is TRUE, so dynamic_cast should succeed
-                    return dynamic_cast<Hero*>(*sit);
-                }
+              if (stack)
+                *stack = it;
+              // isHero is TRUE, so dynamic_cast should succeed
+              return dynamic_cast<Hero*>(sit);
             }
         }
-    }
-    return NULL;
+  return NULL;
 }
 
 bool Quest::save(XML_Helper* helper) const
