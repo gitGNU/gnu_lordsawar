@@ -130,42 +130,40 @@ Player::Player(const Player& player)
     d_income(player.d_income), d_observable(player.d_observable),
     surrendered(player.surrendered),abort_requested(player.abort_requested)
 {
-    // as the other player is propably dumped somehow, we need to deep copy
-    // everything.
-    d_stacklist = new Stacklist();
-    for (Stacklist::iterator it = player.d_stacklist->begin(); 
-	 it != player.d_stacklist->end(); it++)
+  // as the other player is propably dumped somehow, we need to deep copy
+  // everything.
+  d_stacklist = new Stacklist();
+  for (Stacklist::iterator it = player.d_stacklist->begin(); 
+       it != player.d_stacklist->end(); it++)
     {
-        Stack* mine = new Stack(**it, true);
-        // change the stack's loyalty
-        mine->setPlayer(this);
-        d_stacklist->add(mine);
+      Stack* mine = new Stack(**it, true);
+      // change the stack's loyalty
+      mine->setPlayer(this);
+      d_stacklist->add(mine);
     }
 
-    // copy actions
-    std::list<Action*>::const_iterator ait;
-    for (ait = player.d_actions.begin(); ait != player.d_actions.end(); ait++)
-        d_actions.push_back(Action::copy(*ait));
+  // copy actions
+  for (auto ait: player.d_actions)
+    d_actions.push_back(Action::copy(ait));
 
-    // copy events
-    std::list<History*>::const_iterator pit;
-    for (pit = player.d_history.begin(); pit != player.d_history.end(); pit++)
-        d_history.push_back(History::copy(*pit));
+  // copy events
+  for (auto pit: player.d_history)
+    d_history.push_back(History::copy(pit));
 
-    // copy fogmap; TBD
-    d_fogmap = new FogMap(*player.getFogMap());
+  // copy fogmap; TBD
+  d_fogmap = new FogMap(*player.getFogMap());
 
-    // copy diplomatic states
-    for (unsigned int i = 0 ; i < MAX_PLAYERS; i++)
-      {
-	d_diplomatic_state[i] = player.d_diplomatic_state[i];
-	d_diplomatic_proposal[i] = player.d_diplomatic_proposal[i];
-	d_diplomatic_score[i] = player.d_diplomatic_score[i];
-      }
-    d_diplomatic_rank = player.d_diplomatic_rank;
-    d_diplomatic_title = player.d_diplomatic_title;
+  // copy diplomatic states
+  for (unsigned int i = 0 ; i < MAX_PLAYERS; i++)
+    {
+      d_diplomatic_state[i] = player.d_diplomatic_state[i];
+      d_diplomatic_proposal[i] = player.d_diplomatic_proposal[i];
+      d_diplomatic_score[i] = player.d_diplomatic_score[i];
+    }
+  d_diplomatic_rank = player.d_diplomatic_rank;
+  d_diplomatic_title = player.d_diplomatic_title;
 
-    d_triumphs = new Triumphs(*player.getTriumphs());
+  d_triumphs = new Triumphs(*player.getTriumphs());
 }
 
 Player::Player(XML_Helper* helper)
@@ -304,9 +302,9 @@ Player* Player::create(Player* orig, Type type)
 void Player::initTurn()
 {
   printf("local: dumping %lu actions\n", d_actions.size());
-  for (std::list<Action*>::iterator i = d_actions.begin(); i != d_actions.end(); i++)
+  for (auto i: d_actions)
     {
-      printf("\t%s %s\n", Action::actionTypeToString((*i)->getType()).c_str(), (*i)->dump().c_str());
+      printf("\t%s %s\n", Action::actionTypeToString(i->getType()).c_str(), i->dump().c_str());
     }
   clearActionlist();
   History_StartTurn* item = new History_StartTurn();
@@ -341,37 +339,27 @@ Glib::ustring Player::getName() const
 
 void Player::dumpActionlist() const
 {
-    for (std::list<Action*>::const_iterator it = d_actions.begin();
-        it != d_actions.end(); it++)
-    {
-      std::cerr <<(*it)->dump() << std::endl;
-    }    
+    for (auto it: d_actions)
+      std::cerr << it->dump() << std::endl;
 }
 
 void Player::dumpHistorylist() const
 {
-    for (std::list<History*>::const_iterator it = d_history.begin();
-        it != d_history.end(); it++)
-    {
-      std::cerr <<(*it)->dump() << std::endl;
-    }    
+  for (auto it: d_history)
+    std::cerr << it->dump() << std::endl;
 }
 
 void Player::clearActionlist()
 {
-    for (std::list<Action*>::iterator it = d_actions.begin();
-        it != d_actions.end(); it++)
-      delete (*it);
-    d_actions.clear();
+  for (auto it: d_actions)
+    delete (it);
+  d_actions.clear();
 }
 
 void Player::clearHistorylist(std::list<History*> &history)
 {
-  for (std::list<History*>::iterator it = history.begin();
-       it != history.end(); it++)
-    {
-      delete (*it);
-    }
+  for (auto it: history)
+    delete (it);
   history.clear();
 }
 
@@ -495,14 +483,12 @@ bool Player::save(XML_Helper* helper) const
     retval &= helper->saveData("observable", d_observable);
 
     //save the actionlist
-    for (std::list<Action*>::const_iterator it = d_actions.begin();
-            it != d_actions.end(); it++)
-        retval &= (*it)->save(helper);
+    for (auto it: d_actions)
+        retval &= it->save(helper);
     
     //save the pasteventlist
-    for (std::list<History*>::const_iterator it = d_history.begin();
-            it != d_history.end(); it++)
-        retval &= (*it)->save(helper);
+    for (auto it: d_history)
+      retval &= it->save(helper);
 
     retval &= d_stacklist->save(helper);
     retval &= d_fogmap->save(helper);
@@ -1524,7 +1510,7 @@ Quest* Player::doHeroGetQuest(Hero *hero, bool except_raze)
 Quest* Player::heroGetQuest(Hero *hero, Temple* t, bool except_raze)
 {
   debug("Player::stackGetQuest")
-
+  (void) t;
   Quest *q = doHeroGetQuest(hero, except_raze);
   if (q == NULL)
     return q;
@@ -3431,16 +3417,16 @@ std::list<Action_Produce *> Player::getUnitsProducedThisTurn() const
     }
   return actions;
 }
+
 std::list<Action *> Player::getReportableActions() const
 {
   std::list<Action *> actions;
-  std::list<Action *>::const_iterator it = d_actions.begin();
-  for (; it != d_actions.end(); it++)
+  for (auto it: d_actions)
     {
-      if ((*it)->getType() == Action::PRODUCE_UNIT ||
-	  (*it)->getType() == Action::PRODUCE_VECTORED_UNIT ||
-	  (*it)->getType() == Action::CITY_DESTITUTE)
-	actions.push_back(*it);
+      if (it->getType() == Action::PRODUCE_UNIT ||
+	  it->getType() == Action::PRODUCE_VECTORED_UNIT ||
+	  it->getType() == Action::CITY_DESTITUTE)
+	actions.push_back(it);
     }
   return actions;
 }
@@ -3583,27 +3569,24 @@ Player::Type Player::playerTypeFromString(const Glib::ustring str)
 
 bool Player::hasAlreadyInitializedTurn() const
 {
-  for (std::list<Action*>::const_iterator it = d_actions.begin();
-       it != d_actions.end(); it++)
-    if ((*it)->getType() == Action::INIT_TURN)
+  for (auto it: d_actions)
+    if (it->getType() == Action::INIT_TURN)
       return true;
   return false;
 }
 
 bool Player::hasAlreadyCollectedTaxesAndPaidUpkeep() const
 {
-  for (std::list<Action*>::const_iterator it = d_actions.begin();
-       it != d_actions.end(); it++)
-    if ((*it)->getType() == Action::COLLECT_TAXES_AND_PAY_UPKEEP)
+  for (auto it: d_actions)
+    if (it->getType() == Action::COLLECT_TAXES_AND_PAY_UPKEEP)
       return true;
   return false;
 }
 
 bool Player::hasAlreadyEndedTurn() const
 {
-  for (std::list<Action*>::const_iterator it = d_actions.begin();
-       it != d_actions.end(); it++)
-    if ((*it)->getType() == Action::END_TURN)
+  for (auto it: d_actions)
+    if (it->getType() == Action::END_TURN)
       return true;
   return false;
 }
@@ -3662,12 +3645,11 @@ std::list<Vector<int> > Player::getStackTrack(Stack *s) const
 {
   std::list<Vector<int> > points;
   Vector<int> delta = Vector<int>(0,0);
-  for (std::list<Action*>::const_iterator it = d_actions.begin();
-       it != d_actions.end(); it++)
+  for (auto it: d_actions)
     {
-      if ((*it)->getType() == Action::STACK_MOVE)
+      if (it->getType() == Action::STACK_MOVE)
 	{
-	  Action_Move *action = dynamic_cast<Action_Move*>(*it);
+	  Action_Move *action = dynamic_cast<Action_Move*>(it);
 	  if (action->getStackId() == s->getId())
 	    {
 	      if (points.size() == 0)
@@ -3860,12 +3842,9 @@ void Player::clearFogMap()
 std::list<Action *> Player::getActionsThisTurn(int type) const
 {
   std::list<Action *> actions;
-  std::list<Action *>::const_iterator it = d_actions.begin();
-  for (; it != d_actions.end(); it++)
-    {
-      if ((*it)->getType() == Action::Type(type))
-	actions.push_back(*it);
-    }
+  for (auto it: d_actions)
+    if (it->getType() == Action::Type(type))
+      actions.push_back(it);
   return actions;
 }
 
