@@ -324,8 +324,7 @@ void EditorBigMap::change_map_under_cursor()
               Stack *s = gm->getStack(from);
               if (!s)
                 s = gm->getStack(from);
-              std::list<Stack *> enemy_stacks =
-                gm->getEnemyStacks(tile, s->getOwner());
+              auto enemy_stacks = gm->getEnemyStacks(tile, s->getOwner());
               if (gm->canPutStack(s->size(), s->getOwner(), tile) == true &&
                   enemy_stacks.empty() == true)
                 {

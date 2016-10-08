@@ -2817,11 +2817,8 @@ bool Player::AI_maybePickUpItems(Stack *s, int max_dist,
     return false;
 
   //ok, which bag of stuff is closest?
-  std::vector<Vector<int> > tiles = GameMap::getInstance()->getItems();
-  std::vector<Vector<int> >::iterator it = tiles.begin();
-  for(; it != tiles.end(); it++)
+  for (auto tile: GameMap::getInstance()->getItems())
     {
-      Vector<int> tile = *it;
       //don't consider bags of stuff that are inside enemy cities
       City *c = GameMap::getCity(tile);
       if (c)

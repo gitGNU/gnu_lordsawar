@@ -797,13 +797,12 @@ guint32 Tileset::calculate_preferred_tile_size() const
     }
 
   guint32 maxcount = 0;
-  for (std::map<guint32, guint32>::iterator it = sizecounts.begin(); 
-       it != sizecounts.end(); it++)
+  for (auto it: sizecounts)
     {
-      if ((*it).second > maxcount)
+      if (it.second > maxcount)
         {
-          maxcount = (*it).second;
-          tilesize = (*it).first;
+          maxcount = it.second;
+          tilesize = it.first;
         }
     }
   if (tilesize == 0)

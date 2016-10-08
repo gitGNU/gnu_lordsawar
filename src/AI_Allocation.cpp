@@ -170,8 +170,7 @@ int AI_Allocation::continueQuests()
   if (GameScenarioOptions::s_play_with_quests == GameParameters::NO_QUESTING)
     return count;
 
-  std::vector<Quest*> quests =
-    QuestsManager::getInstance()->getPlayerQuests(d_owner);
+  auto quests = QuestsManager::getInstance()->getPlayerQuests(d_owner);
   for (std::vector<Quest*>::iterator i = quests.begin(); i != quests.end(); i++)
     {
       Quest *quest = *i;

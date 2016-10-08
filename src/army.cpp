@@ -281,21 +281,13 @@ bool Army::bless(Temple *temple)
   if (!temple)
     return false;
 
-  guint32 templeId = temple->getId();
-  std::list<unsigned int>::const_iterator tit = d_visitedTemples.begin();
-  std::list<unsigned int>::const_iterator tend = d_visitedTemples.end();
-  for(;tit != tend;++tit)
-    {
-      if ((*tit) == templeId)
-	{
-	  visited = true;
-	  break;
-	}
-    }
+  for (auto it: d_visitedTemples)
+    if (it == temple->getId())
+      visited = true;
 
   if (visited == false)  /* no?  increase strength */
     {
-      d_visitedTemples.push_back(templeId);
+      d_visitedTemples.push_back(temple->getId());
       setStat(STRENGTH, d_strength + 1);
     }
   return !visited;
@@ -385,10 +377,8 @@ bool Army::saveData(XML_Helper* helper) const
   retval &= helper->saveData("battlesnumber",d_battles_number);    
 
   std::stringstream temples;
-  std::list<unsigned int>::const_iterator tit = d_visitedTemples.begin();
-  std::list<unsigned int>::const_iterator tend = d_visitedTemples.end();
-  for(;tit != tend;++tit)
-    temples << (*tit) << " ";
+  for (auto it: d_visitedTemples)
+    temples << it << " ";
   retval &= helper->saveData("visited_temples", temples.str());
 
   return retval;

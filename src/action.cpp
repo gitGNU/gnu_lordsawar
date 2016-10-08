@@ -2118,10 +2118,8 @@ bool Action_ReorderArmies::doSave(XML_Helper* helper) const
   retval &= helper->saveData("player_id", d_player_id);
 
   Glib::ustring s;
-  std::list<guint32>::const_iterator tit = d_army_ids.begin();
-  std::list<guint32>::const_iterator tend = d_army_ids.end();
-  for(;tit != tend;++tit)
-    s += String::ucompose("%1 ", (*tit));
+  for (auto it: d_army_ids)
+    s += String::ucompose("%1 ", it);
   retval &= helper->saveData("armies", s);
   return retval;
 }

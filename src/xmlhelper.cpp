@@ -366,18 +366,6 @@ bool XML_Helper::registerTag(Glib::ustring tag, XML_Slot callback)
     return true;
 }
 
-bool XML_Helper::unregisterTag(Glib::ustring tag)
-{
-    std::map<Glib::ustring, XML_Slot>::iterator it = d_callbacks.find(tag);
-
-    if (it == d_callbacks.end())
-    //item doesn't exist
-        return false;
-    
-    d_callbacks.erase(it);
-    return true;
-}
-
 bool XML_Helper::getData(Gdk::RGBA & data, Glib::ustring name)
 {
     //the data tags are stored with leading "d_", so prepend it here

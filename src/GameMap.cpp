@@ -943,8 +943,7 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 		    {
 		      if (idx != -1)
                         {
-                          Maptile::Building b =
-                            getTile(j+J, i+I)->getBuilding();
+                          Maptile::Building b = getTile(j+J, i+I)->getBuilding();
                           setTile(j+J, i+I,
                                   new Maptile (j+J, i+I, (guint32)idx));
                           if (b)

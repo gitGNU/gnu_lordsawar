@@ -48,8 +48,6 @@
   * 
   * Loading:
   * First, you supply xml_helper with callback functions via registerTag.
-  * You can also unregister these functions with unregisterTag, but usually this
-  * isn't neccessary.
   *
   * When you are ready, call parse. The parser will start until it finds a special
   * tag (not starting with d_). It will then parse the next tags, assuming that
@@ -169,13 +167,6 @@ class XML_Helper: public xmlpp::SaxParser
           * @return true on success, false otherwise
           */
         bool registerTag(Glib::ustring tag, XML_Slot callback);
-
-        /** Removes a callback function from the list
-          * 
-          * @param tag          the tag whose callback should be deleted
-          * @return true on success, false otherwise
-          */
-        bool unregisterTag(Glib::ustring tag);
 
         /** Provides cached data
           * 

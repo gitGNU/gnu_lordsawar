@@ -229,13 +229,9 @@ Stacklist::Stacklist(XML_Helper* helper)
 Stacklist::~Stacklist()
 {
   //disconnect the signals
-  for (ConnectionMap::iterator it = d_connections.begin(); 
-       it != d_connections.end(); it++)
-    {
-      std::list<sigc::connection> l = (*it).second;
-      for (std::list<sigc::connection>::iterator lit = l.begin(); lit != l.end(); lit++)
-	(*lit).disconnect();
-    }
+  for (auto it: d_connections)
+    for (auto lit: it.second)
+      lit.disconnect();
   flClear();
 }
 
@@ -532,9 +528,8 @@ void Stacklist::on_stack_died (Stack *stack)
   ConnectionMap::iterator it = d_connections.find(stack);
   if (it != d_connections.end())
     {
-      std::list<sigc::connection> l = (*it).second;
-      for (std::list<sigc::connection>::iterator lit = l.begin(); lit != l.end(); lit++)
-	(*lit).disconnect();
+      for (auto lit: (*it).second)
+	lit.disconnect();
     }
   d_id.erase(d_id.find(stack->getId()));
   return;

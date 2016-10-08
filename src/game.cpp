@@ -78,12 +78,8 @@ Game *Game::current_game = 0;
 #define debug(x)
 void Game::addPlayer(Player *p)
 {
-
-  //disconnect prior players' connections
-  for (std::list<sigc::connection>::iterator it = 
-       connections[p->getId()].begin(); 
-       it != connections[p->getId()].end(); it++) 
-    (*it).disconnect();
+  for (auto it: connections[p->getId()])
+    it.disconnect();
   connections[p->getId()].clear();
 
   //now setup the connections that are specific for human players
@@ -337,9 +333,8 @@ Game::~Game()
 {
   for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
     {
-      for (std::list<sigc::connection>::iterator it = connections[i].begin(); 
-	   it != connections[i].end(); it++) 
-	(*it).disconnect();
+      for (auto it: connections[i])
+	it.disconnect();
       connections[i].clear();
     }
     delete d_gameScenario;
@@ -1094,8 +1089,7 @@ void Game::init_turn_for_player(Player* p)
     {
       if (Commentator::getInstance()->hasComment() == true)
         {
-          std::vector<Glib::ustring> comments =
-            Commentator::getInstance()->getComments(p);
+          auto comments = Commentator::getInstance()->getComments(p);
           if (comments.size() > 0)
             commentator_comments.emit(comments[Rnd::rand() % comments.size()]);
         }

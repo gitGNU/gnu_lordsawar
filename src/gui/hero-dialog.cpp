@@ -138,68 +138,59 @@ void HeroDialog::addHistoryEvent(History *history)
     {
     case History::FOUND_SAGE: 
 	{
-	  History_FoundSage *ev =
-            static_cast<History_FoundSage *>(history);
+	  auto *ev = static_cast<History_FoundSage *>(history);
 	  s = String::ucompose(_("%1 finds a sage!"), ev->getHeroName());
 	  break;
 	}
     case History::HERO_EMERGES:
 	{
-	  History_HeroEmerges *ev =
-            static_cast<History_HeroEmerges *>(history);
+	  auto *ev = static_cast<History_HeroEmerges *>(history);
 	  s = String::ucompose(_("%1 emerges in %2!"), ev->getHeroName(),
 			       ev->getCityName());
 	  break;
 	}
     case History::HERO_QUEST_STARTED:
 	{
-	  History_HeroQuestStarted *ev =
-            static_cast<History_HeroQuestStarted*>(history);
+	  auto *ev = static_cast<History_HeroQuestStarted*>(history);
 	  s = String::ucompose(_("%1 begins a quest!"), ev->getHeroName());
 	  break;
 	}
     case History::HERO_QUEST_COMPLETED:
 	{
-	  History_HeroQuestCompleted *ev =
-            static_cast<History_HeroQuestCompleted *>(history);
+	  auto *ev = static_cast<History_HeroQuestCompleted *>(history);
 	  s = String::ucompose(_("%1 finishes a quest!"), ev->getHeroName());
 	  break;
 	}
     case History::HERO_KILLED_IN_CITY:
 	{
-	  History_HeroKilledInCity *ev =
-            static_cast<History_HeroKilledInCity *>(history);
+	  auto *ev = static_cast<History_HeroKilledInCity *>(history);
 	  s = String::ucompose(_("%1 is killed in %2!"), ev->getHeroName(),
 			       ev->getCityName());
 	  break;
 	}
     case History::HERO_KILLED_IN_BATTLE:
 	{
-	  History_HeroKilledInBattle *ev =
-            static_cast<History_HeroKilledInBattle *>(history);
+	  auto *ev = static_cast<History_HeroKilledInBattle *>(history);
 	  s = String::ucompose(_("%1 is killed in battle!"), ev->getHeroName());
 	  break;
 	}
     case History::HERO_KILLED_SEARCHING:
 	{
-	  History_HeroKilledSearching *ev =
-            static_cast<History_HeroKilledSearching *>(history);
+	  auto *ev = static_cast<History_HeroKilledSearching *>(history);
 	  s = String::ucompose(_("%1 is killed while searching!"), 
 			       ev->getHeroName());
 	  break;
 	}
     case History::HERO_CITY_WON:
 	{
-	  History_HeroCityWon *ev =
-            static_cast<History_HeroCityWon *>(history);
+	  auto *ev = static_cast<History_HeroCityWon *>(history);
 	  s = String::ucompose(_("%1 conquers %2!"), ev->getHeroName(), 
 			       ev->getCityName());
 	  break;
 	}
     case History::HERO_FINDS_ALLIES:
 	{
-	  History_HeroFindsAllies *ev =
-            static_cast<History_HeroFindsAllies*>(history);
+	  auto *ev = static_cast<History_HeroFindsAllies*>(history);
 	  s = String::ucompose(_("%1 finds allies!"), ev->getHeroName());
 	  break;
 	}
