@@ -30,6 +30,8 @@
 #include "templelist.h"
 #include "playerlist.h"
 
+#define method(x) sigc::mem_fun(*this, &RuinReportDialog::x)
+
 RuinReportDialog::RuinReportDialog(Gtk::Window &parent, Vector<int> pos)
  : LwDialog(parent, "ruin-report-dialog.ui")
 {
@@ -52,15 +54,14 @@ RuinReportDialog::RuinReportDialog(Gtk::Window &parent, Vector<int> pos)
     l = ruin;
 
   ruinmap = new RuinMap(l);
-  ruinmap->map_changed.connect(
-    sigc::mem_fun(this, &RuinReportDialog::on_map_changed));
+  ruinmap->map_changed.connect(method(on_map_changed));
 
   Gtk::EventBox *map_eventbox;
   xml->get_widget("map_eventbox", map_eventbox);
 
   map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
-  map_eventbox->signal_button_press_event().connect(
-    sigc::mem_fun(*this, &RuinReportDialog::on_map_mouse_button_event));
+  map_eventbox->signal_button_press_event().connect
+    (method(on_map_mouse_button_event));
   dialog->set_title(_("Ruins and Temples"));
 
   xml->get_widget("name_label", name_label);

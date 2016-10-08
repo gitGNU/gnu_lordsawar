@@ -28,14 +28,15 @@
 #include "backpack-editor-dialog.h"
 #include "Backpack.h"
 
+#define method(x) sigc::mem_fun(*this, &HeroEditorDialog::x)
+
 HeroEditorDialog::HeroEditorDialog(Gtk::Window &parent, Hero *hero)
  : LwEditorDialog(parent, "hero-editor-dialog.ui")
 {
   d_hero = hero;
     
     xml->get_widget("edit_backpack_button", edit_backpack_button);
-    edit_backpack_button->signal_clicked().connect(
-	sigc::mem_fun(this, &HeroEditorDialog::on_edit_backpack_clicked));
+    edit_backpack_button->signal_clicked().connect (method(on_edit_backpack_clicked));
     xml->get_widget("male_radiobutton", male_radiobutton);
     xml->get_widget("female_radiobutton", female_radiobutton);
     xml->get_widget("name_entry", name_entry);

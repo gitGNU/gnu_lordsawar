@@ -33,6 +33,7 @@
 #include "ucompose.hpp"
 #include "GameMap.h"
 
+#define method(x) sigc::mem_fun(*this, &NewMapDialog::x)
 
 NewMapDialog::NewMapDialog(Gtk::Window &parent)
  : LwEditorDialog(parent, "new-map-dialog.ui")
@@ -81,8 +82,7 @@ NewMapDialog::NewMapDialog(Gtk::Window &parent)
     tile_size_combobox->set_active(default_id);
     xml->get_widget("tile_size_box", box);
     box->pack_start(*tile_size_combobox, Gtk::PACK_SHRINK);
-    tile_size_combobox->signal_changed().connect
-      (sigc::mem_fun(*this, &NewMapDialog::on_tile_size_changed));
+    tile_size_combobox->signal_changed().connect (method(on_tile_size_changed));
 
     // make new tile themes combobox
     tile_theme_combobox = manage(new Gtk::ComboBoxText);
@@ -137,14 +137,12 @@ NewMapDialog::NewMapDialog(Gtk::Window &parent)
     xml->get_widget("fill_style_alignment", alignment);
     alignment->add(*fill_style_combobox);
 
-    fill_style_combobox->signal_changed().connect
-      (sigc::mem_fun(*this, &NewMapDialog::on_fill_style_changed));
+    fill_style_combobox->signal_changed().connect (method(on_fill_style_changed));
     fill_style_combobox->set_active(6);
 
     // map size
     map_size_combobox->set_active(MAP_SIZE_NORMAL);
-    map_size_combobox->signal_changed().connect
-      (sigc::mem_fun(*this, &NewMapDialog::on_map_size_changed));
+    map_size_combobox->signal_changed().connect(method(on_map_size_changed));
     grass_scale->set_value(78);
     water_scale->set_value(7);
     swamp_scale->set_value(2);

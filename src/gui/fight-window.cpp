@@ -38,6 +38,8 @@
 #include "Tile.h"
 #include "SmallTile.h"
 
+#define method(x) sigc::mem_fun(*this, &FightWindow::x)
+
 FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
 {
   Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("fight-window.ui");
@@ -46,7 +48,7 @@ FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
   window->set_transient_for(parent);
 
   window->signal_key_release_event().connect_notify
-    (sigc::hide(sigc::mem_fun(*this, &FightWindow::on_key_release_event)));
+    (sigc::hide(method(on_key_release_event)));
 
   Gtk::Box *attacker_close_vbox;
   Gtk::Box *defender_close_vbox;
@@ -112,9 +114,7 @@ void FightWindow::run(bool *quick)
   round = 0;
   action_iterator = actions.begin();
 
-  Timing::instance().register_timer(sigc::mem_fun(this, &FightWindow::do_round), 
-                                    *quick == true ? fast_round_speed : 
-                                    normal_round_speed);
+  Timing::instance().register_timer(method(do_round), *quick == true ?  fast_round_speed : normal_round_speed);
 
   window->show_all();
   main_loop = Glib::MainLoop::create();
@@ -245,7 +245,6 @@ bool FightWindow::do_round()
 
 void FightWindow::on_key_release_event()
 {
-  Timing::instance().register_timer
-    (sigc::mem_fun(this, &FightWindow::do_round), fast_round_speed);
+  Timing::instance().register_timer (method(do_round), fast_round_speed);
   d_quick = true;
 }

@@ -31,6 +31,8 @@
 #include "city.h"
 #include "playerlist.h"
 
+#define method(x) sigc::mem_fun(*this, &HeroOfferDialog::x)
+
 HeroOfferDialog::HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto *h, City *c, int gold)
  : LwDialog(parent, "hero-offer-dialog.ui")
 {
@@ -40,8 +42,7 @@ HeroOfferDialog::HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto 
     xml->get_widget("map_image", map_image);
 
     heromap = new HeroMap(city);
-    heromap->map_changed.connect(
-	sigc::mem_fun(this, &HeroOfferDialog::on_map_changed));
+    heromap->map_changed.connect(method(on_map_changed));
 
     dialog->set_title(String::ucompose(_("A Hero for %1"), player->getName()));
 
@@ -50,15 +51,13 @@ HeroOfferDialog::HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto 
     xml->get_widget("hero_female", female_radiobutton);
     male_radiobutton->set_active(hero->getGender() == Hero::MALE);
     female_radiobutton->set_active(hero->getGender() == Hero::FEMALE);
-    male_radiobutton->signal_clicked().connect(
-	sigc::mem_fun(this, &HeroOfferDialog::on_toggled));
+    male_radiobutton->signal_clicked().connect(method(on_toggled));
     
     on_toggled();
     
     xml->get_widget("name", name_entry);
     name_entry->set_text(hero->getName());
-    name_entry->signal_changed().connect
-      (sigc::mem_fun(*this, &HeroOfferDialog::on_name_changed));
+    name_entry->signal_changed().connect (method(on_name_changed));
 
     xml->get_widget("accept_button", accept_button);
     Gtk::Label *label;

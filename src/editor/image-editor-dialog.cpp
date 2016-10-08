@@ -28,6 +28,8 @@
 #include "shieldsetlist.h"
 #include "past-chooser.h"
 
+#define method(x) sigc::mem_fun(*this, &ImageEditorDialog::x)
+
 ImageEditorDialog::ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int no_frames)
  : LwEditorDialog(parent, "image-editor-dialog.ui")
 {
@@ -38,10 +40,8 @@ ImageEditorDialog::ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename
   show_image(filename);
   target_filename = filename;
   update_panel();
-  filechooserbutton->signal_file_set().connect
-    (sigc::mem_fun(*this, &ImageEditorDialog::on_image_chosen));
-  filechooserbutton->signal_set_focus_child().connect
-    (sigc::mem_fun(*this, &ImageEditorDialog::on_add));
+  filechooserbutton->signal_file_set().connect (method(on_image_chosen));
+  filechooserbutton->signal_set_focus_child().connect (method(on_add));
   Glib::RefPtr<Gtk::FileFilter> png_filter = Gtk::FileFilter::create();
   png_filter->set_name(_("PNG files (*.png)"));
   png_filter->add_pattern("*.png");
@@ -97,9 +97,7 @@ void ImageEditorDialog::show_image(Glib::ustring filename)
       image->clear();
       if (num_frames > 0)
         heartbeat = Glib::signal_timeout().connect
-          (bind_return
-           (sigc::mem_fun (*this, &ImageEditorDialog::on_heartbeat), 
-            true), 500);
+          (sigc::bind_return (method (on_heartbeat), true), 500);
       else
         on_heartbeat();
     }
@@ -118,8 +116,7 @@ void ImageEditorDialog::on_add(Gtk::Widget *widget)
   if (widget)
     {
       Gtk::Button *button = dynamic_cast<Gtk::Button*>(widget);
-      button->signal_clicked().connect
-        (sigc::mem_fun(*this, &ImageEditorDialog::on_button_pressed));
+      button->signal_clicked().connect (method(on_button_pressed));
     }
 }
 

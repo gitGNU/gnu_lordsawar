@@ -31,6 +31,8 @@
 #include "tileset-window.h"
 #include "past-chooser.h"
 
+#define method(x) sigc::mem_fun(*this, &TilesetExplosionPictureEditorDialog::x)
+
 TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Gtk::Window &parent, Tileset *tileset)
  : LwEditorDialog(parent, "tileset-explosion-picture-editor-dialog.ui")
 {
@@ -38,16 +40,13 @@ TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Gtk::Wi
     d_tileset = tileset;
 
     xml->get_widget("explosion_filechooserbutton", explosion_filechooserbutton);
-    explosion_filechooserbutton->signal_file_set().connect
-       (sigc::mem_fun(*this, &TilesetExplosionPictureEditorDialog::on_image_chosen));
+    explosion_filechooserbutton->signal_file_set().connect (method(on_image_chosen));
     explosion_filechooserbutton->set_current_folder(Glib::get_home_dir());
 
     xml->get_widget("large_explosion_radiobutton", large_explosion_radiobutton);
-    large_explosion_radiobutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &TilesetExplosionPictureEditorDialog::on_large_toggled));
+    large_explosion_radiobutton->signal_toggled().connect (method(on_large_toggled));
     xml->get_widget("small_explosion_radiobutton", small_explosion_radiobutton);
-    small_explosion_radiobutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &TilesetExplosionPictureEditorDialog::on_small_toggled));
+    small_explosion_radiobutton->signal_toggled().connect (method(on_small_toggled));
 
     xml->get_widget("scene_image", scene_image);
     
@@ -208,9 +207,7 @@ void TilesetExplosionPictureEditorDialog::on_add(Gtk::Widget *widget)
   if (widget)
     {
       Gtk::Button *button = dynamic_cast<Gtk::Button*>(widget);
-      button->signal_clicked().connect 
-        (sigc::mem_fun
-         (*this, &TilesetExplosionPictureEditorDialog::on_button_pressed));
+      button->signal_clicked().connect (method(on_button_pressed));
     }
 }
 

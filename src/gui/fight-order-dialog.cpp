@@ -26,6 +26,8 @@
 #include "armysetlist.h"
 #include "ImageCache.h"
 
+#define method(x) sigc::mem_fun(*this, &FightOrderDialog::x)
+
 FightOrderDialog::FightOrderDialog(Gtk::Window &parent, Player *theplayer)
  : LwDialog(parent, "fight-order-dialog.ui")
 {
@@ -43,11 +45,9 @@ FightOrderDialog::FightOrderDialog(Gtk::Window &parent, Player *theplayer)
     addArmyType(*it);
   armies_treeview->set_reorderable(true);
   xml->get_widget("reverse_button", reverse_button);
-  reverse_button->signal_clicked().connect
-    (sigc::mem_fun (*this, &FightOrderDialog::on_reverse_button_clicked));
+  reverse_button->signal_clicked().connect (method(on_reverse_button_clicked));
   xml->get_widget("reset_button", reset_button);
-  reset_button->signal_clicked().connect
-    (sigc::mem_fun (*this, &FightOrderDialog::on_reset_button_clicked));
+  reset_button->signal_clicked().connect (method (on_reset_button_clicked));
 }
 
 void FightOrderDialog::run()

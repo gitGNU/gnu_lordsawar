@@ -31,49 +31,39 @@
 #include "playerlist.h"
 #include "tilesetlist.h"
 
+#define method(x) sigc::mem_fun(*this, &SmallmapEditorDialog::x)
+
 SmallmapEditorDialog::SmallmapEditorDialog(Gtk::Window &parent)
  : LwEditorDialog(parent, "smallmap-editor-dialog.ui")
 {
     xml->get_widget("smallmap_image", smallmap_image);
-    smallmap_image->signal_event().connect
-      (sigc::hide(sigc::mem_fun(*this, &SmallmapEditorDialog::on_smallmap_exposed)));
+    smallmap_image->signal_event().connect (sigc::hide(method(on_smallmap_exposed)));
 
 
     smallmap = new EditableSmallMap();
-    smallmap->map_changed.connect(
-	sigc::hide(sigc::mem_fun(this, &SmallmapEditorDialog::on_map_changed)));
-    smallmap->road_start_placed.connect
-      (sigc::mem_fun(this, &SmallmapEditorDialog::on_road_start_placed));
-    smallmap->road_finish_placed.connect
-      (sigc::mem_fun(this, &SmallmapEditorDialog::on_road_finish_placed));
-    smallmap->road_can_be_created.connect
-      (sigc::mem_fun(this, &SmallmapEditorDialog::on_road_can_be_created));
-    smallmap->map_edited.connect
-      (sigc::mem_fun(this, &SmallmapEditorDialog::on_map_edited));
+    smallmap->map_changed.connect(sigc::hide(method(on_map_changed)));
+    smallmap->road_start_placed.connect (method(on_road_start_placed));
+    smallmap->road_finish_placed.connect (method(on_road_finish_placed));
+    smallmap->road_can_be_created.connect (method(on_road_can_be_created));
+    smallmap->map_edited.connect (method(on_map_edited));
 
     xml->get_widget("map_eventbox", map_eventbox);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::POINTER_MOTION_MASK);
-    map_eventbox->signal_button_press_event().connect(
-	sigc::mem_fun(*this, &SmallmapEditorDialog::on_map_mouse_button_event));
-    map_eventbox->signal_motion_notify_event().connect(
-	sigc::mem_fun(*this, &SmallmapEditorDialog::on_map_mouse_motion_event));
+    map_eventbox->signal_button_press_event().connect(method(on_map_mouse_button_event));
+    map_eventbox->signal_motion_notify_event().connect(method(on_map_mouse_motion_event));
     xml->get_widget("modes_hbox", modes_hbox);
     xml->get_widget("terrain_type_table", terrain_type_table);
     xml->get_widget("building_types_hbox", building_types_hbox);
     xml->get_widget("road_start_radiobutton", road_start_radiobutton);
-    road_start_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &SmallmapEditorDialog::on_road_start_toggled));
+    road_start_radiobutton->signal_toggled().connect(method(on_road_start_toggled));
     xml->get_widget("road_start_entry", road_start_entry);
     xml->get_widget("road_finish_entry", road_finish_entry);
     xml->get_widget("road_finish_radiobutton", road_finish_radiobutton);
-    road_finish_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &SmallmapEditorDialog::on_road_finish_toggled));
+    road_finish_radiobutton->signal_toggled().connect(method(on_road_finish_toggled));
     xml->get_widget("create_road_button", create_road_button);
-    create_road_button->signal_clicked().connect(
-	sigc::mem_fun(*this, &SmallmapEditorDialog::on_create_road_clicked));
+    create_road_button->signal_clicked().connect(method(on_create_road_clicked));
     xml->get_widget("clear_points_button", clear_points_button);
-    clear_points_button->signal_clicked().connect(
-	sigc::mem_fun(*this, &SmallmapEditorDialog::on_clear_points_clicked));
+    clear_points_button->signal_clicked().connect(method(on_clear_points_clicked));
 
     setup_pointer_radiobuttons(xml);
     setup_terrain_radiobuttons();
@@ -179,8 +169,7 @@ void SmallmapEditorDialog::setup_terrain_radiobuttons()
       int row = i / no_columns, column = i % no_columns;
 
       terrain_type_table->attach(*item.button, column, row, 1, 1);
-      item.button->signal_toggled().connect(
-                                            sigc::mem_fun(this, &SmallmapEditorDialog::on_terrain_radiobutton_toggled));
+      item.button->signal_toggled().connect(method(on_terrain_radiobutton_toggled));
 
       Glib::RefPtr<Gdk::Pixbuf> pic;
       PixMask *pix = (*(*(*tile).begin())->begin())->getImage()->copy();
@@ -228,8 +217,7 @@ void SmallmapEditorDialog::setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> 
     b->get_widget(prefix + "_radiobutton", item.button);
     if (prefix == "pointer")
 	pointer_radiobutton = item.button;
-    item.button->signal_toggled().connect(
-	sigc::mem_fun(this, &SmallmapEditorDialog::on_pointer_radiobutton_toggled));
+    item.button->signal_toggled().connect(method(on_pointer_radiobutton_toggled));
     item.pointer = pointer;
     item.size = siz;
     pointer_items.push_back(item);

@@ -35,6 +35,7 @@
 #include "game-parameters.h"
 #include "CreateScenarioRandomize.h"
 
+#define method(x) sigc::mem_fun(*this, &PlayersDialog::x)
 
 namespace
 {
@@ -64,11 +65,9 @@ PlayersDialog::PlayersDialog(Gtk::Window &parent, CreateScenarioRandomize *rando
   player_list = Gtk::ListStore::create(player_columns);
 
   xml->get_widget("randomize_gold_button", randomize_gold_button);
-  randomize_gold_button->signal_clicked().connect
-    (sigc::mem_fun(this, &PlayersDialog::on_randomize_gold_pressed));
+  randomize_gold_button->signal_clicked().connect (method(on_randomize_gold_pressed));
   xml->get_widget("all_players_on_button", all_players_on_button);
-  all_players_on_button->signal_clicked().connect
-    (sigc::mem_fun(this, &PlayersDialog::on_all_players_on_pressed));
+  all_players_on_button->signal_clicked().connect (method(on_all_players_on_pressed));
   xml->get_widget("player_treeview", player_treeview);
   player_treeview->set_model(player_list);
 
@@ -89,26 +88,20 @@ PlayersDialog::PlayersDialog(Gtk::Window &parent, CreateScenarioRandomize *rando
   type_renderer.property_has_entry() = false;
   type_renderer.property_editable() = true;
 
-  type_renderer.signal_edited()
-    .connect(sigc::mem_fun(*this, &PlayersDialog::on_type_edited));
-  type_column.set_cell_data_func
-    ( type_renderer, sigc::mem_fun(*this, &PlayersDialog::cell_data_type));
+  type_renderer.signal_edited().connect(method(on_type_edited));
+  type_column.set_cell_data_func(type_renderer, method(cell_data_type));
   player_treeview->append_column(type_column);
 
   // name column
   name_renderer.property_editable() = true;
-  name_renderer.signal_edited().connect
-    (sigc::mem_fun(*this, &PlayersDialog::on_name_edited));
-  name_column.set_cell_data_func
-    (name_renderer, sigc::mem_fun(*this, &PlayersDialog::cell_data_name));
+  name_renderer.signal_edited().connect (method(on_name_edited));
+  name_column.set_cell_data_func(name_renderer, method(cell_data_name));
   player_treeview->append_column(name_column);
 
   // gold column
   gold_renderer.property_editable() = true;
-  gold_renderer.signal_edited().connect
-    (sigc::mem_fun(*this, &PlayersDialog::on_gold_edited));
-  gold_column.set_cell_data_func
-    (gold_renderer, sigc::mem_fun(*this, &PlayersDialog::cell_data_gold));
+  gold_renderer.signal_edited().connect (method(on_gold_edited));
+  gold_column.set_cell_data_func (gold_renderer, method(cell_data_gold));
   player_treeview->append_column(gold_column);
 
   // add default players

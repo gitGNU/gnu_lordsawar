@@ -25,6 +25,8 @@
 #include "defs.h"
 #include "timing.h"
 
+#define method(x) sigc::mem_fun(*this, &TimedMessageDialog::x)
+
 TimedMessageDialog::TimedMessageDialog(Gtk::Window &parent, Glib::ustring message, int timeout, int grace)
 {
   d_timeout = timeout;
@@ -33,8 +35,7 @@ TimedMessageDialog::TimedMessageDialog(Gtk::Window &parent, Glib::ustring messag
     
   window = new Gtk::MessageDialog(message); 
   window->set_message(message);
-  window->signal_response().connect
-       (sigc::hide(sigc::mem_fun(*this, &TimedMessageDialog::on_response)));
+  window->signal_response().connect (sigc::hide(method(on_response)));
   window->set_transient_for(parent);
 }
 
@@ -47,10 +48,7 @@ void TimedMessageDialog::on_response()
 void TimedMessageDialog::run_and_hide()
 {
   if (d_timeout > 0)
-    {
-      Timing::instance().register_timer
-        (sigc::mem_fun(this, &TimedMessageDialog::tick), 1000);
-    }
+    Timing::instance().register_timer (method(tick), 1000);
 
   window->show_all();
   main_loop = Glib::MainLoop::create();

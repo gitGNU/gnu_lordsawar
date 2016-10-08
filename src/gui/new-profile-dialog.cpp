@@ -22,14 +22,15 @@
 
 #include "new-profile-dialog.h"
 
+#define method(x) sigc::mem_fun(*this, &NewProfileDialog::x)
+
 NewProfileDialog::NewProfileDialog(Gtk::Window &parent)
  : LwDialog(parent, "new-profile-dialog.ui")
 {
   xml->get_widget("accept_button", accept_button);
   xml->get_widget("nick_entry", nick_entry);
   nick_entry->set_activates_default(true);
-  nick_entry->signal_changed().connect 
-    (sigc::mem_fun(*this, &NewProfileDialog::on_nickname_changed));
+  nick_entry->signal_changed().connect(method(on_nickname_changed));
   update_buttons();
 }
 	    

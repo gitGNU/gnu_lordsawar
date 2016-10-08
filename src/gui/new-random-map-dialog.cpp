@@ -39,6 +39,8 @@
 #include "counter.h"
 #include "rnd.h"
 
+#define method(x) sigc::mem_fun(*this, &NewRandomMapDialog::x)
+
 NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
  : LwDialog(parent, "new-random-map-dialog.ui")
 {
@@ -54,32 +56,30 @@ NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
     xml->get_widget("cities_scale", cities_scale);
     xml->get_widget("progressbar", progressbar);
     xml->get_widget("accept2_button", accept_button);
-    accept_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &NewRandomMapDialog::on_accept_clicked));
+    accept_button->signal_clicked().connect (method(on_accept_clicked));
     xml->get_widget("cancel2_button", cancel_button);
-    cancel_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &NewRandomMapDialog::on_cancel_clicked));
+    cancel_button->signal_clicked().connect (method(on_cancel_clicked));
     xml->get_widget("grass_random_togglebutton", grass_random_togglebutton);
     grass_random_togglebutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &NewRandomMapDialog::on_grass_random_toggled));
+      (method(on_grass_random_toggled));
     xml->get_widget("water_random_togglebutton", water_random_togglebutton);
     water_random_togglebutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &NewRandomMapDialog::on_water_random_toggled));
+      (method(on_water_random_toggled));
     xml->get_widget("swamp_random_togglebutton", swamp_random_togglebutton);
     swamp_random_togglebutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &NewRandomMapDialog::on_swamp_random_toggled));
+      (method(on_swamp_random_toggled));
     xml->get_widget("forest_random_togglebutton", forest_random_togglebutton);
     forest_random_togglebutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &NewRandomMapDialog::on_forest_random_toggled));
+      (method(on_forest_random_toggled));
     xml->get_widget("hills_random_togglebutton", hills_random_togglebutton);
     hills_random_togglebutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &NewRandomMapDialog::on_hills_random_toggled));
+      (method(on_hills_random_toggled));
     xml->get_widget("mountains_random_togglebutton", mountains_random_togglebutton);
     mountains_random_togglebutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &NewRandomMapDialog::on_mountains_random_toggled));
+      (method(on_mountains_random_toggled));
     xml->get_widget("cities_random_togglebutton", cities_random_togglebutton);
     cities_random_togglebutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &NewRandomMapDialog::on_cities_random_toggled));
+      (method(on_cities_random_toggled));
 
     // fill in tile themes combobox
     
@@ -105,8 +105,7 @@ NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
     tile_size_combobox->set_active(default_id);
     xml->get_widget("tile_size_box", box);
     box->pack_start(*tile_size_combobox, Gtk::PACK_SHRINK);
-    tile_size_combobox->signal_changed().connect
-      (sigc::mem_fun(*this, &NewRandomMapDialog::on_tile_size_changed));
+    tile_size_combobox->signal_changed().connect (method(on_tile_size_changed));
 
     // make new tile themes combobox
     tile_theme_combobox = manage(new Gtk::ComboBoxText);
@@ -146,8 +145,7 @@ NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
 
     // map size
     map_size_combobox->set_active(MAP_SIZE_NORMAL);
-    map_size_combobox->signal_changed().connect(
-						sigc::mem_fun(*this, &NewRandomMapDialog::on_map_size_changed));
+    map_size_combobox->signal_changed().connect(method(on_map_size_changed));
 
 
     xml->get_widget("cities_can_produce_allies_checkbutton", 
@@ -526,7 +524,6 @@ Glib::ustring NewRandomMapDialog::create_and_dump_scenario(const Glib::ustring &
   Glib::ustring path = File::getSaveFile(file);
 
   if (pulse)
-    //creator.progress.connect(sigc::mem_fun(this, &NewRandomMapDialog::pulse));
     creator.progress.connect(*pulse);
   
   creator.create(g);
@@ -545,8 +542,7 @@ void NewRandomMapDialog::on_accept_clicked()
   progressbar->pulse();
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
-    //creator.progress.connect(sigc::mem_fun(this, &NewRandomMapDialog::pulse));
-  sigc::slot<void> progress = sigc::mem_fun(this, &NewRandomMapDialog::pulse);
+  sigc::slot<void> progress = method(pulse);
   d_filename = create_and_dump_scenario("random.map", g, &progress);
 
   dialog_response = Gtk::RESPONSE_ACCEPT;

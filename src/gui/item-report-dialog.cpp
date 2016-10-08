@@ -29,6 +29,8 @@
 #include "itemmap.h"
 #include "playerlist.h"
 
+#define method(x) sigc::mem_fun(*this, &ItemReportDialog::x)
+
 ItemReportDialog::ItemReportDialog(Gtk::Window &parent, std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> bags_of_stuff)
  : LwDialog(parent, "item-report-dialog.ui")
 {
@@ -37,8 +39,7 @@ ItemReportDialog::ItemReportDialog(Gtk::Window &parent, std::list<Stack*> item_l
   xml->get_widget("map_image", map_image);
 
   itemmap = new ItemMap(item_laden_stacks, bags);
-  itemmap->map_changed.connect(
-    sigc::mem_fun(this, &ItemReportDialog::on_map_changed));
+  itemmap->map_changed.connect(method(on_map_changed));
 
   xml->get_widget("label", label);
 

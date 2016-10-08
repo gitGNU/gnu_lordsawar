@@ -26,6 +26,8 @@
 #include "defs.h"
 #include "File.h"
 
+#define method(x) sigc::mem_fun(*this, &CitySetInfoDialog::x)
+
 CitySetInfoDialog::CitySetInfoDialog(Gtk::Window &parent, Set *cityset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
  : LwEditorDialog(parent, "cityset-info-dialog.ui")
 {
@@ -42,8 +44,7 @@ CitySetInfoDialog::CitySetInfoDialog(Gtk::Window &parent, Set *cityset, Glib::us
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(cityset->getName());
     if (readonly == false)
-      name_entry->signal_changed().connect
-	(sigc::mem_fun(this, &CitySetInfoDialog::on_name_changed));
+      name_entry->signal_changed().connect (method(on_name_changed));
     
     xml->get_widget("filename_entry", filename_entry);
     if (file != "")
@@ -58,8 +59,7 @@ CitySetInfoDialog::CitySetInfoDialog(Gtk::Window &parent, Set *cityset, Glib::us
         name_entry->set_text(name);
       }
     if (readonly == false)
-      filename_entry->signal_changed().connect
-	(sigc::mem_fun(this, &CitySetInfoDialog::on_filename_changed));
+      filename_entry->signal_changed().connect (method(on_filename_changed));
 
     xml->get_widget("id_spinbutton", id_spinbutton);
     id_spinbutton->set_value(cityset->getId());

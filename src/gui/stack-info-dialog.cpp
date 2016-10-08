@@ -36,6 +36,8 @@
 #include "stacktile.h"
 #include "GameMap.h"
 
+#define method(x) sigc::mem_fun(*this, &StackInfoDialog::x)
+
 StackInfoDialog::StackInfoDialog(Gtk::Window &parent, Vector<int> pos)
  : LwDialog(parent, "stack-info-dialog.ui")
 {
@@ -45,11 +47,9 @@ StackInfoDialog::StackInfoDialog(Gtk::Window &parent, Vector<int> pos)
 
   xml->get_widget("stack_table", stack_table);
   xml->get_widget("group_button", group_button);
-  group_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &StackInfoDialog::on_group_clicked));
+  group_button->signal_clicked().connect (method(on_group_clicked));
   xml->get_widget("ungroup_button", ungroup_button);
-  ungroup_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &StackInfoDialog::on_ungroup_clicked));
+  ungroup_button->signal_clicked().connect (method(on_ungroup_clicked));
   fill_stack_info();
 }
 
@@ -112,16 +112,13 @@ void StackInfoDialog::addArmy (bool first, Stack *s, Army *h, guint32 modified_s
   armies.push_back(h);
   toggle->set_active(s->getId() == currently_selected_stack->getId());
   toggle->signal_toggled().connect
-    (sigc::bind(sigc::mem_fun(this, 
-			      &StackInfoDialog::on_army_toggled), toggle, s, h));
+    (sigc::bind(method(on_army_toggled), toggle, s, h));
   toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
   toggles.push_back(toggle);
   toggle->signal_button_press_event().connect
-    (sigc::bind(sigc::mem_fun(*this, &StackInfoDialog::on_army_button_event),
-		toggle), false);
+    (sigc::bind(method(on_army_button_event), toggle), false);
   toggle->signal_button_release_event().connect
-    (sigc::bind(sigc::mem_fun(*this, &StackInfoDialog::on_army_button_event),
-		toggle), false);
+    (sigc::bind(method(on_army_button_event), toggle), false);
   Gtk::Image *army_image = new Gtk::Image();
   army_image->property_pixbuf() = pixbuf;
   toggle->add(*manage(army_image));
@@ -150,8 +147,7 @@ void StackInfoDialog::addArmy (bool first, Stack *s, Army *h, guint32 modified_s
       radios.push_back(radio);
       radio->set_active(s->getId() == currently_selected_stack->getId());
       radio->signal_toggled().connect
-	(sigc::bind(sigc::mem_fun(this, &StackInfoDialog::on_stack_toggled), 
-		    radio, s));
+	(sigc::bind(method(on_stack_toggled), radio, s));
       stack_table->attach(*manage(radio), 0, idx, 1, 1);
     }
 

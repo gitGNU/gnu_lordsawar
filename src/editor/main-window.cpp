@@ -92,6 +92,8 @@
 #include "road-editor-tip.h"
 #include "rnd.h"
 
+#define method(x) sigc::mem_fun(*this, &MainWindow::x)
+
 MainWindow::MainWindow(Glib::ustring load_filename)
 {
   d_load_filename = load_filename;
@@ -107,17 +109,14 @@ MainWindow::MainWindow(Glib::ustring load_filename)
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getVariousFile("tileset_icon.png"));
 
-    window->signal_delete_event().connect(
-	sigc::hide(sigc::mem_fun(*this, &MainWindow::on_delete_event)));
+    window->signal_delete_event().connect(sigc::hide(method(on_delete_event)));
 
     // the map image
     xml->get_widget("bigmap_image", bigmap_image);
     //bigmap_drawingarea->set_double_buffered(false);
     //bigmap_drawingarea->set_app_paintable(true);
-    bigmap_image->signal_draw().connect
-      (sigc::hide(sigc::mem_fun(*this, &MainWindow::on_bigmap_exposed)));
-    bigmap_image->signal_size_allocate().connect
-      (sigc::mem_fun(*this, &MainWindow::on_bigmap_surface_changed));
+    bigmap_image->signal_draw().connect (sigc::hide(method(on_bigmap_exposed)));
+    bigmap_image->signal_size_allocate().connect(method(on_bigmap_surface_changed));
     xml->get_widget("bigmap_eventbox", bigmap_eventbox);
 
     bigmap_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | 
@@ -125,31 +124,29 @@ MainWindow::MainWindow(Glib::ustring load_filename)
 				Gdk::POINTER_MOTION_MASK |
 				Gdk::KEY_PRESS_MASK | 
                                 Gdk::SMOOTH_SCROLL_MASK);
-    bigmap_eventbox->signal_button_press_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_bigmap_mouse_button_event));
-    bigmap_eventbox->signal_button_release_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_bigmap_mouse_button_event));
-    bigmap_eventbox->signal_motion_notify_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_bigmap_mouse_motion_event));
-    bigmap_eventbox->signal_key_press_event().connect(
-	sigc::hide(sigc::mem_fun(*this, &MainWindow::on_bigmap_key_event)));
-    bigmap_eventbox->signal_leave_notify_event().connect(
-	sigc::hide(sigc::mem_fun(*this, &MainWindow::on_bigmap_leave_event)));
-    bigmap_eventbox->signal_scroll_event().connect
-      (sigc::mem_fun(*this, &MainWindow::on_bigmap_scrolled));
+    bigmap_eventbox->signal_button_press_event().connect
+      (method(on_bigmap_mouse_button_event));
+    bigmap_eventbox->signal_button_release_event().connect
+      (method(on_bigmap_mouse_button_event));
+    bigmap_eventbox->signal_motion_notify_event().connect
+      (method(on_bigmap_mouse_motion_event));
+    bigmap_eventbox->signal_key_press_event().connect
+      (sigc::hide(method(on_bigmap_key_event)));
+    bigmap_eventbox->signal_leave_notify_event().connect
+      (sigc::hide(method(on_bigmap_leave_event)));
+    bigmap_eventbox->signal_scroll_event().connect (method(on_bigmap_scrolled));
     xml->get_widget("smallmap_image", smallmap_image);
-    smallmap_image->signal_draw().connect
-      (sigc::hide(sigc::mem_fun(*this, &MainWindow::on_smallmap_exposed)));
+    smallmap_image->signal_draw().connect (sigc::hide(method(on_smallmap_exposed)));
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
 			     Gdk::POINTER_MOTION_MASK);
-    map_eventbox->signal_button_press_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_smallmap_mouse_button_event));
-    map_eventbox->signal_button_release_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_smallmap_mouse_button_event));
-    map_eventbox->signal_motion_notify_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_smallmap_mouse_motion_event));
+    map_eventbox->signal_button_press_event().connect
+      (method(on_smallmap_mouse_button_event));
+    map_eventbox->signal_button_release_event().connect
+      (method(on_smallmap_mouse_button_event));
+    map_eventbox->signal_motion_notify_event().connect
+      (method(on_smallmap_mouse_motion_event));
 
     xml->get_widget("terrain_tile_style_viewport", terrain_tile_style_viewport);
 
@@ -197,109 +194,100 @@ MainWindow::MainWindow(Glib::ustring load_filename)
     
     // connect callbacks for the menu
     xml->get_widget("new_map_menuitem", new_map_menuitem);
-    new_map_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_new_map_activated));
+    new_map_menuitem->signal_activate().connect(method(on_new_map_activated));
     xml->get_widget("load_map_menuitem", load_map_menuitem);
-    load_map_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_load_map_activated));
+    load_map_menuitem->signal_activate().connect (method(on_load_map_activated));
     xml->get_widget("save_map_menuitem", save_map_menuitem);
-    save_map_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_save_map_activated));
+    save_map_menuitem->signal_activate().connect (method(on_save_map_activated));
     xml->get_widget("save_map_as_menuitem", save_map_as_menuitem);
-    save_map_as_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_save_map_as_activated));
+    save_map_as_menuitem->signal_activate().connect (method(on_save_map_as_activated));
     xml->get_widget("import_map_from_sav_menuitem", import_map_from_sav_menuitem);
     import_map_from_sav_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_import_map_activated));
+      (method(on_import_map_activated));
     xml->get_widget("export_as_bitmap_menuitem", export_as_bitmap_menuitem);
     export_as_bitmap_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_export_as_bitmap_activated));
+      (method(on_export_as_bitmap_activated));
     xml->get_widget("validate_menuitem", validate_menuitem);
-    validate_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_validate_activated));
+    validate_menuitem->signal_activate().connect (method(on_validate_activated));
     xml->get_widget("quit_menuitem", quit_menuitem);
-    quit_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_quit_activated));
+    quit_menuitem->signal_activate().connect(method(on_quit_activated));
 
     xml->get_widget("edit_players_menuitem", edit_players_menuitem);
     edit_players_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_edit_players_activated));
+      (method(on_edit_players_activated));
     xml->get_widget("edit_map_info_menuitem", edit_map_info_menuitem);
     edit_map_info_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_edit_map_info_activated));
+      (method(on_edit_map_info_activated));
     xml->get_widget("edit_shieldset_menuitem", edit_shieldset_menuitem);
     edit_shieldset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_edit_shieldset_activated));
+      (method(on_edit_shieldset_activated));
     xml->get_widget("edit_armyset_menuitem", edit_armyset_menuitem);
     edit_armyset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_edit_armyset_activated));
+      (method(on_edit_armyset_activated));
     xml->get_widget("edit_cityset_menuitem", edit_cityset_menuitem);
     edit_cityset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_edit_cityset_activated));
+      (method(on_edit_cityset_activated));
     xml->get_widget("edit_tileset_menuitem", edit_tileset_menuitem);
     edit_tileset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_edit_tileset_activated));
+      (method(on_edit_tileset_activated));
     xml->get_widget("edit_smallmap_menuitem", edit_smallmap_menuitem);
     edit_smallmap_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_edit_smallmap_activated));
+      (method(on_edit_smallmap_activated));
     xml->get_widget("edit_fight_order_menuitem", edit_fight_order_menuitem);
     edit_fight_order_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_edit_fight_order_activated));
+      (method(on_edit_fight_order_activated));
     
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
     fullscreen_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_fullscreen_activated));
+      (method(on_fullscreen_activated));
     xml->get_widget("toggle_grid_menuitem", toggle_grid_menuitem);
-    toggle_grid_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_grid_toggled));
+    toggle_grid_menuitem->signal_activate().connect (method(on_grid_toggled));
     xml->get_widget("smooth_map_menuitem", smooth_map_menuitem);
     smooth_map_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_smooth_map_activated));
+      (method(on_smooth_map_activated));
     xml->get_widget("switch_sets_menuitem", switch_sets_menuitem);
-    switch_sets_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_switch_sets_activated));
+    switch_sets_menuitem->signal_activate().connect (method(on_switch_sets_activated));
     xml->get_widget("smooth_screen_menuitem", smooth_screen_menuitem);
     smooth_screen_menuitem->signal_activate().connect
-      (sigc::mem_fun (this, &MainWindow::on_smooth_screen_activated));
+      (method(on_smooth_screen_activated));
     xml->get_widget("edit_items_menuitem", edit_items_menuitem);
-    edit_items_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_edit_items_activated));
+    edit_items_menuitem->signal_activate().connect (method(on_edit_items_activated));
     xml->get_widget("edit_rewards_menuitem", edit_rewards_menuitem);
     edit_rewards_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_edit_rewards_activated));
+      (method(on_edit_rewards_activated));
     xml->get_widget ("random_all_cities_menuitem", random_all_cities_menuitem);
     random_all_cities_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_random_all_cities_activated));
+      (method(on_random_all_cities_activated));
     xml->get_widget ("random_unnamed_cities_menuitem", 
 		     random_unnamed_cities_menuitem);
     random_unnamed_cities_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_random_unnamed_cities_activated));
+      (method(on_random_unnamed_cities_activated));
     xml->get_widget ("random_all_ruins_menuitem", random_all_ruins_menuitem);
     random_all_ruins_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_random_all_ruins_activated));
+      (method(on_random_all_ruins_activated));
     xml->get_widget ("random_unnamed_ruins_menuitem", 
 		     random_unnamed_ruins_menuitem);
     random_unnamed_ruins_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_random_unnamed_ruins_activated));
+      (method(on_random_unnamed_ruins_activated));
     xml->get_widget ("random_all_temples_menuitem", 
 		     random_all_temples_menuitem);
     random_all_temples_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_random_all_temples_activated));
+      (method(on_random_all_temples_activated));
     xml->get_widget ("random_unnamed_temples_menuitem", 
 		     random_unnamed_temples_menuitem);
     random_unnamed_temples_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_random_unnamed_temples_activated));
+      (method(on_random_unnamed_temples_activated));
     xml->get_widget ("random_all_signs_menuitem", 
 		     random_all_signs_menuitem);
     random_all_signs_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_random_all_signs_activated));
+      (method(on_random_all_signs_activated));
     xml->get_widget ("random_unnamed_signs_menuitem", 
 		     random_unnamed_signs_menuitem);
     random_unnamed_signs_menuitem->signal_activate().connect
-       (sigc::mem_fun(this, &MainWindow::on_random_unnamed_signs_activated));
+       (method(on_random_unnamed_signs_activated));
     xml->get_widget ("help_about_menuitem", help_about_menuitem);
     help_about_menuitem->signal_activate().connect
-       (sigc::mem_fun(this, &MainWindow::on_help_about_activated));
+      (method(on_help_about_activated));
   terrain_tile_style_grid = new Gtk::Grid();
   terrain_tile_style_viewport->add(*terrain_tile_style_grid);
 }
@@ -323,8 +311,7 @@ void MainWindow::setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
     xml->get_widget(prefix + "_radiobutton2", item.button);
     if (prefix == "pointer")
 	pointer_radiobutton = item.button;
-    item.button->signal_toggled().connect(
-	sigc::mem_fun(this, &MainWindow::on_pointer_radiobutton_toggled));
+    item.button->signal_toggled().connect(method(on_pointer_radiobutton_toggled));
     item.pointer = pointer;
     item.size = size;
     pointer_items.push_back(item);
@@ -367,9 +354,7 @@ void MainWindow::setup_terrain_radiobuttons()
 	int row = i / no_columns, column = i % no_columns;
 	
 	terrain_type_table->attach(*item.button, column, row, 1, 1);
-	item.button->signal_toggled().connect(
-	    sigc::mem_fun(this, &MainWindow::on_terrain_radiobutton_toggled));
-
+	item.button->signal_toggled().connect(method(on_terrain_radiobutton_toggled));
 	Glib::RefPtr<Gdk::Pixbuf> pic;
 	PixMask *pix = (*(*(*tile).begin())->begin())->getImage()->copy();
 	PixMask::scale(pix, 20, 20);
@@ -983,8 +968,7 @@ void MainWindow::on_edit_shieldset_activated()
   ShieldSetWindow *shieldset_window = new ShieldSetWindow
     (GameMap::getShieldset()->getConfigurationFile());
   shieldset_window->get_window().property_transient_for() = window;
-  shieldset_window->shieldset_saved.connect
-    (sigc::mem_fun(this, &MainWindow::on_shieldset_saved));
+  shieldset_window->shieldset_saved.connect (method(on_shieldset_saved));
   kit->run(shieldset_window->get_window());
   delete shieldset_window;
 }
@@ -1014,8 +998,7 @@ void MainWindow::on_edit_armyset_activated()
  
   ArmySetWindow* armyset_window = new ArmySetWindow (file);
   armyset_window->get_window().property_transient_for() = window;
-  armyset_window->armyset_saved.connect
-    (sigc::mem_fun(this, &MainWindow::on_armyset_saved));
+  armyset_window->armyset_saved.connect (method(on_armyset_saved));
   kit->run(armyset_window->get_window());
   delete armyset_window;
 }
@@ -1044,8 +1027,7 @@ void MainWindow::on_edit_cityset_activated()
   Glib::ustring file = cityset->getConfigurationFile();
   CitySetWindow* cityset_window = new CitySetWindow (file);
   cityset_window->get_window().property_transient_for() = window;
-  cityset_window->cityset_saved.connect
-    (sigc::mem_fun(this, &MainWindow::on_cityset_saved));
+  cityset_window->cityset_saved.connect (method(on_cityset_saved));
   kit->run(cityset_window->get_window());
   delete cityset_window;
 }
@@ -1085,8 +1067,7 @@ void MainWindow::on_edit_tileset_activated()
   Glib::ustring file = tileset->getConfigurationFile();
   TileSetWindow* tileset_window = new TileSetWindow (file);
   tileset_window->get_window().property_transient_for() = window;
-  tileset_window->tileset_saved.connect
-    (sigc::mem_fun(this, &MainWindow::on_tileset_saved));
+  tileset_window->tileset_saved.connect (method(on_tileset_saved));
   kit->run(tileset_window->get_window());
   delete tileset_window;
 }
@@ -1153,7 +1134,7 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
   auto_item.button->property_draw_indicator() = false;
 
   auto_item.button->signal_toggled().connect
-    (sigc::mem_fun(this, &MainWindow::on_tile_style_radiobutton_toggled));
+    (method(on_tile_style_radiobutton_toggled));
   terrain_tile_style_grid->attach(*manage(auto_item.button), 0, 0, 1, 1);
 
   auto_item.tile_style_id = -1;
@@ -1177,8 +1158,7 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
 
           terrain_tile_style_grid->attach(*manage(item.button), c, r, 1, 1);
           item.button->signal_toggled().connect
-            (sigc::mem_fun(this, 
-                           &MainWindow::on_tile_style_radiobutton_toggled));
+            (method(on_tile_style_radiobutton_toggled));
 
           PixMask *pix = tilestyle->getImage()->copy();
           PixMask::scale(pix, 40, 40);
@@ -1339,23 +1319,17 @@ void MainWindow::init_maps()
       delete smallmap;
     smallmap =new SmallMap;
     smallmap->resize();
-    smallmap->map_changed.connect(
-	sigc::hide(sigc::mem_fun(this, &MainWindow::on_smallmap_changed)));
+    smallmap->map_changed.connect(sigc::hide(method(on_smallmap_changed)));
 
     // init the bigmap
     if (bigmap)
       delete bigmap;
     bigmap = new EditorBigMap;
-    bigmap->mouse_on_tile.connect(
-	sigc::mem_fun(this, &MainWindow::on_mouse_on_tile));
-    bigmap->objects_selected.connect(
-	sigc::mem_fun(this, &MainWindow::on_objects_selected));
-    bigmap->map_changed.connect(
-	sigc::mem_fun(this, &MainWindow::on_bigmap_changed));
-    bigmap->map_water_changed.connect
-      (sigc::mem_fun(this, &MainWindow::on_smallmap_water_changed));
-    bigmap->bag_selected.connect
-      (sigc::mem_fun(this, &MainWindow::on_bag_selected));
+    bigmap->mouse_on_tile.connect(method(on_mouse_on_tile));
+    bigmap->objects_selected.connect(method(on_objects_selected));
+    bigmap->map_changed.connect(method(on_bigmap_changed));
+    bigmap->map_water_changed.connect (method(on_smallmap_water_changed));
+    bigmap->bag_selected.connect (method(on_bag_selected));
                                        
 
     // grid is on by default
@@ -1415,8 +1389,8 @@ void MainWindow::on_objects_selected(std::vector<UniquelyIdentified *> objects)
 		s = _("Bag");
 	    
 	    Gtk::MenuItem *item = manage(new Gtk::MenuItem(s));
-	    item->signal_activate().connect(
-		sigc::bind(sigc::mem_fun(this, &MainWindow::popup_dialog_for_object), *i));
+	    item->signal_activate().connect
+              (sigc::bind(method(popup_dialog_for_object), *i));
 	    item->show();
 	    menu->add(*item);
 	}
@@ -1492,7 +1466,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
         delete road_editor_tip;
       MapTipPosition mpos = bigmap->map_tip_position(rd->getPos());
       road_editor_tip = new RoadEditorTip(bigmap_image, mpos, rd);
-      road_editor_tip->road_picked.connect(sigc::mem_fun(this, &MainWindow::on_road_edited));
+      road_editor_tip->road_picked.connect(method(on_road_edited));
     }
     else if (MapBackpack *b = dynamic_cast<MapBackpack*>(object))
       {
@@ -1848,8 +1822,7 @@ void MainWindow::fill_players()
       player_buttons.push_back(item);
       toggle->set_tooltip_text((*it)->getName());
       players_hbox->pack_start(*manage(toggle), Gtk::PACK_SHRINK);
-      toggle->signal_toggled().connect
-	(sigc::bind(sigc::mem_fun(this, &MainWindow::on_player_toggled), item));
+      toggle->signal_toggled().connect (sigc::bind(method(on_player_toggled), item));
     }
   players_hbox->show_all();
   if (!sensitive)

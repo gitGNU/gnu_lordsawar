@@ -47,6 +47,8 @@
 #include "tileset-smallmap-building-colors-dialog.h"
 #include "GameMap.h"
 
+#define method(x) sigc::mem_fun(*this, &TileSetWindow::x)
+
 TileSetWindow::TileSetWindow(Glib::ustring load_filename)
 {
   needs_saving = false;
@@ -57,13 +59,11 @@ TileSetWindow::TileSetWindow(Glib::ustring load_filename)
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getVariousFile("tileset_icon.png"));
-    window->signal_delete_event().connect
-      (sigc::hide(sigc::mem_fun(*this, &TileSetWindow::on_window_closed)));
+    window->signal_delete_event().connect (sigc::hide(method(on_window_closed)));
 
     xml->get_widget("tiles_treeview", tiles_treeview);
     xml->get_widget("tile_name_entry", tile_name_entry);
-    tile_name_entry->signal_changed().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_tile_name_changed));
+    tile_name_entry->signal_changed().connect (method(on_tile_name_changed));
 
     Gtk::Box *type_combo_container;
     xml->get_widget("type_combo_container", type_combo_container);
@@ -76,8 +76,7 @@ TileSetWindow::TileSetWindow(Glib::ustring load_filename)
     tile_type_combobox->append(Tile::tileTypeToFriendlyName(Tile::SWAMP));
     type_combo_container->add(*manage(tile_type_combobox));
     type_combo_container->show_all();
-    tile_type_combobox->signal_changed().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_tile_type_changed));
+    tile_type_combobox->signal_changed().connect (method(on_tile_type_changed));
 
     Gtk::Box *tilestyle_combo_container;
     xml->get_widget("tilestyle_combo_container", tilestyle_combo_container);
@@ -102,8 +101,7 @@ TileSetWindow::TileSetWindow(Glib::ustring load_filename)
     tilestyle_combobox->append(_("Unknown"));
     tilestyle_combo_container->add(*manage(tilestyle_combobox));
     tilestyle_combo_container->show_all();
-    tilestyle_combobox->signal_changed().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_changed));
+    tilestyle_combobox->signal_changed().connect (method(on_tilestyle_changed));
 
     Gtk::Box *pattern_container;
     xml->get_widget("pattern_container", pattern_container);
@@ -119,97 +117,81 @@ TileSetWindow::TileSetWindow(Glib::ustring load_filename)
     tile_smallmap_pattern_combobox->append(_("Sunken Radial"));
     pattern_container->add(*manage(tile_smallmap_pattern_combobox));
     pattern_container->show_all();
-    tile_smallmap_pattern_combobox->signal_changed().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_tile_pattern_changed));
+    tile_smallmap_pattern_combobox->signal_changed().connect (method(on_tile_pattern_changed));
 
     xml->get_widget("tile_moves_spinbutton", tile_moves_spinbutton);
     xml->get_widget("tile_smallmap_first_colorbutton", 
 		    tile_smallmap_first_colorbutton);
-    tile_smallmap_first_colorbutton->signal_color_set().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_tile_first_color_changed));
+    tile_smallmap_first_colorbutton->signal_color_set().connect (method(on_tile_first_color_changed));
     xml->get_widget("tile_smallmap_second_colorbutton", 
 		    tile_smallmap_second_colorbutton);
     tile_smallmap_second_colorbutton->signal_color_set().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_tile_second_color_changed));
+      (method(on_tile_second_color_changed));
     xml->get_widget("tile_smallmap_third_colorbutton", 
 		    tile_smallmap_third_colorbutton);
     tile_smallmap_third_colorbutton->signal_color_set().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_tile_third_color_changed));
+      (method(on_tile_third_color_changed));
     xml->get_widget("tile_smallmap_image", tile_smallmap_image);
 
     xml->get_widget("add_tile_button", add_tile_button);
-    add_tile_button->signal_clicked().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_add_tile_clicked));
+    add_tile_button->signal_clicked().connect (method(on_add_tile_clicked));
     xml->get_widget("remove_tile_button", remove_tile_button);
-    remove_tile_button->signal_clicked().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_remove_tile_clicked));
+    remove_tile_button->signal_clicked().connect (method(on_remove_tile_clicked));
     xml->get_widget("tile_vbox", tile_vbox);
     // connect callbacks for the menu
     xml->get_widget("new_tileset_menuitem", new_tileset_menuitem);
-    new_tileset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_new_tileset_activated));
+    new_tileset_menuitem->signal_activate().connect (method(on_new_tileset_activated));
     xml->get_widget("load_tileset_menuitem", load_tileset_menuitem);
-    load_tileset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_load_tileset_activated));
+    load_tileset_menuitem->signal_activate().connect (method(on_load_tileset_activated));
     xml->get_widget("save_tileset_menuitem", save_tileset_menuitem);
-    save_tileset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_save_tileset_activated));
+    save_tileset_menuitem->signal_activate().connect (method(on_save_tileset_activated));
     xml->get_widget("save_as_menuitem", save_as_menuitem);
-    save_as_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_save_as_activated));
+    save_as_menuitem->signal_activate().connect (method(on_save_as_activated));
     xml->get_widget("validate_tileset_menuitem", validate_tileset_menuitem);
-    validate_tileset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_validate_tileset_activated));
+    validate_tileset_menuitem->signal_activate().connect (method(on_validate_tileset_activated));
     xml->get_widget("quit_menuitem", quit_menuitem);
-    quit_menuitem->signal_activate().connect
-       (sigc::mem_fun(this, &TileSetWindow::on_quit_activated));
+    quit_menuitem->signal_activate().connect (method(on_quit_activated));
     xml->get_widget("edit_tileset_info_menuitem", edit_tileset_info_menuitem);
     edit_tileset_info_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_edit_tileset_info_activated));
+      (method(on_edit_tileset_info_activated));
     xml->get_widget("army_unit_selector_menuitem", army_unit_selector_menuitem);
     army_unit_selector_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_army_unit_selector_activated));
+      (method(on_army_unit_selector_activated));
     xml->get_widget("roads_picture_menuitem", roads_picture_menuitem);
     roads_picture_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_roads_picture_activated));
+      (method(on_roads_picture_activated));
     xml->get_widget("bridges_picture_menuitem", bridges_picture_menuitem);
     bridges_picture_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_bridges_picture_activated));
+      (method(on_bridges_picture_activated));
     xml->get_widget("fog_picture_menuitem", fog_picture_menuitem);
-    fog_picture_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_fog_picture_activated));
+    fog_picture_menuitem->signal_activate().connect (method(on_fog_picture_activated));
     xml->get_widget("flags_picture_menuitem", flags_picture_menuitem);
-    flags_picture_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_flags_picture_activated));
+    flags_picture_menuitem->signal_activate().connect (method(on_flags_picture_activated));
 
     xml->get_widget("explosion_picture_menuitem", explosion_picture_menuitem);
     explosion_picture_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_explosion_picture_activated));
+      (method(on_explosion_picture_activated));
     xml->get_widget("preview_tile_menuitem", preview_tile_menuitem);
     preview_tile_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_preview_tile_activated));
+      (method(on_preview_tile_activated));
     xml->get_widget("organize_tilestyles_menuitem", organize_tilestyles_menuitem);
     organize_tilestyles_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_organize_tilestyles_activated));
+      (method(on_organize_tilestyles_activated));
     xml->get_widget("smallmap_building_colors_menuitem", 
                     smallmap_building_colors_menuitem);
     smallmap_building_colors_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, 
-                     &TileSetWindow::on_smallmap_building_colors_activated));
+      (method(on_smallmap_building_colors_activated));
     xml->get_widget ("help_about_menuitem", help_about_menuitem);
-    help_about_menuitem->signal_activate().connect
-       (sigc::mem_fun(this, &TileSetWindow::on_help_about_activated));
+    help_about_menuitem->signal_activate().connect (method(on_help_about_activated));
     xml->get_widget("tilestyle_image", tilestyle_image);
 
-    window->signal_delete_event().connect
-      (sigc::hide(sigc::mem_fun(*this, &TileSetWindow::on_delete_event)));
+    window->signal_delete_event().connect (sigc::hide(method(on_delete_event)));
 
     tiles_list = Gtk::ListStore::create(tiles_columns);
     tiles_treeview->set_model(tiles_list);
     tiles_treeview->append_column("", tiles_columns.name);
     tiles_treeview->set_headers_visible(false);
-    tiles_treeview->get_selection()->signal_changed().connect
-      (sigc::mem_fun(*this, &TileSetWindow::on_tile_selected));
+    tiles_treeview->get_selection()->signal_changed().connect (method(on_tile_selected));
 
     xml->get_widget("tilestylesets_treeview", tilestylesets_treeview);
     tilestylesets_list = Gtk::ListStore::create(tilestylesets_columns);
@@ -217,7 +199,7 @@ TileSetWindow::TileSetWindow(Glib::ustring load_filename)
     tilestylesets_treeview->append_column("", tilestylesets_columns.name);
     tilestylesets_treeview->set_headers_visible(false);
     tilestylesets_treeview->get_selection()->signal_changed().connect
-      (sigc::mem_fun(*this, &TileSetWindow::on_tilestyleset_selected));
+      (method(on_tilestyleset_selected));
 
     xml->get_widget("tilestyles_treeview", tilestyles_treeview);
     tilestyles_list = Gtk::ListStore::create(tilestyles_columns);
@@ -225,19 +207,18 @@ TileSetWindow::TileSetWindow(Glib::ustring load_filename)
     tilestyles_treeview->append_column("", tilestyles_columns.name);
     tilestyles_treeview->set_headers_visible(false);
     tilestyles_treeview->get_selection()->signal_changed().connect
-      (sigc::mem_fun(*this, &TileSetWindow::on_tilestyle_selected));
+      (method(on_tilestyle_selected));
 
     xml->get_widget("add_tilestyleset_button", add_tilestyleset_button);
     add_tilestyleset_button->signal_clicked().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_add_tilestyleset_clicked));
+      (method(on_add_tilestyleset_clicked));
     xml->get_widget("remove_tilestyleset_button", remove_tilestyleset_button);
     remove_tilestyleset_button->signal_clicked().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_remove_tilestyleset_clicked));
+      (method(on_remove_tilestyleset_clicked));
     xml->get_widget("tilestyleset_alignment", tilestyleset_alignment);
     xml->get_widget("tilestyle_alignment", tilestyle_alignment);
     xml->get_widget("image_button", image_button);
-    image_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &TileSetWindow::on_image_chosen));
+    image_button->signal_clicked().connect (method(on_image_chosen));
 
     xml->get_widget("tilestyle_standard_image", tilestyle_standard_image);
 
@@ -1166,8 +1147,7 @@ void TileSetWindow::on_image_chosen()
 void TileSetWindow::on_organize_tilestyles_activated()
 {
   TileStyleOrganizerDialog d(*window, get_selected_tile());
-  d.tilestyle_selected.connect
-    (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_id_selected));
+  d.tilestyle_selected.connect (method(on_tilestyle_id_selected));
   d.run_and_hide();
   update_tilestyle_panel();
 }
@@ -1257,8 +1237,7 @@ void TileSetWindow::on_preview_tile_activated()
       if (idx > -1)
         sec = (*d_tileset)[idx];
       TilePreviewDialog d(*window, tile, sec, d_tileset->getTileSize());
-      d.tilestyle_selected.connect
-        (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_id_selected));
+      d.tilestyle_selected.connect (method(on_tilestyle_id_selected));
       d.run();
     }
 }

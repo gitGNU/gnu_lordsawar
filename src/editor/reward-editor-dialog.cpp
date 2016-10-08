@@ -35,6 +35,8 @@
 #include "armyproto.h"
 #include "SightMap.h"
 
+#define method(x) sigc::mem_fun(*this, &RewardEditorDialog::x)
+
 RewardEditorDialog::RewardEditorDialog(Gtk::Window &parent, Player *player, bool hidden_ruins, Reward *r)
  : LwEditorDialog(parent, "reward-editor-dialog.ui")
 {
@@ -47,50 +49,38 @@ RewardEditorDialog::RewardEditorDialog(Gtk::Window &parent, Player *player, bool
 
   xml->get_widget("gold_hbox", gold_hbox);
   xml->get_widget("gold_radiobutton", gold_radiobutton);
-  gold_radiobutton->signal_toggled().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_gold_toggled));
+  gold_radiobutton->signal_toggled().connect (method(on_gold_toggled));
   xml->get_widget("item_hbox", item_hbox);
   xml->get_widget("item_radiobutton", item_radiobutton);
-  item_radiobutton->signal_toggled().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_item_toggled));
+  item_radiobutton->signal_toggled().connect (method(on_item_toggled));
   xml->get_widget("allies_hbox", allies_hbox);
   xml->get_widget("allies_radiobutton", allies_radiobutton);
-  allies_radiobutton->signal_toggled().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_allies_toggled));
+  allies_radiobutton->signal_toggled().connect (method(on_allies_toggled));
   xml->get_widget("map_hbox", map_hbox);
   xml->get_widget("map_radiobutton", map_radiobutton);
-  map_radiobutton->signal_toggled().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_map_toggled));
+  map_radiobutton->signal_toggled().connect (method(on_map_toggled));
   xml->get_widget("hidden_ruin_hbox", hidden_ruin_hbox);
   xml->get_widget("hidden_ruin_radiobutton", hidden_ruin_radiobutton);
-  hidden_ruin_radiobutton->signal_toggled().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_hidden_ruin_toggled));
+  hidden_ruin_radiobutton->signal_toggled().connect(method(on_hidden_ruin_toggled));
   xml->get_widget("gold_spinbutton", gold_spinbutton);
   xml->get_widget("randomize_gold_button", randomize_gold_button);
-  randomize_gold_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_randomize_gold_clicked));
+  randomize_gold_button->signal_clicked().connect (method(on_randomize_gold_clicked));
   on_gold_toggled();
   xml->get_widget("item_button", item_button);
-  item_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_item_clicked));
+  item_button->signal_clicked().connect (method(on_item_clicked));
   xml->get_widget("clear_item_button", clear_item_button);
-  clear_item_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_clear_item_clicked));
+  clear_item_button->signal_clicked().connect (method(on_clear_item_clicked));
   xml->get_widget("randomize_item_button", randomize_item_button);
-  randomize_item_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_randomize_item_clicked));
+  randomize_item_button->signal_clicked().connect (method(on_randomize_item_clicked));
   set_item_name();
 
   xml->get_widget("num_allies_spinbutton", num_allies_spinbutton);
   xml->get_widget("ally_button", ally_button);
-  ally_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_ally_clicked));
+  ally_button->signal_clicked().connect (method(on_ally_clicked));
   xml->get_widget("clear_ally_button", clear_ally_button);
-  clear_ally_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_clear_ally_clicked));
+  clear_ally_button->signal_clicked().connect (method(on_clear_ally_clicked));
   xml->get_widget("randomize_allies_button", randomize_allies_button);
-  randomize_allies_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_randomize_allies_clicked));
+  randomize_allies_button->signal_clicked().connect (method(on_randomize_allies_clicked));
   set_ally_name();
 
   xml->get_widget("map_x_spinbutton", map_x_spinbutton);
@@ -98,22 +88,20 @@ RewardEditorDialog::RewardEditorDialog(Gtk::Window &parent, Player *player, bool
   xml->get_widget("map_width_spinbutton", map_width_spinbutton);
   xml->get_widget("map_height_spinbutton", map_height_spinbutton);
   xml->get_widget("randomize_map_button", randomize_map_button);
-  randomize_map_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_randomize_map_clicked));
+  randomize_map_button->signal_clicked().connect (method(on_randomize_map_clicked));
   map_x_spinbutton->set_range (0, GameMap::getInstance()->getWidth() - 1);
   map_y_spinbutton->set_range (0, GameMap::getInstance()->getHeight() - 1);
   map_width_spinbutton->set_range (1, GameMap::getInstance()->getWidth());
   map_height_spinbutton->set_range (1, GameMap::getInstance()->getHeight());
 
   xml->get_widget("hidden_ruin_button", hidden_ruin_button);
-  hidden_ruin_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_hidden_ruin_clicked));
+  hidden_ruin_button->signal_clicked().connect (method(on_hidden_ruin_clicked));
   xml->get_widget("clear_hidden_ruin_button", clear_hidden_ruin_button);
   clear_hidden_ruin_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_clear_hidden_ruin_clicked));
+    (method(on_clear_hidden_ruin_clicked));
   xml->get_widget("randomize_hidden_ruin_button", randomize_hidden_ruin_button);
   randomize_hidden_ruin_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardEditorDialog::on_randomize_hidden_ruin_clicked));
+    (method(on_randomize_hidden_ruin_clicked));
   set_hidden_ruin_name();
   hidden_ruin_radiobutton->set_sensitive(hidden_ruins);
 

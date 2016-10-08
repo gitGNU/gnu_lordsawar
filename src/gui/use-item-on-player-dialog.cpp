@@ -27,6 +27,8 @@
 #include "player.h"
 #include "playerlist.h"
 
+#define method(x) sigc::mem_fun(*this, &UseItemOnPlayerDialog::x)
+
 UseItemOnPlayerDialog::UseItemOnPlayerDialog(Gtk::Window &parent)
  : LwDialog(parent, "use-item-on-player-dialog.ui")
 {
@@ -36,14 +38,13 @@ UseItemOnPlayerDialog::UseItemOnPlayerDialog(Gtk::Window &parent)
   player_treeview->append_column("", players_columns.image);
   player_treeview->append_column("", players_columns.name);
   player_treeview->get_selection()->signal_changed().connect
-    (sigc::mem_fun(*this, &UseItemOnPlayerDialog::on_player_selected));
+    (method(on_player_selected));
 
   xml->get_widget("map_image", map_image);
   xml->get_widget("continue_button", continue_button);
 
   citymap = new CityMap();
-  citymap->map_changed.connect
-    (sigc::mem_fun(this, &UseItemOnPlayerDialog::on_map_changed));
+  citymap->map_changed.connect (method(on_map_changed));
 
   Gtk::EventBox *map_eventbox;
   xml->get_widget("map_eventbox", map_eventbox);

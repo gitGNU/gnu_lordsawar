@@ -29,6 +29,8 @@
 #include "signpost.h"
 #include "rnd.h"
 
+#define method(x) sigc::mem_fun(*this, &SignpostEditorDialog::x)
+
 SignpostEditorDialog::SignpostEditorDialog(Gtk::Window &parent, Signpost *s, CreateScenarioRandomize *randomizer)
  : LwEditorDialog(parent, "signpost-editor-dialog.ui")
 {
@@ -39,8 +41,7 @@ SignpostEditorDialog::SignpostEditorDialog(Gtk::Window &parent, Signpost *s, Cre
     sign_textview->get_buffer()->set_text(s->getName());
     
     xml->get_widget("randomize_button", randomize_button);
-    randomize_button->signal_clicked().connect(
-	sigc::mem_fun(this, &SignpostEditorDialog::on_randomize_clicked));
+    randomize_button->signal_clicked().connect(method(on_randomize_clicked));
 }
 
 int SignpostEditorDialog::run()

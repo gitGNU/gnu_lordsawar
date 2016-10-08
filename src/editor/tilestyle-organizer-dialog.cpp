@@ -29,6 +29,8 @@
 #include "ImageCache.h"
 #include "timing.h"
 
+#define method(x) sigc::mem_fun(*this, &TileStyleOrganizerDialog::x)
+
 TileStyleOrganizerDialog::TileStyleOrganizerDialog(Gtk::Window &parent, Tile *tile)
  : LwEditorDialog(parent, "tilestyle-organizer-dialog.ui")
 {
@@ -45,12 +47,10 @@ TileStyleOrganizerDialog::TileStyleOrganizerDialog(Gtk::Window &parent, Tile *ti
     categories_list = Gtk::ListStore::create (categories_columns);
     categories_iconview->set_model(categories_list); 
     categories_iconview->set_pixbuf_column(categories_columns.image);
-    categories_iconview->signal_selection_changed().connect
-      (sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_category_selected));
+    categories_iconview->signal_selection_changed().connect(method(on_category_selected));
     categories_iconview->enable_model_drag_dest(targets, Gdk::ACTION_MOVE);
     categories_iconview->signal_drag_data_received().connect
-      (sigc::mem_fun
-       (*this, &TileStyleOrganizerDialog::on_categories_drop_drag_data_received));
+      (method(on_categories_drop_drag_data_received));
     fill_in_categories();
     category_list = Gtk::ListStore::create (tilestyle_columns);
     category_iconview->set_model(category_list); 
@@ -59,17 +59,16 @@ TileStyleOrganizerDialog::TileStyleOrganizerDialog(Gtk::Window &parent, Tile *ti
     category_iconview->enable_model_drag_dest(targets, Gdk::ACTION_MOVE);
     category_iconview->enable_model_drag_source(targets, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
     category_iconview->signal_drag_data_get().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_category_drag_data_get))));
+      (sigc::hide(sigc::hide(method(on_category_drag_data_get))));
     category_iconview->signal_drag_data_received().connect
-      (sigc::mem_fun
-       (*this, &TileStyleOrganizerDialog::on_category_drop_drag_data_received));
+      (method(on_category_drop_drag_data_received));
     category_iconview->signal_item_activated().connect
-      (sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_category_tilestyle_activated));
+      (method(on_category_tilestyle_activated));
 
     category_iconview->signal_selection_changed().connect
-      (sigc::bind(sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_selection_made), category_iconview));
+      (sigc::bind(method(on_selection_made), category_iconview));
     category_iconview->signal_drag_begin().connect
-      (sigc::bind(sigc::hide<0>(sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_drag_begin)), category_iconview));
+      (sigc::bind(sigc::hide<0>(method(on_drag_begin)), category_iconview));
     unsorted_list = Gtk::ListStore::create (tilestyle_columns);
     unsorted_iconview->set_model(unsorted_list); 
     unsorted_iconview->set_pixbuf_column(tilestyle_columns.image);
@@ -78,16 +77,15 @@ TileStyleOrganizerDialog::TileStyleOrganizerDialog(Gtk::Window &parent, Tile *ti
     unsorted_iconview->drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_MOVE);
     unsorted_iconview->enable_model_drag_source(targets, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
     unsorted_iconview->signal_drag_data_get().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_unsorted_drag_data_get))));
+      (sigc::hide(sigc::hide(method(on_unsorted_drag_data_get))));
     unsorted_iconview->signal_drag_data_received().connect
-      (sigc::mem_fun
-       (*this, &TileStyleOrganizerDialog::on_unsorted_drop_drag_data_received));
+      (method(on_unsorted_drop_drag_data_received));
     unsorted_iconview->signal_item_activated().connect
-      (sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_unsorted_tilestyle_activated));
+      (method(on_unsorted_tilestyle_activated));
     unsorted_iconview->signal_drag_begin().connect
-      (sigc::bind(sigc::hide<0>(sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_drag_begin)), unsorted_iconview));
+      (sigc::bind(sigc::hide<0>(method(on_drag_begin)), unsorted_iconview));
     unsorted_iconview->signal_selection_changed().connect
-      (sigc::bind(sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_selection_made), unsorted_iconview));
+      (sigc::bind(method(on_selection_made), unsorted_iconview));
 
     if (d_tile->front())
       if (d_tile->front()->front())
@@ -412,7 +410,7 @@ void TileStyleOrganizerDialog::on_selection_made(Gtk::IconView *iconview)
   else
     {
       selection_timeout_handler.disconnect();
-      selection_timeout_handler = Timing::instance().register_timer (sigc::mem_fun(*this, &TileStyleOrganizerDialog::expire_selection), 1000);
+      selection_timeout_handler = Timing::instance().register_timer (method(expire_selection), 1000);
     }
   if (iconview == unsorted_iconview)
     category_iconview->unselect_all();

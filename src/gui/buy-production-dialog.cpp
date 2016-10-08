@@ -34,6 +34,8 @@
 #include "playerlist.h"
 #include "shield.h"
 
+#define method(x) sigc::mem_fun(*this, &BuyProductionDialog::x)
+
 BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)
  : LwDialog(parent, "buy-production-dialog.ui")
 {
@@ -88,17 +90,11 @@ BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)
 	toggles_table->attach(*toggle, x, y, 1 , 1);
 	toggle->show_all();
 
-	toggle->signal_toggled().connect(
-	    sigc::bind(sigc::mem_fun(this, &BuyProductionDialog::on_production_toggled),
-		       toggle));
+	toggle->signal_toggled().connect(sigc::bind(method(on_production_toggled), toggle));
 	toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
-	toggle->signal_button_press_event().connect(
-	    sigc::bind(sigc::mem_fun(*this, &BuyProductionDialog::on_production_button_event),
-		       toggle), false);
+	toggle->signal_button_press_event().connect(sigc::bind(method(on_production_button_event), toggle), false);
 	
-	toggle->signal_button_release_event().connect(
-	    sigc::bind(sigc::mem_fun(*this, &BuyProductionDialog::on_production_button_event),
-		       toggle), false);
+	toggle->signal_button_release_event().connect(sigc::bind(method(on_production_button_event), toggle), false);
     }
 
     ignore_toggles = false;

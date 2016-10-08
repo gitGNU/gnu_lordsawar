@@ -45,6 +45,8 @@ Glib::ustring small_none = N_("no small shield set");
 Glib::ustring medium_none = N_("no medium shield set");
 Glib::ustring large_none = N_("no large shield set");
 
+#define method(x) sigc::mem_fun(*this, &ShieldSetWindow::x)
+
 ShieldSetWindow::ShieldSetWindow(Glib::ustring load_filename)
 {
   needs_saving = false;
@@ -54,68 +56,54 @@ ShieldSetWindow::ShieldSetWindow(Glib::ustring load_filename)
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getVariousFile("castle_icon.png"));
-    window->signal_delete_event().connect
-      (sigc::mem_fun(*this, &ShieldSetWindow::on_window_closed));
+    window->signal_delete_event().connect (method(on_window_closed));
 
     xml->get_widget("shield_alignment", shield_alignment);
     xml->get_widget("shields_treeview", shields_treeview);
     // connect callbacks for the menu
     xml->get_widget("new_shieldset_menuitem", new_shieldset_menuitem);
-    new_shieldset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ShieldSetWindow::on_new_shieldset_activated));
+    new_shieldset_menuitem->signal_activate().connect (method(on_new_shieldset_activated));
     xml->get_widget("load_shieldset_menuitem", load_shieldset_menuitem);
-    load_shieldset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ShieldSetWindow::on_load_shieldset_activated));
+    load_shieldset_menuitem->signal_activate().connect (method(on_load_shieldset_activated));
     xml->get_widget("save_as_menuitem", save_as_menuitem);
-    save_as_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ShieldSetWindow::on_save_as_activated));
+    save_as_menuitem->signal_activate().connect (method(on_save_as_activated));
     xml->get_widget("save_shieldset_menuitem", save_shieldset_menuitem);
-    save_shieldset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ShieldSetWindow::on_save_shieldset_activated));
+    save_shieldset_menuitem->signal_activate().connect (method(on_save_shieldset_activated));
     xml->get_widget("validate_shieldset_menuitem", validate_shieldset_menuitem);
-    validate_shieldset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ShieldSetWindow::on_validate_shieldset_activated));
+    validate_shieldset_menuitem->signal_activate().connect (method(on_validate_shieldset_activated));
     xml->get_widget("quit_menuitem", quit_menuitem);
-    quit_menuitem->signal_activate().connect
-       (sigc::mem_fun(this, &ShieldSetWindow::on_quit_activated));
+    quit_menuitem->signal_activate().connect (method(on_quit_activated));
     xml->get_widget("edit_shieldset_info_menuitem", edit_shieldset_info_menuitem);
     edit_shieldset_info_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ShieldSetWindow::on_edit_shieldset_info_activated));
+      (method(on_edit_shieldset_info_activated));
     xml->get_widget("edit_copy_shields_menuitem", edit_copy_shields_menuitem);
     edit_copy_shields_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ShieldSetWindow::on_edit_copy_shields_activated));
+      (method(on_edit_copy_shields_activated));
     xml->get_widget ("help_about_menuitem", help_about_menuitem);
-    help_about_menuitem->signal_activate().connect
-       (sigc::mem_fun(this, &ShieldSetWindow::on_help_about_activated));
+    help_about_menuitem->signal_activate().connect (method(on_help_about_activated));
     xml->get_widget ("change_smallpic_button", change_smallpic_button);
-    change_smallpic_button->signal_clicked().connect(
-	sigc::bind(sigc::mem_fun(this, &ShieldSetWindow::on_shieldpic_changed),
-                   ShieldStyle::SMALL));
+    change_smallpic_button->signal_clicked().connect
+      (sigc::bind(method(on_shieldpic_changed), ShieldStyle::SMALL));
     xml->get_widget ("change_mediumpic_button", change_mediumpic_button);
-    change_mediumpic_button->signal_clicked().connect(
-	sigc::bind(sigc::mem_fun(this, &ShieldSetWindow::on_shieldpic_changed),
-                   ShieldStyle::MEDIUM));
+    change_mediumpic_button->signal_clicked().connect
+      (sigc::bind(method(on_shieldpic_changed), ShieldStyle::MEDIUM));
     xml->get_widget ("change_largepic_button", change_largepic_button);
-    change_largepic_button->signal_clicked().connect(
-	sigc::bind(sigc::mem_fun(this, &ShieldSetWindow::on_shieldpic_changed),
-                   ShieldStyle::LARGE));
+    change_largepic_button->signal_clicked().connect
+      (sigc::bind(method(on_shieldpic_changed), ShieldStyle::LARGE));
     xml->get_widget ("player_colorbutton", player_colorbutton);
-    player_colorbutton->signal_color_set().connect
-      (sigc::mem_fun(this, &ShieldSetWindow::on_player_color_changed));
+    player_colorbutton->signal_color_set().connect(method(on_player_color_changed));
 
     xml->get_widget ("small_image", small_image);
     xml->get_widget ("medium_image", medium_image);
     xml->get_widget ("large_image", large_image);
 
-    window->signal_delete_event().connect(
-	sigc::hide(sigc::mem_fun(*this, &ShieldSetWindow::on_delete_event)));
+    window->signal_delete_event().connect(sigc::hide(method(on_delete_event)));
 
     shields_list = Gtk::ListStore::create(shields_columns);
     shields_treeview->set_model(shields_list);
     shields_treeview->append_column("", shields_columns.name);
     shields_treeview->set_headers_visible(false);
-    shields_treeview->get_selection()->signal_changed().connect
-      (sigc::mem_fun(*this, &ShieldSetWindow::on_shield_selected));
+    shields_treeview->get_selection()->signal_changed().connect (method(on_shield_selected));
 
     update_shield_panel();
 

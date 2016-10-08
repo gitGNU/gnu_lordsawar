@@ -30,6 +30,8 @@
 #include "ImageCache.h"
 #include "past-chooser.h"
 
+#define method(x) sigc::mem_fun(*this, &TilesetFlagEditorDialog::x)
+
 TilesetFlagEditorDialog::TilesetFlagEditorDialog(Gtk::Window &parent, Tileset *tileset)
  : LwEditorDialog(parent, "tileset-flag-editor-dialog.ui")
 {
@@ -43,7 +45,7 @@ TilesetFlagEditorDialog::TilesetFlagEditorDialog(Gtk::Window &parent, Tileset *t
     
     xml->get_widget("flag_filechooserbutton", flag_filechooserbutton);
     flag_filechooserbutton->signal_selection_changed().connect
-       (sigc::mem_fun(*this, &TilesetFlagEditorDialog::on_image_chosen));
+       (method(on_image_chosen));
 
     update_flag_panel();
 }
@@ -96,8 +98,7 @@ void TilesetFlagEditorDialog::setup_shield_theme_combobox(Gtk::Box *box)
     }
 
   shield_theme_combobox->set_active(default_id);
-  shield_theme_combobox->signal_changed().connect
-    (sigc::mem_fun(this, &TilesetFlagEditorDialog::shieldset_changed));
+  shield_theme_combobox->signal_changed().connect (method(shieldset_changed));
 
   box->pack_start(*shield_theme_combobox, Gtk::PACK_SHRINK);
 }
@@ -124,9 +125,7 @@ void TilesetFlagEditorDialog::show_preview_flags(Glib::ustring filename)
   if (loadFlag(filename) == true)
     {
       heartbeat = Glib::signal_timeout().connect
-	(bind_return
-	 (sigc::mem_fun (*this, &TilesetFlagEditorDialog::on_heartbeat), 
-	  true), 250);
+	(sigc::bind_return (method (on_heartbeat), true), 250);
     }
 }
 
@@ -237,8 +236,7 @@ void TilesetFlagEditorDialog::on_add(Gtk::Widget *widget)
   if (widget)
     {
       Gtk::Button *button = dynamic_cast<Gtk::Button*>(widget);
-      button->signal_clicked().connect
-        (sigc::mem_fun(*this, &TilesetFlagEditorDialog::on_button_pressed));
+      button->signal_clicked().connect (method(on_button_pressed));
     }
 }
 

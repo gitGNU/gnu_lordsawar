@@ -29,19 +29,18 @@
 #include "playerlist.h"
 #include "reward-editor-dialog.h"
 
+#define method(x) sigc::mem_fun(*this, &RewardlistDialog::x)
+
 RewardlistDialog::RewardlistDialog(Gtk::Window &parent)
  : LwEditorDialog(parent, "reward-list-dialog.ui")
 {
     xml->get_widget("rewards_treeview", rewards_treeview);
     xml->get_widget("add_button", add_button);
-    add_button->signal_clicked().connect
-      (sigc::mem_fun(this, &RewardlistDialog::on_add_clicked));
+    add_button->signal_clicked().connect (method(on_add_clicked));
     xml->get_widget("remove_button", remove_button);
-    remove_button->signal_clicked().connect
-      (sigc::mem_fun(this, &RewardlistDialog::on_remove_clicked));
+    remove_button->signal_clicked().connect (method(on_remove_clicked));
     xml->get_widget("edit_button", edit_button);
-    edit_button->signal_clicked().connect
-      (sigc::mem_fun(this, &RewardlistDialog::on_edit_clicked));
+    edit_button->signal_clicked().connect (method(on_edit_clicked));
 
     rewards_list = Gtk::ListStore::create(rewards_columns);
     rewards_treeview->set_model(rewards_list);
@@ -64,8 +63,7 @@ RewardlistDialog::RewardlistDialog(Gtk::Window &parent)
 
 
     update_rewardlist_buttons();
-    rewards_treeview->get_selection()->signal_changed().connect
-      (sigc::mem_fun(*this, &RewardlistDialog::on_reward_selected));
+    rewards_treeview->get_selection()->signal_changed().connect (method(on_reward_selected));
 }
 
 void

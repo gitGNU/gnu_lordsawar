@@ -28,29 +28,25 @@
 #include "File.h"
 #include "tilestyle.h"
 
+#define method(x) sigc::mem_fun(*this, &TilePreviewDialog::x)
+
 TilePreviewDialog::TilePreviewDialog(Gtk::Window &parent, Tile *tile, Tile *sec, guint32 tileSize)
  : LwEditorDialog(parent, "tile-preview-dialog.ui")
 {
     xml->get_widget("next_button", next_button);
-    next_button->signal_clicked().connect
-      (sigc::mem_fun(this, &TilePreviewDialog::on_next_clicked));
+    next_button->signal_clicked().connect (method(on_next_clicked));
     xml->get_widget("previous_button", previous_button);
-    previous_button->signal_clicked().connect
-      (sigc::mem_fun(this, &TilePreviewDialog::on_previous_clicked));
+    previous_button->signal_clicked().connect (method(on_previous_clicked));
     xml->get_widget("refresh_button", refresh_button);
-    refresh_button->signal_clicked().connect
-      (sigc::mem_fun(this, &TilePreviewDialog::on_refresh_clicked));
+    refresh_button->signal_clicked().connect (method(on_refresh_clicked));
     xml->get_widget("preview_image", preview_image);
     xml->get_widget("selected_tilestyle_label", selected_tilestyle_label);
     xml->get_widget("eventbox", eventbox);
     eventbox->add_events(Gdk::BUTTON_PRESS_MASK | 
                          Gdk::BUTTON_RELEASE_MASK | Gdk::POINTER_MOTION_MASK);
-    eventbox->signal_button_press_event().connect
-     (sigc::mem_fun(*this, &TilePreviewDialog::on_mouse_button_event));
-    eventbox->signal_button_release_event().connect
-     (sigc::mem_fun(*this, &TilePreviewDialog::on_mouse_button_event));
-    eventbox->signal_motion_notify_event().connect
-     (sigc::mem_fun(*this, &TilePreviewDialog::on_mouse_motion_event));
+    eventbox->signal_button_press_event().connect (method(on_mouse_button_event));
+    eventbox->signal_button_release_event().connect (method(on_mouse_button_event));
+    eventbox->signal_motion_notify_event().connect (method(on_mouse_motion_event));
 
     d_tileSize = tileSize;
 
@@ -217,8 +213,7 @@ TilePreviewDialog::TilePreviewDialog(Gtk::Window &parent, Tile *tile, Tile *sec,
 
 void TilePreviewDialog::add_scene(TilePreviewScene *s)
 {
-  s->hovered_tilestyle_id.connect
-    (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
+  s->hovered_tilestyle_id.connect (method(on_tilestyle_id_hovered));
   s->selected_tilestyle_id.connect
     (sigc::mem_fun (tilestyle_selected, &sigc::signal<void, guint32>::emit));
   scenes.push_back(s);

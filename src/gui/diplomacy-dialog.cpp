@@ -28,6 +28,8 @@
 #include "playerlist.h"
 #include "player.h"
 
+#define method(x) sigc::mem_fun(*this, &DiplomacyDialog::x)
+
 DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
  : LwDialog(parent, "diplomacy-dialog.ui")
 {
@@ -40,8 +42,7 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
   xml->get_widget("player_shield_image", d_player_shield_image);
   xml->get_widget("report_button", d_report_button);
     
-  d_report_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &DiplomacyDialog::on_report_clicked));
+  d_report_button->signal_clicked().connect (method(on_report_clicked));
 
   // put the shields across the top of the proposals table, minus our own
   guint32 i = 0;
@@ -146,10 +147,8 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
       else
 	radio1->set_active (d_player->getDiplomaticProposal(p) == 
 			    Player::PROPOSE_PEACE);
-      radio1->signal_toggled().connect(
-	    sigc::bind(sigc::mem_fun
-		       (this, &DiplomacyDialog::on_proposal_toggled),
-		       radio1, p, Player::PROPOSE_PEACE));
+      radio1->signal_toggled().connect
+        (sigc::bind(method(on_proposal_toggled), radio1, p, Player::PROPOSE_PEACE));
       d_offers_table->attach(*radio1, i, j ,1, 1);
 
       j = 1;
@@ -166,10 +165,9 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
       else
 	radio2->set_active (d_player->getDiplomaticProposal(p) == 
 			    Player::PROPOSE_WAR_IN_FIELD);
-      radio2->signal_toggled().connect(
-	    sigc::bind(sigc::mem_fun(this, 
-				     &DiplomacyDialog::on_proposal_toggled),
-		       radio2, p, Player::PROPOSE_WAR_IN_FIELD));
+      radio2->signal_toggled().connect
+        (sigc::bind(method(on_proposal_toggled), radio2, p, 
+                    Player::PROPOSE_WAR_IN_FIELD));
       d_offers_table->attach(*radio2, i, j, 1 , 1);
 
       j = 2;
@@ -186,10 +184,8 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
       else
 	radio3->set_active (d_player->getDiplomaticProposal(p) == 
 			    Player::PROPOSE_WAR);
-      radio3->signal_toggled().connect(
-	    sigc::bind(sigc::mem_fun(this, 
-				     &DiplomacyDialog::on_proposal_toggled),
-		       radio3, p, Player::PROPOSE_WAR));
+      radio3->signal_toggled().connect
+        (sigc::bind(method(on_proposal_toggled), radio3, p, Player::PROPOSE_WAR));
       d_offers_table->attach(*radio3, i, j, 1, 1);
       i++;
     }

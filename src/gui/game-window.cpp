@@ -121,6 +121,8 @@
 #include "new-network-game-dialog.h"
 #include "rnd.h"
 
+#define method(x) sigc::mem_fun(*this, &GameWindow::x)
+
 GameWindow::GameWindow()
 {
   game_winner = NULL;
@@ -131,193 +133,168 @@ GameWindow::GameWindow()
   game = NULL;
   game_button_box = NULL;
   last_box = Gtk::Allocation(0,0,1,1);
-    
+
   Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("game-window.ui");
 
-    Gtk::Window *w = 0;
-    xml->get_widget("window", w);
-    window = w;
-    w->set_icon_from_file(File::getVariousFile("castle_icon.png"));
-    
-    w->signal_delete_event().connect
-      (sigc::hide(sigc::mem_fun(*this, &GameWindow::on_delete_event)));
+  Gtk::Window *w = 0;
+  xml->get_widget("window", w);
+  window = w;
+  w->set_icon_from_file(File::getVariousFile("castle_icon.png"));
 
-    xml->get_widget("menubar", menubar);
-    xml->get_widget("bigmap_image", bigmap_image);
-    bigmap_image->signal_size_allocate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_bigmap_surface_changed));
-    bigmap_image->grab_focus();
-    xml->get_widget("bigmap_eventbox", bigmap_eventbox);
-    bigmap_eventbox->add_events(Gdk::KEY_PRESS_MASK | 
-		  Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-	          Gdk::POINTER_MOTION_MASK | Gdk::SMOOTH_SCROLL_MASK |
-                  Gdk::LEAVE_NOTIFY_MASK);
-    bigmap_eventbox->signal_key_press_event().connect(
-	sigc::mem_fun(*this, &GameWindow::on_bigmap_key_event));
-    bigmap_eventbox->signal_key_release_event().connect(
-	sigc::mem_fun(*this, &GameWindow::on_bigmap_key_event));
-    bigmap_eventbox->signal_button_press_event().connect
-     (sigc::mem_fun(*this, &GameWindow::on_bigmap_mouse_button_event));
-    bigmap_eventbox->signal_button_release_event().connect
-     (sigc::mem_fun(*this, &GameWindow::on_bigmap_mouse_button_event));
-    bigmap_eventbox->signal_motion_notify_event().connect
-     (sigc::mem_fun(*this, &GameWindow::on_bigmap_mouse_motion_event));
-    bigmap_eventbox->signal_scroll_event().connect
-      (sigc::mem_fun(*this, &GameWindow::on_bigmap_scrolled));
-    bigmap_eventbox->signal_leave_notify_event().connect
-      (sigc::hide(sigc::mem_fun(*this, &GameWindow::hide_map_tip)));
+  w->signal_delete_event().connect (sigc::hide(method(on_delete_event)));
 
-    xml->get_widget("status_box_container", status_box_container);
+  xml->get_widget("menubar", menubar);
+  xml->get_widget("bigmap_image", bigmap_image);
+  bigmap_image->signal_size_allocate().connect (method(on_bigmap_surface_changed));
+  bigmap_image->grab_focus();
+  xml->get_widget("bigmap_eventbox", bigmap_eventbox);
+  bigmap_eventbox->add_events(Gdk::KEY_PRESS_MASK | Gdk::BUTTON_PRESS_MASK | 
+                              Gdk::BUTTON_RELEASE_MASK | Gdk::POINTER_MOTION_MASK |
+                              Gdk::SMOOTH_SCROLL_MASK | Gdk::LEAVE_NOTIFY_MASK);
+  bigmap_eventbox->signal_key_press_event().connect (method(on_bigmap_key_event));
+  bigmap_eventbox->signal_key_release_event().connect (method(on_bigmap_key_event));
+  bigmap_eventbox->signal_button_press_event().connect
+    (method(on_bigmap_mouse_button_event));
+  bigmap_eventbox->signal_button_release_event().connect
+    (method(on_bigmap_mouse_button_event));
+  bigmap_eventbox->signal_motion_notify_event().connect
+    (method(on_bigmap_mouse_motion_event));
+  bigmap_eventbox->signal_scroll_event().connect (method(on_bigmap_scrolled));
+  bigmap_eventbox->signal_leave_notify_event().connect
+    (sigc::hide(method(hide_map_tip)));
 
-    status_box = StatusBox::create(Configuration::s_ui_form_factor);
-    status_box->reparent(*status_box_container);
-    status_box->property_hexpand() = true;
+  xml->get_widget("status_box_container", status_box_container);
 
-    // the map image
-    xml->get_widget("smallmap_image", smallmap_image);
-    xml->get_widget("map_eventbox", map_eventbox);
-    xml->get_widget("map_container", map_container);
-    map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-			     Gdk::POINTER_MOTION_MASK | Gdk::SCROLL_MASK);
-      map_eventbox->signal_button_press_event().connect
-       (sigc::mem_fun(*this, &GameWindow::on_smallmap_mouse_button_event));
-      map_eventbox->signal_button_release_event().connect
-       (sigc::mem_fun(*this, &GameWindow::on_smallmap_mouse_button_event));
-      map_eventbox->signal_motion_notify_event().connect
-       (sigc::mem_fun(*this, &GameWindow::on_smallmap_mouse_motion_event));
-      map_eventbox->signal_enter_notify_event().connect
-       (sigc::hide(sigc::mem_fun(*this, &GameWindow::on_mouse_entered_smallmap)));
-    xml->get_widget("control_panel_viewport", control_panel_viewport);
-    game_button_box = GameButtonBox::create(Configuration::s_ui_form_factor);
-    game_button_box->reparent(*control_panel_viewport);
-    game_button_box->property_halign() = Gtk::ALIGN_CENTER;
+  status_box = StatusBox::create(Configuration::s_ui_form_factor);
+  status_box->reparent(*status_box_container);
+  status_box->property_hexpand() = true;
 
-    // the stats
-    xml->get_widget("turn_label", turn_label);
-    xml->get_widget("turn_hbox", turn_hbox);
-    xml->get_widget("shield_image_0", shield_image[0]);
-    xml->get_widget("shield_image_1", shield_image[1]);
-    xml->get_widget("shield_image_2", shield_image[2]);
-    xml->get_widget("shield_image_3", shield_image[3]);
-    xml->get_widget("shield_image_4", shield_image[4]);
-    xml->get_widget("shield_image_5", shield_image[5]);
-    xml->get_widget("shield_image_6", shield_image[6]);
-    xml->get_widget("shield_image_7", shield_image[7]);
+  // the map image
+  xml->get_widget("smallmap_image", smallmap_image);
+  xml->get_widget("map_eventbox", map_eventbox);
+  xml->get_widget("map_container", map_container);
+  map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
+                           Gdk::POINTER_MOTION_MASK | Gdk::SCROLL_MASK);
+  map_eventbox->signal_button_press_event().connect
+    (method(on_smallmap_mouse_button_event));
+  map_eventbox->signal_button_release_event().connect
+    (method(on_smallmap_mouse_button_event));
+  map_eventbox->signal_motion_notify_event().connect
+    (method(on_smallmap_mouse_motion_event));
+  map_eventbox->signal_enter_notify_event().connect
+    (sigc::hide(method(on_mouse_entered_smallmap)));
+  xml->get_widget("control_panel_viewport", control_panel_viewport);
+  game_button_box = GameButtonBox::create(Configuration::s_ui_form_factor);
+  game_button_box->reparent(*control_panel_viewport);
+  game_button_box->property_halign() = Gtk::ALIGN_CENTER;
 
-    // connect callbacks for the menu
-    xml->get_widget("new_game_menuitem", new_game_menuitem);
-    new_game_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_new_game_activated));
-    xml->get_widget("load_game_menuitem", load_game_menuitem);
-    load_game_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_load_game_activated));
-    xml->get_widget("save_game_menuitem", save_game_menuitem);
-    save_game_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_save_game_activated));
-    xml->get_widget("save_game_as_menuitem", save_game_as_menuitem);
-    save_game_as_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_save_game_as_activated));
-    xml->get_widget("quit_menuitem", quit_menuitem);
-    quit_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_quit_activated));
-    xml->get_widget("toggle_grid_menuitem", toggle_grid_menuitem);
-    toggle_grid_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_grid_toggled));
-    xml->get_widget("army_report_menuitem", army_report_menuitem);
-    army_report_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_army_report_activated));
-    xml->get_widget("item_report_menuitem", item_report_menuitem);
-    item_report_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_item_report_activated));
-    xml->get_widget("city_report_menuitem", city_report_menuitem);
-    city_report_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_city_report_activated));
-    xml->get_widget("gold_report_menuitem", gold_report_menuitem);
-    gold_report_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_gold_report_activated));
-    xml->get_widget("winning_report_menuitem", winning_report_menuitem);
-    winning_report_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_winning_report_activated));
-    xml->get_widget("diplomacy_report_menuitem", diplomacy_report_menuitem);
-    xml->get_widget("quests_menuitem", quests_menuitem);
-    quests_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_quests_activated));
-    xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
-    fullscreen_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_fullscreen_activated));
-    xml->get_widget("preferences_menuitem", preferences_menuitem);
-    preferences_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_preferences_activated));
-    xml->get_widget("zoom_in_menuitem", zoom_in_menuitem);
-    zoom_in_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_zoom_in_activated));
-    xml->get_widget("zoom_out_menuitem", zoom_out_menuitem);
-    zoom_out_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_zoom_out_activated));
+  // the stats
+  xml->get_widget("turn_label", turn_label);
+  xml->get_widget("turn_hbox", turn_hbox);
+  xml->get_widget("shield_image_0", shield_image[0]);
+  xml->get_widget("shield_image_1", shield_image[1]);
+  xml->get_widget("shield_image_2", shield_image[2]);
+  xml->get_widget("shield_image_3", shield_image[3]);
+  xml->get_widget("shield_image_4", shield_image[4]);
+  xml->get_widget("shield_image_5", shield_image[5]);
+  xml->get_widget("shield_image_6", shield_image[6]);
+  xml->get_widget("shield_image_7", shield_image[7]);
 
-    xml->get_widget("show_lobby_menuitem", show_lobby_menuitem);
-    show_lobby_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_show_lobby_activated));
-    xml->get_widget("end_turn_menuitem", end_turn_menuitem);
-    xml->get_widget("move_all_menuitem", move_all_menuitem);
-    xml->get_widget("disband_menuitem", disband_menuitem);
-    xml->get_widget("stack_info_menuitem", stack_info_menuitem);
-    xml->get_widget("signpost_menuitem", signpost_menuitem);
-    xml->get_widget("search_menuitem", search_menuitem);
-    xml->get_widget("use_menuitem", use_menuitem);
-    xml->get_widget("inspect_menuitem", inspect_menuitem);
-    xml->get_widget("plant_standard_menuitem", plant_standard_menuitem);
-    xml->get_widget("city_history_menuitem", city_history_menuitem);
-    xml->get_widget("ruin_history_menuitem", ruin_history_menuitem);
-    xml->get_widget("event_history_menuitem", event_history_menuitem);
-    xml->get_widget("gold_history_menuitem", gold_history_menuitem);
-    xml->get_widget("winner_history_menuitem", winner_history_menuitem);
-    xml->get_widget("group_ungroup_menuitem", group_ungroup_menuitem);
-    xml->get_widget("leave_menuitem", leave_menuitem);
-    xml->get_widget("next_menuitem", next_menuitem);
+  // connect callbacks for the menu
+  xml->get_widget("new_game_menuitem", new_game_menuitem);
+  new_game_menuitem->signal_activate().connect (method(on_new_game_activated));
+  xml->get_widget("load_game_menuitem", load_game_menuitem);
+  load_game_menuitem->signal_activate().connect (method(on_load_game_activated));
+  xml->get_widget("save_game_menuitem", save_game_menuitem);
+  save_game_menuitem->signal_activate().connect (method(on_save_game_activated));
+  xml->get_widget("save_game_as_menuitem", save_game_as_menuitem);
+  save_game_as_menuitem->signal_activate().connect
+    (method(on_save_game_as_activated));
+  xml->get_widget("quit_menuitem", quit_menuitem);
+  quit_menuitem->signal_activate().connect (method(on_quit_activated));
+  xml->get_widget("toggle_grid_menuitem", toggle_grid_menuitem);
+  toggle_grid_menuitem->signal_activate().connect (method(on_grid_toggled));
+  xml->get_widget("army_report_menuitem", army_report_menuitem);
+  army_report_menuitem->signal_activate().connect
+    (method(on_army_report_activated));
+  xml->get_widget("item_report_menuitem", item_report_menuitem);
+  item_report_menuitem->signal_activate().connect
+    (method(on_item_report_activated));
+  xml->get_widget("city_report_menuitem", city_report_menuitem);
+  city_report_menuitem->signal_activate().connect
+    (method(on_city_report_activated));
+  xml->get_widget("gold_report_menuitem", gold_report_menuitem);
+  gold_report_menuitem->signal_activate().connect
+    (method(on_gold_report_activated));
+  xml->get_widget("winning_report_menuitem", winning_report_menuitem);
+  winning_report_menuitem->signal_activate().connect
+    (method(on_winning_report_activated));
+  xml->get_widget("diplomacy_report_menuitem", diplomacy_report_menuitem);
+  xml->get_widget("quests_menuitem", quests_menuitem);
+  quests_menuitem->signal_activate().connect (method(on_quests_activated));
+  xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
+  fullscreen_menuitem->signal_activate().connect (method(on_fullscreen_activated));
+  xml->get_widget("preferences_menuitem", preferences_menuitem);
+  preferences_menuitem->signal_activate().connect
+    (method(on_preferences_activated));
+  xml->get_widget("zoom_in_menuitem", zoom_in_menuitem);
+  zoom_in_menuitem->signal_activate().connect (method(on_zoom_in_activated));
+  xml->get_widget("zoom_out_menuitem", zoom_out_menuitem);
+  zoom_out_menuitem->signal_activate().connect (method(on_zoom_out_activated));
 
-    xml->get_widget("fight_order_menuitem", fight_order_menuitem);
-    fight_order_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_fight_order_activated));
-    xml->get_widget("resign_menuitem", resign_menuitem);
-    resign_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_resign_activated));
-    xml->get_widget("production_menuitem", production_menuitem);
-    production_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_production_activated));
-    xml->get_widget("cities_menuitem", cities_menuitem);
-    cities_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_production_activated));
-    xml->get_widget("build_menuitem", build_menuitem);
-    build_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_production_activated));
-    xml->get_widget("vectoring_menuitem", vectoring_menuitem);
-    vectoring_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_vectoring_activated));
-    xml->get_widget("levels_menuitem", levels_menuitem);
-    xml->get_widget("inspect_menuitem", inspect_menuitem);
-    xml->get_widget("ruin_report_menuitem", ruin_report_menuitem);
-    ruin_report_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_ruin_report_activated));
-    xml->get_widget("army_bonus_menuitem", army_bonus_menuitem);
-    army_bonus_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_army_bonus_activated));
-    xml->get_widget("item_bonus_menuitem", item_bonus_menuitem);
-    item_bonus_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_item_bonus_activated));
-    xml->get_widget("production_report_menuitem", production_report_menuitem);
-    production_report_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_production_report_activated));
-    xml->get_widget("triumphs_menuitem", triumphs_menuitem);
-    triumphs_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_triumphs_activated));
-    xml->get_widget("help_about_menuitem", help_about_menuitem);
-    help_about_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_help_about_activated));
-    xml->get_widget("online_help_menuitem", online_help_menuitem);
-    online_help_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_online_help_activated));
-    d_quick_fights = false;
+  xml->get_widget("show_lobby_menuitem", show_lobby_menuitem);
+  show_lobby_menuitem->signal_activate().connect (method(on_show_lobby_activated));
+  xml->get_widget("end_turn_menuitem", end_turn_menuitem);
+  xml->get_widget("move_all_menuitem", move_all_menuitem);
+  xml->get_widget("disband_menuitem", disband_menuitem);
+  xml->get_widget("stack_info_menuitem", stack_info_menuitem);
+  xml->get_widget("signpost_menuitem", signpost_menuitem);
+  xml->get_widget("search_menuitem", search_menuitem);
+  xml->get_widget("use_menuitem", use_menuitem);
+  xml->get_widget("inspect_menuitem", inspect_menuitem);
+  xml->get_widget("plant_standard_menuitem", plant_standard_menuitem);
+  xml->get_widget("city_history_menuitem", city_history_menuitem);
+  xml->get_widget("ruin_history_menuitem", ruin_history_menuitem);
+  xml->get_widget("event_history_menuitem", event_history_menuitem);
+  xml->get_widget("gold_history_menuitem", gold_history_menuitem);
+  xml->get_widget("winner_history_menuitem", winner_history_menuitem);
+  xml->get_widget("group_ungroup_menuitem", group_ungroup_menuitem);
+  xml->get_widget("leave_menuitem", leave_menuitem);
+  xml->get_widget("next_menuitem", next_menuitem);
+
+  xml->get_widget("fight_order_menuitem", fight_order_menuitem);
+  fight_order_menuitem->signal_activate().connect
+    (method(on_fight_order_activated));
+  xml->get_widget("resign_menuitem", resign_menuitem);
+  resign_menuitem->signal_activate().connect (method(on_resign_activated));
+  xml->get_widget("production_menuitem", production_menuitem);
+  production_menuitem->signal_activate().connect (method(on_production_activated));
+  xml->get_widget("cities_menuitem", cities_menuitem);
+  cities_menuitem->signal_activate().connect (method(on_production_activated));
+  xml->get_widget("build_menuitem", build_menuitem);
+  build_menuitem->signal_activate().connect (method(on_production_activated));
+  xml->get_widget("vectoring_menuitem", vectoring_menuitem);
+  vectoring_menuitem->signal_activate().connect (method(on_vectoring_activated));
+  xml->get_widget("levels_menuitem", levels_menuitem);
+  xml->get_widget("inspect_menuitem", inspect_menuitem);
+  xml->get_widget("ruin_report_menuitem", ruin_report_menuitem);
+  ruin_report_menuitem->signal_activate().connect
+    (method(on_ruin_report_activated));
+  xml->get_widget("army_bonus_menuitem", army_bonus_menuitem);
+  army_bonus_menuitem->signal_activate().connect (method(on_army_bonus_activated));
+  xml->get_widget("item_bonus_menuitem", item_bonus_menuitem);
+  item_bonus_menuitem->signal_activate().connect (method(on_item_bonus_activated));
+  xml->get_widget("production_report_menuitem", production_report_menuitem);
+  production_report_menuitem->signal_activate().connect
+    (method(on_production_report_activated));
+  xml->get_widget("triumphs_menuitem", triumphs_menuitem);
+  triumphs_menuitem->signal_activate().connect (method(on_triumphs_activated));
+  xml->get_widget("help_about_menuitem", help_about_menuitem);
+  help_about_menuitem->signal_activate().connect (method(on_help_about_activated));
+  xml->get_widget("online_help_menuitem", online_help_menuitem);
+  online_help_menuitem->signal_activate().connect
+    (method(on_online_help_activated));
+  d_quick_fights = false;
 }
 
 GameWindow::~GameWindow()
@@ -387,9 +364,9 @@ void GameWindow::init(int width, int height)
 void GameWindow::new_network_game(GameScenario *game_scenario, NextTurn *next_turn)
 {
   if (GameServer::getInstance()->isListening() == true)
-    GameServer::getInstance()->round_begins.connect(sigc::mem_fun(this, &GameWindow::on_remote_next_player_turn));
+    GameServer::getInstance()->round_begins.connect(method(on_remote_next_player_turn));
   else
-    GameClient::getInstance()->playerlist_reorder_received.connect(sigc::mem_fun(this, &GameWindow::on_remote_next_player_turn));
+    GameClient::getInstance()->playerlist_reorder_received.connect(method(on_remote_next_player_turn));
   bool success = false;
   //stop_game();
   success = setup_game(game_scenario, next_turn);
@@ -455,19 +432,15 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   connections.clear();
 
   connections.push_back (game_button_box->diplomacy_clicked.connect
-   (sigc::mem_fun (*this, &GameWindow::on_diplomacy_button_clicked)));
+   (method (on_diplomacy_button_clicked)));
   connections.push_back 
-    (game->city_too_poor_to_produce.connect 
-     (sigc::mem_fun(*this, &GameWindow::show_city_production_report)));
+    (game->city_too_poor_to_produce.connect (method(show_city_production_report)));
   connections.push_back
-    (game->commentator_comments.connect
-     (sigc::mem_fun(*this, &GameWindow::on_commentator_comments)));
+    (game->commentator_comments.connect (method(on_commentator_comments)));
 
-  setup_menuitem(move_all_menuitem,
-		 sigc::mem_fun(game, &Game::move_all_stacks),
+  setup_menuitem(move_all_menuitem, sigc::mem_fun(game, &Game::move_all_stacks),
 		 game->can_move_all_stacks);
-  setup_menuitem(end_turn_menuitem,
-		 sigc::mem_fun(game, &Game::end_turn),
+  setup_menuitem(end_turn_menuitem, sigc::mem_fun(game, &Game::end_turn),
 		 game->can_end_turn);
   if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
     {
@@ -481,54 +454,37 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   else
     show_lobby_menuitem->set_sensitive(false);
 
-  setup_menuitem(disband_menuitem,
-		 sigc::mem_fun(*this, &GameWindow::on_disband_activated),
-		 game->can_disband_stack);
-  setup_menuitem(stack_info_menuitem,
-		 sigc::mem_fun(*this, &GameWindow::on_stack_info_activated),
+  setup_menuitem(disband_menuitem, method(on_disband_activated),
+                 game->can_disband_stack);
+  setup_menuitem(stack_info_menuitem, method(on_stack_info_activated),
 		 game->can_deselect_selected_stack);
-  setup_menuitem(signpost_menuitem,
-		 sigc::mem_fun(*this, &GameWindow::on_signpost_activated),
+  setup_menuitem(signpost_menuitem, method(on_signpost_activated),
 		 game->can_change_signpost);
   setup_menuitem(search_menuitem,
-		 sigc::mem_fun(game, &Game::search_selected_stack),
+                 sigc::mem_fun(game, &Game::search_selected_stack),
 		 game->can_search_selected_stack);
   setup_menuitem(use_menuitem,
 		 sigc::mem_fun(game, &Game::select_item_to_use),
 		 game->can_use_item);
-  setup_menuitem(inspect_menuitem,
-		 sigc::mem_fun(*this, 
-			       &GameWindow::on_inspect_activated),
+  setup_menuitem(inspect_menuitem, method(on_inspect_activated),
 		 game->can_inspect);
-  setup_menuitem(levels_menuitem,
-		 sigc::mem_fun(*this, 
-			       &GameWindow::on_levels_activated),
+  setup_menuitem(levels_menuitem, method(on_levels_activated),
 		 game->can_see_hero_levels);
-  setup_menuitem(plant_standard_menuitem,
-		 sigc::mem_fun(*this, 
-			       &GameWindow::on_plant_standard_activated),
+  setup_menuitem(plant_standard_menuitem, method(on_plant_standard_activated),
 		 game->can_plant_standard_selected_stack);
-  setup_menuitem(city_history_menuitem,
-		 sigc::mem_fun(*this, &GameWindow::on_city_history_activated),
+  setup_menuitem(city_history_menuitem, method(on_city_history_activated),
 		 game->can_see_history);
-  setup_menuitem(ruin_history_menuitem,
-		 sigc::mem_fun(*this, &GameWindow::on_ruin_history_activated),
+  setup_menuitem(ruin_history_menuitem, method(on_ruin_history_activated),
 		 game->can_see_history);
-  setup_menuitem(gold_history_menuitem,
-		 sigc::mem_fun(*this, &GameWindow::on_gold_history_activated),
+  setup_menuitem(gold_history_menuitem, method(on_gold_history_activated),
 		 game->can_see_history);
-  setup_menuitem(event_history_menuitem,
-		 sigc::mem_fun(*this, &GameWindow::on_event_history_activated),
+  setup_menuitem(event_history_menuitem, method(on_event_history_activated),
 		 game->can_see_history);
-  setup_menuitem(winner_history_menuitem,
-		 sigc::mem_fun(*this, &GameWindow::on_winner_history_activated),
+  setup_menuitem(winner_history_menuitem, method(on_winner_history_activated),
 		 game->can_see_history);
-  setup_menuitem(diplomacy_report_menuitem,
-		 sigc::mem_fun(*this, 
-			       &GameWindow::on_diplomacy_report_activated),
+  setup_menuitem(diplomacy_report_menuitem, method(on_diplomacy_report_activated),
 		 game->can_see_diplomacy); 
-  setup_menuitem(group_ungroup_menuitem,
-		 sigc::mem_fun(*this, &GameWindow::on_group_ungroup_activated),
+  setup_menuitem(group_ungroup_menuitem, method(on_group_ungroup_activated),
 		 game->can_group_ungroup_selected_stack);
   setup_menuitem(leave_menuitem,
 		 sigc::mem_fun(game, &Game::park_selected_stack),
@@ -538,190 +494,106 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
 		 game->can_select_next_movable_stack);
 
   // setup game callbacks
-  connections.push_back
-    (game->game_stopped.connect
-     (sigc::mem_fun(*this, &GameWindow::on_game_stopped)));
-  connections.push_back 
-    (game->sidebar_stats_changed.connect
-     (sigc::mem_fun(*this, &GameWindow::on_sidebar_stats_changed)));
-  connections.push_back 
-    (game->progress_status_changed.connect
-     (sigc::mem_fun(*this, &GameWindow::on_progress_status_changed)));
-  connections.push_back 
-    (game->progress_changed.connect
-     (sigc::mem_fun(*this, &GameWindow::on_progress_changed)));
-  connections.push_back
-    (game->bigmap_changed.connect
-     (sigc::mem_fun(*this, &GameWindow::on_bigmap_changed)));
-  connections.push_back
-    (game->smallmap_changed.connect
-     (sigc::hide(sigc::mem_fun(*this, &GameWindow::on_smallmap_changed))));
-  connections.push_back
-    (game->get_smallmap().view_slid.connect
-     (sigc::hide(sigc::mem_fun(*this, &GameWindow::on_smallmap_slid))));
+  connections.push_back (game->game_stopped.connect (method(on_game_stopped)));
+  connections.push_back (game->sidebar_stats_changed.connect
+                         (method(on_sidebar_stats_changed)));
+  connections.push_back (game->progress_status_changed.connect
+                         (method(on_progress_status_changed)));
+  connections.push_back (game->progress_changed.connect
+                         (method(on_progress_changed)));
+  connections.push_back (game->bigmap_changed.connect (method(on_bigmap_changed)));
+  connections.push_back (game->smallmap_changed.connect
+                         (sigc::hide(method(on_smallmap_changed))));
+  connections.push_back (game->get_smallmap().view_slid.connect
+                         (sigc::hide(method(on_smallmap_slid))));
   connections.push_back
     (game->stack_info_changed.connect
      (sigc::mem_fun(*status_box, &StatusBox::on_stack_info_changed)));
-  connections.push_back
-    (game->map_tip_changed.connect
-     (sigc::mem_fun(*this, &GameWindow::on_bigmap_tip_changed)));
-  connections.push_back
-    (game->stack_tip_changed.connect
-     (sigc::mem_fun(*this, &GameWindow::on_stack_tip_changed)));
-  connections.push_back
-    (game->city_tip_changed.connect
-     (sigc::mem_fun(*this, &GameWindow::on_city_tip_changed)));
-  connections.push_back
-    (game->ruin_searched.connect
-     (sigc::mem_fun(*this, &GameWindow::on_ruin_searched)));
-  connections.push_back
-    (game->sage_visited.connect
-     (sigc::mem_fun(*this, &GameWindow::on_sage_visited)));
-  connections.push_back
-    (game->fight_started.connect
-     (sigc::mem_fun(*this, &GameWindow::on_fight_started)));
-  connections.push_back
-    (game->abbreviated_fight_started.connect
-     (sigc::mem_fun(*this, &GameWindow::on_abbreviated_fight_started)));
-  connections.push_back
-    (game->ruinfight_started.connect
-     (sigc::mem_fun(*this, &GameWindow::on_ruinfight_started)));
-  connections.push_back
-    (game->ruinfight_finished.connect
-     (sigc::mem_fun(*this, &GameWindow::on_ruinfight_finished)));
-  connections.push_back
-    (game->hero_offers_service.connect
-     (sigc::mem_fun(*this, &GameWindow::on_hero_offers_service)));
-  connections.push_back
-    (game->enemy_offers_surrender.connect
-     (sigc::mem_fun(*this, &GameWindow::on_enemy_offers_surrender)));
-  connections.push_back
-    (game->surrender_answered.connect
-     (sigc::mem_fun(*this, &GameWindow::on_surrender_answered)));
+  connections.push_back (game->map_tip_changed.connect
+                         (method(on_bigmap_tip_changed)));
+  connections.push_back (game->stack_tip_changed.connect
+                         (method(on_stack_tip_changed)));
+  connections.push_back (game->city_tip_changed.connect
+                         (method(on_city_tip_changed)));
+  connections.push_back (game->ruin_searched.connect (method(on_ruin_searched)));
+  connections.push_back (game->sage_visited.connect (method(on_sage_visited)));
+  connections.push_back (game->fight_started.connect (method(on_fight_started)));
+  connections.push_back (game->abbreviated_fight_started.connect
+                         (method(on_abbreviated_fight_started)));
+  connections.push_back (game->ruinfight_started.connect
+                         (method(on_ruinfight_started)));
+  connections.push_back (game->ruinfight_finished.connect
+                         (method(on_ruinfight_finished)));
+  connections.push_back (game->hero_offers_service.connect
+                         (method(on_hero_offers_service)));
+  connections.push_back (game->enemy_offers_surrender.connect
+                         (method(on_enemy_offers_surrender)));
+  connections.push_back (game->surrender_answered.connect
+                         (method(on_surrender_answered)));
   connections.push_back
     (game->stack_considers_treachery.connect
-     (sigc::hide(sigc::hide<0>(sigc::mem_fun(*this, &GameWindow::on_stack_considers_treachery)))));
-  connections.push_back
-    (game->temple_searched.connect
-     (sigc::mem_fun(*this, &GameWindow::on_temple_searched)));
-  connections.push_back
-    (game->quest_assigned.connect
-     (sigc::mem_fun(*this, &GameWindow::on_quest_assigned)));
-  connections.push_back
-    (game->city_defeated.connect
-     (sigc::mem_fun(*this, &GameWindow::on_city_defeated)));
-  connections.push_back
-    (game->city_pillaged.connect
-     (sigc::mem_fun(*this, &GameWindow::on_city_pillaged)));
-  connections.push_back
-    (game->city_sacked.connect
-     (sigc::mem_fun(*this, &GameWindow::on_city_sacked)));
-  connections.push_back
-    (game->city_razed.connect
-     (sigc::mem_fun(*this, &GameWindow::on_city_razed)));
-  connections.push_back
-    (game->city_visited.connect
-     (sigc::mem_fun(*this, &GameWindow::on_city_visited)));
-  connections.push_back
-    (game->ruin_visited.connect
-     (sigc::mem_fun(*this, &GameWindow::on_ruin_visited)));
-  connections.push_back
-    (game->temple_visited.connect
-     (sigc::mem_fun(*this, &GameWindow::on_temple_visited)));
-  connections.push_back
-    (game->next_player_turn.connect
-     (sigc::mem_fun(*this, &GameWindow::on_next_player_turn)));
-  connections.push_back
-    (game->hero_arrives.connect
-     (sigc::mem_fun(*this, &GameWindow::on_hero_brings_allies)));
-  connections.push_back
-    (game->medal_awarded_to_army.connect
-     (sigc::mem_fun(*this, &GameWindow::on_medal_awarded_to_army)));
-  connections.push_back
-    (game->hero_gains_level.connect
-     (sigc::mem_fun(*this, &GameWindow::on_hero_gains_level)));
-  connections.push_back
-    (game->game_loaded.connect
-     (sigc::mem_fun(*this, &GameWindow::on_game_loaded)));
-  connections.push_back
-    (game->game_over.connect
-     (sigc::mem_fun(*this, &GameWindow::on_game_over)));
-  connections.push_back
-    (game->player_died.connect
-     (sigc::mem_fun(*this, &GameWindow::on_player_died)));
-  connections.push_back
-    (game->advice_asked.connect
-     (sigc::mem_fun(*this, &GameWindow::on_advice_asked)));
-  connections.push_back
-    (game->sunk_ships.connect
-     (sigc::hide<0>(sigc::mem_fun(*this, &GameWindow::on_ships_sunk))));
-  connections.push_back
-    (game->bags_picked_up.connect
-     (sigc::mem_fun(*this, &GameWindow::on_bags_picked_up)));
-  connections.push_back
-    (game->mp_added_to_hero_stack.connect
-     (sigc::mem_fun(*this, &GameWindow::on_mp_added_to_hero_stack)));
-  connections.push_back
-    (game->worms_killed.connect
-     (sigc::mem_fun(*this, &GameWindow::on_worms_killed)));
-  connections.push_back
-    (game->bridge_burned.connect
-     (sigc::mem_fun(*this, &GameWindow::on_bridge_burned)));
-  connections.push_back
-    (game->keeper_captured.connect
-     (sigc::mem_fun(*this, &GameWindow::on_keeper_captured)));
-  connections.push_back
-    (game->monster_summoned.connect
-     (sigc::mem_fun(*this, &GameWindow::on_monster_summoned)));
-  connections.push_back
-    (game->stole_gold.connect
-     (sigc::mem_fun(*this, &GameWindow::on_gold_stolen)));
-  connections.push_back
-    (game->stack_moves.connect
-     (sigc::mem_fun(*this, &GameWindow::on_stack_moves)));
-  connections.push_back
-    (game->select_item.connect
-     (sigc::mem_fun(*this, &GameWindow::on_select_item)));
-  connections.push_back
-    (game->select_item_victim_player.connect
-     (sigc::mem_fun(*this, &GameWindow::on_select_item_victim_player)));
-  connections.push_back
-    (game->select_city_to_use_item_on.connect
-     (sigc::mem_fun(*this, &GameWindow::on_select_city_to_use_item_on)));
-  connections.push_back
-    (game->city_diseased.connect
-     (sigc::hide<0>(sigc::mem_fun(*this, &GameWindow::on_city_diseased))));
-  connections.push_back
-    (game->city_defended.connect
-     (sigc::hide<0>(sigc::mem_fun(*this, &GameWindow::on_city_defended))));
-  connections.push_back
-    (game->city_persuaded.connect
-     (sigc::hide<0>(sigc::mem_fun(*this, &GameWindow::on_city_persuaded))));
-  connections.push_back
-    (game->stack_teleported.connect
-     (sigc::mem_fun(*this, &GameWindow::on_stack_teleported)));
-  connections.push_back
-    (game->popup_stack_actions_menu.connect
-     (sigc::mem_fun(*this, &GameWindow::on_popup_stack_menu)));
+     (sigc::hide(sigc::hide<0>(method(on_stack_considers_treachery)))));
+  connections.push_back (game->temple_searched.connect
+                         (method(on_temple_searched)));
+  connections.push_back (game->quest_assigned.connect (method(on_quest_assigned)));
+  connections.push_back (game->city_defeated.connect (method(on_city_defeated)));
+  connections.push_back (game->city_pillaged.connect (method(on_city_pillaged)));
+  connections.push_back (game->city_sacked.connect (method(on_city_sacked)));
+  connections.push_back (game->city_razed.connect (method(on_city_razed)));
+  connections.push_back (game->city_visited.connect (method(on_city_visited)));
+  connections.push_back (game->ruin_visited.connect (method(on_ruin_visited)));
+  connections.push_back (game->temple_visited.connect (method(on_temple_visited)));
+  connections.push_back (game->next_player_turn.connect
+                         (method(on_next_player_turn)));
+  connections.push_back (game->hero_arrives.connect
+                         (method(on_hero_brings_allies)));
+  connections.push_back (game->medal_awarded_to_army.connect
+                         (method(on_medal_awarded_to_army)));
+  connections.push_back (game->hero_gains_level.connect
+                         (method(on_hero_gains_level)));
+  connections.push_back (game->game_loaded.connect (method(on_game_loaded)));
+  connections.push_back (game->game_over.connect (method(on_game_over)));
+  connections.push_back (game->player_died.connect (method(on_player_died)));
+  connections.push_back (game->advice_asked.connect (method(on_advice_asked)));
+  connections.push_back (game->sunk_ships.connect
+                         (sigc::hide<0>(method(on_ships_sunk))));
+  connections.push_back (game->bags_picked_up.connect (method(on_bags_picked_up)));
+  connections.push_back (game->mp_added_to_hero_stack.connect
+                         (method(on_mp_added_to_hero_stack)));
+  connections.push_back (game->worms_killed.connect (method(on_worms_killed)));
+  connections.push_back (game->bridge_burned.connect (method(on_bridge_burned)));
+  connections.push_back (game->keeper_captured.connect
+                         (method(on_keeper_captured)));
+  connections.push_back (game->monster_summoned.connect
+                         (method(on_monster_summoned)));
+  connections.push_back (game->stole_gold.connect (method(on_gold_stolen)));
+  connections.push_back (game->stack_moves.connect (method(on_stack_moves)));
+  connections.push_back (game->select_item.connect (method(on_select_item)));
+  connections.push_back (game->select_item_victim_player.connect
+                         (method(on_select_item_victim_player)));
+  connections.push_back (game->select_city_to_use_item_on.connect
+                         (method(on_select_city_to_use_item_on)));
+  connections.push_back (game->city_diseased.connect
+                         (sigc::hide<0>(method(on_city_diseased))));
+  connections.push_back (game->city_defended.connect
+                         (sigc::hide<0>(method(on_city_defended))));
+  connections.push_back (game->city_persuaded.connect
+                         (sigc::hide<0>(method(on_city_persuaded))));
+  connections.push_back (game->stack_teleported.connect
+                         (method(on_stack_teleported)));
+  connections.push_back (game->popup_stack_actions_menu.connect
+                         (method(on_popup_stack_menu)));
 
   // misc callbacks
   QuestsManager *q = QuestsManager::getInstance();
-  connections.push_back
-    (q->quest_completed.connect
-     (sigc::mem_fun(this, &GameWindow::on_quest_completed)));
-  connections.push_back
-    (q->quest_expired.connect
-     (sigc::mem_fun(this, &GameWindow::on_quest_expired)));
+  connections.push_back (q->quest_completed.connect (method(on_quest_completed)));
+  connections.push_back (q->quest_expired.connect (method(on_quest_expired)));
   if (game)
-    {
-      connections.push_back
-	(game->get_bigmap().cursor_changed.connect
-	 (sigc::mem_fun(*this, &GameWindow::on_bigmap_cursor_changed)));
-    }
+    connections.push_back (game->get_bigmap().cursor_changed.connect
+                           (method(on_bigmap_cursor_changed)));
 
-  connections.push_back
-    (game->remote_next_player_turn.connect
-     (sigc::mem_fun(*this, &GameWindow::on_remote_next_player_turn)));
+  connections.push_back (game->remote_next_player_turn.connect
+                         (method(on_remote_next_player_turn)));
 }
 
 void GameWindow::show_city_production_report (bool destitute)
@@ -748,8 +620,7 @@ bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
     
   status_box->stack_composition_modified.connect
       (sigc::mem_fun(game, &Game::recalculate_moves_for_stack));
-  status_box->stack_tile_group_toggle.connect
-    (sigc::mem_fun(this, &GameWindow::on_group_stack_toggled));
+  status_box->stack_tile_group_toggle.connect (method(on_group_stack_toggled));
   show_shield_turn();
       smallmap_image->set_size_request(game->get_smallmap().get_width(),
                                        game->get_smallmap().get_height());
@@ -1640,8 +1511,7 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos, bool timeou
   map_tip = new Gtk::Window(Gtk::WINDOW_POPUP);
 
   map_tip->add_events (Gdk::POINTER_MOTION_MASK);
-  map_tip->signal_motion_notify_event().connect
-    (sigc::hide(sigc::mem_fun(this, &GameWindow::hide_map_tip)));
+  map_tip->signal_motion_notify_event().connect (sigc::hide(method(hide_map_tip)));
   map_tip->set_transient_for (*window);
   Gtk::Frame *f = manage(new Gtk::Frame);
   f->property_shadow_type() = Gtk::SHADOW_ETCHED_OUT;
@@ -1686,8 +1556,7 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos, bool timeou
   map_tip->show();
   if (timeout)
     {
-      map_tip_timer = Glib::signal_timeout().connect
-        (sigc::mem_fun(this, &GameWindow::hide_map_tip), 1400);
+      map_tip_timer = Glib::signal_timeout().connect (method(hide_map_tip), 1400);
     }
 }
 
@@ -2993,8 +2862,7 @@ void GameWindow::on_popup_stack_menu (Stack *stack)
   Gtk::Menu *menu = manage(new Gtk::Menu);
   Glib::ustring s = _("Info...");
   Gtk::MenuItem *item = manage(new Gtk::MenuItem(s));
-  item->signal_activate().connect
-    (sigc::mem_fun(this, &GameWindow::on_stack_info_activated));
+  item->signal_activate().connect (method(on_stack_info_activated));
   item->show();
   menu->add(*item);
 
@@ -3012,8 +2880,7 @@ void GameWindow::on_popup_stack_menu (Stack *stack)
   else
     s = _("Ungroup");
   item = manage(new Gtk::MenuItem(s));
-  item->signal_activate().connect
-    (sigc::mem_fun(this, &GameWindow::on_group_ungroup_activated));
+  item->signal_activate().connect (method(on_group_ungroup_activated));
   item->show();
   menu->add(*item);
   if (stack->hasPath() && stack->enoughMoves())
@@ -3042,8 +2909,7 @@ void GameWindow::on_popup_stack_menu (Stack *stack)
 
   s = _("Disband...");
   item = manage(new Gtk::MenuItem(s));
-  item->signal_activate().connect
-    (sigc::mem_fun(this, &GameWindow::on_disband_activated));
+  item->signal_activate().connect (method(on_disband_activated));
   item->show();
   menu->add(*item);
   //menu->set_parent_window (window->get_window());

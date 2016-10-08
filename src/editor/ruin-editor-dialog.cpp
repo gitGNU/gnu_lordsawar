@@ -37,6 +37,8 @@
 #include "reward-editor-dialog.h"
 #include "RenamableLocation.h"
 
+#define method(x) sigc::mem_fun(*this, &RuinEditorDialog::x)
+
 RuinEditorDialog::RuinEditorDialog(Gtk::Window &parent, Ruin *r, CreateScenarioRandomize *randomizer)
  : LwEditorDialog(parent, "ruin-editor-dialog.ui")
 {
@@ -60,27 +62,23 @@ RuinEditorDialog::RuinEditorDialog(Gtk::Window &parent, Ruin *r, CreateScenarioR
     type_entry->set_value(ruin->getType());
 
     xml->get_widget("keeper_button", keeper_button);
-    keeper_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinEditorDialog::on_keeper_clicked));
+    keeper_button->signal_clicked().connect(method(on_keeper_clicked));
 
     xml->get_widget("clear_keeper_button", clear_keeper_button);
-    clear_keeper_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinEditorDialog::on_clear_keeper_clicked));
+    clear_keeper_button->signal_clicked().connect(method(on_clear_keeper_clicked));
 
     xml->get_widget("randomize_name_button", randomize_name_button);
-    randomize_name_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinEditorDialog::on_randomize_name_clicked));
+    randomize_name_button->signal_clicked().connect(method(on_randomize_name_clicked));
 
     xml->get_widget("randomize_keeper_button", randomize_keeper_button);
-    randomize_keeper_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinEditorDialog::on_randomize_keeper_clicked));
+    randomize_keeper_button->signal_clicked().connect
+      (method(on_randomize_keeper_clicked));
 
     set_keeper_name();
    
     xml->get_widget("hidden_checkbutton", hidden_button);
     hidden_button->set_active(ruin->isHidden());
-    hidden_button->signal_toggled().connect(
-	    sigc::mem_fun(this, &RuinEditorDialog::on_hidden_toggled));
+    hidden_button->signal_toggled().connect(method(on_hidden_toggled));
     // setup the player combo
     player_combobox = manage(new Gtk::ComboBoxText);
 
@@ -104,27 +102,21 @@ RuinEditorDialog::RuinEditorDialog(Gtk::Window &parent, Ruin *r, CreateScenarioR
 
     xml->get_widget("new_reward_hbox", new_reward_hbox);
     xml->get_widget("new_reward_radiobutton", new_reward_radiobutton);
-    new_reward_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RuinEditorDialog::on_new_reward_toggled));
+    new_reward_radiobutton->signal_toggled().connect(method(on_new_reward_toggled));
     xml->get_widget("random_reward_radiobutton", random_reward_radiobutton);
-    random_reward_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RuinEditorDialog::on_random_reward_toggled));
+    random_reward_radiobutton->signal_toggled().connect(method(on_random_reward_toggled));
 
     xml->get_widget("reward_button", reward_button);
-    reward_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinEditorDialog::on_reward_clicked));
+    reward_button->signal_clicked().connect(method(on_reward_clicked));
 
     xml->get_widget("clear_reward_button", clear_reward_button);
-    clear_reward_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinEditorDialog::on_clear_reward_clicked));
+    clear_reward_button->signal_clicked().connect(method(on_clear_reward_clicked));
 
     xml->get_widget("randomize_reward_button", randomize_reward_button);
-    randomize_reward_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinEditorDialog::on_randomize_reward_clicked));
+    randomize_reward_button->signal_clicked().connect(method(on_randomize_reward_clicked));
 
     xml->get_widget("reward_list_button", reward_list_button);
-    reward_list_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinEditorDialog::on_reward_list_clicked));
+    reward_list_button->signal_clicked().connect(method(on_reward_list_clicked));
 
     if (ruin->getReward() == NULL)
       random_reward_radiobutton->set_active(true);

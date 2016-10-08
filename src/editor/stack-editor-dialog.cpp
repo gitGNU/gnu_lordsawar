@@ -38,6 +38,7 @@
 
 #include "select-army-dialog.h"
 
+#define method(x) sigc::mem_fun(*this, &StackEditorDialog::x)
 
 namespace 
 {
@@ -71,8 +72,7 @@ StackEditorDialog::StackEditorDialog(Gtk::Window &parent, Stack *s, int m)
 	}
 
 	player_combobox->set_active(player_no);
-	player_combobox->signal_changed().connect
-	  (sigc::mem_fun(*this, &StackEditorDialog::on_player_changed));
+	player_combobox->signal_changed().connect (method(on_player_changed));
 
 	Gtk::Box *box;
 	xml->get_widget("player_hbox", box);
@@ -88,52 +88,37 @@ StackEditorDialog::StackEditorDialog(Gtk::Window &parent, Stack *s, int m)
     army_treeview->append_column("", army_columns.image);
 
     strength_renderer.property_editable() = true;
-    strength_renderer.signal_edited()
-      .connect(sigc::mem_fun(*this, &StackEditorDialog::on_strength_edited));
-    strength_column.set_cell_data_func
-	      ( strength_renderer, 
-		sigc::mem_fun(*this, &StackEditorDialog::cell_data_strength));
+    strength_renderer.signal_edited().connect(method(on_strength_edited));
+    strength_column.set_cell_data_func(strength_renderer, method(cell_data_strength));
     army_treeview->append_column(strength_column);
 
     moves_renderer.property_editable() = true;
-    moves_renderer.signal_edited()
-      .connect(sigc::mem_fun(*this, &StackEditorDialog::on_moves_edited));
-    moves_column.set_cell_data_func
-	      ( moves_renderer, 
-		sigc::mem_fun(*this, &StackEditorDialog::cell_data_moves));
+    moves_renderer.signal_edited().connect(method(on_moves_edited));
+    moves_column.set_cell_data_func(moves_renderer, method(cell_data_moves));
     army_treeview->append_column(moves_column);
 
     upkeep_renderer.property_editable() = true;
-    upkeep_renderer.signal_edited()
-      .connect(sigc::mem_fun(*this, &StackEditorDialog::on_upkeep_edited));
-    upkeep_column.set_cell_data_func
-	      ( upkeep_renderer, 
-		sigc::mem_fun(*this, &StackEditorDialog::cell_data_upkeep));
+    upkeep_renderer.signal_edited().connect(method(on_upkeep_edited));
+    upkeep_column.set_cell_data_func(upkeep_renderer, method(cell_data_upkeep));
     army_treeview->append_column(upkeep_column);
 
     army_treeview->append_column(_("Name"), army_columns.name);
 
     xml->get_widget("fortified_checkbutton", fortified_checkbutton);
     fortified_checkbutton->set_active(stack->getFortified());
-    fortified_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &StackEditorDialog::on_fortified_toggled));
+    fortified_checkbutton->signal_toggled().connect(method(on_fortified_toggled));
 
     xml->get_widget("add_button", add_button);
     xml->get_widget("remove_button", remove_button);
     xml->get_widget("copy_button", copy_button);
     xml->get_widget("edit_hero_button", edit_hero_button);
 
-    add_button->signal_clicked().connect(
-	sigc::mem_fun(this, &StackEditorDialog::on_add_clicked));
-    remove_button->signal_clicked().connect(
-	sigc::mem_fun(this, &StackEditorDialog::on_remove_clicked));
-    copy_button->signal_clicked().connect(
-	sigc::mem_fun(this, &StackEditorDialog::on_copy_clicked));
-    edit_hero_button->signal_clicked().connect(
-	sigc::mem_fun(this, &StackEditorDialog::on_edit_hero_clicked));
+    add_button->signal_clicked().connect(method(on_add_clicked));
+    remove_button->signal_clicked().connect(method(on_remove_clicked));
+    copy_button->signal_clicked().connect(method(on_copy_clicked));
+    edit_hero_button->signal_clicked().connect(method(on_edit_hero_clicked));
 
-    army_treeview->get_selection()->signal_changed()
-	.connect(sigc::mem_fun(this, &StackEditorDialog::on_selection_changed));
+    army_treeview->get_selection()->signal_changed().connect(method(on_selection_changed));
     
     for (Stack::iterator i = stack->begin(), end = stack->end(); i != end; ++i)
 	add_army(*i);

@@ -31,6 +31,8 @@
 #include "shield.h"
 #include "playerlist.h"
 
+#define method(x) sigc::mem_fun(*this, &ArmyGainsLevelDialog::x)
+
 //give a hero some more abilities
 ArmyGainsLevelDialog::ArmyGainsLevelDialog(Gtk::Window &parent, Hero *a, bool show_sight_stat)
  : LwDialog(parent, "army-gains-level-dialog.ui")
@@ -84,10 +86,7 @@ void ArmyGainsLevelDialog::add_item(Army::Stat stat, Glib::ustring desc)
     }
 
   stat_items.push_back(item);
-
-  item.radio->signal_toggled().connect
-    (sigc::mem_fun(this, &ArmyGainsLevelDialog::on_stat_toggled));
-
+  item.radio->signal_toggled().connect (method(on_stat_toggled));
   stats_vbox->pack_start(*item.radio, Gtk::PACK_SHRINK);
 }
 

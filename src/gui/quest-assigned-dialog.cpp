@@ -26,6 +26,8 @@
 #include "defs.h"
 #include "playerlist.h"
 
+#define method(x) sigc::mem_fun(*this, &QuestAssignedDialog::x)
+
 QuestAssignedDialog::QuestAssignedDialog(Gtk::Window &parent, Hero *h, Quest *q)
  : LwDialog(parent, "quest-assigned-dialog.ui")
 {
@@ -35,8 +37,7 @@ QuestAssignedDialog::QuestAssignedDialog(Gtk::Window &parent, Hero *h, Quest *q)
     xml->get_widget("map_image", map_image);
 
     questmap = new QuestMap(quest);
-    questmap->map_changed.connect(
-	sigc::mem_fun(this, &QuestAssignedDialog::on_map_changed));
+    questmap->map_changed.connect(method(on_map_changed));
 
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);

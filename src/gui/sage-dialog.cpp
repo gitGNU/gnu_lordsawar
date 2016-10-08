@@ -31,6 +31,8 @@
 #include "Item.h"
 #include "rnd.h"
 
+#define method(x) sigc::mem_fun(*this, &SageDialog::x)
+
 SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Hero *h, Ruin *r)
  : LwDialog(parent, "sage-dialog.ui")
 {
@@ -42,13 +44,13 @@ SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Hero *h, Ruin *r)
   rewards_treeview->set_model(rewards_list);
   rewards_treeview->append_column("", rewards_columns.name);
   rewards_treeview->get_selection()->signal_changed().connect
-    (sigc::mem_fun(*this, &SageDialog::on_reward_selected));
+    (method(on_reward_selected));
 
   xml->get_widget("map_image", map_image);
   xml->get_widget("continue_button", continue_button);
 
   ruinmap = new RuinMap(ruin);
-  ruinmap->map_changed.connect(sigc::mem_fun(this, &SageDialog::on_map_changed));
+  ruinmap->map_changed.connect(method(on_map_changed));
 
   Gtk::EventBox *map_eventbox;
   xml->get_widget("map_eventbox", map_eventbox);

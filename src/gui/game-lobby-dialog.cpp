@@ -38,6 +38,7 @@
 #include "recently-played-game-list.h"
 #include "game-parameters.h"
 
+#define method(x) sigc::mem_fun(*this, &GameLobbyDialog::x)
 #define SITTING _("Yes")
 #define NOT_SITTING _("No")
 namespace
@@ -60,8 +61,7 @@ void GameLobbyDialog::update_city_map()
       if (citymap)
 	delete citymap;
       citymap = new CityMap();
-      citymap->map_changed.connect
-	(sigc::mem_fun(this, &GameLobbyDialog::on_map_changed));
+      citymap->map_changed.connect (method(on_map_changed));
       if (d_game_scenario->getRound() > 1)
 	{
 	  citymap->resize();
@@ -88,15 +88,13 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
 
     xml->get_widget("player_treeview", player_treeview);
     player_treeview->get_selection()->signal_changed().connect
-          (sigc::mem_fun(*this, &GameLobbyDialog::on_player_selected));
+          (method(on_player_selected));
     xml->get_widget("people_treeview", people_treeview);
     people_treeview->property_headers_visible() = true;
     xml->get_widget("play_button", play_button);
-    play_button->signal_clicked().connect
-      (sigc::mem_fun(this, &GameLobbyDialog::on_play_clicked));
+    play_button->signal_clicked().connect (method(on_play_clicked));
     xml->get_widget("cancel_button", cancel_button);
-    cancel_button->signal_clicked().connect
-      (sigc::mem_fun(this, &GameLobbyDialog::on_cancel_clicked));
+    cancel_button->signal_clicked().connect (method(on_cancel_clicked));
     xml->get_widget("map_image", map_image);
     xml->get_widget("turn_label", turn_label);
     xml->get_widget("scenario_name_label", scenario_name_label);
@@ -106,55 +104,40 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
     xml->get_widget("chat_textview", chat_textview);
     xml->get_widget("chat_entry", chat_entry);
 
-    chat_entry->signal_key_release_event().connect_notify
-          (sigc::mem_fun(*this, &GameLobbyDialog::on_chat_key_pressed));
+    chat_entry->signal_key_release_event().connect_notify (method(on_chat_key_pressed));
 
     update_city_map();
 
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
     xml->get_widget("show_options_button", show_options_button);
-    show_options_button->signal_clicked().connect
-	(sigc::mem_fun(*this, &GameLobbyDialog::on_show_options_clicked));
+    show_options_button->signal_clicked().connect (method(on_show_options_clicked));
 
     game_station->remote_player_moved.connect
-      (sigc::hide(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn)));
+      (sigc::hide(method(on_remote_player_ends_turn)));
     game_station->remote_player_starts_move.connect
-      (sigc::hide(sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_starts_turn)));
+      (sigc::hide(method(on_remote_player_starts_turn)));
     game_station->local_player_moved.connect
-      (sigc::hide(sigc::mem_fun(*this, &GameLobbyDialog::on_local_player_ends_turn)));
+      (sigc::hide(method(on_local_player_ends_turn)));
     game_station->local_player_starts_move.connect
-      (sigc::hide(sigc::mem_fun(*this, &GameLobbyDialog::on_local_player_starts_turn)));
+      (sigc::hide(method(on_local_player_starts_turn)));
     game_station->remote_participant_joins.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_joins));
+      (method(on_remote_participant_joins));
     game_station->remote_participant_departs.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_participant_departs));
-    game_station->player_sits.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_sits));
-    game_station->player_stands.connect
-      (sigc::hide(sigc::mem_fun(*this, &GameLobbyDialog::on_player_stands)));
-    game_station->player_changes_name.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_changes_name));
-    game_station->player_changes_type.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_changes_type));
-    game_station->remote_player_named.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
-    game_station->chat_message_received.connect
-      (sigc::hide<0>(sigc::mem_fun(*this, &GameLobbyDialog::on_chatted)));
-    game_station->playerlist_reorder_received.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_reorder_playerlist));
-    game_station->round_begins.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_reorder_playerlist));
-    game_station->remote_player_died.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_died));
-    game_station->local_player_died.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_died));
-    game_station->nickname_changed.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_nickname_changed));
-    game_station->game_may_begin.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_play_message_received));
-    game_station->player_gets_turned_off.connect
-      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_turned_off));
+      (method(on_remote_participant_departs));
+    game_station->player_sits.connect (method(on_player_sits));
+    game_station->player_stands.connect (sigc::hide(method(on_player_stands)));
+    game_station->player_changes_name.connect (method(on_player_changes_name));
+    game_station->player_changes_type.connect (method(on_player_changes_type));
+    game_station->remote_player_named.connect (method(on_remote_player_changes_name));
+    game_station->chat_message_received.connect (sigc::hide<0>(method(on_chatted)));
+    game_station->playerlist_reorder_received.connect (method(on_reorder_playerlist));
+    game_station->round_begins.connect (method(on_reorder_playerlist));
+    game_station->remote_player_died.connect (method(on_player_died));
+    game_station->local_player_died.connect (method(on_player_died));
+    game_station->nickname_changed.connect (method(on_nickname_changed));
+    game_station->game_may_begin.connect (method(on_play_message_received));
+    game_station->player_gets_turned_off.connect (method(on_player_turned_off));
 
     update_player_details();
     update_buttons();
@@ -238,10 +221,8 @@ GameLobbyDialog::update_player_details()
   sitting_renderer.property_editable() = true;
 
   sitting_renderer.property_mode() = Gtk::CELL_RENDERER_MODE_EDITABLE;
-  sitting_renderer.signal_edited()
-    .connect(sigc::mem_fun(*this, &GameLobbyDialog::on_sitting_edited));
-  sitting_column.set_cell_data_func
-    (sitting_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_sitting));
+  sitting_renderer.signal_edited().connect(method(on_sitting_edited));
+  sitting_column.set_cell_data_func(sitting_renderer, method(cell_data_sitting));
   player_treeview->append_column(sitting_column);
 
   player_treeview->append_column(_("Person"), player_columns.person);
@@ -251,10 +232,8 @@ GameLobbyDialog::update_player_details()
 
   name_renderer.property_editable() = true;
 
-  name_renderer.signal_edited()
-    .connect(sigc::mem_fun(*this, &GameLobbyDialog::on_name_edited));
-  name_column.set_cell_data_func
-    ( name_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_name));
+  name_renderer.signal_edited().connect(method(on_name_edited));
+  name_column.set_cell_data_func(name_renderer, method(cell_data_name));
   player_treeview->append_column(name_column);
 
 
@@ -275,10 +254,8 @@ GameLobbyDialog::update_player_details()
   type_renderer.property_has_entry() = false;
   type_renderer.property_editable() = d_has_ops;
 
-  type_renderer.signal_edited()
-    .connect(sigc::mem_fun(*this, &GameLobbyDialog::on_type_edited));
-  type_column.set_cell_data_func
-    ( type_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_type));
+  type_renderer.signal_edited().connect(method(on_type_edited));
+  type_column.set_cell_data_func(type_renderer, method(cell_data_type));
   player_treeview->append_column(type_column);
 
   //if it's this player's turn

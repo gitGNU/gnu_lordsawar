@@ -73,6 +73,8 @@
 #include "../editor/main-window.h"
 #include "../editor/editor-splash-window.h"
 
+#define method(x) sigc::mem_fun(*this, &Driver::x)
+
 Driver::Driver(Glib::ustring load_filename)
 {
     game_window = NULL;
@@ -82,18 +84,14 @@ Driver::Driver(Glib::ustring load_filename)
     editor_window = NULL;
   game_scenario_downloaded = "";
     splash_window = new SplashWindow;
-    splash_window->new_game_requested.connect(
-	sigc::mem_fun(*this, &Driver::on_new_game_requested));
-    splash_window->new_hosted_network_game_requested.connect(
-	sigc::mem_fun(*this, &Driver::on_new_hosted_network_game_requested));
-    splash_window->new_remote_network_game_requested.connect(
-	sigc::mem_fun(*this, &Driver::on_new_remote_network_game_requested));
-    splash_window->load_requested.connect(
-	sigc::mem_fun(*this, &Driver::on_load_requested));
-    splash_window->editor_requested.connect(
-	sigc::mem_fun(*this, &Driver::on_editor_requested));
-    splash_window->quit_requested.connect(
-	sigc::mem_fun(*this, &Driver::on_quit_requested));
+    splash_window->new_game_requested.connect(method(on_new_game_requested));
+    splash_window->new_hosted_network_game_requested.connect
+      (method(on_new_hosted_network_game_requested));
+    splash_window->new_remote_network_game_requested.connect
+      (method(on_new_remote_network_game_requested));
+    splash_window->load_requested.connect(method(on_load_requested));
+    splash_window->editor_requested.connect(method(on_editor_requested));
+    splash_window->quit_requested.connect(method(on_quit_requested));
 
     d_load_filename = load_filename;
 
@@ -160,7 +158,7 @@ void Driver::serve (GameScenario *game_scenario)
   guint32 port = LORDSAWAR_PORT;
   if (Main::instance().port)
     port = Main::instance().port;
-  game_server->port_in_use.connect(sigc::mem_fun(*this, &Driver::on_could_not_bind_to_port_for_headless_server));
+  game_server->port_in_use.connect(method(on_could_not_bind_to_port_for_headless_server));
   Glib::ustring id = "";
   if (Profilelist::getInstance()->empty() == false)
     id = Profilelist::getInstance()->front()->getId();
@@ -177,15 +175,14 @@ void Driver::serve (GameScenario *game_scenario)
   game_server->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
   next_turn->srequestAbort.connect(sigc::mem_fun(game_server, &GameServer::on_turn_aborted));
   game_server->get_next_player.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::next));
-  game_server->round_ends.connect
-    (sigc::mem_fun(*this, &Driver::on_keep_network_play_going));
+  game_server->round_ends.connect (method(on_keep_network_play_going));
   Playerlist::getInstance()->splayerDead.connect
     (sigc::mem_fun(GameServer::getInstance(), &GameServer::sendKillPlayer));
 
   game_server->notifyClientsGameMayBeginNow();
   Game *game = new Game(game_scenario, next_turn);
   if (game)
-    game_server->player_sits.connect(sigc::hide(sigc::hide(sigc::mem_fun(this, &Driver::on_client_sits_down_in_headless_server_game))));
+    game_server->player_sits.connect(sigc::hide(sigc::hide(method(on_client_sits_down_in_headless_server_game))));
 }
 
 void Driver::on_client_sits_down_in_headless_server_game()
@@ -496,7 +493,7 @@ void Driver::advertise_game(GameScenario *game_scenario, Profile *p)
   GamelistClient::deleteInstance();
   GamelistClient *gsc = GamelistClient ::getInstance();
   gsc->client_connected.connect
-    (sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamelist_server_for_advertising), game_scenario, p));
+    (sigc::bind(method(on_connected_to_gamelist_server_for_advertising), game_scenario, p));
   gsc->start(Configuration::s_gamelist_server_hostname,
              Configuration::s_gamelist_server_port, p);
 }
@@ -509,7 +506,7 @@ void Driver::on_connected_to_gamelist_server_for_advertising(GameScenario *game_
     new RecentlyPlayedNetworkedGame(game_scenario, p);
   g->setNumberOfPlayers(Playerlist::getInstance()->countPlayersAlive());
   gsc->received_advertising_response.connect
-    (sigc::hide(sigc::mem_fun(*this, &Driver::on_advertising_response_received)));
+    (sigc::hide(method(on_advertising_response_received)));
   gsc->request_advertising(g);
 }
 
@@ -526,8 +523,8 @@ void Driver::remotely_serve (GameScenario *game_scenario, Profile *p)
     return;
   GamehostClient::deleteInstance();
   GamehostClient *ghc = GamehostClient::getInstance();
-  ghc->client_connected.connect(sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamehost_server_for_hosting_request), game_scenario));
-  ghc->client_could_not_connect.connect(sigc::mem_fun(*this, &Driver::on_could_not_connect_to_gamehost_server));
+  ghc->client_connected.connect(sigc::bind(method(on_connected_to_gamehost_server_for_hosting_request), game_scenario));
+  ghc->client_could_not_connect.connect(method(on_could_not_connect_to_gamehost_server));
   ghc->start(Configuration::s_gamehost_server_hostname,
              Configuration::s_gamehost_server_port, p);
 }
@@ -549,7 +546,7 @@ void Driver::on_could_not_connect_to_gamehost_server()
 void Driver::on_connected_to_gamehost_server_for_hosting_request (GameScenario *game_scenario)
 {
   GamehostClient *ghc = GamehostClient::getInstance();
-  ghc->received_host_response.connect(sigc::bind(sigc::hide<0>(sigc::mem_fun(*this, &Driver::on_got_game_host_response)), game_scenario));
+  ghc->received_host_response.connect(sigc::bind(sigc::hide<0>(method(on_got_game_host_response)), game_scenario));
   ghc->request_game_host (game_scenario->getId());
 }
 
@@ -569,13 +566,12 @@ void Driver::on_got_game_host_response(Glib::ustring err, GameScenario *game_sce
       return;
     }
   GamehostClient *ghc = GamehostClient::getInstance();
-  ghc->received_map_response.connect(sigc::hide<0>(sigc::mem_fun(*this, &Driver::on_remote_game_hosted)));
+  ghc->received_map_response.connect(sigc::hide<0>(method(on_remote_game_hosted)));
   if (download_window)
     delete download_window;
   download_window = new NewNetworkGameDownloadWindow(_("Uploading."));
   download_window->pulse();
-  upload_heartbeat_conn = Glib::signal_timeout().connect
-    (sigc::mem_fun(*this, &Driver::upload_heartbeat), 1 * 1000);
+  upload_heartbeat_conn = Glib::signal_timeout().connect (method(upload_heartbeat), 1 * 1000);
   ghc->send_map(game_scenario);
 }
 
@@ -651,7 +647,7 @@ void Driver::on_load_hosted_network_game_requested(GameScenario *game_scenario,
     }
 
   GameServer *game_server = GameServer::getInstance();
-  game_server->port_in_use.connect(sigc::mem_fun(*this, &Driver::on_could_not_bind_to_port));
+  game_server->port_in_use.connect(method(on_could_not_bind_to_port));
   game_server->start(game_scenario, port, p->getId(), p->getNickname());
   game_server = GameServer::getInstance();
   if (game_server->isListening() == false)
@@ -664,9 +660,7 @@ void Driver::on_load_hosted_network_game_requested(GameScenario *game_scenario,
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_server->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
   if (advertised)
-    game_server->round_ends.connect
-      (sigc::bind(sigc::mem_fun(*this, &Driver::on_advertised_game_round_ends),
-                  game_scenario, p));
+    game_server->round_ends.connect (sigc::bind(method(on_advertised_game_round_ends), game_scenario, p));
   game_server->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
   next_turn->srequestAbort.connect(sigc::mem_fun(game_server, &GameServer::on_turn_aborted));
   if (game_lobby_dialog)
@@ -675,24 +669,20 @@ void Driver::on_load_hosted_network_game_requested(GameScenario *game_scenario,
                                           game_scenario, next_turn, 
                                           game_server, true);
   game_server->get_next_player.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::next));
-  game_server->round_ends.connect
-    (sigc::mem_fun(*this, &Driver::on_keep_network_play_going));
+  game_server->round_ends.connect (method(on_keep_network_play_going));
   Playerlist::getInstance()->splayerDead.connect
     (sigc::mem_fun(GameServer::getInstance(), &GameServer::sendKillPlayer));
-  game_lobby_dialog->player_sat_down.connect
-    (sigc::mem_fun(this, &Driver::on_hosted_player_sat_down));
-  game_lobby_dialog->player_stood_up.connect
-    (sigc::mem_fun(this, &Driver::on_hosted_player_stood_up));
+  game_lobby_dialog->player_sat_down.connect (method(on_hosted_player_sat_down));
+  game_lobby_dialog->player_stood_up.connect (method(on_hosted_player_stood_up));
   game_lobby_dialog->player_changed_name.connect
-    (sigc::mem_fun(this, &Driver::on_hosted_player_changed_name));
+    (method(on_hosted_player_changed_name));
   game_lobby_dialog->player_changed_type.connect
-    (sigc::mem_fun(this, &Driver::on_hosted_player_changed_type));
-  game_lobby_dialog->message_sent.connect
-    (sigc::mem_fun(this, &Driver::on_hosted_player_chat));
+    (method(on_hosted_player_changed_type));
+  game_lobby_dialog->message_sent.connect (method(on_hosted_player_chat));
   game_lobby_dialog->game_may_begin.connect
-    (sigc::mem_fun(this, &Driver::on_hosted_player_says_game_may_begin));
+    (method(on_hosted_player_says_game_may_begin));
   game_lobby_dialog->start_network_game.connect
-    (sigc::mem_fun(this, &Driver::start_network_game_requested));
+    (method(start_network_game_requested));
   game_lobby_dialog->show();
   bool response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
@@ -751,23 +741,17 @@ void Driver::on_new_remote_network_game_requested(Glib::ustring host, unsigned s
   if (splash_window)
     splash_window->hide();
   GameClient *game_client = GameClient::getInstance();
-  game_client->game_scenario_received.connect
-    (sigc::mem_fun(this, &Driver::on_game_scenario_downloaded));
-  game_client->client_disconnected.connect
-    (sigc::mem_fun(this, &Driver::on_server_went_away));
-  game_client->client_forcibly_disconnected.connect
-    (sigc::mem_fun(this, &Driver::on_server_went_away));
-  game_client->client_could_not_connect.connect
-    (sigc::mem_fun(this, &Driver::on_client_could_not_connect));
-  recv_conn = game_scenario_received.connect
-    (sigc::bind(sigc::mem_fun(this, &Driver::on_game_scenario_received), p));
+  game_client->game_scenario_received.connect (method(on_game_scenario_downloaded));
+  game_client->client_disconnected.connect (method(on_server_went_away));
+  game_client->client_forcibly_disconnected.connect (method(on_server_went_away));
+  game_client->client_could_not_connect.connect (method(on_client_could_not_connect));
+  recv_conn = game_scenario_received.connect (sigc::bind(method(on_game_scenario_received), p));
   if (download_window)
     delete download_window;
   download_window = new NewNetworkGameDownloadWindow();
   download_window->pulse();
   game_client->start(host, port, p->getId(), p->getNickname());
-  heartbeat_conn = Glib::signal_timeout().connect
-    (sigc::mem_fun(*this, &Driver::heartbeat), 1 * 1000);
+  heartbeat_conn = Glib::signal_timeout().connect (method(heartbeat), 1 * 1000);
 
 }
 
@@ -811,18 +795,12 @@ void Driver::on_game_scenario_received(Glib::ustring path, Profile *p)
     delete game_lobby_dialog;
   game_lobby_dialog = new GameLobbyDialog(*splash_window->get_window(), game_scenario, next_turn, 
 					      GameClient::getInstance(), false);
-  game_lobby_dialog->player_sat_down.connect
-    (sigc::mem_fun(this, &Driver::on_client_player_sat_down));
-  game_lobby_dialog->player_stood_up.connect
-    (sigc::mem_fun(this, &Driver::on_client_player_stood_up));
-  game_lobby_dialog->player_changed_name.connect
-    (sigc::mem_fun(this, &Driver::on_client_player_changed_name));
-  game_lobby_dialog->player_changed_type.connect
-    (sigc::mem_fun(this, &Driver::on_client_player_changed_type));
-  game_lobby_dialog->message_sent.connect
-    (sigc::mem_fun(this, &Driver::on_client_player_chat));
-  game_lobby_dialog->start_network_game.connect
-    (sigc::mem_fun(this, &Driver::start_network_game_requested));
+  game_lobby_dialog->player_sat_down.connect (method(on_client_player_sat_down));
+  game_lobby_dialog->player_stood_up.connect (method(on_client_player_stood_up));
+  game_lobby_dialog->player_changed_name.connect (method(on_client_player_changed_name));
+  game_lobby_dialog->player_changed_type.connect (method(on_client_player_changed_type));
+  game_lobby_dialog->message_sent.connect (method(on_client_player_chat));
+  game_lobby_dialog->start_network_game.connect (method(start_network_game_requested));
   game_lobby_dialog->show();
   bool response = game_lobby_dialog->run();
 
@@ -935,8 +913,7 @@ void Driver::on_editor_requested()
   d.run();
   d.hide();
   editor_window = new MainWindow ();
-  editor_window->editor_quit.connect
-    (sigc::mem_fun(*this, &Driver::on_editor_quit));
+  editor_window->editor_quit.connect (method(on_editor_quit));
   editor_window->show();
   editor_window->init();
 }
@@ -1014,16 +991,12 @@ void Driver::init_game_window()
     delete game_window;
   game_window = new GameWindow;
 
-  game_window->game_ended.connect
-    (sigc::mem_fun(*this, &Driver::on_game_ended));
-  game_window->game_ended_start_new.connect
-    (sigc::mem_fun(*this, &Driver::on_game_ended_and_start_new));
-  game_window->show_lobby.connect
-    (sigc::mem_fun(*this, &Driver::on_show_lobby_requested));
-  game_window->quit_requested.connect
-    (sigc::mem_fun(*this, &Driver::on_quit_requested));
+  game_window->game_ended.connect (method(on_game_ended));
+  game_window->game_ended_start_new.connect (method(on_game_ended_and_start_new));
+  game_window->show_lobby.connect (method(on_show_lobby_requested));
+  game_window->quit_requested.connect (method(on_quit_requested));
   game_window->load_hosted_network_game.connect
-    (sigc::mem_fun(*this, &Driver::on_game_ended_and_load_network_game));
+    (method(on_game_ended_and_load_network_game));
 
   //make the width+height suitable for the screen size.
   Glib::RefPtr<Gdk::Screen> screen = Gdk::Display::get_default()->get_default_screen();
@@ -1126,8 +1099,7 @@ void Driver::stress_test()
   nextTurn = new NextTurnHotseat(game_scenario->getTurnmode(),
 				 game_scenario->s_random_turns);
     
-  nextTurn->snextRound.connect
-    (sigc::mem_fun(this, &Driver::stressTestNextRound));
+  nextTurn->snextRound.connect (method(stressTestNextRound));
   if (game_scenario->getRound() == 0)
     {
       Playerlist::getInstance()->syncPlayers(g.players);
@@ -1155,23 +1127,17 @@ void Driver::stress_test()
 void Driver::lordsawaromatic(Glib::ustring host, unsigned short port, Player::Type type, int num_players)
 {
   GameClient *game_client = GameClient::getInstance();
-  game_client->game_scenario_received.connect
-    (sigc::mem_fun(this, &Driver::on_game_scenario_downloaded));
-  game_client->client_disconnected.connect
-    (sigc::mem_fun(this, &Driver::on_server_went_away));
-  game_client->client_forcibly_disconnected.connect
-    (sigc::mem_fun(this, &Driver::on_server_went_away));
-  game_client->client_could_not_connect.connect
-    (sigc::mem_fun(this, &Driver::on_client_could_not_connect));
-  game_scenario_received.connect
-    (sigc::mem_fun(this, &Driver::on_game_scenario_received_for_robots));
+  game_client->game_scenario_received.connect(method(on_game_scenario_downloaded));
+  game_client->client_disconnected.connect (method(on_server_went_away));
+  game_client->client_forcibly_disconnected.connect (method(on_server_went_away));
+  game_client->client_could_not_connect.connect (method(on_client_could_not_connect));
+  game_scenario_received.connect (method(on_game_scenario_received_for_robots));
   game_client->setNickname("robot");
   Glib::ustring id = "";
   if (Profilelist::getInstance()->empty() == false)
     id = Profilelist::getInstance()->front()->getId();
   game_client->start(host, port, id, "robot");
-  heartbeat_conn = Glib::signal_timeout().connect
-    (sigc::mem_fun(*this, &Driver::heartbeat), 1 * 1000);
+  heartbeat_conn = Glib::signal_timeout().connect (method(heartbeat), 1 * 1000);
   robot_player_type = type;
   number_of_robots = num_players;
 }
@@ -1305,7 +1271,7 @@ void Driver::unadvertise_game(Glib::ustring scenario_id, Profile *p)
 {
   GamelistClient *gsc = GamelistClient ::getInstance();
   gsc->client_connected.connect
-    (sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamelist_server_for_advertising_removal), scenario_id));
+    (sigc::bind(method(on_connected_to_gamelist_server_for_advertising_removal), scenario_id));
   gsc->start(Configuration::s_gamelist_server_hostname,
              Configuration::s_gamelist_server_port, p);
 }
@@ -1314,7 +1280,7 @@ void Driver::on_connected_to_gamelist_server_for_advertising_removal(Glib::ustri
 {
   GamelistClient *gsc = GamelistClient::getInstance();
   gsc->received_advertising_removal_response.connect
-    (sigc::hide(sigc::hide(sigc::mem_fun(*this, &Driver::on_advertising_removal_response_received))));
+    (sigc::hide(sigc::hide(method(on_advertising_removal_response_received))));
   gsc->request_advertising_removal(scenario_id);
 }
 

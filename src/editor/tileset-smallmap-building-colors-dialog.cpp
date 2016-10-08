@@ -26,6 +26,7 @@
 #include "defs.h"
 #include "tileset.h"
 
+#define method(x) sigc::mem_fun(*this, &TilesetSmallmapBuildingColorsDialog::x)
 
 TilesetSmallmapBuildingColorsDialog::TilesetSmallmapBuildingColorsDialog(Gtk::Window &parent, Tileset *tileset)
  : LwEditorDialog(parent, "tileset-smallmap-building-colors-dialog.ui")
@@ -34,19 +35,13 @@ TilesetSmallmapBuildingColorsDialog::TilesetSmallmapBuildingColorsDialog(Gtk::Wi
 
   xml->get_widget("road_colorbutton", road_colorbutton);
   road_colorbutton->set_rgba(tileset->getRoadColor());
-  road_colorbutton->signal_color_set().connect
-    (sigc::mem_fun(this, 
-                   &TilesetSmallmapBuildingColorsDialog::on_road_color_chosen));
+  road_colorbutton->signal_color_set().connect (method(on_road_color_chosen));
   xml->get_widget("ruin_colorbutton", ruin_colorbutton);
   ruin_colorbutton->set_rgba(tileset->getRuinColor());
-  ruin_colorbutton->signal_color_set().connect
-    (sigc::mem_fun(this, 
-                   &TilesetSmallmapBuildingColorsDialog::on_ruin_color_chosen));
+  ruin_colorbutton->signal_color_set().connect (method(on_ruin_color_chosen));
   xml->get_widget("temple_colorbutton", temple_colorbutton);
   temple_colorbutton->set_rgba(tileset->getTempleColor());
-  temple_colorbutton->signal_color_set().connect
-    (sigc::mem_fun
-     (this, &TilesetSmallmapBuildingColorsDialog::on_temple_color_chosen));
+  temple_colorbutton->signal_color_set().connect (method(on_temple_color_chosen));
 }
 
 void TilesetSmallmapBuildingColorsDialog::on_road_color_chosen()

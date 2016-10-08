@@ -38,6 +38,8 @@
 #include "boxcompose.h"
 #include "ItemProto.h"
 
+#define method(x) sigc::mem_fun(*this, &HistoryReportDialog::x)
+
 HistoryReportDialog::HistoryReportDialog(Gtk::Window &parent, Player *p, HistoryReportType type)
  : LwDialog(parent, "history-report-dialog.ui")
 {
@@ -47,21 +49,19 @@ HistoryReportDialog::HistoryReportDialog(Gtk::Window &parent, Player *p, History
   generatePastEventlists();
   xml->get_widget("map_image", map_image);
   historymap = new HistoryMap(Citylist::getInstance(), Ruinlist::getInstance());
-  historymap->map_changed.connect
-    (sigc::mem_fun(this, &HistoryReportDialog::on_map_changed));
+  historymap->map_changed.connect (method(on_map_changed));
 
   xml->get_widget("turn_scale", turn_scale);
   dialog->set_title(_("History"));
   turn_scale->set_range(1, past_citylists.size());
   turn_scale->set_value(past_citylists.size());
 
-  turn_scale->signal_value_changed().connect
-    (sigc::mem_fun(this, &HistoryReportDialog::on_turn_changed));
+  turn_scale->signal_value_changed().connect (method(on_turn_changed));
 
   xml->get_widget("history_notebook", history_notebook);
   history_notebook->set_current_page(type);
-  history_notebook->signal_switch_page().connect(
-	sigc::hide(sigc::hide(sigc::mem_fun(*this, &HistoryReportDialog::on_switch_page))));
+  history_notebook->signal_switch_page().connect
+    (sigc::hide(sigc::hide(method(on_switch_page))));
 
   xml->get_widget("city_label", city_label);
   xml->get_widget("ruin_label", ruin_label);

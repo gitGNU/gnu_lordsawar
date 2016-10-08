@@ -28,6 +28,8 @@
 #include "city.h"
 #include "playerlist.h"
 
+#define method(x) sigc::mem_fun(*this, &UseItemOnCityDialog::x)
+
 UseItemOnCityDialog::UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Type type)
  : LwDialog(parent, "use-item-on-city-dialog.ui")
 {
@@ -35,15 +37,14 @@ UseItemOnCityDialog::UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Typ
   xml->get_widget("continue_button", continue_button);
 
   citymap = new SelectCityMap(type);
-  citymap->map_changed.connect
-    (sigc::mem_fun(this, &UseItemOnCityDialog::on_map_changed));
-  citymap->city_selected.connect(sigc::hide(sigc::mem_fun(this, &UseItemOnCityDialog::on_city_selected)));
+  citymap->map_changed.connect (method(on_map_changed));
+  citymap->city_selected.connect(sigc::hide(method(on_city_selected)));
 
   Gtk::EventBox *map_eventbox;
   xml->get_widget("map_eventbox", map_eventbox);
   map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
   map_eventbox->signal_button_press_event().connect
-    (sigc::mem_fun(*this, &UseItemOnCityDialog::on_map_mouse_button_event));
+    (method(on_map_mouse_button_event));
 
   continue_button->set_sensitive(false);
 

@@ -44,6 +44,7 @@
 #include "editor-quit-dialog.h"
 #include "GameMap.h"
 
+#define method(x) sigc::mem_fun(*this, &CitySetWindow::x)
 
 CitySetWindow::CitySetWindow(Glib::ustring load_filename)
 {
@@ -54,77 +55,68 @@ CitySetWindow::CitySetWindow(Glib::ustring load_filename)
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getVariousFile("castle_icon.png"));
-    window->signal_delete_event().connect
-      (sigc::mem_fun(*this, &CitySetWindow::on_window_closed));
+    window->signal_delete_event().connect (method(on_window_closed));
 
     xml->get_widget("cityset_alignment", cityset_alignment);
     xml->get_widget("new_cityset_menuitem", new_cityset_menuitem);
-    new_cityset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &CitySetWindow::on_new_cityset_activated));
+    new_cityset_menuitem->signal_activate().connect (method(on_new_cityset_activated));
     xml->get_widget("load_cityset_menuitem", load_cityset_menuitem);
-    load_cityset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &CitySetWindow::on_load_cityset_activated));
+    load_cityset_menuitem->signal_activate().connect (method(on_load_cityset_activated));
     xml->get_widget("save_cityset_menuitem", save_cityset_menuitem);
-    save_cityset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &CitySetWindow::on_save_cityset_activated));
+    save_cityset_menuitem->signal_activate().connect (method(on_save_cityset_activated));
     xml->get_widget("save_as_menuitem", save_as_menuitem);
-    save_as_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &CitySetWindow::on_save_as_activated));
+    save_as_menuitem->signal_activate().connect (method(on_save_as_activated));
     xml->get_widget("validate_cityset_menuitem", validate_cityset_menuitem);
     validate_cityset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &CitySetWindow::on_validate_cityset_activated));
+      (method(on_validate_cityset_activated));
     xml->get_widget("quit_menuitem", quit_menuitem);
-    quit_menuitem->signal_activate().connect
-       (sigc::mem_fun(this, &CitySetWindow::on_quit_activated));
+    quit_menuitem->signal_activate().connect (method(on_quit_activated));
     xml->get_widget("edit_cityset_info_menuitem", edit_cityset_info_menuitem);
     edit_cityset_info_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &CitySetWindow::on_edit_cityset_info_activated));
+      (method(on_edit_cityset_info_activated));
     xml->get_widget ("help_about_menuitem", help_about_menuitem);
     help_about_menuitem->signal_activate().connect
-       (sigc::mem_fun(this, &CitySetWindow::on_help_about_activated));
+       (method(on_help_about_activated));
     xml->get_widget("city_tile_width_spinbutton", city_tile_width_spinbutton);
     city_tile_width_spinbutton->set_range (1, 4);
     city_tile_width_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &CitySetWindow::on_city_tile_width_changed));
+      (method(on_city_tile_width_changed));
     city_tile_width_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &CitySetWindow::on_city_tile_width_text_changed))));
+      (sigc::hide(sigc::hide(method(on_city_tile_width_text_changed))));
     xml->get_widget("ruin_tile_width_spinbutton", ruin_tile_width_spinbutton);
     ruin_tile_width_spinbutton->set_range (1, 4);
     ruin_tile_width_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &CitySetWindow::on_ruin_tile_width_changed));
+      (method(on_ruin_tile_width_changed));
     ruin_tile_width_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &CitySetWindow::on_ruin_tile_width_text_changed))));
+      (sigc::hide(sigc::hide(method(on_ruin_tile_width_text_changed))));
     xml->get_widget("temple_tile_width_spinbutton", 
 		    temple_tile_width_spinbutton);
     temple_tile_width_spinbutton->set_range (1, 4);
     temple_tile_width_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &CitySetWindow::on_temple_tile_width_changed));
+      (method(on_temple_tile_width_changed));
     temple_tile_width_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &CitySetWindow::on_temple_tile_width_text_changed))));
+      (sigc::hide(sigc::hide(method(on_temple_tile_width_text_changed))));
 
-    window->signal_delete_event().connect
-      (sigc::hide(sigc::mem_fun(*this, &CitySetWindow::on_delete_event)));
+    window->signal_delete_event().connect (sigc::hide(method(on_delete_event)));
     xml->get_widget("change_citypics_button", change_citypics_button);
-    change_citypics_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CitySetWindow::on_change_citypics_clicked));
+    change_citypics_button->signal_clicked().connect
+      (method(on_change_citypics_clicked));
     xml->get_widget("change_razedcitypics_button", change_razedcitypics_button);
-    change_razedcitypics_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CitySetWindow::on_change_razedcitypics_clicked));
+    change_razedcitypics_button->signal_clicked().connect
+      (method(on_change_razedcitypics_clicked));
     xml->get_widget("change_portpic_button", change_portpic_button);
-    change_portpic_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CitySetWindow::on_change_portpic_clicked));
+    change_portpic_button->signal_clicked().connect(method(on_change_portpic_clicked));
     xml->get_widget("change_signpostpic_button", change_signpostpic_button);
-    change_signpostpic_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CitySetWindow::on_change_signpostpic_clicked));
+    change_signpostpic_button->signal_clicked().connect
+      (method(on_change_signpostpic_clicked));
     xml->get_widget("change_ruinpics_button", change_ruinpics_button);
-    change_ruinpics_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CitySetWindow::on_change_ruinpics_clicked));
+    change_ruinpics_button->signal_clicked().connect(method(on_change_ruinpics_clicked));
     xml->get_widget("change_templepic_button", change_templepic_button);
-    change_templepic_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CitySetWindow::on_change_templepic_clicked));
+    change_templepic_button->signal_clicked().connect
+      (method(on_change_templepic_clicked));
     xml->get_widget("change_towerpics_button", change_towerpics_button);
-    change_towerpics_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CitySetWindow::on_change_towerpics_clicked));
+    change_towerpics_button->signal_clicked().connect
+      (method(on_change_towerpics_clicked));
 
     if (load_filename != "")
       current_save_filename = load_filename;

@@ -36,6 +36,8 @@
 #include "shield.h"
 #include "playerlist.h"
 
+#define method(x) sigc::mem_fun(*this, &DestinationDialog::x)
+
 DestinationDialog::DestinationDialog(Gtk::Window &parent, City *c, bool *see_all)
  : LwDialog(parent, "destination-dialog.ui")
 {
@@ -61,24 +63,20 @@ DestinationDialog::DestinationDialog(Gtk::Window &parent, City *c, bool *see_all
   xml->get_widget("turn_after_4_image", turn_after_4_image);
 
   see_all_toggle->signal_toggled().connect
-    (sigc::bind(sigc::mem_fun(this, &DestinationDialog::on_see_all_toggled),
-                see_all_toggle));
+    (sigc::bind(method(on_see_all_toggled), see_all_toggle));
   vector_toggle->signal_toggled().connect
-    (sigc::bind(sigc::mem_fun(this, &DestinationDialog::on_vector_toggled),
-                vector_toggle));
+    (sigc::bind(method(on_vector_toggled), vector_toggle));
   change_toggle->signal_toggled().connect
-    (sigc::bind(sigc::mem_fun(this, &DestinationDialog::on_change_toggled),
-                change_toggle));
+    (sigc::bind(method(on_change_toggled), change_toggle));
 
   vectormap = new VectorMap(c, VectorMap::SHOW_ORIGIN_CITY_VECTORING, false);
-  vectormap->map_changed.connect
-    (sigc::mem_fun(this, &DestinationDialog::on_map_changed));
+  vectormap->map_changed.connect (method(on_map_changed));
 
   Gtk::EventBox *map_eventbox;
   xml->get_widget("map_eventbox", map_eventbox);
   map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
   map_eventbox->signal_button_press_event().connect
-    (sigc::mem_fun(*this, &DestinationDialog::on_map_mouse_button_event));
+    (method(on_map_mouse_button_event));
   fill_in_vectoring_info();
 }
 

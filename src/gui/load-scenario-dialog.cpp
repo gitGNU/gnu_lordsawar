@@ -28,6 +28,8 @@
 #include "File.h"
 #include "GameScenario.h"
 
+#define method(x) sigc::mem_fun(*this, &LoadScenarioDialog::x)
+
 LoadScenarioDialog::LoadScenarioDialog(Gtk::Window &parent)
  : LwDialog(parent, "load-scenario-dialog.ui")
 {
@@ -43,14 +45,14 @@ LoadScenarioDialog::LoadScenarioDialog(Gtk::Window &parent)
 
   xml->get_widget("add_scenario_button", add_scenario_button);
   add_scenario_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &LoadScenarioDialog::on_add_scenario_clicked));
+    (method(on_add_scenario_clicked));
   xml->get_widget("remove_scenario_button", remove_scenario_button);
   remove_scenario_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &LoadScenarioDialog::on_remove_scenario_clicked));
+    (method(on_remove_scenario_clicked));
 
   scenarios_treeview->get_selection()->signal_changed()
-    .connect(sigc::mem_fun(this, &LoadScenarioDialog::on_selection_changed));
-  scenarios_treeview->signal_row_activated().connect(sigc::hide(sigc::hide(sigc::mem_fun(this, &LoadScenarioDialog::on_scenario_activated))));
+    .connect(method(on_selection_changed));
+  scenarios_treeview->signal_row_activated().connect(sigc::hide(sigc::hide(method(on_scenario_activated))));
   // add the scenarios
   add_scenario("random.map");
   std::list<Glib::ustring> lm = File::scanMaps();

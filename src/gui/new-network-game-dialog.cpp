@@ -27,22 +27,24 @@
 #include "profilelist.h"
 #include "new-profile-dialog.h"
 
+#define method(x) sigc::mem_fun(*this, &NewNetworkGameDialog::x)
+
 NewNetworkGameDialog::NewNetworkGameDialog(Gtk::Window &parent, bool force_server)
  : LwDialog(parent, "new-network-game-dialog.ui")
 {
   xml->get_widget("client_radiobutton", client_radiobutton);
   xml->get_widget("server_radiobutton", server_radiobutton);
-  client_radiobutton->signal_toggled().connect(sigc::mem_fun(*this, &NewNetworkGameDialog::on_client_radiobutton_toggled));
+  client_radiobutton->signal_toggled().connect(method(on_client_radiobutton_toggled));
   xml->get_widget("accept_button", accept_button);
   xml->get_widget("add_button", add_button);
-  add_button->signal_clicked().connect(sigc::mem_fun(*this, &NewNetworkGameDialog::on_add_button_clicked));
+  add_button->signal_clicked().connect(method(on_add_button_clicked));
   xml->get_widget("remove_button", remove_button);
-  remove_button->signal_clicked().connect(sigc::mem_fun(*this, &NewNetworkGameDialog::on_remove_button_clicked));
+  remove_button->signal_clicked().connect(method(on_remove_button_clicked));
   xml->get_widget("profiles_treeview", profiles_treeview);
   profiles_list = Gtk::ListStore::create(profiles_columns);
   profiles_treeview->set_model(profiles_list);
   profiles_treeview->append_column("", profiles_columns.nickname);
-  profiles_treeview->signal_row_activated().connect(sigc::hide(sigc::hide(sigc::mem_fun(this, &NewNetworkGameDialog::on_profile_activated))));
+  profiles_treeview->signal_row_activated().connect(sigc::hide(sigc::hide(method(on_profile_activated))));
 
   if (Profilelist::getInstance()->empty() == true)
     Profilelist::getInstance()->push_back(new Profile(Glib::get_user_name()));
@@ -54,8 +56,7 @@ NewNetworkGameDialog::NewNetworkGameDialog(Gtk::Window &parent, bool force_serve
   xml->get_widget("advertise_checkbutton", advertise_checkbutton);
   xml->get_widget("remote_checkbutton", remote_checkbutton);
   remote_checkbutton->signal_toggled().connect
-    (sigc::mem_fun(*this, 
-                   &NewNetworkGameDialog::on_remote_checkbutton_toggled));
+    (method(on_remote_checkbutton_toggled));
 
   if (Configuration::s_gamelist_server_hostname == "" ||
       Configuration::s_gamelist_server_port == 0)
@@ -75,7 +76,7 @@ NewNetworkGameDialog::NewNetworkGameDialog(Gtk::Window &parent, bool force_serve
   select_preferred_profile(Glib::get_user_name());
   update_buttons();
   profiles_treeview->get_selection()->signal_changed().connect
-    (sigc::mem_fun(*this, &NewNetworkGameDialog::on_profile_selected));
+    (method(on_profile_selected));
   if (force_server)
     {
       server_radiobutton->set_active(true);

@@ -27,6 +27,8 @@
 #include "ImageCache.h"
 #include "playerlist.h"
 
+#define method(x) sigc::mem_fun(*this, &FightOrderEditorDialog::x)
+
 FightOrderEditorDialog::FightOrderEditorDialog(Gtk::Window &parent)
  : LwEditorDialog(parent, "fight-order-editor-dialog.ui")
 {
@@ -37,7 +39,7 @@ FightOrderEditorDialog::FightOrderEditorDialog(Gtk::Window &parent)
   armies_treeview->append_column("", armies_columns.image);
   armies_treeview->append_column("", armies_columns.name);
   armies_treeview->set_reorderable(true);
-  armies_treeview->signal_drag_end().connect(sigc::hide(sigc::mem_fun(this, &FightOrderEditorDialog::on_army_reordered)));
+  armies_treeview->signal_drag_end().connect(sigc::hide(method(on_army_reordered)));
   fill_armies(Playerlist::getActiveplayer());
 
   player_combobox = new Gtk::ComboBoxText;
@@ -49,16 +51,14 @@ FightOrderEditorDialog::FightOrderEditorDialog(Gtk::Window &parent)
         player_combobox->set_active_text((*i)->getName());
     }
 
-  player_combobox->signal_changed().connect
-    (sigc::mem_fun(this, &FightOrderEditorDialog::on_player_changed));
+  player_combobox->signal_changed().connect (method(on_player_changed));
   Gtk::Alignment *alignment;
   xml->get_widget("players_alignment", alignment);
   alignment->add(*Gtk::manage(player_combobox));
   player_combobox->show_all();
 
   xml->get_widget("make_same_button", make_same_button);
-  make_same_button->signal_clicked().connect
-    (sigc::mem_fun (*this, &FightOrderEditorDialog::on_make_same_button_clicked));
+  make_same_button->signal_clicked().connect (method (on_make_same_button_clicked));
   make_same_button->set_sensitive(Playerlist::getInstance()->size() != 1);
 }
 

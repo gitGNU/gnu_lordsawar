@@ -34,21 +34,20 @@
 #include "shield.h"
 #include "armyprodbase.h"
 
+#define method(x) sigc::mem_fun(*this, &ReportDialog::x)
+
 ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
  : LwDialog(parent, "report-dialog.ui")
 {
   d_player = player;
   xml->get_widget("map_image", map_image);
   citymap = new CityMap();
-  citymap->map_changed.connect
-    (sigc::mem_fun(this, &ReportDialog::on_city_map_changed));
+  citymap->map_changed.connect (method(on_city_map_changed));
   armymap = new ArmyMap();
-  armymap->map_changed.connect
-    (sigc::mem_fun(this, &ReportDialog::on_army_map_changed));
+  armymap->map_changed.connect (method(on_army_map_changed));
   City *c = d_player->getFirstCity();
   vectormap = new VectorMap(c, VectorMap::SHOW_ALL_VECTORING, false);
-  vectormap->map_changed.connect
-    (sigc::mem_fun(this, &ReportDialog::on_vector_map_changed));
+  vectormap->map_changed.connect (method(on_vector_map_changed));
 
   xml->get_widget("army_label", army_label);
   xml->get_widget("city_label", city_label);
@@ -59,9 +58,8 @@ ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
 
   xml->get_widget("report_notebook", report_notebook);
   report_notebook->set_current_page(type);
-  switch_conn = 
-    report_notebook->signal_switch_page().connect
-    (sigc::hide<0>(sigc::mem_fun(*this, &ReportDialog::on_switch_page)));
+  switch_conn = report_notebook->signal_switch_page().connect
+    (sigc::hide<0>(method(on_switch_page)));
 
   armies_list = Gtk::ListStore::create(armies_columns);
   xml->get_widget("treeview", armies_treeview);
@@ -81,7 +79,7 @@ ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
     addProduction(*it);
     }
     armies_treeview->get_selection()->signal_changed().connect
-      (sigc::mem_fun(*this, &ReportDialog::on_army_selected));
+      (method(on_army_selected));
 
   Glib::ustring s;
   s = String::ucompose(ngettext("You produced %1 army this turn!",

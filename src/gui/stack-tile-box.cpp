@@ -36,6 +36,7 @@
 #include "army.h"
 #include "shield.h"
 
+#define method(x) sigc::mem_fun(*this, &StackTileBox::x)
 
 Glib::ustring StackTileBox::get_file(Configuration::UiFormFactor factor)
 {
@@ -95,8 +96,7 @@ StackTileBox::StackTileBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk::B
   xml->get_widget("group_moves_label", group_moves_label);
   xml->get_widget("group_togglebutton", group_ungroup_toggle);
   group_ungroup_toggle->signal_toggled().connect
-    (sigc::bind(sigc::mem_fun(*this, &StackTileBox::on_group_toggled),
-                group_ungroup_toggle));
+    (sigc::bind(method(on_group_toggled), group_ungroup_toggle));
   xml->get_widget("terrain_image", terrain_image);
 
   //okay let's make our army buttons.
@@ -228,15 +228,11 @@ void StackTileBox::show_stack(StackTile *s)
           StackArmyButton *button = stack_army_buttons[count];
           button->draw(stack, *i, colour_id, (*j) == currently_selected_stack);
           army_conn[count].disconnect();
-          army_conn[count] = 
-            button->army_toggled.connect
-            (sigc::bind(sigc::mem_fun(*this, &StackTileBox::on_army_toggled),
-                        button, *j, *i));
+          army_conn[count] = button->army_toggled.connect
+            (sigc::bind(method(on_army_toggled), button, *j, *i));
           stack_conn[count].disconnect();
-          stack_conn[count] = 
-            button->stack_clicked.connect
-            (sigc::bind(sigc::mem_fun(*this, &StackTileBox::on_stack_toggled),
-                        *j));
+          stack_conn[count] = button->stack_clicked.connect 
+            (sigc::bind(method(on_stack_toggled), *j));
           count++;
         }
 

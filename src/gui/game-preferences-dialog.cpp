@@ -34,6 +34,8 @@
 
 static bool inhibit_difficulty_combobox = false;
 
+#define method(x) sigc::mem_fun(*this, &GamePreferencesDialog::x)
+
 void GamePreferencesDialog::init(Glib::ustring filename)
 {
   d_filename = filename;
@@ -49,26 +51,20 @@ void GamePreferencesDialog::init(Glib::ustring filename)
   xml->get_widget("game_name_label", game_name_label);
   xml->get_widget("game_name_entry", game_name_entry);
   xml->get_widget("num_players_spinbutton", num_players_spinbutton);
-  num_players_spinbutton->signal_changed().connect
-  (sigc::mem_fun(this, &GamePreferencesDialog::on_num_players_changed));
+  num_players_spinbutton->signal_changed().connect(method(on_num_players_changed));
   num_players_spinbutton->signal_insert_text().connect
-  (sigc::hide(sigc::hide(sigc::mem_fun(this, &GamePreferencesDialog::on_num_players_text_changed))));
+    (sigc::hide(sigc::hide(method(on_num_players_text_changed))));
 
   difficulty_combobox->set_active(CUSTOM);
-  difficulty_combobox->signal_changed().connect
-    (sigc::mem_fun(*this, &GamePreferencesDialog::on_difficulty_changed));
+  difficulty_combobox->signal_changed().connect(method(on_difficulty_changed));
 
-  start_game_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &GamePreferencesDialog::on_start_game_clicked));
+  start_game_button->signal_clicked().connect (method(on_start_game_clicked));
 
   xml->get_widget("edit_options_button", edit_options_button);
-  edit_options_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &GamePreferencesDialog::on_edit_options_clicked));
+  edit_options_button->signal_clicked().connect (method(on_edit_options_clicked));
 
   game_options_dialog = new GameOptionsDialog(*dialog, false);
-  game_options_dialog->difficulty_option_changed.connect(
-	sigc::mem_fun(*this, 
-		      &GamePreferencesDialog::update_difficulty_rating));
+  game_options_dialog->difficulty_option_changed.connect(method(update_difficulty_rating));
   GameParameters load_map_parameters;
   load_map_parameters = GameScenario::loadGameParameters(d_filename,
 							 broken);
@@ -172,11 +168,9 @@ void GamePreferencesDialog::add_player(GameParameters::Player::Type type,
   player_type->append(EASY_PLAYER_TYPE);
   player_type->append(HARD_PLAYER_TYPE);
   player_type->append(NO_PLAYER_TYPE);
-  player_type->signal_changed().connect
-    (sigc::mem_fun(this, &GamePreferencesDialog::on_player_type_changed));
+  player_type->signal_changed().connect (method(on_player_type_changed));
   Gtk::Entry *player_name = new Gtk::Entry();
-  player_name->signal_changed().connect
-    (sigc::mem_fun(this, &GamePreferencesDialog::on_player_name_changed));
+  player_name->signal_changed().connect (method(on_player_name_changed));
   player_name->set_text(name);
 
   if (type == GameParameters::Player::HUMAN)

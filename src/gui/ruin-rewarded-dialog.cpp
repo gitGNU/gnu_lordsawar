@@ -31,14 +31,15 @@
 #include "playerlist.h"
 #include "Item.h"
 
+#define method(x) sigc::mem_fun(*this, &RuinRewardedDialog::x)
+
 RuinRewardedDialog::RuinRewardedDialog(Gtk::Window &parent, Reward_Ruin *reward)
 : LwDialog(parent, "ruin-rewarded-dialog.ui")
 {
   xml->get_widget("map_image", map_image);
 
   ruinmap = new RuinMap(reward->getRuin());
-  ruinmap->map_changed.connect
-    (sigc::mem_fun(this, &RuinRewardedDialog::on_map_changed));
+  ruinmap->map_changed.connect (method(on_map_changed));
 
   Gtk::EventBox *map_eventbox;
   xml->get_widget("map_eventbox", map_eventbox);

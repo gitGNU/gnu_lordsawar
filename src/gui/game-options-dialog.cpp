@@ -25,6 +25,8 @@
 #include "Configuration.h"
 #include "GameScenarioOptions.h"
 
+#define method(x) sigc::mem_fun(*this, &GameOptionsDialog::x)
+
 GameOptionsDialog::GameOptionsDialog(Gtk::Window &parent, bool readonly)
  : LwDialog(parent, "game-options-dialog.ui")
 {
@@ -76,54 +78,30 @@ bool GameOptionsDialog::run()
   std::list<sigc::connection> connections;
     GameParameters g;
     fill_in_options();
-    connections.push_back
-      (view_enemies_checkbutton->signal_clicked().connect
-       (sigc::mem_fun
-	(this, &GameOptionsDialog::on_view_enemies_checkbutton_clicked)));
-    connections.push_back
-      (view_production_checkbutton->signal_clicked().connect
-       (sigc::mem_fun
-	(this, &GameOptionsDialog::on_view_production_checkbutton_clicked)));
-    connections.push_back
-      (quests_combobox->signal_changed().connect
-       (sigc::mem_fun
-	(this, &GameOptionsDialog::on_quests_combobox_changed)));
-    connections.push_back
-      (hidden_map_checkbutton->signal_clicked().connect
-       (sigc::mem_fun
-	(this, &GameOptionsDialog::on_hidden_map_checkbutton_clicked)));
-    connections.push_back
-      (neutral_cities_combobox->signal_changed().connect
-       (sigc::mem_fun
-	(this, &GameOptionsDialog::on_neutral_cities_combobox_changed)));
-    connections.push_back
-      (razing_cities_combobox->signal_changed().connect
-       (sigc::mem_fun
-	(this, &GameOptionsDialog::on_razing_cities_combobox_changed)));
-    connections.push_back
-      (diplomacy_checkbutton->signal_clicked().connect
-       (sigc::mem_fun
-	(this, &GameOptionsDialog::on_diplomacy_checkbutton_clicked)));
-    connections.push_back
-      (cusp_of_war_checkbutton->signal_clicked().connect
-       (sigc::mem_fun
-	(this, &GameOptionsDialog::on_cusp_of_war_checkbutton_clicked)));
-    connections.push_back
-      (random_turns_checkbutton->signal_clicked().connect
-       (sigc::mem_fun
-	(this, &GameOptionsDialog::on_random_turns_checkbutton_clicked)));
-    connections.push_back
-      (quick_start_combobox->signal_changed().connect
-       (sigc::mem_fun
-	(this, &GameOptionsDialog::on_quick_start_combobox_changed)));
-    connections.push_back
-      (intense_combat_checkbutton->signal_clicked().connect
-       (sigc::mem_fun
-	(this, &GameOptionsDialog::on_intense_combat_checkbutton_clicked)));
-    connections.push_back
-      (military_advisor_checkbutton->signal_clicked().connect
-       (sigc::mem_fun
-	(this, &GameOptionsDialog::on_military_advisor_checkbutton_clicked)));
+    connections.push_back (view_enemies_checkbutton->signal_clicked().connect
+                           (method (on_view_enemies_checkbutton_clicked)));
+    connections.push_back (view_production_checkbutton->signal_clicked().connect
+                           (method(on_view_production_checkbutton_clicked)));
+    connections.push_back (quests_combobox->signal_changed().connect
+                           (method(on_quests_combobox_changed)));
+    connections.push_back (hidden_map_checkbutton->signal_clicked().connect
+                           (method(on_hidden_map_checkbutton_clicked)));
+    connections.push_back (neutral_cities_combobox->signal_changed().connect
+                           (method(on_neutral_cities_combobox_changed)));
+    connections.push_back (razing_cities_combobox->signal_changed().connect
+                           (method (on_razing_cities_combobox_changed)));
+    connections.push_back (diplomacy_checkbutton->signal_clicked().connect
+                           (method (on_diplomacy_checkbutton_clicked)));
+    connections.push_back (cusp_of_war_checkbutton->signal_clicked().connect
+                           (method(on_cusp_of_war_checkbutton_clicked)));
+    connections.push_back (random_turns_checkbutton->signal_clicked().connect
+                           (method (on_random_turns_checkbutton_clicked)));
+    connections.push_back (quick_start_combobox->signal_changed().connect
+                           (method (on_quick_start_combobox_changed)));
+    connections.push_back (intense_combat_checkbutton->signal_clicked().connect
+                           (method (on_intense_combat_checkbutton_clicked)));
+    connections.push_back (military_advisor_checkbutton->signal_clicked().connect
+                           (method (on_military_advisor_checkbutton_clicked)));
 
     dialog->run();
   

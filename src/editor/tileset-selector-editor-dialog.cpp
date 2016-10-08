@@ -30,6 +30,8 @@
 #include "tileset-window.h"
 #include "past-chooser.h"
 
+#define method(x) sigc::mem_fun(*this, &TilesetSelectorEditorDialog::x)
+
 TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Gtk::Window &parent, Tileset *tileset)
  : LwEditorDialog(parent, "tileset-selector-editor-dialog.ui")
 {
@@ -55,11 +57,9 @@ TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Gtk::Window &parent, Ti
     xml->get_widget("preview_table", preview_table);
     
     xml->get_widget("large_selector_radiobutton", large_selector_radiobutton);
-    large_selector_radiobutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &TilesetSelectorEditorDialog::on_large_toggled));
+    large_selector_radiobutton->signal_toggled().connect (method(on_large_toggled));
     xml->get_widget("small_selector_radiobutton", small_selector_radiobutton);
-    small_selector_radiobutton->signal_toggled().connect
-      (sigc::mem_fun(*this, &TilesetSelectorEditorDialog::on_small_toggled));
+    small_selector_radiobutton->signal_toggled().connect (method(on_small_toggled));
     xml->get_widget("selector_filechooserbutton", selector_filechooserbutton);
     reset_filechooser();
 
@@ -129,8 +129,7 @@ void TilesetSelectorEditorDialog::setup_shield_theme_combobox(Gtk::Box *box)
     }
 
   shield_theme_combobox->set_active(default_id);
-  shield_theme_combobox->signal_changed().connect
-    (sigc::mem_fun(this, &TilesetSelectorEditorDialog::shieldset_changed));
+  shield_theme_combobox->signal_changed().connect (method(shieldset_changed));
 
   box->pack_start(*shield_theme_combobox, Gtk::PACK_SHRINK);
 }
@@ -161,12 +160,8 @@ void TilesetSelectorEditorDialog::show_preview_selectors(Glib::ustring filename)
 
   clearSelector();
   if (loadSelector(filename) == true)
-    {
-      heartbeat = Glib::signal_timeout().connect
-	(bind_return
-	 (sigc::mem_fun (*this, &TilesetSelectorEditorDialog::on_heartbeat), 
-	  true), TIMER_BIGMAP_SELECTOR);
-    }
+    heartbeat = Glib::signal_timeout().connect
+      (sigc::bind_return (method (on_heartbeat), true), TIMER_BIGMAP_SELECTOR);
 }
 
 void TilesetSelectorEditorDialog::clearSelector()

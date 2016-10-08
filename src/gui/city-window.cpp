@@ -38,6 +38,8 @@
 #include "citylist.h"
 #include "playerlist.h"
 
+#define method(x) sigc::mem_fun(*this, &CityWindow::x)
+
 CityWindow::CityWindow(Gtk::Window &parent, City *c, bool razing_possible, 
 		       bool see_opponents_production)
  : LwDialog(parent, "city-window.ui")
@@ -51,14 +53,13 @@ CityWindow::CityWindow(Gtk::Window &parent, City *c, bool razing_possible,
 
     prodmap = new VectorMap(c, VectorMap::SHOW_ORIGIN_CITY_VECTORING,
 		  see_opponents_production);
-    prodmap->map_changed.connect(
-	sigc::mem_fun(this, &CityWindow::on_map_changed));
+    prodmap->map_changed.connect(method(on_map_changed));
 
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
-    map_eventbox->signal_button_press_event().connect(
-	sigc::mem_fun(*this, &CityWindow::on_map_mouse_button_event));
+    map_eventbox->signal_button_press_event().connect
+      (method(on_map_mouse_button_event));
     xml->get_widget("status_label", status_label);
     xml->get_widget("turns_left_label", turns_left_label);
     xml->get_widget("current_label", current_label);
@@ -67,36 +68,27 @@ CityWindow::CityWindow(Gtk::Window &parent, City *c, bool razing_possible,
     xml->get_widget("production_info_label2", production_info_label2);
     xml->get_widget("buy_button", buy_button);
     xml->get_widget("on_hold_button", on_hold_button);
-    on_hold_button->signal_clicked().connect(
-	    sigc::mem_fun(this, &CityWindow::on_on_hold_clicked));
-    buy_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CityWindow::on_buy_clicked));
+    on_hold_button->signal_clicked().connect(method(on_on_hold_clicked));
+    buy_button->signal_clicked().connect(method(on_buy_clicked));
     xml->get_widget("destination_button", destination_button);
-    destination_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CityWindow::on_destination_clicked));
+    destination_button->signal_clicked().connect(method(on_destination_clicked));
     xml->get_widget("rename_button", rename_button);
-    rename_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CityWindow::on_rename_clicked));
+    rename_button->signal_clicked().connect(method(on_rename_clicked));
     xml->get_widget("raze_button", raze_button);
-    raze_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CityWindow::on_raze_clicked));
+    raze_button->signal_clicked().connect(method(on_raze_clicked));
 
     xml->get_widget("production_toggles_hbox", production_toggles_hbox);
     for (unsigned int i = 1; i <= city->getMaxNoOfProductionBases(); ++i) {
 	Gtk::ToggleButton *toggle = new Gtk::ToggleButton();
 	production_toggles_hbox->pack_start(*manage(toggle), false, false, 0);
 	production_toggles.push_back(toggle);
-	toggle->signal_toggled().connect(
-	    sigc::bind(sigc::mem_fun(this, &CityWindow::on_production_toggled),
-		       toggle));
+	toggle->signal_toggled().connect(sigc::bind(method(on_production_toggled), toggle));
 	toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
 	toggle->signal_button_press_event().connect(
-	    sigc::bind(sigc::mem_fun(*this, &CityWindow::on_production_button_event),
-		       toggle), false);
+	    sigc::bind(method(on_production_button_event), toggle), false);
 	
 	toggle->signal_button_release_event().connect(
-	    sigc::bind(sigc::mem_fun(*this, &CityWindow::on_production_button_event),
-		       toggle), false);
+	    sigc::bind(method(on_production_button_event), toggle), false);
 	
     }
 

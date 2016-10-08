@@ -31,6 +31,8 @@
 #include "ImageCache.h"
 #include "armysetlist.h"
 
+#define method(x) sigc::mem_fun(*this, &SelectArmyDialog::x)
+
 SelectArmyDialog::SelectArmyDialog(Gtk::Window &parent, Player *p, 
                                    bool hero_too, bool defends_ruins, 
                                    bool awardable)
@@ -131,17 +133,13 @@ void SelectArmyDialog::fill_in_army_toggles()
 	toggles_table->attach(*toggle, x, y, 1 , 1);
 	toggle->show_all();
 
-	toggle->signal_toggled().connect(
-					 sigc::bind(sigc::mem_fun(this, &SelectArmyDialog::on_army_toggled),
-						    toggle));
+	toggle->signal_toggled().connect(sigc::bind(method(on_army_toggled), toggle));
 	toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
-	toggle->signal_button_press_event().connect(
-						    sigc::bind(sigc::mem_fun(*this, &SelectArmyDialog::on_army_button_event),
-							       toggle), false);
+	toggle->signal_button_press_event().connect
+          (sigc::bind(method(on_army_button_event), toggle), false);
 
-	toggle->signal_button_release_event().connect(
-						      sigc::bind(sigc::mem_fun(*this, &SelectArmyDialog::on_army_button_event),
-								 toggle), false);
+	toggle->signal_button_release_event().connect
+          (sigc::bind(method(on_army_button_event), toggle), false);
       }
 
     ignore_toggles = false;

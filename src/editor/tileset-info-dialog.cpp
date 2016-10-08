@@ -27,6 +27,7 @@
 #include "defs.h"
 #include "File.h"
 
+#define method(x) sigc::mem_fun(*this, &TileSetInfoDialog::x)
 
 TileSetInfoDialog::TileSetInfoDialog(Gtk::Window &parent, Set *tileset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
  : LwEditorDialog(parent, "tileset-info-dialog.ui")
@@ -44,8 +45,7 @@ TileSetInfoDialog::TileSetInfoDialog(Gtk::Window &parent, Set *tileset, Glib::us
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(tileset->getName());
     if (readonly == false)
-      name_entry->signal_changed().connect
-	(sigc::mem_fun(this, &TileSetInfoDialog::on_name_changed));
+      name_entry->signal_changed().connect (method(on_name_changed));
     
     xml->get_widget("filename_entry", filename_entry);
     if (file != "")
@@ -60,8 +60,7 @@ TileSetInfoDialog::TileSetInfoDialog(Gtk::Window &parent, Set *tileset, Glib::us
         name_entry->set_text(name);
       }
     if (readonly == false)
-      filename_entry->signal_changed().connect
-	(sigc::mem_fun(this, &TileSetInfoDialog::on_filename_changed));
+      filename_entry->signal_changed().connect (method(on_filename_changed));
 
     xml->get_widget("id_spinbutton", id_spinbutton);
     id_spinbutton->set_value(tileset->getId());

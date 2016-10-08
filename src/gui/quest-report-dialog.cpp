@@ -26,6 +26,8 @@
 #include "defs.h"
 #include "playerlist.h"
 
+#define method(x) sigc::mem_fun(*this, &QuestReportDialog::x)
+
 QuestReportDialog::QuestReportDialog(Gtk::Window &parent, std::vector<Quest *>q, Hero *hero)
  : LwDialog(parent, "quest-report-dialog.ui")
 {
@@ -47,8 +49,8 @@ QuestReportDialog::QuestReportDialog(Gtk::Window &parent, std::vector<Quest *>q,
 
   heroes_list->clear();
   guint32 count = 0;
-  heroes_treeview->get_selection()->signal_changed()
-    .connect(sigc::mem_fun(this, &QuestReportDialog::on_hero_changed));
+  heroes_treeview->get_selection()->signal_changed().connect
+    (method(on_hero_changed));
   for (std::vector<Quest*>::iterator it = quests.begin(); it != quests.end();
        it++)
     {
@@ -80,8 +82,7 @@ void QuestReportDialog::fill_quest_info(Quest *q)
   if (questmap)
     delete questmap;
   questmap = new QuestMap(q);
-  questmap->map_changed.connect
-    (sigc::mem_fun(this, &QuestReportDialog::on_map_changed));
+  questmap->map_changed.connect (method(on_map_changed));
   if (dialog->get_realized() == true)
     {
       questmap->resize();

@@ -31,6 +31,7 @@
 #include "ImageCache.h"
 #include "past-chooser.h"
 
+#define method(x) sigc::mem_fun(*this, &MaskedImageEditorDialog::x)
 
 MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, Shieldset *shieldset)
  : LwEditorDialog(parent, "masked-image-editor-dialog.ui")
@@ -49,10 +50,8 @@ MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustr
     show_image(filename);
     target_filename = filename;
     update_panel();
-    filechooserbutton->signal_file_set().connect
-       (sigc::mem_fun(*this, &MaskedImageEditorDialog::on_image_chosen));
-    filechooserbutton->signal_set_focus_child().connect
-      (sigc::mem_fun(*this, &MaskedImageEditorDialog::on_add));
+    filechooserbutton->signal_file_set().connect (method(on_image_chosen));
+    filechooserbutton->signal_set_focus_child().connect (method(on_add));
     Glib::RefPtr<Gtk::FileFilter> png_filter = Gtk::FileFilter::create();
     png_filter->set_name(_("PNG files (*.png)"));
     png_filter->add_pattern("*.png");
@@ -141,8 +140,7 @@ void MaskedImageEditorDialog::on_add(Gtk::Widget *widget)
   if (widget)
     {
       Gtk::Button *button = dynamic_cast<Gtk::Button*>(widget);
-      button->signal_clicked().connect
-        (sigc::mem_fun(*this, &MaskedImageEditorDialog::on_button_pressed));
+      button->signal_clicked().connect (method(on_button_pressed));
     }
 }
 

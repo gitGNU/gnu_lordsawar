@@ -25,6 +25,7 @@
 #include "Configuration.h"
 #include "snd.h"
 
+#define method(x) sigc::mem_fun(*this, &MainPreferencesDialog::x)
 
 MainPreferencesDialog::MainPreferencesDialog(Gtk::Window &parent)
  : LwDialog(parent, "main-preferences-dialog.ui")
@@ -32,20 +33,18 @@ MainPreferencesDialog::MainPreferencesDialog(Gtk::Window &parent)
   xml->get_widget("show_turn_popup_checkbutton", show_turn_popup_checkbutton);
   xml->get_widget("commentator_checkbutton", commentator_checkbutton);
   xml->get_widget("ui_combobox", ui_combobox);
-  ui_combobox->signal_changed().connect
-    (sigc::mem_fun(this, &MainPreferencesDialog::on_ui_form_factor_changed));
+  ui_combobox->signal_changed().connect (method(on_ui_form_factor_changed));
 
   xml->get_widget("play_music_checkbutton", play_music_checkbutton);
   xml->get_widget("music_volume_scale", music_volume_scale);
   xml->get_widget("music_volume_hbox", music_volume_hbox);
   show_turn_popup_checkbutton->signal_toggled().connect
-    (sigc::mem_fun(this, &MainPreferencesDialog::on_show_turn_popup_toggled));
+    (method(on_show_turn_popup_toggled));
   commentator_checkbutton->signal_toggled().connect
-    (sigc::mem_fun(this, &MainPreferencesDialog::on_show_commentator_toggled));
-  play_music_checkbutton->signal_toggled().connect
-    (sigc::mem_fun(this, &MainPreferencesDialog::on_play_music_toggled));
+    (method(on_show_commentator_toggled));
+  play_music_checkbutton->signal_toggled().connect (method(on_play_music_toggled));
   music_volume_scale->signal_value_changed().connect
-    (sigc::mem_fun(this, &MainPreferencesDialog::on_music_volume_changed));
+    (method(on_music_volume_changed));
 
   show_turn_popup_checkbutton->set_active(Configuration::s_showNextPlayer);
   commentator_checkbutton->set_active(Configuration::s_displayCommentator);

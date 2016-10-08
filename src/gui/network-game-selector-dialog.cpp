@@ -29,6 +29,8 @@
 #include "gamelist-client.h"
 #include "ucompose.hpp"
 
+#define method(x) sigc::mem_fun(*this, &NetworkGameSelectorDialog::x)
+
 NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profile *p)
  : LwDialog(parent, "pick-network-game-to-join-dialog.ui")
 {
@@ -36,14 +38,11 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profil
     xml->get_widget("hostname_entry", hostname_entry);
     xml->get_widget("port_spinbutton", port_spinbutton);
     hostname_entry->set_activates_default(true);
-    hostname_entry->signal_changed().connect
-	(sigc::mem_fun(this, &NetworkGameSelectorDialog::on_hostname_changed));
+    hostname_entry->signal_changed().connect (method(on_hostname_changed));
     xml->get_widget("clear_button", clear_button);
-    clear_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_clear_clicked));
+    clear_button->signal_clicked().connect (method(on_clear_clicked));
     xml->get_widget("refresh_button", refresh_button);
-    refresh_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_refresh_clicked));
+    refresh_button->signal_clicked().connect (method(on_refresh_clicked));
     xml->get_widget("connect_button", connect_button);
     connect_button->set_sensitive(false);
     recently_joined_games_list = 
@@ -58,8 +57,8 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profil
     recent_treeview->append_column(_("Port"), recently_joined_games_columns.port);
     recent_treeview->set_headers_visible(true);
     recent_treeview->get_selection()->signal_changed().connect
-          (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_recent_game_selected));
-    recent_treeview->signal_row_activated().connect(sigc::hide(sigc::hide(sigc::mem_fun(this, &NetworkGameSelectorDialog::on_recent_game_activated))));
+          (method(on_recent_game_selected));
+    recent_treeview->signal_row_activated().connect(sigc::hide(sigc::hide(method(on_recent_game_activated))));
     
     RecentlyPlayedGameList *rpgl = RecentlyPlayedGameList::getInstance();
     rpgl->pruneGames();
@@ -78,7 +77,7 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profil
     games_treeview->append_column(_("Port"), games_columns.port);
     games_treeview->set_headers_visible(true);
     games_treeview->get_selection()->signal_changed().connect
-          (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_game_selected));
+          (method(on_game_selected));
   
     port_spinbutton->set_value(LORDSAWAR_PORT);
 
@@ -88,17 +87,16 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profil
       Configuration::s_gamelist_server_port != 0)
     {
       GamelistClient::getInstance()->client_connected.connect
-        (sigc::mem_fun 
-         (*this, &NetworkGameSelectorDialog::on_connected_to_gamelist_server));
+        (method(on_connected_to_gamelist_server));
 
       GamelistClient::getInstance()->received_game_list.connect
-        (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_game_list_received));
+        (method(on_game_list_received));
 
       GamelistClient::getInstance()->start 
         (Configuration::s_gamelist_server_hostname, 
          Configuration::s_gamelist_server_port, profile);
     }
-    games_treeview->signal_row_activated().connect(sigc::hide(sigc::hide(sigc::mem_fun(this, &NetworkGameSelectorDialog::on_hosted_game_activated))));
+    games_treeview->signal_row_activated().connect(sigc::hide(sigc::hide(method(on_hosted_game_activated))));
   notebook->set_current_page(1);
 }
 

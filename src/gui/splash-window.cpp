@@ -39,6 +39,8 @@
 #include "new-network-game-dialog.h"
 #include "profile.h"
 
+#define method(x) sigc::mem_fun(*this, &SplashWindow::x)
+
 SplashWindow::SplashWindow()
 {
   network_game_nickname = "";
@@ -47,34 +49,27 @@ SplashWindow::SplashWindow()
 
   xml->get_widget("window", window);
   window->set_icon_from_file(File::getVariousFile("castle_icon.png"));
-  window->signal_delete_event().connect
-    (sigc::hide(sigc::mem_fun(*this, &SplashWindow::on_delete_event)));
+  window->signal_delete_event().connect (sigc::hide(method(on_delete_event)));
 
 
   xml->get_widget("load_game_button", load_game_button);
-  load_game_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &SplashWindow::on_load_game_clicked));
+  load_game_button->signal_clicked().connect (method(on_load_game_clicked));
   xml->get_widget("load_scenario_button", load_scenario_button);
-  load_scenario_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &SplashWindow::on_load_scenario_clicked));
+  load_scenario_button->signal_clicked().connect (method(on_load_scenario_clicked));
   xml->get_widget("quit_button", quit_button);
-  quit_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &SplashWindow::on_quit_clicked));
+  quit_button->signal_clicked().connect (method(on_quit_clicked));
   xml->get_widget("new_network_game_button", new_network_game_button);
   new_network_game_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &SplashWindow::on_new_network_game_clicked));
+    (method(on_new_network_game_clicked));
   xml->get_widget("preferences_button", preferences_button);
-  preferences_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &SplashWindow::on_preferences_clicked));
+  preferences_button->signal_clicked().connect (method(on_preferences_clicked));
   xml->get_widget("editor_button", editor_button);
-  editor_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &SplashWindow::on_editor_clicked));
+  editor_button->signal_clicked().connect (method(on_editor_clicked));
   Snd::getInstance()->play("intro");
 
   xml->get_widget("box", main_box);
   xml->get_widget("eventbox", eventbox);
-  eventbox->signal_draw().connect
-    (sigc::mem_fun(*this, &SplashWindow::on_draw));
+  eventbox->signal_draw().connect (method(on_draw));
   xml->get_widget("button_box", button_box);
   if (Configuration::s_autosave_policy == 1)
     {
@@ -92,7 +87,7 @@ SplashWindow::SplashWindow()
               crash_button = Gtk::manage(new Gtk::Button());
               crash_button->set_label(_("Rescue Crashed Game"));
               button_box->pack_start(*crash_button, true, true, 0);
-              crash_button->signal_clicked().connect(sigc::mem_fun(*this, &SplashWindow::on_rescue_crashed_game_clicked));
+              crash_button->signal_clicked().connect(method(on_rescue_crashed_game_clicked));
               button_box->reorder_child(*crash_button, 0);
             }
           else if (broken == true)
@@ -186,7 +181,7 @@ void SplashWindow::on_new_network_game_clicked()
       if (nngd.isClient() == true)
         {
           NetworkGameSelectorDialog ngsd(*window, nngd.getProfile());
-          ngsd.game_selected.connect(sigc::bind(sigc::mem_fun(*this, &SplashWindow::on_network_game_selected), nngd.getProfile()));
+          ngsd.game_selected.connect(sigc::bind(method(on_network_game_selected), nngd.getProfile()));
           ngsd.run();
         }
       else
@@ -211,7 +206,7 @@ void SplashWindow::on_new_network_game_clicked()
           GamePreferencesDialog gpd(*window, filename, GameScenario::NETWORKED);
 
           gpd.set_title(_("New Networked Game"));
-          gpd.game_started.connect(sigc::bind(sigc::mem_fun(*this, &SplashWindow::on_network_game_created), nngd.getProfile(), nngd.isAdvertised(), nngd.isRemotelyHosted()));
+          gpd.game_started.connect(sigc::bind(method(on_network_game_created), nngd.getProfile(), nngd.isAdvertised(), nngd.isRemotelyHosted()));
           gpd.run(network_game_nickname);
           gpd.hide();
           return;
@@ -240,7 +235,7 @@ void SplashWindow::on_load_scenario_clicked()
 	    return;
 	}
       GamePreferencesDialog gp(*window, filename, GameScenario::HOTSEAT);
-      gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
+      gp.game_started.connect(method(on_game_started));
 
       gp.run();
     } 

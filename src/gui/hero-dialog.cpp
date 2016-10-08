@@ -35,6 +35,8 @@
 #include "history.h"
 #include "playerlist.h"
 
+#define method(x) sigc::mem_fun(*this, &HeroDialog::x)
+
 HeroDialog::HeroDialog(Gtk::Window &parent, Hero *h, Vector<int> p)
  : LwDialog(parent, "hero-dialog.ui")
 {
@@ -54,30 +56,25 @@ HeroDialog::HeroDialog(Gtk::Window &parent, Hero *h, Vector<int> p)
       pos = Playerlist::getActiveplayer()->getPositionOfArmyById(hero->getId());
       heroesmap->setSelectedHero(hero);
     }
-  heroesmap->map_changed.connect
-    (sigc::mem_fun(this, &HeroDialog::on_map_changed));
+  heroesmap->map_changed.connect (method(on_map_changed));
   Gtk::EventBox *map_eventbox;
   xml->get_widget("map_eventbox", map_eventbox);
   map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
   map_eventbox->signal_button_press_event().connect
-    (sigc::mem_fun(*this, &HeroDialog::on_map_mouse_button_event));
+    (method(on_map_mouse_button_event));
 
   xml->get_widget("info_label1", info_label1);
   xml->get_widget("info_label2", info_label2);
 
   xml->get_widget("drop_button", drop_button);
   xml->get_widget("pickup_button", pickup_button);
-  drop_button->signal_clicked()
-    .connect(sigc::mem_fun(this, &HeroDialog::on_drop_clicked));
-  pickup_button->signal_clicked()
-    .connect(sigc::mem_fun(this, &HeroDialog::on_pickup_clicked));
+  drop_button->signal_clicked().connect(method(on_drop_clicked));
+  pickup_button->signal_clicked().connect(method(on_pickup_clicked));
 
   xml->get_widget("next_button", next_button);
   xml->get_widget("prev_button", prev_button);
-  next_button->signal_clicked()
-    .connect(sigc::mem_fun(this, &HeroDialog::on_next_clicked));
-  prev_button->signal_clicked()
-    .connect(sigc::mem_fun(this, &HeroDialog::on_prev_clicked));
+  next_button->signal_clicked().connect(method(on_next_clicked));
+  prev_button->signal_clicked().connect(method(on_prev_clicked));
   if (heroes.size() <= 1)
     {
       next_button->set_sensitive(false);
@@ -101,8 +98,7 @@ HeroDialog::HeroDialog(Gtk::Window &parent, Hero *h, Vector<int> p)
         }
       count++;
     }
-  heroes_treeview->get_selection()->signal_changed()
-    .connect(sigc::mem_fun(this, &HeroDialog::on_hero_changed));
+  heroes_treeview->get_selection()->signal_changed().connect(method(on_hero_changed));
 
   item_list = Gtk::ListStore::create(item_columns);
   xml->get_widget("treeview", item_treeview);
@@ -112,8 +108,7 @@ HeroDialog::HeroDialog(Gtk::Window &parent, Hero *h, Vector<int> p)
   item_treeview->append_column(_("Attributes"), item_columns.attributes);
   item_treeview->append_column(_("Status"), item_columns.status);
 
-  item_treeview->get_selection()->signal_changed()
-    .connect(sigc::mem_fun(this, &HeroDialog::on_item_selection_changed));
+  item_treeview->get_selection()->signal_changed().connect(method(on_item_selection_changed));
 
   events_list = Gtk::ListStore::create(events_columns);
   xml->get_widget("events_treeview", events_treeview);

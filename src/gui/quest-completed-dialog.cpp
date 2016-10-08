@@ -29,6 +29,8 @@
 #include "ruin.h"
 #include "Item.h"
 
+#define method(x) sigc::mem_fun(*this, &QuestCompletedDialog::x)
+
 QuestCompletedDialog::QuestCompletedDialog(Gtk::Window &parent, Quest *q, Reward *r)
  : LwDialog(parent, "quest-assigned-dialog.ui")
 {
@@ -38,8 +40,7 @@ QuestCompletedDialog::QuestCompletedDialog(Gtk::Window &parent, Quest *q, Reward
   xml->get_widget("map_image", map_image);
 
   questmap = new QuestMap(quest);
-  questmap->map_changed.connect
-    (sigc::mem_fun(this, &QuestCompletedDialog::on_map_changed));
+  questmap->map_changed.connect (method(on_map_changed));
 
   Gtk::EventBox *map_eventbox;
   xml->get_widget("map_eventbox", map_eventbox);

@@ -33,6 +33,7 @@
 #include "ai_fast.h"
 #include "ImageCache.h"
 
+#define method(x) sigc::mem_fun(*this, &PreferencesDialog::x)
 
 PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
  : LwDialog(parent, "preferences-dialog.ui")
@@ -57,13 +58,10 @@ PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
 	Gtk::Image *image = new Gtk::Image();
 	image->property_pixbuf() = gc->getShieldPic(2, p)->to_pixbuf();
 	Gtk::ComboBoxText *type = new Gtk::ComboBoxText();
-	type->signal_changed().connect
-	  (sigc::bind(sigc::mem_fun
-		      (this, &PreferencesDialog::on_type_changed), type));
+	type->signal_changed().connect (sigc::bind(method(on_type_changed), type));
 	Gtk::CheckButton *observe = new Gtk::CheckButton(_("Observe"));
 	observe->signal_toggled().connect
-	  (sigc::bind(sigc::mem_fun
-		      (this, &PreferencesDialog::on_observe_toggled), observe));
+	  (sigc::bind(method(on_observe_toggled), observe));
 
 	observe->set_active(p->isObservable());
 	type->append(_("Human"));
@@ -102,14 +100,12 @@ PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
       }
     players_vbox->show_all_children();
     commentator_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &PreferencesDialog::on_show_commentator_toggled));
+	method(on_show_commentator_toggled));
     speed_scale->set_value(Configuration::s_displaySpeedDelay);
-    speed_scale->signal_value_changed().connect(
-	sigc::mem_fun(this, &PreferencesDialog::on_speed_changed));
-    play_music_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &PreferencesDialog::on_play_music_toggled));
-    music_volume_scale->signal_value_changed().connect(
-	sigc::mem_fun(this, &PreferencesDialog::on_music_volume_changed));
+    speed_scale->signal_value_changed().connect(method(on_speed_changed));
+    play_music_checkbutton->signal_toggled().connect(method(on_play_music_toggled));
+    music_volume_scale->signal_value_changed().connect
+      (method(on_music_volume_changed));
 
     commentator_checkbutton->set_active(Configuration::s_displayCommentator);
     play_music_checkbutton->set_active(Configuration::s_musicenable);

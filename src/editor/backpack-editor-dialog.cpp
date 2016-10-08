@@ -30,6 +30,8 @@
 #include "Backpack.h"
 #include "select-item-dialog.h"
 
+#define method(x) sigc::mem_fun(*this, &BackpackEditorDialog::x)
+
 BackpackEditorDialog::BackpackEditorDialog(Gtk::Window &parent, Backpack *pack)
  : LwEditorDialog(parent, "backpack-editor-dialog.ui")
 {
@@ -38,12 +40,8 @@ BackpackEditorDialog::BackpackEditorDialog(Gtk::Window &parent, Backpack *pack)
     
     xml->get_widget("remove_button", remove_button);
     xml->get_widget("add_button", add_button);
-    remove_button->signal_clicked()
-	.connect(sigc::mem_fun(this, 
-			       &BackpackEditorDialog::on_remove_item_clicked));
-    add_button->signal_clicked()
-	.connect(sigc::mem_fun(this, 
-			       &BackpackEditorDialog::on_add_item_clicked));
+    remove_button->signal_clicked().connect(method(on_remove_item_clicked));
+    add_button->signal_clicked().connect(method(on_add_item_clicked));
     
     item_list = Gtk::ListStore::create(item_columns);
     xml->get_widget("treeview", item_treeview);
@@ -51,9 +49,7 @@ BackpackEditorDialog::BackpackEditorDialog(Gtk::Window &parent, Backpack *pack)
     item_treeview->append_column(_("Name"), item_columns.name);
     item_treeview->append_column(_("Attributes"), item_columns.attributes);
 
-    item_treeview->get_selection()->signal_changed()
-	.connect(sigc::mem_fun
-		 (this, &BackpackEditorDialog::on_item_selection_changed));
+    item_treeview->get_selection()->signal_changed().connect(method(on_item_selection_changed));
 }
 
 void BackpackEditorDialog::hide()

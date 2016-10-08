@@ -34,7 +34,7 @@
 #include "ucompose.hpp"
 #include "select-army-dialog.h"
 
-
+#define method(x) sigc::mem_fun(*this, &ItemlistDialog::x)
 
 ItemlistDialog::ItemlistDialog(Gtk::Window &parent)
  : LwEditorDialog(parent, "itemlist-dialog.ui")
@@ -42,54 +42,44 @@ ItemlistDialog::ItemlistDialog(Gtk::Window &parent)
   d_itemlist = Itemlist::getInstance();
 
     xml->get_widget("name_entry", name_entry);
-    name_entry->signal_changed().connect
-      (sigc::mem_fun(this, &ItemlistDialog::on_name_changed));
+    name_entry->signal_changed().connect (method(on_name_changed));
     xml->get_widget("items_treeview", items_treeview);
     xml->get_widget("add_item_button", add_item_button);
-    add_item_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ItemlistDialog::on_add_item_clicked));
+    add_item_button->signal_clicked().connect (method(on_add_item_clicked));
     xml->get_widget("remove_item_button", remove_item_button);
-    remove_item_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ItemlistDialog::on_remove_item_clicked));
+    remove_item_button->signal_clicked().connect (method(on_remove_item_clicked));
     xml->get_widget("item_vbox", item_vbox);
     xml->get_widget("kill_army_type_button", kill_army_type_button);
-    kill_army_type_button->signal_clicked().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_kill_army_type_clicked));
+    kill_army_type_button->signal_clicked().connect(method(on_kill_army_type_clicked));
     xml->get_widget("summon_army_type_button", summon_army_type_button);
-    summon_army_type_button->signal_clicked().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_summon_army_type_clicked));
+    summon_army_type_button->signal_clicked().connect(method(on_summon_army_type_clicked));
     xml->get_widget("building_type_to_summon_on_combobox", 
                     building_type_to_summon_on_combobox);
     xml->get_widget("disease_city_checkbutton", disease_city_checkbutton);
-    disease_city_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_disease_city_toggled));
+    disease_city_checkbutton->signal_toggled().connect(method(on_disease_city_toggled));
     xml->get_widget("disease_armies_percent_spinbutton", 
                     disease_armies_percent_spinbutton);
-    disease_armies_percent_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ItemlistDialog::on_disease_armies_percent_changed));
+    disease_armies_percent_spinbutton->signal_changed().connect(method(on_disease_armies_percent_changed));
     disease_armies_percent_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, 
-                     &ItemlistDialog::on_disease_armies_percent_text_changed))));
+      (sigc::hide(sigc::hide(method(on_disease_armies_percent_text_changed))));
 
     xml->get_widget("raise_defenders_checkbutton", raise_defenders_checkbutton);
-    raise_defenders_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_raise_defenders_toggled));
+    raise_defenders_checkbutton->signal_toggled().connect
+      (method(on_raise_defenders_toggled));
     xml->get_widget("defender_army_type_button", defender_army_type_button);
-    defender_army_type_button->signal_clicked().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_defender_type_clicked));
+    defender_army_type_button->signal_clicked().connect (method(on_defender_type_clicked));
     xml->get_widget("num_defenders_spinbutton", num_defenders_spinbutton);
-    num_defenders_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ItemlistDialog::on_num_defenders_changed));
+    num_defenders_spinbutton->signal_changed().connect (method(on_num_defenders_changed));
     num_defenders_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ItemlistDialog::on_num_defenders_text_changed))));
+      (sigc::hide(sigc::hide(method(on_num_defenders_text_changed))));
     xml->get_widget("persuade_neutral_city_checkbutton", 
                     persuade_neutral_city_checkbutton);
-    persuade_neutral_city_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_persuade_neutral_city_toggled));
+    persuade_neutral_city_checkbutton->signal_toggled().connect
+      (method(on_persuade_neutral_city_toggled));
     xml->get_widget("teleport_to_city_checkbutton", 
                     teleport_to_city_checkbutton);
-    teleport_to_city_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_teleport_to_city_toggled));
+    teleport_to_city_checkbutton->signal_toggled().connect
+      (method(on_teleport_to_city_toggled));
 
     items_list = Gtk::ListStore::create(items_columns);
     items_treeview->set_model(items_list);
@@ -102,81 +92,63 @@ ItemlistDialog::ItemlistDialog(Gtk::Window &parent)
       
 
     xml->get_widget("add1str_checkbutton", add1str_checkbutton);
-    add1str_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_add1str_toggled));
+    add1str_checkbutton->signal_toggled().connect(method(on_add1str_toggled));
     xml->get_widget("add2str_checkbutton", add2str_checkbutton);
-    add2str_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_add2str_toggled));
+    add2str_checkbutton->signal_toggled().connect(method(on_add2str_toggled));
     xml->get_widget("add3str_checkbutton", add3str_checkbutton);
-    add3str_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_add3str_toggled));
+    add3str_checkbutton->signal_toggled().connect(method(on_add3str_toggled));
     xml->get_widget("add1stack_checkbutton", add1stack_checkbutton);
-    add1stack_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_add1stack_toggled));
+    add1stack_checkbutton->signal_toggled().connect(method(on_add1stack_toggled));
     xml->get_widget("add2stack_checkbutton", add2stack_checkbutton);
-    add2stack_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_add2stack_toggled));
+    add2stack_checkbutton->signal_toggled().connect(method(on_add2stack_toggled));
     xml->get_widget("add3stack_checkbutton", add3stack_checkbutton);
-    add3stack_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_add3stack_toggled));
+    add3stack_checkbutton->signal_toggled().connect(method(on_add3stack_toggled));
     xml->get_widget("flystack_checkbutton", flystack_checkbutton);
-    flystack_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_flystack_toggled));
+    flystack_checkbutton->signal_toggled().connect(method(on_flystack_toggled));
     xml->get_widget("doublemovestack_checkbutton", doublemovestack_checkbutton);
-    doublemovestack_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_doublemovestack_toggled));
+    doublemovestack_checkbutton->signal_toggled().connect(method(on_doublemovestack_toggled));
     xml->get_widget("add2goldpercity_checkbutton", add2goldpercity_checkbutton);
-    add2goldpercity_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_add2goldpercity_toggled));
+    add2goldpercity_checkbutton->signal_toggled().connect
+      (method(on_add2goldpercity_toggled));
     xml->get_widget("add3goldpercity_checkbutton", add3goldpercity_checkbutton);
-    add3goldpercity_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_add3goldpercity_toggled));
+    add3goldpercity_checkbutton->signal_toggled().connect
+      (method(on_add3goldpercity_toggled));
     xml->get_widget("add4goldpercity_checkbutton", add4goldpercity_checkbutton);
-    add4goldpercity_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_add4goldpercity_toggled));
+    add4goldpercity_checkbutton->signal_toggled().connect
+      (method(on_add4goldpercity_toggled));
     xml->get_widget("add5goldpercity_checkbutton", add5goldpercity_checkbutton);
-    add5goldpercity_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_add5goldpercity_toggled));
+    add5goldpercity_checkbutton->signal_toggled().connect
+      (method(on_add5goldpercity_toggled));
     xml->get_widget("steals_gold_checkbutton", steals_gold_checkbutton);
-    steals_gold_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_steals_gold_toggled));
+    steals_gold_checkbutton->signal_toggled().connect (method(on_steals_gold_toggled));
     xml->get_widget("pickup_bags_checkbutton", pickup_bags_checkbutton);
-    pickup_bags_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_pickup_bags_toggled));
+    pickup_bags_checkbutton->signal_toggled().connect(method(on_pickup_bags_toggled));
     xml->get_widget("add_mp_checkbutton", add_mp_checkbutton);
-    add_mp_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_add_mp_toggled));
+    add_mp_checkbutton->signal_toggled().connect(method(on_add_mp_toggled));
     xml->get_widget("sinks_ships_checkbutton", sinks_ships_checkbutton);
-    sinks_ships_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_sinks_ships_toggled));
+    sinks_ships_checkbutton->signal_toggled().connect(method(on_sinks_ships_toggled));
     xml->get_widget("banish_worms_checkbutton", banish_worms_checkbutton);
-    banish_worms_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_banish_worms_toggled));
+    banish_worms_checkbutton->signal_toggled().connect(method(on_banish_worms_toggled));
     xml->get_widget("burn_bridge_checkbutton", burn_bridge_checkbutton);
-    burn_bridge_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_burn_bridge_toggled));
+    burn_bridge_checkbutton->signal_toggled().connect(method(on_burn_bridge_toggled));
     xml->get_widget("capture_keeper_checkbutton", capture_keeper_checkbutton);
-    capture_keeper_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_capture_keeper_toggled));
+    capture_keeper_checkbutton->signal_toggled().connect(method(on_capture_keeper_toggled));
     xml->get_widget("summon_monster_checkbutton", summon_monster_checkbutton);
-    summon_monster_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_summon_monster_toggled));
+    summon_monster_checkbutton->signal_toggled().connect
+      (method(on_summon_monster_toggled));
     xml->get_widget("uses_spinbutton", uses_spinbutton);
-    uses_spinbutton->signal_changed().connect(
-	sigc::mem_fun(this, &ItemlistDialog::on_uses_changed));
+    uses_spinbutton->signal_changed().connect(method(on_uses_changed));
     xml->get_widget("steal_percent_spinbutton", steal_percent_spinbutton);
     steal_percent_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ItemlistDialog::on_steal_percent_changed));
+      (method(on_steal_percent_changed));
     steal_percent_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ItemlistDialog::on_steal_percent_text_changed))));
+      (sigc::hide(sigc::hide(method(on_steal_percent_text_changed))));
     xml->get_widget("add_mp_spinbutton", add_mp_spinbutton);
-    add_mp_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ItemlistDialog::on_add_mp_changed));
+    add_mp_spinbutton->signal_changed().connect (method(on_add_mp_changed));
     add_mp_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ItemlistDialog::on_add_mp_text_changed))));
+      (sigc::hide(sigc::hide(method(on_add_mp_text_changed))));
 
-    items_treeview->get_selection()->signal_changed().connect
-      (sigc::mem_fun(*this, &ItemlistDialog::on_item_selected));
+    items_treeview->get_selection()->signal_changed().connect (method(on_item_selected));
     d_item = NULL;
     guint32 max = d_itemlist->size();
     if (max)
