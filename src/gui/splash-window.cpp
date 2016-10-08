@@ -131,18 +131,7 @@ SplashWindow::~SplashWindow()
 {
   Snd::deleteInstance();
   delete bg;
-  //clearData();
   delete window;
-}
-
-void SplashWindow::show()
-{
-  window->show_all();
-}
-
-void SplashWindow::hide()
-{
-  window->hide();
 }
 
 bool SplashWindow::on_delete_event()

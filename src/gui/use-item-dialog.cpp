@@ -56,11 +56,6 @@ void UseItemDialog::addItem(Item *item)
   (*i)[items_columns.item] = item;
 }
 
-void UseItemDialog::hide()
-{
-  dialog->hide();
-}
-
 void UseItemDialog::run()
 {
   dialog->show_all();

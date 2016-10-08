@@ -32,7 +32,7 @@ class RoadEditorTip: public sigc::trackable
  public:
     // the tip is shown above target, simply delete the object to hide it again
     RoadEditorTip(Gtk::Widget *target, MapTipPosition mpos, Road *r);
-    ~RoadEditorTip();
+    ~RoadEditorTip() {delete window;};
     sigc::signal<void,Vector<int>,int> road_picked;
 
  private:

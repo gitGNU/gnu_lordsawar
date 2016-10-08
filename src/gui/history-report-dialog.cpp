@@ -329,11 +329,6 @@ void HistoryReportDialog::generatePastCitylists()
   past_citylists.erase(--past_citylists.end());
 }
 
-void HistoryReportDialog::hide()
-{
-  dialog->hide();
-}
-
 void HistoryReportDialog::run()
 {
   historymap->resize();

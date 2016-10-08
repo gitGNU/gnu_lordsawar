@@ -32,7 +32,7 @@ class CityInfoTip: public sigc::trackable
  public:
     // the tip is shown above target, simply delete the object to hide it again
     CityInfoTip(Gtk::Widget *target, MapTipPosition map, const City *city);
-    ~CityInfoTip();
+    ~CityInfoTip() {delete window;};
 
  private:
     Gtk::Window* window;

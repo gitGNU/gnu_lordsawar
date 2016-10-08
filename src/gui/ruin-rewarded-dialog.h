@@ -34,9 +34,9 @@ class RuinRewardedDialog: public LwDialog
 {
  public:
     RuinRewardedDialog(Gtk::Window &parent, Reward_Ruin *reward);
-    ~RuinRewardedDialog();
+    ~RuinRewardedDialog() {delete ruinmap;};
 
-    void hide();
+    void hide() {dialog->hide();};
     void run();
     
  private:

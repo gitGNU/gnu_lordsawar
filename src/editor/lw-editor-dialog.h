@@ -26,7 +26,7 @@ class LwEditorDialog: public sigc::trackable
 {
  public:
     LwEditorDialog(Gtk::Window &parent, Glib::ustring file);
-    ~LwEditorDialog();
+    ~LwEditorDialog() {delete dialog;};
 
     int run_and_hide();
     

@@ -137,14 +137,14 @@ NewMapDialog::NewMapDialog(Gtk::Window &parent)
     xml->get_widget("fill_style_alignment", alignment);
     alignment->add(*fill_style_combobox);
 
-    fill_style_combobox->signal_changed().connect(
-						  sigc::mem_fun(*this, &NewMapDialog::on_fill_style_changed));
+    fill_style_combobox->signal_changed().connect
+      (sigc::mem_fun(*this, &NewMapDialog::on_fill_style_changed));
     fill_style_combobox->set_active(6);
 
     // map size
     map_size_combobox->set_active(MAP_SIZE_NORMAL);
-    map_size_combobox->signal_changed().connect(
-						sigc::mem_fun(*this, &NewMapDialog::on_map_size_changed));
+    map_size_combobox->signal_changed().connect
+      (sigc::mem_fun(*this, &NewMapDialog::on_map_size_changed));
     grass_scale->set_value(78);
     water_scale->set_value(7);
     swamp_scale->set_value(2);

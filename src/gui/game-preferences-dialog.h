@@ -36,12 +36,12 @@ class GamePreferencesDialog: public LwDialog
 {
  public:
     GamePreferencesDialog(Gtk::Window &parent, Glib::ustring filename, GameScenario::PlayMode mode);
-    ~GamePreferencesDialog();
+    ~GamePreferencesDialog() {delete game_options_dialog;};
 
     sigc::signal<void, GameParameters> game_started;
     
     bool run(Glib::ustring nickname = "guest");
-    void hide();
+    void hide() {dialog->hide();};
     
  private:
     void init(Glib::ustring filename);

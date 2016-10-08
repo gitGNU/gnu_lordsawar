@@ -133,8 +133,3 @@ CityInfoTip::CityInfoTip(Gtk::Widget *target, MapTipPosition mpos, const City *c
     window->move(p.x, p.y);
     window->show();
 }
-
-CityInfoTip::~CityInfoTip()
-{
-  delete window;
-}

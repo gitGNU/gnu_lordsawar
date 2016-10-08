@@ -35,7 +35,7 @@ class NewNetworkGameDialog: public LwDialog
     bool isClient() {return client_radiobutton->get_active();};
     bool isAdvertised() {return advertise_checkbutton->get_active();};
     bool isRemotelyHosted() {return remote_checkbutton->get_active();};
-    void hide();
+    void hide() {dialog->hide();};
     bool run();
     
  private:

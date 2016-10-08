@@ -45,16 +45,6 @@ ItemReportDialog::ItemReportDialog(Gtk::Window &parent, std::list<Stack*> item_l
   fill_in_item_info();
 }
 
-ItemReportDialog::~ItemReportDialog()
-{
-  delete itemmap;
-}
-
-void ItemReportDialog::hide()
-{
-  dialog->hide();
-}
-
 void ItemReportDialog::run()
 {
   itemmap->resize();

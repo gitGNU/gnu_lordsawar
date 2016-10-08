@@ -31,10 +31,10 @@ class QuestCompletedDialog: public LwDialog
 {
  public:
     QuestCompletedDialog(Gtk::Window &parent, Quest *quest, Reward *reward);
-    ~QuestCompletedDialog();
+    ~QuestCompletedDialog() {delete questmap;};
 
     void run();
-    void hide();
+    void hide() {dialog->hide();};
     
  private:
     QuestMap* questmap;

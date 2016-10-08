@@ -183,11 +183,6 @@ void NetworkGameSelectorDialog::on_hostname_changed()
   update_buttons();
 }
 
-void NetworkGameSelectorDialog::hide()
-{
-  dialog->hide();
-}
-
 bool NetworkGameSelectorDialog::run()
 {
   int response = dialog->run();

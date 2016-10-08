@@ -65,16 +65,6 @@ UseItemOnCityDialog::UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Typ
     }
 }
 
-UseItemOnCityDialog::~UseItemOnCityDialog()
-{
-  delete citymap;
-}
-
-void UseItemOnCityDialog::hide()
-{
-  dialog->hide();
-}
-
 City* UseItemOnCityDialog::run()
 {
   citymap->resize();

@@ -71,16 +71,6 @@ RuinReportDialog::RuinReportDialog(Gtk::Window &parent, Vector<int> pos)
   fill_in_ruin_info();
 }
 
-RuinReportDialog::~RuinReportDialog()
-{
-  delete ruinmap;
-}
-
-void RuinReportDialog::hide()
-{
-  dialog->hide();
-}
-
 void RuinReportDialog::run()
 {
   ruinmap->resize();

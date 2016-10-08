@@ -56,11 +56,6 @@ BackpackEditorDialog::BackpackEditorDialog(Gtk::Window &parent, Backpack *pack)
 		 (this, &BackpackEditorDialog::on_item_selection_changed));
 }
 
-BackpackEditorDialog::~BackpackEditorDialog()
-{
-  delete working;
-}
-
 void BackpackEditorDialog::hide()
 {
   dialog->hide();

@@ -108,11 +108,6 @@ ReportDialog::~ReportDialog()
   delete citymap;
 }
 
-void ReportDialog::hide()
-{
-  dialog->hide();
-}
-
 void ReportDialog::run()
 {
   citymap->resize();

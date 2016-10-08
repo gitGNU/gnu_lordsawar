@@ -76,11 +76,6 @@ HeroOfferDialog::HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto 
     update_buttons();
 }
 
-HeroOfferDialog::~HeroOfferDialog()
-{
-  delete heromap;
-}
-
 void HeroOfferDialog::update_buttons()
 {
   if (String::utrim(name_entry->get_text()) == "")
@@ -110,11 +105,6 @@ void HeroOfferDialog::on_toggled()
     hero_image->property_pixbuf() =
       Gdk::Pixbuf::create_from_file(File::getVariousFile("recruit_female.png"));
 
-}
-
-void HeroOfferDialog::hide()
-{
-  dialog->hide();
 }
 
 bool HeroOfferDialog::run()

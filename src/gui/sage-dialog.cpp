@@ -61,21 +61,12 @@ SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Hero *h, Ruin *r)
   continue_button->set_sensitive(false);
 }
 
-SageDialog::~SageDialog()
-{
-  delete ruinmap;
-}
-
 Reward *SageDialog::grabSelectedReward()
 {
   Glib::RefPtr<Gtk::TreeView::Selection> sel = rewards_treeview->get_selection();
   Gtk::TreeModel::iterator it = sel->get_selected();
   Gtk::TreeModel::Row row = *it;
   return row[rewards_columns.reward];
-}
-
-void SageDialog::hide()
-{
 }
 
 Reward *SageDialog::run()

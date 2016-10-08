@@ -38,7 +38,7 @@ class HeroDialog: public LwDialog
     ~HeroDialog();
 
     void run();
-    void hide();
+    void hide() {dialog->hide();};
     
  private:
     HeroesMap* heroesmap;

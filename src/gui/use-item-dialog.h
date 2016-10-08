@@ -36,7 +36,7 @@ class UseItemDialog: public LwDialog
     Item *get_selected_item() { return selected_item; }
 
     void run();
-    void hide();
+    void hide() {dialog->hide();};
     
  private:
     Gtk::Button *select_button;

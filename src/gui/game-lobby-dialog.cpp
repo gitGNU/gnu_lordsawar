@@ -372,17 +372,6 @@ void GameLobbyDialog::update_scenario_details()
   update_city_map();
 }
 
-void GameLobbyDialog::hide()
-{
-  dialog->hide();
-}
-
-void GameLobbyDialog::show()
-{
-  dialog->show_all();
-  return;
-}
-
 void GameLobbyDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = 

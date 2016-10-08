@@ -32,7 +32,7 @@ class LoadScenarioDialog: public LwDialog
     ~LoadScenarioDialog() {};
 
     void run();
-    void hide();
+    void hide() {dialog->hide();};
 
     Glib::ustring get_scenario_filename();
 

@@ -129,16 +129,6 @@ void QuestReportDialog::on_hero_changed()
     }
 }
 
-QuestReportDialog::~QuestReportDialog()
-{
-  delete questmap;
-}
-
-void QuestReportDialog::hide()
-{
-  dialog->hide();
-}
-
 void QuestReportDialog::run()
 {
   questmap->resize();

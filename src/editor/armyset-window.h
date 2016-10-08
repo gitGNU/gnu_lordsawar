@@ -34,10 +34,10 @@ class ArmySetWindow: public sigc::trackable
 {
  public:
     ArmySetWindow(Glib::ustring load_filename = "");
-    ~ArmySetWindow();
+    ~ArmySetWindow() {delete window;};
     
-    void show();
-    void hide();
+    void show() {window->show();};
+    void hide() {window->hide();};
 
     Gtk::Window &get_window() { return *window; }
 

@@ -37,7 +37,7 @@ class PreferencesDialog: public LwDialog
     ~PreferencesDialog() {};
 
     void run(Game *game);
-    void hide();
+    void hide() {dialog->hide();};
 
  private:
     Gtk::CheckButton *commentator_checkbutton;

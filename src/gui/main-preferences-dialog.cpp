@@ -55,11 +55,6 @@ MainPreferencesDialog::MainPreferencesDialog(Gtk::Window &parent)
   ui_combobox->set_active(Configuration::s_ui_form_factor);
 }
 
-void MainPreferencesDialog::hide()
-{
-  dialog->hide();
-}
-
 void MainPreferencesDialog::run()
 {
   dialog->show();

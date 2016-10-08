@@ -40,7 +40,7 @@ class FightWindow: public sigc::trackable
     FightWindow(Gtk::Window &parent, Fight &fight);
     ~FightWindow();
 
-    void hide();
+    void hide() {window->hide();};
     void run(bool *quick);
     
  private:

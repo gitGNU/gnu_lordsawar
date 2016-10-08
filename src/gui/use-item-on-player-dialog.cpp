@@ -57,11 +57,6 @@ UseItemOnPlayerDialog::UseItemOnPlayerDialog(Gtk::Window &parent)
   continue_button->set_sensitive(false);
 }
 
-UseItemOnPlayerDialog::~UseItemOnPlayerDialog()
-{
-  delete citymap;
-}
-
 Player *UseItemOnPlayerDialog::grabSelectedPlayer()
 {
   Glib::RefPtr<Gtk::TreeView::Selection> sel = player_treeview->get_selection();
@@ -72,11 +67,6 @@ Player *UseItemOnPlayerDialog::grabSelectedPlayer()
       return row[players_columns.player];
     }
   return NULL;
-}
-
-void UseItemOnPlayerDialog::hide()
-{
-  dialog->hide();
 }
 
 Player*UseItemOnPlayerDialog::run()

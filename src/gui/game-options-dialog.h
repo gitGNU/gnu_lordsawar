@@ -33,7 +33,7 @@ class GameOptionsDialog: public LwDialog
     ~GameOptionsDialog() {};
 
     bool run();
-    void hide();
+    void hide() {dialog->hide();};
     
     sigc::signal<void> difficulty_option_changed;
 

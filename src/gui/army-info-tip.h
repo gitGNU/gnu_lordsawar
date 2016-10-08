@@ -37,7 +37,7 @@ class ArmyInfoTip: public sigc::trackable
     ArmyInfoTip(Gtk::Widget *target, const Army *army);
     ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army, City *city);
     ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army);
-    ~ArmyInfoTip();
+    ~ArmyInfoTip() {delete window;};
 
  private:
     Gtk::Window* window;

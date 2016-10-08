@@ -178,21 +178,6 @@ ShieldSetWindow::update_shield_panel()
     fill_shield_info((*iterrow)[shields_columns.shield]);
 }
 
-ShieldSetWindow::~ShieldSetWindow()
-{
-  delete window;
-}
-
-void ShieldSetWindow::show()
-{
-  window->show();
-}
-
-void ShieldSetWindow::hide()
-{
-  window->hide();
-}
-
 bool ShieldSetWindow::on_delete_event()
 {
   hide();

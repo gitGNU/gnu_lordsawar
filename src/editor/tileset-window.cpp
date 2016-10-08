@@ -431,21 +431,6 @@ TileSetWindow::update_tile_panel()
   fill_tilestylesets();
 }
 
-TileSetWindow::~TileSetWindow()
-{
-  delete window;
-}
-
-void TileSetWindow::show()
-{
-  window->show();
-}
-
-void TileSetWindow::hide()
-{
-  window->hide();
-}
-
 bool TileSetWindow::on_delete_event()
 {
   hide();

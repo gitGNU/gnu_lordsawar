@@ -44,8 +44,3 @@ int TileSizeEditorDialog::run()
     d_tilesize = tilesize_spinbutton->get_value();
     return response;
 }
-
-void TileSizeEditorDialog::hide()
-{
-  dialog->hide();
-}

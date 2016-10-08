@@ -71,11 +71,6 @@ void GameOptionsDialog::fill_in_options()
       }
 }
 
-void GameOptionsDialog::hide()
-{
-  dialog->hide();
-}
-
 bool GameOptionsDialog::run()
 {
   std::list<sigc::connection> connections;

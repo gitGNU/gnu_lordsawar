@@ -34,10 +34,10 @@ class QuestReportDialog: public LwDialog
 {
  public:
     QuestReportDialog(Gtk::Window &parent, std::vector<Quest *>quests, Hero *preferred_hero);
-    ~QuestReportDialog();
+    ~QuestReportDialog() {delete questmap;};
 
     void run();
-    void hide();
+    void hide() {return dialog->hide();};
  private:
     QuestMap* questmap;
 

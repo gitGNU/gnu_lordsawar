@@ -463,21 +463,6 @@ ArmySetWindow::update_army_panel()
     }
 }
 
-ArmySetWindow::~ArmySetWindow()
-{
-  delete window;
-}
-
-void ArmySetWindow::show()
-{
-  window->show();
-}
-
-void ArmySetWindow::hide()
-{
-  window->hide();
-}
-
 bool ArmySetWindow::on_delete_event()
 {
   hide();

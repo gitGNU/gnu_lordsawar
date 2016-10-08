@@ -129,11 +129,6 @@ bool CityWindow::on_map_mouse_button_event(GdkEventButton *e)
     return true;
 }
 
-void CityWindow::hide()
-{
-  dialog->hide();
-}
-
 void CityWindow::run()
 {
     prodmap->resize();

@@ -34,7 +34,7 @@ class NetworkGameSelectorDialog: public LwDialog
     ~NetworkGameSelectorDialog();
 
     sigc::signal<void, Glib::ustring /*ip*/, unsigned short /*port*/> game_selected;
-    void hide();
+    void hide() {return dialog->hide();};
     bool run();
     
  private:

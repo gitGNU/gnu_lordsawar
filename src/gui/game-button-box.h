@@ -34,7 +34,7 @@ class GameButtonBox: public Gtk::Box
     GameButtonBox(BaseObjectType* base, const Glib::RefPtr<Gtk::Builder> &xml);
 
     //!Destructor.
-    ~GameButtonBox();
+    ~GameButtonBox() {drop_connections();};
 
     void give_some_cheese();
     bool get_end_turn_button_sensitive();

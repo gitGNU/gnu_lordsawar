@@ -82,16 +82,6 @@ DestinationDialog::DestinationDialog(Gtk::Window &parent, City *c, bool *see_all
   fill_in_vectoring_info();
 }
 
-DestinationDialog::~DestinationDialog()
-{
-  delete vectormap;
-}
-
-void DestinationDialog::hide()
-{
-  dialog->hide();
-}
-
 void DestinationDialog::run()
 {
   vectormap->resize();

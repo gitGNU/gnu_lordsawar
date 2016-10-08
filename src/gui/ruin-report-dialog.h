@@ -31,9 +31,9 @@ class RuinReportDialog: public LwDialog
 {
  public:
     RuinReportDialog(Gtk::Window &parent, Vector<int> pos);
-    ~RuinReportDialog();
+    ~RuinReportDialog() {delete ruinmap;};
 
-    void hide();
+    void hide() {return dialog->hide();};
     void run();
     
  private:

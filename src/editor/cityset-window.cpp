@@ -213,21 +213,6 @@ CitySetWindow::update_cityset_panel()
     temple_tile_width_spinbutton->set_value(1);
 }
 
-CitySetWindow::~CitySetWindow()
-{
-  delete window;
-}
-
-void CitySetWindow::show()
-{
-  window->show();
-}
-
-void CitySetWindow::hide()
-{
-  window->hide();
-}
-
 bool CitySetWindow::on_delete_event()
 {
   hide();

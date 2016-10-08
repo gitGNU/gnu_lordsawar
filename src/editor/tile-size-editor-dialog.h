@@ -31,7 +31,7 @@ class TileSizeEditorDialog: public LwEditorDialog
     guint32 get_selected_tilesize() const {return d_tilesize;}
 
     int run();
-    void hide();
+    void hide() {dialog->hide();};
     
  private:
     Gtk::Label *label;

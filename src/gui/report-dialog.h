@@ -43,7 +43,7 @@ class ReportDialog: public LwDialog
 
     static Glib::ustring calculateRank(std::list<guint32> scores, guint32 score);
     void run();
-    void hide();
+    void hide() {return dialog->hide();};
     
  private:
     VectorMap* vectormap;

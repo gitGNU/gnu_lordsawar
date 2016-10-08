@@ -64,10 +64,6 @@ BuilderCache::BuilderCache()
   preloadAllBuilders(File::add_slash_if_necessary(File::getMiscFile("glade")));
 }
 
-BuilderCache::~BuilderCache()
-{
-}
-
 Glib::RefPtr<Gtk::Builder> BuilderCache::editor_get(Glib::ustring f)
 {
   return Gtk::Builder::create_from_file(File::getEditorGladeFile(f));

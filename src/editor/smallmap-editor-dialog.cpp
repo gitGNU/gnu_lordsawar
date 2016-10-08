@@ -81,11 +81,6 @@ SmallmapEditorDialog::SmallmapEditorDialog(Gtk::Window &parent)
     d_needs_saving = false;
 }
 
-SmallmapEditorDialog::~SmallmapEditorDialog()
-{
-  delete smallmap;
-}
-
 void SmallmapEditorDialog::hide()
 {
   dialog->hide();

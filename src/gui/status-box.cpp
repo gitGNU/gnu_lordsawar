@@ -119,10 +119,6 @@ StatusBox::StatusBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk::Builder
     (sigc::mem_fun(stack_tile_group_toggle, &sigc::signal<void, bool>::emit));
 }
 
-StatusBox::~StatusBox()
-{
-}
-
 void StatusBox::on_stack_info_changed(Stack *s)
 {
   stack_tile_box->set_selected_stack(s);

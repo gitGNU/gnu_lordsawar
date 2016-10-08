@@ -141,11 +141,6 @@ void NewNetworkGameDialog::update_buttons()
     }
 }
 
-void NewNetworkGameDialog::hide()
-{
-  dialog->hide();
-}
-
 bool NewNetworkGameDialog::run()
 {
   int response = dialog->run();

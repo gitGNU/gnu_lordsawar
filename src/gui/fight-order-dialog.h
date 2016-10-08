@@ -34,7 +34,7 @@ class FightOrderDialog: public LwDialog
     FightOrderDialog(Gtk::Window &parent, Player *player);
     ~FightOrderDialog() {};
 
-    void hide();
+    void hide() {dialog->hide();};
     void run();
 
  private:

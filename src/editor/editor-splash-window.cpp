@@ -40,11 +40,6 @@ EditorSplashWindow::EditorSplashWindow()
     xml->get_widget("progressbar", progressbar);
 }
 
-EditorSplashWindow::~EditorSplashWindow()
-{
-  delete window;
-}
-
 int EditorSplashWindow::run()
 {
   bool broken = false;

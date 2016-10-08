@@ -34,10 +34,10 @@ class TileSetWindow: public sigc::trackable
 {
  public:
     TileSetWindow(Glib::ustring load_filename = "");
-    ~TileSetWindow();
+    ~TileSetWindow() {delete window;};
 
-    void show();
-    void hide();
+    void show() {window->show();};
+    void hide() {window->hide();};
 
     Gtk::Window &get_window() { return *window; }
 

@@ -432,11 +432,6 @@ void MainWindow::init()
   fill_players();
 }
 
-void MainWindow::hide()
-{
-    window->hide();
-}
-
 bool MainWindow::on_delete_event()
 {
   if (window->property_sensitive() == false)

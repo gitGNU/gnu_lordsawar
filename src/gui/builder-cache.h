@@ -30,10 +30,6 @@
 class BuilderCache: public std::map<Glib::ustring, Glib::RefPtr<Gtk::Builder> >
 {
     public:
-
-
-	// Static Methods
-
         //! Returns the singleton instance. Creates a new one if required.
         static BuilderCache* getInstance();
 
@@ -45,13 +41,14 @@ class BuilderCache: public std::map<Glib::ustring, Glib::RefPtr<Gtk::Builder> >
 
         //! Go get a builder object by name.
         static Glib::RefPtr<Gtk::Builder> editor_get(Glib::ustring f);
+
     protected:    
 
 	// Constructor.
         BuilderCache();
 
 	//! Destructor.
-        ~BuilderCache();
+        ~BuilderCache() {};
 
     private:
 

@@ -32,11 +32,11 @@ class CitySetWindow: public sigc::trackable
 {
  public:
     CitySetWindow(Glib::ustring load_filename = "");
-    ~CitySetWindow();
+    ~CitySetWindow() {delete window;};
 
     Gtk::Window &get_window() { return *window; }
-    void show();
-    void hide();
+    void show() {window->show();};
+    void hide() {window->hide();};
 
     sigc::signal<void, guint32> cityset_saved;
 

@@ -34,10 +34,10 @@ class ShieldSetWindow: public sigc::trackable
 {
  public:
     ShieldSetWindow(Glib::ustring load_filename = "");
-    ~ShieldSetWindow();
+    ~ShieldSetWindow() {delete window;};
 
-    void show();
-    void hide();
+    void show() {window->show();};
+    void hide() {window->hide();};
 
     Gtk::Window &get_window() { return *window; };
 

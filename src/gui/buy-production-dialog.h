@@ -36,7 +36,7 @@ class BuyProductionDialog: public LwDialog
     ~BuyProductionDialog();
 
     void run();
-    void hide();
+    void hide() {dialog->hide();};
 
     enum { NO_ARMY_SELECTED = -1 };
     int get_selected_army() { return selected_army == NO_ARMY_SELECTED ? int(NO_ARMY_SELECTED) : purchasables[selected_army]->getId(); }

@@ -33,7 +33,7 @@ class MainPreferencesDialog: public LwDialog
     ~MainPreferencesDialog() {};
 
     void run();
-    void hide();
+    void hide() {dialog->hide();};
 
  private:
     Gtk::CheckButton *show_turn_popup_checkbutton;

@@ -33,9 +33,9 @@ class UseItemOnPlayerDialog: public LwDialog
 {
  public:
     UseItemOnPlayerDialog(Gtk::Window &parent);
-    ~UseItemOnPlayerDialog();
+    ~UseItemOnPlayerDialog() {delete citymap;};
 
-    void hide();
+    void hide() {dialog->hide();};
     Player *run();
     
  private:

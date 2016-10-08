@@ -31,11 +31,6 @@ LwEditorDialog::LwEditorDialog(Gtk::Window &parent, Glib::ustring file)
   dialog->property_gravity() = Gdk::GRAVITY_STATIC;
 }
 
-LwEditorDialog::~LwEditorDialog()
-{
-  delete dialog;
-}
-
 int LwEditorDialog::run_and_hide()
 {
   dialog->show_all();

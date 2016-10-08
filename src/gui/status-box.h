@@ -37,7 +37,7 @@ class StatusBox: public Gtk::Box
     StatusBox(BaseObjectType* base, const Glib::RefPtr<Gtk::Builder> &xml);
 
     //!Destructor.
-    ~StatusBox();
+    ~StatusBox(){};
 
     static StatusBox * create(guint32 factor);
 

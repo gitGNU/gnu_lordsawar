@@ -43,8 +43,8 @@ class SplashWindow: public sigc::trackable
     SplashWindow();
     ~SplashWindow();
 	
-    void show();
-    void hide();
+    void show() {window->show_all();};
+    void hide() {window->hide();};
     void open_new_game_dialog();
         
     Gtk::Window *get_window() {return window;}

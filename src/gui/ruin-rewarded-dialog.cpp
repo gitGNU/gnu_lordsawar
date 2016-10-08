@@ -49,16 +49,6 @@ RuinRewardedDialog::RuinRewardedDialog(Gtk::Window &parent, Reward_Ruin *reward)
   d_reward = reward;
 }
 
-RuinRewardedDialog::~RuinRewardedDialog()
-{
-  delete ruinmap;
-}
-
-void RuinRewardedDialog::hide()
-{
-  dialog->hide();
-}
-
 void RuinRewardedDialog::run()
 {
   ruinmap->resize();

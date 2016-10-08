@@ -154,11 +154,6 @@ void PreferencesDialog::on_observe_toggled(Gtk::CheckButton *button)
     }
 }
 
-void PreferencesDialog::hide()
-{
-  dialog->hide();
-}
-
 void PreferencesDialog::run(Game *game)
 {
     static int width = -1;

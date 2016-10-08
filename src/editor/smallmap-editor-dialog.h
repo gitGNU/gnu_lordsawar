@@ -29,7 +29,7 @@ class SmallmapEditorDialog: public LwEditorDialog
 {
  public:
     SmallmapEditorDialog(Gtk::Window &parent);
-    ~SmallmapEditorDialog();
+    ~SmallmapEditorDialog() {delete smallmap;};
 
     bool run();
     void hide();

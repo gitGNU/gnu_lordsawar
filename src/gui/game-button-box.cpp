@@ -123,11 +123,6 @@ void GameButtonBox::drop_connections()
   connections.clear();
 }
 
-GameButtonBox::~GameButtonBox()
-{
-  drop_connections();
-}
-
 int GameButtonBox::get_icon_size(guint32 factor)
 {
   int s = 0;

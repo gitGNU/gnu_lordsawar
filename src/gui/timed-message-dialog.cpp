@@ -44,11 +44,6 @@ void TimedMessageDialog::on_response()
   main_loop->quit();
 }
 
-TimedMessageDialog::~TimedMessageDialog()
-{
-  delete window;
-}
-
 void TimedMessageDialog::run_and_hide()
 {
   if (d_timeout > 0)

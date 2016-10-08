@@ -111,11 +111,6 @@ BuyProductionDialog::~BuyProductionDialog()
     delete army_info_tip;
 }
 
-void BuyProductionDialog::hide()
-{
-  dialog->hide();
-}
-
 void BuyProductionDialog::run()
 {
     dialog->show();

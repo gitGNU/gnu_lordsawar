@@ -33,10 +33,10 @@ class HeroOfferDialog: public LwDialog
 {
  public:
     HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto *hero, City *city, int gold);
-    ~HeroOfferDialog();
+    ~HeroOfferDialog() {delete heromap;};
 
     bool run();
-    void hide();
+    void hide() {dialog->hide();};
     
  private:
     //! The smallmap that shows where the Hero is emerging.

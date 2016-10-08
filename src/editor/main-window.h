@@ -48,7 +48,7 @@ class MainWindow: public sigc::trackable
     ~MainWindow();
 
     void show();
-    void hide();
+    void hide() {window->hide();};
 
     void init();
     void show_initial_map();

@@ -37,7 +37,7 @@ class CityWindow: public LwDialog
     ~CityWindow();
 
     void run();
-    void hide();
+    void hide() {dialog->hide();};
     
     static bool on_raze_clicked (City *city, Gtk::Dialog *parent);
     

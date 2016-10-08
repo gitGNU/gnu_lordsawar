@@ -108,16 +108,6 @@ QuestCompletedDialog::QuestCompletedDialog(Gtk::Window &parent, Quest *q, Reward
   label->set_text(s);
 }
 
-QuestCompletedDialog::~QuestCompletedDialog()
-{
-  delete questmap;
-}
-
-void QuestCompletedDialog::hide()
-{
-  dialog->hide();
-}
-
 void QuestCompletedDialog::run()
 {
   questmap->resize();

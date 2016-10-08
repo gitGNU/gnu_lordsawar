@@ -108,11 +108,6 @@ void RoadEditorTip::connect_signals()
     buttons[i]->signal_toggled().connect(sigc::bind(sigc::mem_fun(this, &RoadEditorTip::on_road_selected), i));
 }
 
-RoadEditorTip::~RoadEditorTip()
-{
-  delete window;
-}
-    
 void RoadEditorTip::on_road_selected(int type)
 {
   if (buttons[type]->get_active() == true)

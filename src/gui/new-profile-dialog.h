@@ -31,7 +31,7 @@ class NewProfileDialog: public LwDialog
     ~NewProfileDialog() {};
 
     Glib::ustring getNickname() {return String::utrim(nick_entry->get_text());}
-    void hide();
+    void hide() {dialog->hide();};
     bool run();
     
  private:

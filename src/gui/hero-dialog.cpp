@@ -212,11 +212,6 @@ void HeroDialog::addHistoryEvent(History *history)
   (*i)[events_columns.history] = history;
 }
 
-void HeroDialog::hide()
-{
-  dialog->hide();
-}
-
 void HeroDialog::run()
 {
   heroesmap->resize();

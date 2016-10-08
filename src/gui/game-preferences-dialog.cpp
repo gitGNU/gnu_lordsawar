@@ -142,22 +142,10 @@ GamePreferencesDialog::GamePreferencesDialog(Gtk::Window &parent, Glib::ustring 
       delete game_name_label;
       delete game_name_entry;
     }
-
-}
-
-GamePreferencesDialog::~GamePreferencesDialog()
-{
-  delete game_options_dialog;
-}
-
-void GamePreferencesDialog::hide()
-{
-  dialog->hide();
 }
 
 bool GamePreferencesDialog::run(Glib::ustring nickname)
 {
-
   dialog->show_all();
   if (mode == GameScenario::NETWORKED)
     {

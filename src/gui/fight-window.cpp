@@ -107,11 +107,6 @@ FightWindow::~FightWindow()
   delete window;
 }
 
-void FightWindow::hide()
-{
-  window->hide();
-}
-
 void FightWindow::run(bool *quick)
 {
   round = 0;

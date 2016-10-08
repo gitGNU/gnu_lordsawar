@@ -192,22 +192,20 @@ int PlayersDialog::run()
 }
 
 void PlayersDialog::cell_data_type(Gtk::CellRenderer *renderer,
-				   const Gtk::TreeIter& i)
+                                   const Gtk::TreeIter& i)
 {
   dynamic_cast<Gtk::CellRendererText*>(renderer)->property_text()
     = (*i)[player_columns.type];
 }
 
 void PlayersDialog::on_type_edited(const Glib::ustring &path,
-				   const Glib::ustring &new_text)
+                                   const Glib::ustring &new_text)
 {
-  (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.type]
-    = new_text;
+  (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.type] = new_text;
 }
 
-void PlayersDialog::add_player(const Glib::ustring &type,
-			       const Glib::ustring &name, int gold,
-			       Player *player)
+void PlayersDialog::add_player(const Glib::ustring &type, 
+                               const Glib::ustring &name, int gold, Player *player)
 {
   Gtk::TreeIter i = player_list->append();
   (*i)[player_columns.type] = type;

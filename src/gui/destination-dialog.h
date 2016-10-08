@@ -30,10 +30,10 @@ class DestinationDialog: public LwDialog
 {
  public:
     DestinationDialog(Gtk::Window &parent, City *city, bool *see_all);
-    ~DestinationDialog();
+    ~DestinationDialog() {delete vectormap;};
 
     void run();
-    void hide();
+    void hide() {dialog->hide();};
     
  private:
     VectorMap* vectormap;

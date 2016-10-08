@@ -50,7 +50,7 @@ class HistoryReportDialog: public LwDialog
     void generatePastEventlists(); //data for events list
 
     void run();
-    void hide();
+    void hide() {dialog->hide();};
     
  private:
     HistoryMap* historymap;

@@ -34,9 +34,9 @@ class SageDialog: public LwDialog
 {
  public:
     SageDialog(Gtk::Window &parent, Sage *sage, Hero *hero, Ruin *r);
-    ~SageDialog();
+    ~SageDialog() {delete ruinmap;};
 
-    void hide();
+    void hide() {dialog->hide();};
     Reward *run();
     
  private:

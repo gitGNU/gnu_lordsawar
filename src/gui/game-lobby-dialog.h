@@ -40,8 +40,8 @@ class GameLobbyDialog: public LwDialog
     ~GameLobbyDialog();
 
     void clean_up_players();
-    void hide();
-    void show();
+    void hide() {dialog->hide();};
+    void show() {dialog->show_all();};
     bool run();
     
   sigc::signal<void, Player*> player_sat_down;

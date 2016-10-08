@@ -29,7 +29,7 @@ class TimedMessageDialog: public sigc::trackable
  public:
     TimedMessageDialog(Gtk::Window &parent, Glib::ustring message, int timeout,
 		       int grace = 30);
-    ~TimedMessageDialog();
+    ~TimedMessageDialog() {delete window;};
 
     void set_title(Glib::ustring title);
     void set_image(Glib::RefPtr<Gdk::Pixbuf> picture);

@@ -33,9 +33,9 @@ class UseItemOnCityDialog: public LwDialog
 {
  public:
     UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Type type);
-    ~UseItemOnCityDialog();
+    ~UseItemOnCityDialog() {delete citymap;};
 
-    void hide();
+    void hide() {dialog->hide();};
     City *run();
     
  private:

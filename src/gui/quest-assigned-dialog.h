@@ -31,10 +31,10 @@ class QuestAssignedDialog: public LwDialog
 {
  public:
     QuestAssignedDialog(Gtk::Window &parent, Hero *hero, Quest *quest);
-    ~QuestAssignedDialog();
+    ~QuestAssignedDialog() {delete questmap;};
 
     void run();
-    void hide();
+    void hide() {dialog->hide();};
     
  private:
     QuestMap* questmap;

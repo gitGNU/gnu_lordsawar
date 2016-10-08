@@ -152,8 +152,3 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
                                                      true)->to_pixbuf(),
         army->getMoveBonus(), s);
 }
-
-ArmyInfoTip::~ArmyInfoTip()
-{
-  delete window;
-}

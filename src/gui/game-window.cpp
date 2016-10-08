@@ -376,11 +376,6 @@ void GameWindow::show()
     on_bigmap_surface_changed(bigmap_image->get_allocation());
 }
 
-void GameWindow::hide()
-{
-    window->hide();
-}
-
 void GameWindow::init(int width, int height)
 {
     bigmap_image->set_size_request(width, height);

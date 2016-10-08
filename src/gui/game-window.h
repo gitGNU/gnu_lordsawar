@@ -74,7 +74,7 @@ class GameWindow: public sigc::trackable
     ~GameWindow();
 
     void show();
-    void hide();
+    void hide() {window->hide();};
 
     // initialize the big map widget 
     void init(int width, int height);

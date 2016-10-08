@@ -53,16 +53,6 @@ QuestAssignedDialog::QuestAssignedDialog(Gtk::Window &parent, Hero *h, Quest *q)
     
 }
 
-QuestAssignedDialog::~QuestAssignedDialog()
-{
-  delete questmap;
-}
-
-void QuestAssignedDialog::hide()
-{
-  dialog->hide();
-}
-
 void QuestAssignedDialog::run()
 {
     questmap->resize();
