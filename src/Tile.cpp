@@ -176,12 +176,9 @@ guint32 Tile::tileTypeFromString(const Glib::ustring str)
 bool Tile::validateGrass(std::list<TileStyle::Type> types) const
 {
   //grass tiles only have lone styles and other styles.
-  for (std::list<TileStyle::Type>::iterator it = types.begin(); 
-       it != types.end(); it++)
-    {
-      if ((*it) != TileStyle::LONE && (*it) != TileStyle::OTHER)
-	return false;
-    }
+  for (auto it: types)
+    if (it != TileStyle::LONE && it != TileStyle::OTHER)
+      return false;
   return true;
 }
 
@@ -277,9 +274,9 @@ guint32 Tile::countTileStyles(TileStyle::Type type) const
 TileStyle* Tile::getTileStyle(guint32 id) const
 {
   for (const_iterator i = begin(); i != end(); i++)
-    for (std::vector<TileStyle*>::const_iterator j = (*i)->begin(); j != (*i)->end(); j++)
-      if ((*j)->getId() == id)
-        return *j;
+    for (auto j: **i)
+      if (j->getId() == id)
+        return j;
   return NULL;
 }
 
@@ -287,9 +284,9 @@ std::list<TileStyle*> Tile::getTileStyles(TileStyle::Type type) const
 {
   std::list<TileStyle*> styles;
   for (const_iterator i = begin(); i != end(); i++)
-    for (std::vector<TileStyle*>::const_iterator j = (*i)->begin(); j != (*i)->end(); j++)
-      if ((*j)->getType() == type)
-        styles.push_back((*j));
+    for (auto j: **i)
+      if (j->getType() == type)
+        styles.push_back(j);
   return styles;
 }
 

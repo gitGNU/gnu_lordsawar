@@ -156,9 +156,8 @@ void City::conquer(Player* newowner)
 
     deFog(newowner);
 
-    VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-    vul->removeVectoredUnitsGoingTo(this);
-    vul->removeVectoredUnitsComingFrom(this);
+    VectoredUnitlist::getInstance()->removeVectoredUnitsGoingTo(this);
+    VectoredUnitlist::getInstance()->removeVectoredUnitsComingFrom(this);
 }
 
 void City::produceStrongestProductionBase()
@@ -196,9 +195,8 @@ void City::produceStrongestProductionBase()
 
 void City::produceWeakestQuickestArmyInArmyset()
 {
-  const Armysetlist* al = Armysetlist::getInstance();
   guint32 set = d_owner->getArmyset();
-  ArmyProto *scout = al->lookupWeakestQuickestArmy(set);
+  ArmyProto *scout = Armysetlist::getInstance()->lookupWeakestQuickestArmy(set);
   Army *a = new Army(*scout, d_owner);
   GameMap::getInstance()->addArmy(this, a);
 }
@@ -241,12 +239,11 @@ const Army *City::armyArrives(Stack *& stack)
   // vector the army to the new spot
   if (d_vectoring)
     {
-      VectoredUnitlist *vul = VectoredUnitlist::getInstance();
-      VectoredUnit *v = new VectoredUnit 
-	(getPos(), d_vector, 
-	 (*this)[d_active_production_slot]->getArmyProdBase(),
-	 MAX_TURNS_FOR_VECTORING, d_owner);
-      vul->push_back(v);
+      VectoredUnit *v = 
+        new VectoredUnit (getPos(), d_vector, 
+                          (*this)[d_active_production_slot]->getArmyProdBase(),
+                          MAX_TURNS_FOR_VECTORING, d_owner);
+      VectoredUnitlist::getInstance()->push_back(v);
       d_owner->cityChangeProduction(this, d_active_production_slot);
       //we don't return an army when we've vectored it.
       //it doesn't really exist until it lands at the destination.
@@ -340,9 +337,8 @@ bool City::canAcceptMoreVectoring(guint32 number_of_cities) const
 
 bool City::changeVectorDestination(Vector<int> dest)
 {
-  VectoredUnitlist *vul = VectoredUnitlist::getInstance();
   setVectoring(dest);
-  vul->changeDestination(this, dest);
+  VectoredUnitlist::getInstance()->changeDestination(this, dest);
   return true;
 }
 
@@ -424,7 +420,6 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   for (unsigned int i = 0; i < getMaxNoOfProductionBases(); i++)
     removeProductionBase(i);
 
-  const Armysetlist* al = Armysetlist::getInstance();
   guint32 set = d_owner->getArmyset();
 
   int army_type;
@@ -435,7 +430,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
     army_type = 0;
   else
     army_type = 1 + likely + (Rnd::rand () % 11);
-  ArmyProto *template_army = al->getArmy(set, army_type);
+  ArmyProto *template_army = Armysetlist::getInstance()->getArmy(set, army_type);
   if (!template_army || 
       (template_army->getAwardable() == true && produce_allies == false) ||
       template_army->isHero())
@@ -455,7 +450,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
     }
 
   army_type += 1 + (Rnd::rand() % (2 + (produce_allies ? 2 : 0)));
-  template_army = al->getArmy(set, army_type);
+  template_army = Armysetlist::getInstance()->getArmy(set, army_type);
   if (!template_army ||
       (template_army->getAwardable() == true && produce_allies == false) ||
       template_army->isHero())
@@ -478,7 +473,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
     army_type += 1 + (Rnd::rand() % (7 + (produce_allies ? 2 : 0)));
   else
     army_type += 1 + (Rnd::rand() % (2 + (produce_allies ? 2 : 0)));
-  template_army = al->getArmy(set, army_type);
+  template_army = Armysetlist::getInstance()->getArmy(set, army_type);
   if (!template_army ||
       (template_army->getAwardable() == true && produce_allies == false) ||
       template_army->isHero())
@@ -498,7 +493,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
     }
 
   army_type += 1 + (Rnd::rand() % (3 + (produce_allies ? 2 : 0)));
-  template_army = al->getArmy(set, army_type);
+  template_army = Armysetlist::getInstance()->getArmy(set, army_type);
   if (!template_army ||
       (template_army->getAwardable() == true && produce_allies == false) ||
       template_army->isHero())

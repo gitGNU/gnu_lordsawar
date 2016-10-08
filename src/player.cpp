@@ -106,9 +106,8 @@ Player::Player(Glib::ustring name, guint32 armyset, Gdk::RGBA color, int width,
 
     //initial fight order is the order in which the armies appear
     //in the default.xml file.
-    Armyset *as = Armysetlist::getInstance()->get(d_armyset);
-    for (Armyset::iterator i = as->begin(); i != as->end(); i++)
-      d_fight_order.push_back((*i)->getId());
+    for (auto i: *Armysetlist::getInstance()->get(d_armyset))
+      d_fight_order.push_back(i->getId());
 
     for (unsigned int i = 0 ; i < MAX_PLAYERS; i++)
     {
@@ -188,12 +187,12 @@ Player::Player(XML_Helper* helper)
     guint32 val;
     helper->getData(fight_order, "fight_order");
     sfight_order.str(fight_order);
-    Armyset *as = Armysetlist::getInstance()->get(d_armyset);
-    for (Armyset::iterator i = as->begin(); i != as->end(); ++i)
-    {
-            sfight_order >> val;
-            d_fight_order.push_back(val);
-    }
+    for (auto i: *Armysetlist::getInstance())
+      {
+        (void)i;
+        sfight_order >> val;
+        d_fight_order.push_back(val);
+      }
 
     // Read in Diplomatic States.  One state per player.
     Glib::ustring diplomatic_states;
@@ -417,10 +416,9 @@ void Player::doKill()
     // Since in some cases the player can be killed rather innocently
     // (using reactions), we also need to clear the player's traces in the
     // single cities
-    Citylist* cl = Citylist::getInstance();
-    for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
-        if ((*it)->getOwner() == this && (*it)->isBurnt() == false)
-            Playerlist::getInstance()->getNeutral()->takeCityInPossession(*it);
+    for (auto city: *Citylist::getInstance())
+      if (city->getOwner() == this && city->isBurnt() == false)
+        Playerlist::getInstance()->getNeutral()->takeCityInPossession(city);
 
     d_diplomatic_rank = 0;
     d_diplomatic_title = Glib::ustring("");
@@ -591,12 +589,9 @@ void Player::calculateUpkeep()
 void Player::calculateIncome()
 {
     d_income = 0;
-    Citylist *cl = Citylist::getInstance();
-    for (Citylist::iterator i = cl->begin(), iend = cl->end(); i != iend; ++i)
-      {
-	if ((*i)->getOwner() == this)
-	  d_income += (*i)->getGold();
-      }
+    for (auto city: *Citylist::getInstance())
+      if (city->getOwner() == this)
+        d_income += city->getGold();
 }
 
 void Player::doSetFightOrder(std::list<guint32> order)
@@ -1488,22 +1483,19 @@ int Player::stackVisitTemple(Stack* s, Temple* t)
 
 Quest* Player::doHeroGetQuest(Hero *hero, bool except_raze)
 {
-  QuestsManager *qm = QuestsManager::getInstance();
-
-  std::vector<Quest*> quests = qm->getPlayerQuests(Playerlist::getActiveplayer());
+  std::vector<Quest*> quests = 
+    QuestsManager::getInstance()->getPlayerQuests(Playerlist::getActiveplayer());
   if (quests.size() > 0 && GameScenarioOptions::s_play_with_quests == GameParameters::ONE_QUEST_PER_PLAYER)
     return NULL;
 
-  Quest* q=0;
+  Quest *q = NULL;
   if (hero)
-    {
-      q = qm->createNewQuest (hero->getId(), except_raze);
-    }
+    q = QuestsManager::getInstance()->createNewQuest (hero->getId(), except_raze);
 
   supdatingStack.emit(0);
   // couldn't assign a quest for various reasons
   if (!q)
-    return 0;
+    return NULL;
   return q;
 }
 
@@ -1575,8 +1567,8 @@ void Player::calculateLoot(Player *looted, guint32 &added, guint32 &subtracted)
   // if the attacked city isn't neutral, loot some gold
   if (defender != Playerlist::getInstance()->getNeutral())
   {
-    Citylist *clist = Citylist::getInstance();
-    int amt = (defender->getGold() / (2 * (clist->countCities (defender)+1)) * 2);
+    int amt = (defender->getGold() / 
+               (2 * (Citylist::getInstance()->countCities (defender)+1)) * 2);
     // give (Enemy-Gold/(2Enemy-Cities)) to the attacker 
     // and then take away twice that from the defender.
     // the idea here is that some money is taken in the invasion
@@ -1791,27 +1783,27 @@ void Player::cityRaze(City* c)
 
 void Player::doCityBuyProduction(City* c, int slot, int type)
 {
-  const Armysetlist* al = Armysetlist::getInstance();
   guint32 as = c->getOwner()->getArmyset();
 
   c->removeProductionBase(slot);
-  c->addProductionBase(slot, new ArmyProdBase(*al->getArmy(as, type)));
+  c->addProductionBase(slot, new ArmyProdBase
+                       (*Armysetlist::getInstance()->getArmy(as, type)));
 
   // and do the rest of the neccessary actions
-  withdrawGold(al->getArmy(as, type)->getNewProductionCost());
+  withdrawGold(Armysetlist::getInstance()->getArmy(as, type)->getNewProductionCost());
 }
 
 bool Player::cityBuyProduction(City* c, int slot, int type)
 {
-  const Armysetlist* al = Armysetlist::getInstance();
   guint32 as = c->getOwner()->getArmyset();
 
   // sort out unusual values (-1 is allowed and means "scrap production")
-  if ((type <= -1) || al->getArmy(d_armyset, type) == NULL)
+  if (type <= -1 || Armysetlist::getInstance()->getArmy(d_armyset, type) == NULL)
     return false;
 
   // return if we don't have enough money
-  if ((type != -1) && ((int)al->getArmy(as, type)->getNewProductionCost() > d_gold))
+  if (type != -1 && 
+      (int)Armysetlist::getInstance()->getArmy(as, type)->getNewProductionCost() > d_gold)
     return false;
 
   // return if the city already has the production
@@ -1822,7 +1814,7 @@ bool Player::cityBuyProduction(City* c, int slot, int type)
   if (slot >= (int)c->getMaxNoOfProductionBases())
     return false;
   
-  addAction(new Action_Buy (c, slot, al->getArmy(as, type)));
+  addAction(new Action_Buy (c, slot, Armysetlist::getInstance()->getArmy(as, type)));
 
   doCityBuyProduction(c, slot, type);
 
@@ -2009,13 +2001,12 @@ void Player::doResign(std::list<History*> &histories)
   removeDeadArmies(stacks, histories);
 
   //raze all cities
-  Citylist *cl = Citylist::getInstance();
-  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+  for (auto city: *Citylist::getInstance())
     {
-      if ((*it)->getOwner() == this)
+      if (city->getOwner() == this)
 	{
-	  (*it)->setBurnt(true);
-          histories.push_back(new History_CityRazed((*it)));
+	  city->setBurnt(true);
+          histories.push_back(new History_CityRazed(city));
 	}
     }
   withdrawGold(getGold()); //empty the coffers!
@@ -2112,7 +2103,6 @@ bool Player::doChangeVectorDestination(Vector<int> src, Vector<int> dest,
   //disallow changing vectoring from or to a city that isn't ours
   //disallow vectoring to something that isn't our city or our planted 
   //standard.
-  Citylist *cl = Citylist::getInstance();
   City *src_city = GameMap::getCity(src);
   if (src_city == NULL)
     {
@@ -2139,8 +2129,9 @@ bool Player::doChangeVectorDestination(Vector<int> src, Vector<int> dest,
 
   //check to see if the destination has enough room to accept all of the
   //cities we want to send to it.
-  std::list<City*> sources = cl->getCitiesVectoringTo(src);
-  std::list<City*> alreadyvectored = cl->getCitiesVectoringTo(dest);
+  std::list<City*> sources = Citylist::getInstance()->getCitiesVectoringTo(src);
+  std::list<City*> alreadyvectored = 
+    Citylist::getInstance()->getCitiesVectoringTo(dest);
 
   if (alreadyvectored.size() + sources.size() > MAX_CITIES_VECTORED_TO_ONE_CITY)
     return false;
@@ -2194,8 +2185,7 @@ bool Player::heroPlantStandard(Stack* s)
 void Player::doHeroPlantStandard(Hero *hero, Item *item, Vector<int> pos)
 {
   item->setPlanted(true);
-  GameMap *gm = GameMap::getInstance();
-  gm->getTile(pos)->getBackpack()->addToBackpack(item);
+  GameMap::getInstance()->getTile(pos)->getBackpack()->addToBackpack(item);
   hero->getBackpack()->removeFromBackpack(item);
   supdatingStack.emit(0);
 }
@@ -2405,8 +2395,7 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
 		while(h->canGainLevel())
 		  {
 		    // Units not associated to a player never raise levels.
-		    if (h->getOwner() == 
-			Playerlist::getInstance()->getNeutral())
+		    if (h->getOwner() == Playerlist::getInstance()->getNeutral())
 		      break;
 
 		    //Here this for is to check if army must raise 2 or more 
@@ -2471,8 +2460,7 @@ void Player::recruitHero(HeroProto* heroproto, City *city, int cost, int alliesC
 
 void Player::doDeclareDiplomacy (DiplomaticState state, Player *player)
 {
-  Playerlist *pl = Playerlist::getInstance();
-  if (pl->getNeutral() == player)
+  if (Playerlist::getInstance()->getNeutral() == player)
     return;
   if (player == this)
     return;
@@ -2507,8 +2495,7 @@ void Player::doProposeDiplomacy (DiplomaticProposal proposal, Player *player)
 {
   if (GameScenarioOptions::s_diplomacy == false)
     return;
-  Playerlist *pl = Playerlist::getInstance();
-  if (pl->getNeutral() == player)
+  if (Playerlist::getInstance()->getNeutral() == player)
     return;
   if (player == this)
     return;
@@ -2622,8 +2609,7 @@ Player::DiplomaticProposal Player::getDiplomaticProposal (Player *player) const
 
 guint32 Player::getDiplomaticScore (Player *player) const
 {
-  Playerlist *pl = Playerlist::getInstance();
-  if (pl->getNeutral() == player)
+  if (Playerlist::getInstance()->getNeutral() == player)
     return 8;
   return d_diplomatic_score[player->getId()];
 }
@@ -2648,8 +2634,7 @@ void Player::alterDiplomaticRelationshipScore (Player *player, int amount)
 
 void Player::improveDiplomaticRelationship (Player *player, guint32 amount)
 {
-  Playerlist *pl = Playerlist::getInstance();
-  if (pl->getNeutral() == player || player == this)
+  if (Playerlist::getInstance()->getNeutral() == player || player == this)
     return;
 
   alterDiplomaticRelationshipScore (player, amount);
@@ -2659,8 +2644,7 @@ void Player::improveDiplomaticRelationship (Player *player, guint32 amount)
 
 void Player::deteriorateDiplomaticRelationship (Player *player, guint32 amount)
 {
-  Playerlist *pl = Playerlist::getInstance();
-  if (pl->getNeutral() == player || player == this)
+  if (Playerlist::getInstance()->getNeutral() == player || player == this)
     return;
 
   alterDiplomaticRelationshipScore (player, -amount);
@@ -2670,67 +2654,63 @@ void Player::deteriorateDiplomaticRelationship (Player *player, guint32 amount)
 
 void Player::deteriorateDiplomaticRelationship (guint32 amount)
 {
-  Playerlist *pl = Playerlist::getInstance();
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+  for (auto it: *Playerlist::getInstance())
     {
-      if ((*it)->isDead())
+      if (it->isDead())
 	continue;
-      if (pl->getNeutral() == (*it))
+      if (Playerlist::getInstance()->getNeutral() == it)
 	continue;
-      if (*it == this)
+      if (it == this)
 	continue;
-      (*it)->deteriorateDiplomaticRelationship (this, amount);
+      it->deteriorateDiplomaticRelationship (this, amount);
     }
 }
 
 void Player::improveDiplomaticRelationship (guint32 amount, Player *except)
 {
-  Playerlist *pl = Playerlist::getInstance();
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+  for (auto it: *Playerlist::getInstance())
     {
-      if ((*it)->isDead())
+      if (it->isDead())
 	continue;
-      if (pl->getNeutral() == (*it))
+      if (Playerlist::getInstance()->getNeutral() == it)
 	continue;
-      if (*it == this)
+      if (it == this)
 	continue;
-      if (except && *it == except)
+      if (except && it == except)
 	continue;
-      (*it)->improveDiplomaticRelationship (this, amount);
+      it->improveDiplomaticRelationship (this, amount);
     }
 }
 
 void Player::deteriorateAlliesRelationship(Player *player, guint32 amount,
 					   Player::DiplomaticState state)
 {
-  Playerlist *pl = Playerlist::getInstance();
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+  for (auto it: *Playerlist::getInstance())
     {
-      if ((*it)->isDead())
+      if (it->isDead())
 	continue;
-      if (pl->getNeutral() == (*it))
+      if (Playerlist::getInstance()->getNeutral() == it)
 	continue;
-      if (*it == this)
+      if (it == this)
 	continue;
-      if (getDiplomaticState(*it) == state)
-	(*it)->deteriorateDiplomaticRelationship (player, amount);
+      if (getDiplomaticState(it) == state)
+	it->deteriorateDiplomaticRelationship (player, amount);
     }
 }
 
 void Player::improveAlliesRelationship(Player *player, guint32 amount,
 				       Player::DiplomaticState state)
 {
-  Playerlist *pl = Playerlist::getInstance();
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+  for (auto it: *Playerlist::getInstance())
     {
-      if ((*it)->isDead())
+      if (it->isDead())
 	continue;
-      if (pl->getNeutral() == (*it))
+      if (Playerlist::getInstance()->getNeutral() == it)
 	continue;
-      if (*it == this)
+      if (it == this)
 	continue;
-      if (player->getDiplomaticState(*it) == state)
-	(*it)->improveDiplomaticRelationship (this, amount);
+      if (player->getDiplomaticState(it) == state)
+	it->improveDiplomaticRelationship (this, amount);
     }
 }
 
@@ -2752,11 +2732,11 @@ void Player::AI_maybeBuyScout(City *c)
     }
   if (one_turn_army_exists == false)
     {
-      const Armysetlist* al = Armysetlist::getInstance();
       int free_slot = c->getFreeSlot();
       if (free_slot == -1)
         free_slot = 0;
-      ArmyProto *scout = al->lookupWeakestQuickestArmy(getArmyset());
+      ArmyProto *scout = 
+        Armysetlist::getInstance()->lookupWeakestQuickestArmy(getArmyset());
       cityBuyProduction(c, free_slot, scout->getId());
     }
 }
@@ -2887,7 +2867,6 @@ bool Player::AI_maybePickUpItems(Stack *s, int max_dist,
 bool Player::AI_maybeVisitTempleForQuest(Stack *s, int dist, bool &got_quest, bool &stack_died)
 {
   bool stack_moved = false;
-  Templelist *tl = Templelist::getInstance();
 
   //if this stack doesn't have a hero then we can't get a quest with this stack.
   if (s->hasHero() == false)
@@ -2900,7 +2879,8 @@ bool Player::AI_maybeVisitTempleForQuest(Stack *s, int dist, bool &got_quest, bo
       GameParameters::ONE_QUEST_PER_PLAYER)
     return false;
 
-  Temple *temple = tl->getNearestVisibleTemple(s->getPos(), dist);
+  Temple *temple = 
+    Templelist::getInstance()->getNearestVisibleTemple(s->getPos(), dist);
   if (!temple)
     return false;
 
@@ -3013,9 +2993,9 @@ bool Player::AI_maybeVisitTempleForBlessing(Stack *s, int dist,
 					    bool &blessed, bool &stack_died)
 {
   bool stack_moved = false;
-  Templelist *tl = Templelist::getInstance();
 
-  Temple *temple = tl->getNearestVisibleAndUsefulTemple(s, percent_can_be_blessed, dist);
+  Temple *temple = Templelist::getInstance()->getNearestVisibleAndUsefulTemple
+    (s, percent_can_be_blessed, dist);
   if (!temple)
     return false;
 
@@ -3166,7 +3146,6 @@ bool Player::AI_maybeVector(City *c, guint32 safe_mp, guint32 min_defenders,
   assert (c->getOwner() == this);
   if (vector_city)
     *vector_city = NULL;
-  Citylist *cl = Citylist::getInstance();
 
   //is this city producing anything that we can vector?
   if (c->getActiveProductionSlot() == -1)
@@ -3179,7 +3158,8 @@ bool Player::AI_maybeVector(City *c, guint32 safe_mp, guint32 min_defenders,
     return false;
 
   //get the nearest city to the enemy city that can accept vectored units
-  City *near_city = cl->getNearestFriendlyVectorableCity(target->getPos());
+  City *near_city = 
+    Citylist::getInstance()->getNearestFriendlyVectorableCity(target->getPos());
   if (!near_city)
     return false;
   assert (near_city->getOwner() == this);
@@ -3237,16 +3217,13 @@ bool Player::AI_maybeVector(City *c, guint32 safe_mp, guint32 min_defenders,
 void Player::AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
 			       guint32 mp_to_front)
 {
-  Citylist *cl = Citylist::getInstance();
   //turn off vectoring where it isn't safe anymore
   //turn off vectoring for destinations that are far away from the
   //nearest enemy city
 
-
-  for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
+  for (auto c: *Citylist::getInstance())
     {
       sbusy.emit();
-      City *c = *cit;
       if (c->getOwner() != this || c->isBurnt())
 	continue;
       Vector<int> dest = c->getVectoring();
@@ -3260,7 +3237,7 @@ void Player::AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
 	  continue;
 	}
 
-      City *enemy_city = cl->getNearestEnemyCity(dest);
+      City *enemy_city = Citylist::getInstance()->getNearestEnemyCity(dest);
       if (!enemy_city)
 	{
 	  //City *target_city = Citylist::getInstance()->getObjectAt(dest);
@@ -3281,13 +3258,12 @@ void Player::AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
 	}
     }
 
-  for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
+  for (auto c : *Citylist::getInstance())
     {
       sbusy.emit();
-      City *c = *cit;
       if (c->getOwner() != this || c->isBurnt())
 	continue;
-      City *enemy_city = cl->getNearestEnemyCity(c->getPos());
+      City *enemy_city = Citylist::getInstance()->getNearestEnemyCity(c->getPos());
       if (!enemy_city)
 	continue;
       City *vector_city = NULL;
@@ -3857,7 +3833,6 @@ int Player::countDestituteCitiesThisTurn() const
 
 Vector<int> Player::AI_getQuestDestination(Quest *quest, Stack *stack) const
 {
-  Playerlist *pl = Playerlist::getInstance();
   Vector<int> dest = Vector<int>(-1,-1);
   switch (quest->getType())
     {
@@ -3866,11 +3841,11 @@ Vector<int> Player::AI_getQuestDestination(Quest *quest, Stack *stack) const
           QuestKillHero *q = dynamic_cast<QuestKillHero*>(quest);
           guint32 hero_id = q->getVictim();
           Stack *enemy = NULL;
-          for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+          for (auto it: *Playerlist::getInstance())
             {
-              if (*it == this)
+              if (it == this)
                 continue;
-              enemy = (*it)->getStacklist()->getArmyStackById(hero_id);
+              enemy = it->getStacklist()->getArmyStackById(hero_id);
               if(enemy)
                 break;
             }
@@ -3898,9 +3873,8 @@ Vector<int> Player::AI_getQuestDestination(Quest *quest, Stack *stack) const
     case Quest::KILLARMIES:
         {
           QuestEnemyArmies *q = dynamic_cast<QuestEnemyArmies*>(quest);
-          Player *enemy = pl->getPlayer(q->getVictimPlayerId());
-          std::list<Stack*> s = 
-            GameMap::getNearbyEnemyStacks(stack->getPos(), GameMap::getWidth());
+          auto enemy = Playerlist::getInstance()->getPlayer(q->getVictimPlayerId());
+          auto s = GameMap::getNearbyEnemyStacks(stack->getPos(), GameMap::getWidth());
           for (std::list<Stack*>::iterator i = s.begin(); i != s.end(); i++)
             {
               if ((*i)->getOwner() != enemy)
@@ -4158,11 +4132,10 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
     {
       guint32 num_worms_killed = 0;
       std::list<History*> history;
-      Playerlist *pl = Playerlist::getInstance();
-      for (Playerlist::iterator j = pl->begin(); j != pl->end(); j++)
+      for (auto j: *Playerlist::getInstance())
         {
           std::list<Stack*> affected = 
-            (*j)->getStacklist()->killArmies(item->getArmyTypeToKill());
+            j->getStacklist()->killArmies(item->getArmyTypeToKill());
           if (affected.size())
             num_worms_killed += removeDeadArmies(affected, history);
         }
