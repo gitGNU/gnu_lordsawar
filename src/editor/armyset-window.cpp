@@ -50,311 +50,307 @@ ArmySetWindow::ArmySetWindow(Glib::ustring load_filename)
   needs_saving = false;
   inhibit_needs_saving = false;
   d_armyset = NULL;
-    Glib::RefPtr<Gtk::Builder> xml = 
-      BuilderCache::editor_get("armyset-window.ui");
+  Glib::RefPtr<Gtk::Builder> xml = BuilderCache::editor_get("armyset-window.ui");
 
-    xml->get_widget("window", window);
-    window->set_icon_from_file(File::getVariousFile("castle_icon.png"));
-    window->signal_delete_event().connect
-      (sigc::mem_fun(*this, &ArmySetWindow::on_window_closed));
+  xml->get_widget("window", window);
+  window->set_icon_from_file(File::getVariousFile("castle_icon.png"));
+  window->signal_delete_event().connect
+    (sigc::mem_fun(*this, &ArmySetWindow::on_window_closed));
 
-    xml->get_widget("white_image", white_image);
-    xml->get_widget("make_same_button", make_same_button);
-    make_same_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_make_same_clicked));
-    xml->get_widget("green_image", green_image);
-    xml->get_widget("yellow_image", yellow_image);
-    xml->get_widget("light_blue_image", light_blue_image);
-    xml->get_widget("red_image", red_image);
-    xml->get_widget("dark_blue_image", dark_blue_image);
-    xml->get_widget("orange_image", orange_image);
-    xml->get_widget("black_image", black_image);
-    xml->get_widget("neutral_image", neutral_image);
-    xml->get_widget("name_entry", name_entry);
-    name_entry->signal_changed().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_name_changed));
-    xml->get_widget("armies_treeview", armies_treeview);
-    xml->get_widget("armies_scrolledwindow", armies_scrolledwindow);
-    xml->get_widget("description_textview", description_textview);
-    description_textview->get_buffer()->signal_changed().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_description_changed));
-    xml->get_widget("white_image_button", white_image_button);
-    white_image_button->signal_clicked().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
-                  white_image_button, white_image, Shield::WHITE));
-    xml->get_widget("green_image_button", green_image_button);
-    green_image_button->signal_clicked().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
-                  green_image_button, green_image, Shield::GREEN));
-    xml->get_widget("yellow_image_button", yellow_image_button);
-    yellow_image_button->signal_clicked().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
-                  yellow_image_button, yellow_image, Shield::YELLOW));
-    xml->get_widget("light_blue_image_button", light_blue_image_button);
-    light_blue_image_button->signal_clicked().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
-                  light_blue_image_button, light_blue_image, 
-                  Shield::LIGHT_BLUE));
-    xml->get_widget("red_image_button", red_image_button);
-    red_image_button->signal_clicked().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
-                  red_image_button, red_image, Shield::RED));
-    xml->get_widget("dark_blue_image_button", 
-		    dark_blue_image_button);
-    dark_blue_image_button->signal_clicked().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
-                  dark_blue_image_button, dark_blue_image, Shield::DARK_BLUE));
-    xml->get_widget("orange_image_button", orange_image_button);
-    orange_image_button->signal_clicked().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
-                  orange_image_button, orange_image, Shield::ORANGE));
-    xml->get_widget("black_image_button", black_image_button);
-    black_image_button->signal_clicked().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
-                  black_image_button, black_image, Shield::BLACK));
-    xml->get_widget("neutral_image_button", neutral_image_button);
-    neutral_image_button->signal_clicked().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
-                  neutral_image_button, neutral_image, Shield::NEUTRAL));
-    xml->get_widget("production_spinbutton", production_spinbutton);
-    production_spinbutton->set_range
-      (double(MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS), 
-       double(MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS));
-    production_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_production_changed));
-    production_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_production_text_changed))));
-    xml->get_widget("cost_spinbutton", cost_spinbutton);
-    cost_spinbutton->set_range(double(MIN_COST_FOR_ARMY_UNITS), 
-			       double(MAX_COST_FOR_ARMY_UNITS));
-    cost_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_cost_changed));
-    cost_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_cost_text_changed))));
-    xml->get_widget("new_cost_spinbutton", new_cost_spinbutton);
-    new_cost_spinbutton->set_range(double(MIN_NEW_COST_FOR_ARMY_UNITS), 
-				   double(MAX_NEW_COST_FOR_ARMY_UNITS));
-    new_cost_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_new_cost_changed));
-    new_cost_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_new_cost_text_changed))));
-    xml->get_widget("upkeep_spinbutton", upkeep_spinbutton);
-    upkeep_spinbutton->set_range (double(MIN_UPKEEP_FOR_ARMY_UNITS), 
-				  double(MAX_UPKEEP_FOR_ARMY_UNITS));
-    upkeep_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_upkeep_changed));
-    upkeep_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_upkeep_text_changed))));
-    xml->get_widget("strength_spinbutton", strength_spinbutton);
-    strength_spinbutton->set_range (double(MIN_STRENGTH_FOR_ARMY_UNITS), 
-				    double(MAX_STRENGTH_FOR_ARMY_UNITS));
-    strength_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_strength_changed));
-    strength_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_strength_text_changed))));
-    xml->get_widget("moves_spinbutton", moves_spinbutton);
-    moves_spinbutton->set_range(double(MIN_MOVES_FOR_ARMY_UNITS), 
-				double(MAX_MOVES_FOR_ARMY_UNITS));
-    moves_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_moves_changed));
-    moves_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_moves_text_changed))));
-    xml->get_widget("exp_spinbutton", exp_spinbutton);
-    exp_spinbutton->set_range(double(MIN_EXP_FOR_ARMY_UNITS), 
-			      double(MAX_EXP_FOR_ARMY_UNITS));
-    exp_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_exp_changed));
-    exp_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_exp_text_changed))));
-    xml->get_widget("gender_none_radiobutton", gender_none_radiobutton);
-    gender_none_radiobutton->signal_toggled().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_gender_none_toggled));
-    xml->get_widget("gender_male_radiobutton", gender_male_radiobutton);
-    gender_male_radiobutton->signal_toggled().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_gender_male_toggled));
-    xml->get_widget("gender_female_radiobutton", gender_female_radiobutton);
-    gender_female_radiobutton->signal_toggled().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_gender_female_toggled));
-    xml->get_widget("awardable_checkbutton", awardable_checkbutton);
-    awardable_checkbutton->signal_toggled().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_awardable_toggled));
-    xml->get_widget("defends_ruins_checkbutton", defends_ruins_checkbutton);
-    defends_ruins_checkbutton->signal_toggled().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_defends_ruins_toggled));
-    xml->get_widget("sight_spinbutton", sight_spinbutton);
-    sight_spinbutton->set_range(double(MIN_SIGHT_FOR_ARMY_UNITS), 
-				double(MAX_SIGHT_FOR_ARMY_UNITS));
-    sight_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_sight_changed));
-    sight_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_sight_text_changed))));
-    xml->get_widget("id_spinbutton", id_spinbutton);
-    id_spinbutton->set_range(0, 1000);
-    id_spinbutton->signal_changed().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_id_changed));
-    id_spinbutton->signal_insert_text().connect
-      (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_id_text_changed))));
-    xml->get_widget("move_forests_checkbutton", move_forests_checkbutton);
-    move_forests_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_movebonus_toggled),
-                  move_forests_checkbutton, Tile::FOREST));
-    xml->get_widget("move_marshes_checkbutton", move_marshes_checkbutton);
-    move_marshes_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_movebonus_toggled),
-                  move_marshes_checkbutton, Tile::SWAMP));
-    xml->get_widget("move_hills_checkbutton", move_hills_checkbutton);
-    move_hills_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_movebonus_toggled),
-       move_hills_checkbutton, Tile::HILLS));
-    xml->get_widget("move_mountains_checkbutton", move_mountains_checkbutton);
-    move_mountains_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_movebonus_toggled),
-       move_mountains_checkbutton, Tile::MOUNTAIN));
-    xml->get_widget("can_fly_checkbutton", can_fly_checkbutton);
-    can_fly_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_movebonus_toggled),
-                   can_fly_checkbutton, Tile::GRASS | Tile::WATER | 
-                   Tile::FOREST | Tile::HILLS | Tile::MOUNTAIN | Tile::SWAMP));
-    xml->get_widget("add1strinopen_checkbutton", add1strinopen_checkbutton);
-    add1strinopen_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       add1strinopen_checkbutton, Army::ADD1STRINOPEN));
-    xml->get_widget("add2strinopen_checkbutton", add2strinopen_checkbutton);
-    add2strinopen_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       add2strinopen_checkbutton, Army::ADD2STRINOPEN));
-    xml->get_widget("add1strinforest_checkbutton", add1strinforest_checkbutton);
-    add1strinforest_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       add1strinforest_checkbutton, Army::ADD1STRINFOREST));
-    xml->get_widget("add2strinforest_checkbutton", add2strinforest_checkbutton);
-    add2strinforest_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       add2strinforest_checkbutton, Army::ADD2STRINFOREST));
-    xml->get_widget("add1strinhills_checkbutton", add1strinhills_checkbutton);
-    add1strinhills_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       add1strinhills_checkbutton, Army::ADD1STRINHILLS));
-    xml->get_widget("add2strinhills_checkbutton", add2strinhills_checkbutton);
-    add2strinhills_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       add2strinhills_checkbutton, Army::ADD2STRINHILLS));
-    xml->get_widget("add1strincity_checkbutton", add1strincity_checkbutton);
-    add1strincity_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       add1strincity_checkbutton, Army::ADD1STRINCITY));
-    xml->get_widget("add2strincity_checkbutton", add2strincity_checkbutton);
-    add2strincity_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       add2strincity_checkbutton, Army::ADD2STRINCITY));
-    xml->get_widget("add1stackinhills_checkbutton", 
-                    add1stackinhills_checkbutton);
-    add1stackinhills_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       add1stackinhills_checkbutton, Army::ADD1STACKINHILLS));
-    xml->get_widget("suballcitybonus_checkbutton", suballcitybonus_checkbutton);
-    suballcitybonus_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       suballcitybonus_checkbutton, Army::SUBALLCITYBONUS));
-    xml->get_widget("sub1enemystack_checkbutton", sub1enemystack_checkbutton);
-    sub1enemystack_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       sub1enemystack_checkbutton, Army::SUB1ENEMYSTACK));
-    xml->get_widget("sub2enemystack_checkbutton", sub2enemystack_checkbutton);
-    sub2enemystack_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       sub2enemystack_checkbutton, Army::SUB2ENEMYSTACK));
-    xml->get_widget("add1stack_checkbutton", add1stack_checkbutton);
-    add1stack_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       add1stack_checkbutton, Army::ADD1STACK));
-    xml->get_widget("add2stack_checkbutton", add2stack_checkbutton);
-    add2stack_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       add2stack_checkbutton, Army::ADD2STACK));
-    xml->get_widget("suballnonherobonus_checkbutton", 
-		    suballnonherobonus_checkbutton);
-    suballnonherobonus_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       suballnonherobonus_checkbutton, Army::SUBALLNONHEROBONUS));
-    xml->get_widget("suballherobonus_checkbutton", suballherobonus_checkbutton);
-    suballherobonus_checkbutton->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
-       suballherobonus_checkbutton, Army::SUBALLHEROBONUS));
-    xml->get_widget("add_army_button", add_army_button);
-    add_army_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_add_army_clicked));
-    xml->get_widget("remove_army_button", remove_army_button);
-    remove_army_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_remove_army_clicked));
-    xml->get_widget("army_vbox", army_vbox);
-    // connect callbacks for the menu
-    xml->get_widget("new_armyset_menuitem", new_armyset_menuitem);
-    new_armyset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_new_armyset_activated));
-    xml->get_widget("load_armyset_menuitem", load_armyset_menuitem);
-    load_armyset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_load_armyset_activated));
-    xml->get_widget("save_armyset_menuitem", save_armyset_menuitem);
-    save_armyset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_save_armyset_activated));
-    xml->get_widget("save_as_menuitem", save_as_menuitem);
-    save_as_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_save_as_activated));
-    xml->get_widget("validate_armyset_menuitem", validate_armyset_menuitem);
-    validate_armyset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_validate_armyset_activated));
-    xml->get_widget("quit_menuitem", quit_menuitem);
-    quit_menuitem->signal_activate().connect
-       (sigc::mem_fun(this, &ArmySetWindow::on_quit_activated));
-    xml->get_widget("edit_armyset_info_menuitem", edit_armyset_info_menuitem);
-    edit_armyset_info_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_edit_armyset_info_activated));
-    xml->get_widget("edit_standard_picture_menuitem", 
-		    edit_standard_picture_menuitem);
-    edit_standard_picture_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_edit_standard_picture_activated));
-    xml->get_widget("edit_bag_picture_menuitem", edit_bag_picture_menuitem);
-    edit_bag_picture_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_edit_bag_picture_activated));
-    xml->get_widget("edit_ship_picture_menuitem", edit_ship_picture_menuitem);
-    edit_ship_picture_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_edit_ship_picture_activated));
-    xml->get_widget ("help_about_menuitem", help_about_menuitem);
-    help_about_menuitem->signal_activate().connect
-       (sigc::mem_fun(this, &ArmySetWindow::on_help_about_activated));
+  xml->get_widget("white_image", white_image);
+  xml->get_widget("make_same_button", make_same_button);
+  make_same_button->signal_clicked().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_make_same_clicked));
+  xml->get_widget("green_image", green_image);
+  xml->get_widget("yellow_image", yellow_image);
+  xml->get_widget("light_blue_image", light_blue_image);
+  xml->get_widget("red_image", red_image);
+  xml->get_widget("dark_blue_image", dark_blue_image);
+  xml->get_widget("orange_image", orange_image);
+  xml->get_widget("black_image", black_image);
+  xml->get_widget("neutral_image", neutral_image);
+  xml->get_widget("name_entry", name_entry);
+  name_entry->signal_changed().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_name_changed));
+  xml->get_widget("armies_treeview", armies_treeview);
+  xml->get_widget("armies_scrolledwindow", armies_scrolledwindow);
+  xml->get_widget("description_textview", description_textview);
+  description_textview->get_buffer()->signal_changed().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_description_changed));
+  xml->get_widget("white_image_button", white_image_button);
+  white_image_button->signal_clicked().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                white_image_button, white_image, Shield::WHITE));
+  xml->get_widget("green_image_button", green_image_button);
+  green_image_button->signal_clicked().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                green_image_button, green_image, Shield::GREEN));
+  xml->get_widget("yellow_image_button", yellow_image_button);
+  yellow_image_button->signal_clicked().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                yellow_image_button, yellow_image, Shield::YELLOW));
+  xml->get_widget("light_blue_image_button", light_blue_image_button);
+  light_blue_image_button->signal_clicked().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                light_blue_image_button, light_blue_image, Shield::LIGHT_BLUE));
+  xml->get_widget("red_image_button", red_image_button);
+  red_image_button->signal_clicked().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                red_image_button, red_image, Shield::RED));
+  xml->get_widget("dark_blue_image_button", dark_blue_image_button);
+  dark_blue_image_button->signal_clicked().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                dark_blue_image_button, dark_blue_image, Shield::DARK_BLUE));
+  xml->get_widget("orange_image_button", orange_image_button);
+  orange_image_button->signal_clicked().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                orange_image_button, orange_image, Shield::ORANGE));
+  xml->get_widget("black_image_button", black_image_button);
+  black_image_button->signal_clicked().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                black_image_button, black_image, Shield::BLACK));
+  xml->get_widget("neutral_image_button", neutral_image_button);
+  neutral_image_button->signal_clicked().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                neutral_image_button, neutral_image, Shield::NEUTRAL));
+  xml->get_widget("production_spinbutton", production_spinbutton);
+  production_spinbutton->set_range
+    (double(MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS), 
+     double(MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS));
+  production_spinbutton->signal_changed().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_production_changed));
+  production_spinbutton->signal_insert_text().connect
+    (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_production_text_changed))));
+  xml->get_widget("cost_spinbutton", cost_spinbutton);
+  cost_spinbutton->set_range(double(MIN_COST_FOR_ARMY_UNITS), 
+                             double(MAX_COST_FOR_ARMY_UNITS));
+  cost_spinbutton->signal_changed().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_cost_changed));
+  cost_spinbutton->signal_insert_text().connect
+    (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_cost_text_changed))));
+  xml->get_widget("new_cost_spinbutton", new_cost_spinbutton);
+  new_cost_spinbutton->set_range(double(MIN_NEW_COST_FOR_ARMY_UNITS), 
+                                 double(MAX_NEW_COST_FOR_ARMY_UNITS));
+  new_cost_spinbutton->signal_changed().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_new_cost_changed));
+  new_cost_spinbutton->signal_insert_text().connect
+    (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_new_cost_text_changed))));
+  xml->get_widget("upkeep_spinbutton", upkeep_spinbutton);
+  upkeep_spinbutton->set_range (double(MIN_UPKEEP_FOR_ARMY_UNITS), 
+                                double(MAX_UPKEEP_FOR_ARMY_UNITS));
+  upkeep_spinbutton->signal_changed().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_upkeep_changed));
+  upkeep_spinbutton->signal_insert_text().connect
+    (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_upkeep_text_changed))));
+  xml->get_widget("strength_spinbutton", strength_spinbutton);
+  strength_spinbutton->set_range (double(MIN_STRENGTH_FOR_ARMY_UNITS), 
+                                  double(MAX_STRENGTH_FOR_ARMY_UNITS));
+  strength_spinbutton->signal_changed().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_strength_changed));
+  strength_spinbutton->signal_insert_text().connect
+    (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_strength_text_changed))));
+  xml->get_widget("moves_spinbutton", moves_spinbutton);
+  moves_spinbutton->set_range(double(MIN_MOVES_FOR_ARMY_UNITS), 
+                              double(MAX_MOVES_FOR_ARMY_UNITS));
+  moves_spinbutton->signal_changed().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_moves_changed));
+  moves_spinbutton->signal_insert_text().connect
+    (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_moves_text_changed))));
+  xml->get_widget("exp_spinbutton", exp_spinbutton);
+  exp_spinbutton->set_range(double(MIN_EXP_FOR_ARMY_UNITS), 
+                            double(MAX_EXP_FOR_ARMY_UNITS));
+  exp_spinbutton->signal_changed().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_exp_changed));
+  exp_spinbutton->signal_insert_text().connect
+    (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_exp_text_changed))));
+  xml->get_widget("gender_none_radiobutton", gender_none_radiobutton);
+  gender_none_radiobutton->signal_toggled().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_gender_none_toggled));
+  xml->get_widget("gender_male_radiobutton", gender_male_radiobutton);
+  gender_male_radiobutton->signal_toggled().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_gender_male_toggled));
+  xml->get_widget("gender_female_radiobutton", gender_female_radiobutton);
+  gender_female_radiobutton->signal_toggled().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_gender_female_toggled));
+  xml->get_widget("awardable_checkbutton", awardable_checkbutton);
+  awardable_checkbutton->signal_toggled().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_awardable_toggled));
+  xml->get_widget("defends_ruins_checkbutton", defends_ruins_checkbutton);
+  defends_ruins_checkbutton->signal_toggled().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_defends_ruins_toggled));
+  xml->get_widget("sight_spinbutton", sight_spinbutton);
+  sight_spinbutton->set_range(double(MIN_SIGHT_FOR_ARMY_UNITS), 
+                              double(MAX_SIGHT_FOR_ARMY_UNITS));
+  sight_spinbutton->signal_changed().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_sight_changed));
+  sight_spinbutton->signal_insert_text().connect
+    (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_sight_text_changed))));
+  xml->get_widget("id_spinbutton", id_spinbutton);
+  id_spinbutton->set_range(0, 1000);
+  id_spinbutton->signal_changed().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_id_changed));
+  id_spinbutton->signal_insert_text().connect
+    (sigc::hide(sigc::hide(sigc::mem_fun(this, &ArmySetWindow::on_id_text_changed))));
+  xml->get_widget("move_forests_checkbutton", move_forests_checkbutton);
+  move_forests_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_movebonus_toggled),
+                move_forests_checkbutton, Tile::FOREST));
+  xml->get_widget("move_marshes_checkbutton", move_marshes_checkbutton);
+  move_marshes_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_movebonus_toggled),
+                move_marshes_checkbutton, Tile::SWAMP));
+  xml->get_widget("move_hills_checkbutton", move_hills_checkbutton);
+  move_hills_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_movebonus_toggled),
+                move_hills_checkbutton, Tile::HILLS));
+  xml->get_widget("move_mountains_checkbutton", move_mountains_checkbutton);
+  move_mountains_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_movebonus_toggled),
+                move_mountains_checkbutton, Tile::MOUNTAIN));
+  xml->get_widget("can_fly_checkbutton", can_fly_checkbutton);
+  can_fly_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_movebonus_toggled),
+                can_fly_checkbutton, Tile::GRASS | Tile::WATER | 
+                Tile::FOREST | Tile::HILLS | Tile::MOUNTAIN | Tile::SWAMP));
+  xml->get_widget("add1strinopen_checkbutton", add1strinopen_checkbutton);
+  add1strinopen_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                add1strinopen_checkbutton, Army::ADD1STRINOPEN));
+  xml->get_widget("add2strinopen_checkbutton", add2strinopen_checkbutton);
+  add2strinopen_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                add2strinopen_checkbutton, Army::ADD2STRINOPEN));
+  xml->get_widget("add1strinforest_checkbutton", add1strinforest_checkbutton);
+  add1strinforest_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                add1strinforest_checkbutton, Army::ADD1STRINFOREST));
+  xml->get_widget("add2strinforest_checkbutton", add2strinforest_checkbutton);
+  add2strinforest_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                add2strinforest_checkbutton, Army::ADD2STRINFOREST));
+  xml->get_widget("add1strinhills_checkbutton", add1strinhills_checkbutton);
+  add1strinhills_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                add1strinhills_checkbutton, Army::ADD1STRINHILLS));
+  xml->get_widget("add2strinhills_checkbutton", add2strinhills_checkbutton);
+  add2strinhills_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                add2strinhills_checkbutton, Army::ADD2STRINHILLS));
+  xml->get_widget("add1strincity_checkbutton", add1strincity_checkbutton);
+  add1strincity_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                add1strincity_checkbutton, Army::ADD1STRINCITY));
+  xml->get_widget("add2strincity_checkbutton", add2strincity_checkbutton);
+  add2strincity_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                add2strincity_checkbutton, Army::ADD2STRINCITY));
+  xml->get_widget("add1stackinhills_checkbutton", 
+                  add1stackinhills_checkbutton);
+  add1stackinhills_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                add1stackinhills_checkbutton, Army::ADD1STACKINHILLS));
+  xml->get_widget("suballcitybonus_checkbutton", suballcitybonus_checkbutton);
+  suballcitybonus_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                suballcitybonus_checkbutton, Army::SUBALLCITYBONUS));
+  xml->get_widget("sub1enemystack_checkbutton", sub1enemystack_checkbutton);
+  sub1enemystack_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                sub1enemystack_checkbutton, Army::SUB1ENEMYSTACK));
+  xml->get_widget("sub2enemystack_checkbutton", sub2enemystack_checkbutton);
+  sub2enemystack_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                sub2enemystack_checkbutton, Army::SUB2ENEMYSTACK));
+  xml->get_widget("add1stack_checkbutton", add1stack_checkbutton);
+  add1stack_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                add1stack_checkbutton, Army::ADD1STACK));
+  xml->get_widget("add2stack_checkbutton", add2stack_checkbutton);
+  add2stack_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                add2stack_checkbutton, Army::ADD2STACK));
+  xml->get_widget("suballnonherobonus_checkbutton", 
+                  suballnonherobonus_checkbutton);
+  suballnonherobonus_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                suballnonherobonus_checkbutton, Army::SUBALLNONHEROBONUS));
+  xml->get_widget("suballherobonus_checkbutton", suballherobonus_checkbutton);
+  suballherobonus_checkbutton->signal_toggled().connect
+    (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+                suballherobonus_checkbutton, Army::SUBALLHEROBONUS));
+  xml->get_widget("add_army_button", add_army_button);
+  add_army_button->signal_clicked().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_add_army_clicked));
+  xml->get_widget("remove_army_button", remove_army_button);
+  remove_army_button->signal_clicked().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_remove_army_clicked));
+  xml->get_widget("army_vbox", army_vbox);
+  // connect callbacks for the menu
+  xml->get_widget("new_armyset_menuitem", new_armyset_menuitem);
+  new_armyset_menuitem->signal_activate().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_new_armyset_activated));
+  xml->get_widget("load_armyset_menuitem", load_armyset_menuitem);
+  load_armyset_menuitem->signal_activate().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_load_armyset_activated));
+  xml->get_widget("save_armyset_menuitem", save_armyset_menuitem);
+  save_armyset_menuitem->signal_activate().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_save_armyset_activated));
+  xml->get_widget("save_as_menuitem", save_as_menuitem);
+  save_as_menuitem->signal_activate().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_save_as_activated));
+  xml->get_widget("validate_armyset_menuitem", validate_armyset_menuitem);
+  validate_armyset_menuitem->signal_activate().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_validate_armyset_activated));
+  xml->get_widget("quit_menuitem", quit_menuitem);
+  quit_menuitem->signal_activate().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_quit_activated));
+  xml->get_widget("edit_armyset_info_menuitem", edit_armyset_info_menuitem);
+  edit_armyset_info_menuitem->signal_activate().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_edit_armyset_info_activated));
+  xml->get_widget("edit_standard_picture_menuitem", edit_standard_picture_menuitem);
+  edit_standard_picture_menuitem->signal_activate().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_edit_standard_picture_activated));
+  xml->get_widget("edit_bag_picture_menuitem", edit_bag_picture_menuitem);
+  edit_bag_picture_menuitem->signal_activate().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_edit_bag_picture_activated));
+  xml->get_widget("edit_ship_picture_menuitem", edit_ship_picture_menuitem);
+  edit_ship_picture_menuitem->signal_activate().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_edit_ship_picture_activated));
+  xml->get_widget ("help_about_menuitem", help_about_menuitem);
+  help_about_menuitem->signal_activate().connect
+    (sigc::mem_fun(this, &ArmySetWindow::on_help_about_activated));
 
-    window->signal_delete_event().connect(
-	sigc::hide(sigc::mem_fun(*this, &ArmySetWindow::on_delete_event)));
+  window->signal_delete_event().connect
+    (sigc::hide(sigc::mem_fun(*this, &ArmySetWindow::on_delete_event)));
 
-    armies_list = Gtk::ListStore::create(armies_columns);
-    armies_treeview->set_model(armies_list);
-    armies_treeview->append_column("", armies_columns.name);
-    armies_treeview->set_headers_visible(false);
-    armies_treeview->get_selection()->signal_changed().connect
-      (sigc::mem_fun(*this, &ArmySetWindow::on_army_selected));
-    armies_treeview->set_reorderable(true);
+  armies_list = Gtk::ListStore::create(armies_columns);
+  armies_treeview->set_model(armies_list);
+  armies_treeview->append_column("", armies_columns.name);
+  armies_treeview->set_headers_visible(false);
+  armies_treeview->get_selection()->signal_changed().connect
+    (sigc::mem_fun(*this, &ArmySetWindow::on_army_selected));
+  armies_treeview->set_reorderable(true);
 
-    if (load_filename != "")
-      current_save_filename = load_filename;
-    update_army_panel();
-    update_armyset_buttons();
-    update_armyset_menuitems();
+  if (load_filename != "")
+    current_save_filename = load_filename;
+  update_army_panel();
+  update_armyset_buttons();
+  update_armyset_menuitems();
 
-    if (load_filename.empty() == false)
-      {
-	load_armyset (load_filename);
-	update_armyset_buttons();
-	update_armyset_menuitems();
-	update_army_panel();
-      }
-    inhibit_scrolldown = true;
-    //we only want inhibit scrolldown to be false when we click add, and we 
-    //want the scrolledwindow to scroll down to the bottom.
-    //the problem is that an army gets selected as a result of an add.
-    //which is fine, but then there are also other times when an army gets
-    //selected.  like the with the mouse.
-    inhibit_updates = false;
+  if (load_filename.empty() == false)
+    {
+      load_armyset (load_filename);
+      update_armyset_buttons();
+      update_armyset_menuitems();
+      update_army_panel();
+    }
+  inhibit_scrolldown = true;
+  //we only want inhibit scrolldown to be false when we click add, and we 
+  //want the scrolledwindow to scroll down to the bottom.
+  //the problem is that an army gets selected as a result of an add.
+  //which is fine, but then there are also other times when an army gets
+  //selected.  like the with the mouse.
+  inhibit_updates = false;
 }
 
 void
