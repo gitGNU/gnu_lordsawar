@@ -91,10 +91,8 @@ void AI_Dummy::setDefensiveProduction(City *city)
 void AI_Dummy::examineCities()
 {
     debug("Examinating Cities to see what we can do")
-    Citylist* cl = Citylist::getInstance();
-    for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+    for (auto city: *Citylist::getInstance())
       {
-        City *city = (*it);
         if ((city->isFriend(this)) && (city->isBurnt()==false))
 	  setDefensiveProduction(city);
       }
@@ -111,10 +109,8 @@ bool AI_Dummy::startTurn()
       else
 	{
 	  // stop the presses.
-	  Citylist* cl = Citylist::getInstance();
-	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+          for (auto city: *Citylist::getInstance())
 	    {
-	      City *city = (*it);
 	      if ((city->isFriend(this)) && (city->isBurnt()==false))
 		city->setActiveProductionSlot(-1);
 	    }
@@ -227,6 +223,7 @@ bool AI_Dummy::computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<in
   (void) stack;
   (void) quest;
   (void) moves;
+  (void) dest;
   (void) turns;
   //neutrals don't have heroes
   return true;

@@ -33,8 +33,6 @@ ArmyMap::ArmyMap()
 
 void ArmyMap::draw_stacks()
 {
-  ImageCache *gc = ImageCache::getInstance();
-  
   // Draw stacks as tiny shields
   for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
        pit != Playerlist::getInstance()->end(); pit++)
@@ -55,8 +53,8 @@ void ArmyMap::draw_stacks()
           if (Playerlist::getViewingplayer()->getFogMap()->isFogged (pos) == true)
             continue;
 
-          PixMask *tmp = gc->getShieldPic(1, (*it)->getOwner());
-          tmp = tmp->copy();
+          PixMask *tmp = 
+            ImageCache::getInstance()->getShieldPic(1, (*it)->getOwner())->copy();
           PixMask::scale(tmp, tmp->get_width()/2, tmp->get_height()/2);
 
           pos = mapToSurface(pos);

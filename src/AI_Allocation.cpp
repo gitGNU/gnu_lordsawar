@@ -245,15 +245,13 @@ int AI_Allocation::attackNearbyEnemies()
 {
   bool moved;
   int count = 0;
-  Citylist *cl = Citylist::getInstance();
-  for (Citylist::iterator i = cl->begin(); i != cl->end(); i++)
+  for (auto city: *Citylist::getInstance())
     {
       sbusy.emit();
       if (d_owner->abortRequested())
         return count;
       if (d_stacks->size() == 0)
         break;
-      City *city = *i;
       if (city->getOwner() == d_owner || city->isBurnt() == true)
         continue;
       std::list<Vector<int> > p = GameMap::getNearbyPoints(city->getPos(), 2);
@@ -343,7 +341,7 @@ int AI_Allocation::attackNearbyEnemies()
         continue;
       if (s->getMoves() < s->getMaxMoves())
         continue;
-      City *target = cl->getClosestEnemyCity(s);
+      City *target = Citylist::getInstance()->getClosestEnemyCity(s);
       if (target)
         {
           bool killed = false;
@@ -379,7 +377,7 @@ int AI_Allocation::attackNearbyEnemies()
       if (city->isBurnt() == false && 
           city->getDefenders().size() > MAX_STACK_SIZE * 2)
         continue;
-      City *target = cl->getClosestEnemyCity(s);
+      City *target = Citylist::getInstance()->getClosestEnemyCity(s);
       if (target)
         {
           bool killed = false;
@@ -399,14 +397,11 @@ int AI_Allocation::attackNearbyEnemies()
 bool AI_Allocation::emptyOutCities()
 {
   //everybody out on the dancefloor.
-  Citylist *cl = Citylist::getInstance();
-  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+  for (auto c: *Citylist::getInstance())
     {
-      
       sbusy.emit();
       if (d_owner->abortRequested())
         return false;
-      City *c = *it;
       if (c->getOwner() != d_owner || c->isBurnt() == true)
         continue;
       bool bail = false;
@@ -421,7 +416,8 @@ bool AI_Allocation::emptyOutCities()
               if ((s->getMoves() > 3 && s->size() >= 4 &&
                    (num_defenders - s->size()) >= 3) || (Rnd::rand() % 10) == 0)
                 {
-                  City *target = cl->getNearestEnemyCity(s->getPos());
+                  City *target = 
+                    Citylist::getInstance()->getNearestEnemyCity(s->getPos());
                   if (target)
                     {
                       bool killed = false;
@@ -1163,7 +1159,6 @@ Stack *AI_Allocation::findBestAttackerFor(Threat *threat, guint32 &city_defender
 int AI_Allocation::defaultStackMovements()
 {
   int count = 0;
-  Citylist *allCities = Citylist::getInstance();
   debug("Default movement for " <<d_stacks->size() <<" stacks");
 
   while (d_stacks->size() > 0)
@@ -1189,7 +1184,8 @@ int AI_Allocation::defaultStackMovements()
       if (leave == true)
         {
           bool moved = false;
-          City* enemyCity = allCities->getNearestEnemyCity(s->getPos());
+          City* enemyCity = 
+            Citylist::getInstance()->getNearestEnemyCity(s->getPos());
           if (enemyCity)
             {
               int mp = s->getPath()->calculate(s, enemyCity->getNearestPos(s->getPos()));
@@ -1211,7 +1207,8 @@ int AI_Allocation::defaultStackMovements()
             }
           else
             {
-              enemyCity = allCities->getNearestForeignCity(s->getPos());
+              enemyCity = 
+                Citylist::getInstance()->getNearestForeignCity(s->getPos());
               if (enemyCity)
                 {
                   s->getOwner()->proposeDiplomacy(Player::PROPOSE_WAR,
@@ -1268,14 +1265,12 @@ int AI_Allocation::defaultStackMovements()
 
 bool AI_Allocation::stackReinforce(Stack *s)
 {
-  Citylist *allCities = Citylist::getInstance();
   float mostNeeded = -1000.0;
   City *cityNeeds = 0;
   int moves = 1000;
   Vector<int> target_tile = Vector<int>(-1,-1);
-  for (Citylist::iterator it = allCities->begin(); it != allCities->end(); ++it)
+  for (auto city: *Citylist::getInstance())
     {
-      City *city = (*it);
       if (city->getOwner() != d_owner)
         continue;
       if (city->isBurnt() == true)
@@ -1320,14 +1315,12 @@ bool AI_Allocation::stackReinforce(Stack *s)
   }
 
   //okay, no city needed us, just try to reinforce our nearest city
-  City *target = allCities->getNearestFriendlyCity(s->getPos());
+  City *target = Citylist::getInstance()->getNearestFriendlyCity(s->getPos());
   if (!target) // no friendly city?
     return false;
   //are we already there?
   if (target->contains(s->getPos()))
-    {
-      return false;
-    }
+    return false;
   else
     {
       Vector<int> dest = getFreeSpotInCity(target, s->size());

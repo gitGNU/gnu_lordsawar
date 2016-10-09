@@ -302,16 +302,15 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
     bigmap->screen_size_changed(Gtk::Allocation(0,0,320,200));
 
     // connect player callbacks
-    Playerlist* pl = Playerlist::getInstance();
-    for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
-    {
-	Player *p = *i;
-	addPlayer(p);
-    }
+    for (auto p: *Playerlist::getInstance())
+      addPlayer(p);
+
     if (gameScenario->getPlayMode() == GameScenario::HOTSEAT ||
         gameScenario->getPlayMode() == GameScenario::NETWORKED)
-      pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
-    pl->ssurrender.connect(sigc::mem_fun(this, &Game::on_surrender_offered));
+      Playerlist::getInstance()->splayerDead.connect
+        (sigc::mem_fun(this, &Game::on_player_died));
+    Playerlist::getInstance()->ssurrender.connect
+      (sigc::mem_fun(this, &Game::on_surrender_offered));
 
     d_nextTurn->splayerStart.connect(
 	sigc::mem_fun(this, &Game::init_turn_for_player));
@@ -804,11 +803,10 @@ void Game::on_temple_queried (Temple* t, bool brief)
 
 void Game::looting_city(City* city, int &gold)
 {
-  Citylist *clist = Citylist::getInstance();
-  Playerlist *plist = Playerlist::getInstance();
-  Player *attacker = plist->getActiveplayer();
+  Player *attacker = Playerlist::getActiveplayer();
   Player *defender = city->getOwner();
-  int amt = (defender->getGold() / (2 * clist->countCities (defender)) * 2);
+  int amt = (defender->getGold() / 
+             (2 * Citylist::getInstance()->countCities (defender)) * 2);
   // give (Enemy-Gold/(2Enemy-Cities)) to the attacker 
   // and then take away twice that from the defender.
   // the idea here is that some money is taken in the invasion
@@ -1069,8 +1067,6 @@ void Game::blank(bool on)
 
 void Game::init_turn_for_player(Player* p)
 {
-  Playerlist* pl = Playerlist::getInstance();
-
   blank(true);
 
   next_player_turn.emit(p, d_gameScenario->getRound());
@@ -1108,15 +1104,15 @@ void Game::init_turn_for_player(Player* p)
 
       // update the diplomacy icon if we've received a proposal
       bool proposal_received = false;
-      for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+      for (auto it: *Playerlist::getInstance())
 	{
-	  if ((*it) == pl->getNeutral())
+	  if (it == Playerlist::getInstance()->getNeutral())
 	    continue;
-	  if ((*it) == p)
+	  if (it == p)
 	    continue;
-	  if((*it)->isDead())
+	  if(it->isDead())
 	    continue;
-	  if ((*it)->getDiplomaticProposal(p) != Player::NO_PROPOSAL)
+	  if (it->getDiplomaticProposal(p) != Player::NO_PROPOSAL)
 	    {
 	      proposal_received = true;
 	      break;
@@ -1137,9 +1133,8 @@ void Game::init_turn_for_player(Player* p)
 
 void Game::on_player_died(Player *player)
 {
-  const Playerlist* pl = Playerlist::getInstance();
-  if (pl->getNoOfPlayers() <= 1)
-    game_over.emit(pl->getFirstLiving());
+  if (Playerlist::getInstance()->getNoOfPlayers() <= 1)
+    game_over.emit(Playerlist::getInstance()->getFirstLiving());
   else
     player_died.emit(player);
 }
@@ -1288,10 +1283,9 @@ void Game::nextRound()
     
 void Game::on_surrender_offered(Player *recipient)
 {
-  Playerlist *plist = Playerlist::getInstance();
-  if (enemy_offers_surrender.emit(plist->countPlayersAlive() - 1))
+  if (enemy_offers_surrender(Playerlist::getInstance()->countPlayersAlive() - 1))
     {
-      plist->surrender();
+      Playerlist::getInstance()->surrender();
       surrender_answered.emit(true);
       game_over.emit(recipient);
     }
@@ -1368,8 +1362,7 @@ void Game::inhibitAutosaveRemoval(bool inhibit)
 
 void Game::endOfGameRoaming(Player *winner)
 {
-  Playerlist* pl = Playerlist::getInstance();
-  pl->setWinningPlayer(winner);
+  Playerlist::getInstance()->setWinningPlayer(winner);
   Playerlist::getActiveplayer()->immobilize();
   d_gameScenario->s_see_opponents_stacks = true;
   d_gameScenario->s_see_opponents_production = true;

@@ -187,14 +187,10 @@ void AI_Smart::heroGainsLevel(Hero * a)
 
 int AI_Smart::maybeBuyProduction(City *c, bool quick)
 {
-  Armysetlist *al = Armysetlist::getInstance();
-  int freeslot = -1;
-
   int armytype = -1;
+  int freeslot = c->getFreeSlot();
 
-  freeslot = c->getFreeSlot();
-
-  if (freeslot==-1)
+  if (freeslot == -1)
     return -1;
 
   armytype = chooseArmyTypeToBuy(c, quick);
@@ -205,10 +201,11 @@ int AI_Smart::maybeBuyProduction(City *c, bool quick)
 
   bool buy = false;
   int slot = c->getActiveProductionSlot();
+
+  ArmyProto *army = Armysetlist::getInstance()->getArmy(getArmyset(), armytype);
   if (slot == -1)
     buy = true;
-  else if (scoreBestArmyType(al->getArmy(getArmyset(), armytype)) > 
-           scoreBestArmyType(c->getProductionBase(slot)))
+  else if (scoreBestArmyType(army) > scoreBestArmyType(c->getProductionBase(slot)))
     buy = true;
 
   if (buy)
@@ -286,42 +283,38 @@ int AI_Smart::setBestProduction(City *c)
 
 int AI_Smart::chooseArmyTypeToBuy(City *c, bool quick)
 {
-    int bestScore, bestTypeId;
+  int bestScore = -1;
+  int bestTypeId = -1;
 
-    const Armysetlist* al = Armysetlist::getInstance();
-
-    bestScore = -1;
-    bestTypeId = -1;
-    
-    Armyset *as = al->get(getArmyset());
-    for (Armyset::iterator i = as->begin(); i != as->end(); ++i)
+  Armyset *as = Armysetlist::getInstance()->get(getArmyset());
+  for (Armyset::iterator i = as->begin(); i != as->end(); ++i)
     {
-        const ArmyProto *proto = NULL;
+      const ArmyProto *proto = NULL;
 
-        proto=al->getArmy(getArmyset(), (*i)->getId());
+      proto=Armysetlist::getInstance()->getArmy(getArmyset(), (*i)->getId());
 
-	if (proto->getNewProductionCost() == 0)
-	  continue;
+      if (proto->getNewProductionCost() == 0)
+        continue;
 
-        if ((int)proto->getNewProductionCost() > d_gold)
-          continue;
-        
-       if (c->hasProductionBase(proto->getId())==false)
-       {
-         int score;
-         if (quick)
-           score = scoreQuickArmyType(proto);
-         else
-           score = scoreBestArmyType(proto);
-         if (score >= bestScore)
-         {
-            bestTypeId = (*i)->getId();
-            bestScore = score;
-         }
-       }
+      if ((int)proto->getNewProductionCost() > d_gold)
+        continue;
+
+      if (c->hasProductionBase(proto->getId())==false)
+        {
+          int score;
+          if (quick)
+            score = scoreQuickArmyType(proto);
+          else
+            score = scoreBestArmyType(proto);
+          if (score >= bestScore)
+            {
+              bestTypeId = (*i)->getId();
+              bestScore = score;
+            }
+        }
     }
 
-    return bestTypeId;
+  return bestTypeId;
 }
 
 int AI_Smart::scoreQuickArmyType(const ArmyProdBase *a)
@@ -433,10 +426,8 @@ void AI_Smart::setProduction(City *city)
 void AI_Smart::examineCities()
 {
   debug("Examinating Cities to see what we can do");
-  Citylist* cl = Citylist::getInstance();
-  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+  for (auto city: *Citylist::getInstance())
     {
-      City *city = (*it);
       if (city->getOwner() == this && city->isBurnt() == false)
         setProduction(city);
     }
@@ -445,7 +436,7 @@ void AI_Smart::examineCities()
   int total_gp_to_spend = getGold() + profit;
   //now we get to spend this amount on the city production.
   //we'll turn off the cities we can't afford.
-  std::list<City*> cities = cl->getNearestFriendlyCities(this);
+  std::list<City*> cities = Citylist::getInstance()->getNearestFriendlyCities(this);
   for (std::list<City*>::iterator it = cities.begin(); it != cities.end(); it++)
     {
       City *c = *it;

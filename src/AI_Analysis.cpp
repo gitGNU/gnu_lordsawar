@@ -212,30 +212,22 @@ float AI_Analysis::reinforcementsNeeded(City *city)
 
 void AI_Analysis::examineCities()
 {
-    Citylist* cl = Citylist::getInstance();
-    for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-    {
-        City *city = (*it);
-        if (!city->isFriend(d_owner) && !city->isBurnt())
-        {
-            d_threats->push_back(new Threat(city));
-        }
-    }
+  for (auto city: *Citylist::getInstance())
+    if (!city->isFriend(d_owner) && !city->isBurnt())
+      d_threats->push_back(new Threat(city));
 }
 
 void AI_Analysis::examineStacks()
 {
-    // add all enemy stacks to the list of threats
-    Playerlist *players = Playerlist::getInstance();
-    for (Playerlist::iterator it = players->begin(); it != players->end(); it++)
+  // add all enemy stacks to the list of threats
+  for (auto player: *Playerlist::getInstance())
     {
-        Player *player = (*it);
-        if (player == d_owner)
-            continue;
+      if (player == d_owner)
+        continue;
 
-        Stacklist *sl = player->getStacklist();
-        for (Stacklist::iterator sit = sl->begin(); sit != sl->end(); ++sit)
-          d_threats->addStack(*sit);
+      Stacklist *sl = player->getStacklist();
+      for (Stacklist::iterator sit = sl->begin(); sit != sl->end(); ++sit)
+        d_threats->addStack(*sit);
     }
 }
 
@@ -256,15 +248,13 @@ void AI_Analysis::examineRuins()
 
 void AI_Analysis::calculateDanger()
 {
-    Citylist* cl = Citylist::getInstance();
-    for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+  for (auto city: *Citylist::getInstance())
     {
-        City *city = (*it);
-        if (city->isFriend(d_owner))
+      if (city->isFriend(d_owner))
         {
-            AICityInfo *info = new AICityInfo(city);
-            d_threats->findThreats(info);
-            d_cityInfo[city->getId()] = info;
+          AICityInfo *info = new AICityInfo(city);
+          d_threats->findThreats(info);
+          d_cityInfo[city->getId()] = info;
         }
     }
 }

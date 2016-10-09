@@ -1204,29 +1204,23 @@ void GameMap::groupStacks(Stack *stack)
   
 void GameMap::clearStackPositions()
 {
-  Playerlist *plist = Playerlist::getInstance();
-  for (Playerlist::iterator i = plist->begin(); i != plist->end(); i++)
+  for (auto i :*Playerlist::getInstance())
     {
-      Stacklist *sl = (*i)->getStacklist();
+      Stacklist *sl = i->getStacklist();
       for (Stacklist::iterator s = sl->begin(); s != sl->end(); s++)
         {
-          Vector<int> pos = (*s)->getPos();
-          StackTile *st = getStacks(pos);
+          StackTile *st = getStacks((*s)->getPos());
           st->clear();
         }
     }
 }
 void GameMap::updateStackPositions()
 {
-  Playerlist *plist = Playerlist::getInstance();
-  for (Playerlist::iterator i = plist->begin(); i != plist->end(); i++)
+  for (auto i: *Playerlist::getInstance())
     {
-      Stacklist *sl = (*i)->getStacklist();
+      Stacklist *sl = i->getStacklist();
       for (Stacklist::iterator s = sl->begin(); s != sl->end(); s++)
-        {
-          Vector<int> pos = (*s)->getPos();
-          getStacks(pos)->add(*s);
-        }
+        getStacks((*s)->getPos())->add(*s);
     }
 }
 
@@ -1372,25 +1366,21 @@ void GameMap::reloadCityset()
 
 void GameMap::switchArmysets(Armyset *armyset)
 {
-  Playerlist *pl= Playerlist::getInstance();
-  Ruinlist *rl= Ruinlist::getInstance();
-  Citylist *cl= Citylist::getInstance();
   //change the keepers in ruins
-  for (Ruinlist::iterator i = rl->begin(); i != rl->end(); i++)
+  for (auto i: *Ruinlist::getInstance())
     {
-      Stack *s = (*i)->getOccupant();
+      Stack *s = i->getOccupant();
       if (s == NULL)
 	continue;
       s->removeArmiesWithoutArmyType(armyset->getId());
       for (Stack::iterator j = s->begin(); j != s->end(); j++)
 	Armyset::switchArmysetForRuinKeeper(*j, armyset);
     }
-  for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
+  for (auto i: *Playerlist::getInstance())
     {
       //change the armyprodbases in cities.
-      for (Citylist::iterator j = cl->begin(); j != cl->end(); j++)
+      for (auto c: *Citylist::getInstance())
 	{
-	  City *c = *j;
           c->removeArmyProdBasesWithoutAType(armyset->getId());
 	  for (unsigned int k = 0; k < c->getSize(); k++)
 	    {
@@ -1401,7 +1391,7 @@ void GameMap::switchArmysets(Armyset *armyset)
 	}
 
       //change the armies in the stacklist
-      Stacklist *sl = (*i)->getStacklist();
+      Stacklist *sl = i->getStacklist();
       for (Stacklist::iterator j = sl->begin(); j != sl->end(); j++)
 	{
 	  Stack *s = (*j);
@@ -1419,7 +1409,7 @@ void GameMap::switchArmysets(Armyset *armyset)
 	}
 
       //finally, change the player's armyset.
-      (*i)->setArmyset(armyset->getId());
+      i->setArmyset(armyset->getId());
       //where else are armyset ids hanging around?
     }
 }
@@ -2182,8 +2172,7 @@ bool GameMap::checkCityAccessibility()
 {
   //check to see if all cities are accessible
   //check if all cities are accessible
-  Citylist *cl = Citylist::getInstance();
-  if (cl->size() <= 1)
+  if (Citylist::getInstance()->size() <= 1)
     return true;
   Vector<int> pos = GameMap::getCenterOfMap();
   City *center = Citylist::getInstance()->getNearestCity(pos);
@@ -2194,16 +2183,16 @@ bool GameMap::checkCityAccessibility()
   s.push_back(a);
   PathCalculator pc(&s, true, 10, 10);
 
-  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+  for (auto it: *Citylist::getInstance())
     {
-      if (center == *it)
+      if (center == it)
 	continue;
 
-      int mp = pc.calculate((*it)->getPos());
+      int mp = pc.calculate(it->getPos());
       if (mp <= 0)
 	{
 	  printf("we made a map that has an inaccessible city (%d)\n", mp);
-	  printf("can't get from %s to %s\n", (*it)->getName().c_str(), center->getName().c_str());
+	  printf("can't get from %s to %s\n", it->getName().c_str(), center->getName().c_str());
 	  return false;
 	}
     }
@@ -2333,14 +2322,13 @@ bool GameMap::eraseTile(Vector<int> tile)
   // ... or a ruin ...
   if (getRuin(tile) != NULL)
     {
-      Rewardlist *rl = Rewardlist::getInstance();
-      for (Rewardlist::iterator i = rl->begin(); i != rl->end(); i++)
+      for (auto i: *Rewardlist::getInstance())
         {
-          if ((*i)->getType() == Reward::RUIN)
+          if (i->getType() == Reward::RUIN)
             {
-              Reward_Ruin *rr = static_cast<Reward_Ruin*>(*i);
+              Reward_Ruin *rr = static_cast<Reward_Ruin*>(i);
               if (rr->getRuin()->getPos() == tile)
-                rl->remove(*i);
+                Rewardlist::getInstance()->remove(i);
             }
         }
     }
@@ -2530,16 +2518,15 @@ bool GameMap::friendlyCitiesPresent()
 
 bool GameMap::enemyCitiesPresent()
 {
-  Playerlist *plist = Playerlist::getInstance();
-  for (Playerlist::iterator i = plist->begin(); i != plist->end(); i++)
+  for (auto i: *Playerlist::getInstance())
     {
-      if ((*i) == plist->getNeutral())
+      if (i == Playerlist::getInstance()->getNeutral())
         continue;
-      if ((*i) == plist->getActiveplayer())
+      if (i == Playerlist::getActiveplayer())
         continue;
-      if ((*i)->isDead())
+      if (i->isDead())
         continue;
-      if (Citylist::getInstance()->countCities(*i) > 0)
+      if (Citylist::getInstance()->countCities(i) > 0)
         return true;
     }
   return false;
@@ -2577,21 +2564,21 @@ bool GameMap::can_defend(Stack *stack)
 bool GameMap::checkBuildingTerrain(Maptile::Building b, bool land)
 {
   bool found = false;
-  GameMap *gm = GameMap::getInstance();
   for (int i = 0; i < s_width; i++)
     {
       for (int j = 0; j < s_height; j++)
         {
-          if (gm->getBuilding(Vector<int>(i, j)) == b)
+          Vector<int> tile = Vector<int>(i, j);
+          if (GameMap::getInstance()->getBuilding(tile) == b)
             {
               if (land)
                 {
-                  if (gm->getTerrainType(Vector<int>(i, j)) != Tile::WATER)
+                  if (GameMap::getInstance()->getTerrainType(tile) != Tile::WATER)
                     found = true;
                 }
               else
                 {
-                  if (gm->getTerrainType(Vector<int>(i, j)) == Tile::WATER)
+                  if (GameMap::getInstance()->getTerrainType(tile) == Tile::WATER)
                     found = true;
                 }
               if (found)

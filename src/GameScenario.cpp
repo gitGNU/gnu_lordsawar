@@ -143,15 +143,13 @@ bool GameScenario::loadArmysets(Tar_Helper *t)
 bool GameScenario::loadTilesets(Tar_Helper *t)
 {
   bool broken = false;
-  std::list<Glib::ustring> tilesets;
-  tilesets = t->getFilenamesWithExtension(Tileset::file_extension);
-  Tilesetlist *tlist = Tilesetlist::getInstance();
-  for (std::list<Glib::ustring>::iterator it = tilesets.begin(); 
-       it != tilesets.end(); it++)
+  std::list<Glib::ustring> tilesets = 
+    t->getFilenamesWithExtension(Tileset::file_extension);
+  for (auto it: tilesets)
     {
-      guint32 id = tlist->import(t, *it, broken);
+      guint32 id = Tilesetlist::getInstance()->import(t, it, broken);
       if (!broken)
-        tlist->get(id)->instantiateImages(broken);
+        Tilesetlist::getInstance()->get(id)->instantiateImages(broken);
     }
   return !broken;
 }
@@ -159,15 +157,13 @@ bool GameScenario::loadTilesets(Tar_Helper *t)
 bool GameScenario::loadCitysets(Tar_Helper *t)
 {
   bool broken = false;
-  std::list<Glib::ustring> citysets;
-  citysets = t->getFilenamesWithExtension(Cityset::file_extension);
-  Citysetlist *clist = Citysetlist::getInstance();
-  for (std::list<Glib::ustring>::iterator it = citysets.begin(); 
-       it != citysets.end(); it++)
+  std::list<Glib::ustring> citysets =
+    t->getFilenamesWithExtension(Cityset::file_extension);
+  for (auto it: citysets)
     {
-      guint32 id = clist->import(t, *it, broken);
+      guint32 id = Citysetlist::getInstance()->import(t, it, broken);
       if (!broken)
-        clist->get(id)->instantiateImages(broken);
+        Citysetlist::getInstance()->get(id)->instantiateImages(broken);
     }
   return !broken;
 }
@@ -175,15 +171,13 @@ bool GameScenario::loadCitysets(Tar_Helper *t)
 bool GameScenario::loadShieldsets(Tar_Helper *t)
 {
   bool broken = false;
-  std::list<Glib::ustring> shieldsets;
-  shieldsets = t->getFilenamesWithExtension(Shieldset::file_extension);
-  Shieldsetlist *slist = Shieldsetlist::getInstance();
-  for (std::list<Glib::ustring>::iterator it = shieldsets.begin(); 
-       it != shieldsets.end(); it++)
+  std::list<Glib::ustring> shieldsets = 
+    t->getFilenamesWithExtension(Shieldset::file_extension);
+  for (auto it: shieldsets)
     {
-      guint32 id = slist->import(t, *it, broken);
+      guint32 id = Shieldsetlist::getInstance()->import(t, it, broken);
       if (!broken)
-        slist->get(id)->instantiateImages(broken);
+        Shieldsetlist::getInstance()->get(id)->instantiateImages(broken);
     }
   return !broken;
 }
@@ -198,11 +192,10 @@ GameScenario::GameScenario(XML_Helper &helper, bool& broken)
 void GameScenario::quickStartEvenlyDivided()
 {
   Playerlist *plist = Playerlist::getInstance();
-  Citylist *clist = Citylist::getInstance();
   Vector <int> pos;
   // no neutral cities
   // divvy up the neutral cities among other non-neutral players
-  int cities_left = clist->size() - plist->size() + 1;
+  int cities_left = Citylist::getInstance()->size() - plist->size() + 1;
   unsigned int citycount[MAX_PLAYERS];
   memset (citycount, 0, sizeof (citycount));
   Playerlist::iterator pit = plist->begin();
@@ -229,8 +222,8 @@ void GameScenario::quickStartEvenlyDivided()
 	    continue;
 	  if (p == plist->getNeutral())
 	    continue;
-	  pos = clist->getCapitalCity(p)->getPos();
-	  City *c = clist->getNearestNeutralCity(pos);
+	  pos = Citylist::getInstance()->getCapitalCity(p)->getPos();
+	  City *c = Citylist::getInstance()->getNearestNeutralCity(pos);
 	  if (c)
 	    {
 	      //does the city contain any stacks yet?
@@ -261,10 +254,9 @@ void GameScenario::quickStartAIHeadStart()
   //each AI player gets this percent of total cities.
 
   Playerlist *plist = Playerlist::getInstance();
-  Citylist *clist = Citylist::getInstance();
   Vector <int> pos;
 
-  unsigned int citycount = clist->size() * head_start_factor;
+  unsigned int citycount = Citylist::getInstance()->size() * head_start_factor;
   if (citycount == 0)
     citycount = 1;
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
@@ -278,8 +270,8 @@ void GameScenario::quickStartAIHeadStart()
 	    continue;
 	  if (p->getType() == Player::HUMAN)
 	    continue;
-	  pos = clist->getCapitalCity(p)->getPos();
-	  City *c = clist->getNearestNeutralCity(pos);
+	  pos = Citylist::getInstance()->getCapitalCity(p)->getPos();
+	  City *c = Citylist::getInstance()->getNearestNeutralCity(pos);
 	  if (c)
 	    {
 	      //does the city contain any stacks yet?
@@ -306,14 +298,12 @@ void GameScenario::quickStartAIHeadStart()
 
 bool GameScenario::setupFog(bool hidden_map)
 {
-  Playerlist *pl = Playerlist::getInstance();
-  Playerlist::iterator it = pl->begin();
-  for (; it != pl->end(); it++)
+  for (auto it: *Playerlist::getInstance())
     {
       if (hidden_map)
-	(*it)->getFogMap()->fill(FogMap::CLOSED);
+	it->getFogMap()->fill(FogMap::CLOSED);
       else
-	(*it)->getFogMap()->fill(FogMap::OPEN);
+	it->getFogMap()->fill(FogMap::OPEN);
     }
   return true;
 }
@@ -397,11 +387,9 @@ bool GameScenario::setupItemRewards()
 {
   guint32 count = 0;
   debug("GameScenario::setupItemRewards")
-  Itemlist *il = Itemlist::getInstance();
-  Itemlist::iterator iter;
-  for (iter = il->begin(); iter != il->end(); iter++)
+  for (auto iter : *Itemlist::getInstance())
     {
-      const ItemProto* templateItem = (*iter).second;
+      const ItemProto* templateItem = iter.second;
       Item *newItem = new Item(*templateItem, count); //instantiate it
       Reward_Item *newReward = new Reward_Item(newItem); //make a reward
       newReward->setName(newReward->getDescription());
@@ -486,34 +474,33 @@ bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start)
 
   return true;
 }
+
 void GameScenario::setupDiplomacy(bool diplomacy)
 {
-  Playerlist *pl = Playerlist::getInstance();
-    // Set up diplomacy
-    for (Playerlist::iterator pit = pl->begin(); pit != pl->end(); pit++)
-      {
-	if (pl->getNeutral() == (*pit))
-	  continue;
-	for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-	  {
-	    if (pl->getNeutral() == (*it))
-	      continue;
-	    if (*pit == *it)
-	      continue;
-	    if (diplomacy == false)
-	      {
-		(*pit)->proposeDiplomacy(Player::PROPOSE_WAR, *it);
-		(*pit)->declareDiplomacy(Player::AT_WAR, *it, false);
-	      }
-	    else 
-	      {
-		(*pit)->proposeDiplomacy(Player::NO_PROPOSAL, *it);
-		(*pit)->declareDiplomacy(Player::AT_PEACE, *it, false);
-	      }
-	  }
-      }
+  for (auto pit: *Playerlist::getInstance())
+    {
+      if (Playerlist::getInstance()->getNeutral() == pit)
+        continue;
+      for (auto it: *Playerlist::getInstance())
+        {
+          if (Playerlist::getInstance()->getNeutral() == it)
+            continue;
+          if (pit == it)
+            continue;
+          if (diplomacy == false)
+            {
+              pit->proposeDiplomacy(Player::PROPOSE_WAR, it);
+              pit->declareDiplomacy(Player::AT_WAR, it, false);
+            }
+          else 
+            {
+              pit->proposeDiplomacy(Player::NO_PROPOSAL, it);
+              pit->declareDiplomacy(Player::AT_PEACE, it, false);
+            }
+        }
+    }
     if (diplomacy)
-      pl->calculateDiplomaticRankings();
+      Playerlist::getInstance()->calculateDiplomaticRankings();
 }
 
 bool GameScenario::loadWithHelper(XML_Helper& helper)
@@ -606,24 +593,20 @@ bool GameScenario::saveGame(Glib::ustring filename, Glib::ustring extension) con
   Tileset *ts = GameMap::getTileset();
   t.saveFile(ts->getConfigurationFile());
 
-  Playerlist *plist = Playerlist::getInstance();
   std::list<guint32> armysets;
-  for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
+  for (auto it: *Playerlist::getInstance())
     {
-      guint32 armyset = (*it)->getArmyset();
-      if (std::find(armysets.begin(), armysets.end(), armyset) == 
-	  armysets.end())
+      guint32 armyset = it->getArmyset();
+      if (std::find(armysets.begin(), armysets.end(), armyset) == armysets.end())
 	armysets.push_back(armyset);
     }
-  for (std::list<guint32>::iterator it = armysets.begin(); it!= armysets.end();
-       it++)
+  for (auto it: armysets)
     {
-      Armyset *as = Armysetlist::getInstance()->get(*it);
+      Armyset *as = Armysetlist::getInstance()->get(it);
       t.saveFile(as->getConfigurationFile());
     }
 
   return true;
-
 }
 
 bool GameScenario::saveWithHelper(XML_Helper &helper) const
@@ -901,8 +884,7 @@ void GameScenario::setNewRandomId()
 bool GameScenario::validate(std::list<Glib::ustring> &errors, std::list<Glib::ustring> &warnings)
 {
   Glib::ustring s;
-  Playerlist *pl = Playerlist::getInstance();
-  guint32 num = pl->countPlayersAlive();
+  guint32 num = Playerlist::getInstance()->countPlayersAlive();
   if (num < 2)
     errors.push_back(_("There must be at least 2 players in the scenario."));
 
@@ -910,28 +892,27 @@ bool GameScenario::validate(std::list<Glib::ustring> &errors, std::list<Glib::us
   if (num < 2)
     errors.push_back(_("There must be at least 2 cities in the scenario."));
 
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+  for (auto it: *Playerlist::getInstance())
     {
-      if (*it == pl->getNeutral())
+      if (it == Playerlist::getInstance()->getNeutral())
 	continue;
-      if ((*it)->isDead() == true)
+      if (it->isDead() == true)
 	continue;
-      if (Citylist::getInstance()->getCapitalCity(*it) == NULL ||
-          Citylist::getInstance()->getCapitalCity(*it)->isBurnt() == true)
+      if (Citylist::getInstance()->getCapitalCity(it) == NULL ||
+          Citylist::getInstance()->getCapitalCity(it)->isBurnt() == true)
 	{
 	  s = String::ucompose
 	    (_("The player called `%1' lacks a capital city."), 
-	     (*it)->getName().c_str());
+	     it->getName().c_str());
 	  errors.push_back(s);
 	  break;
 	}
     }
 
   guint32 count = 0;
-  Citylist *cl = Citylist::getInstance();
-  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+  for (auto it: *Citylist::getInstance())
     {
-      if ((*it)->isUnnamed() == true)
+      if (it->isUnnamed() == true)
 	count++;
     }
   if (count > 0)
@@ -941,10 +922,10 @@ bool GameScenario::validate(std::list<Glib::ustring> &errors, std::list<Glib::us
     }
 
   count = 0;
-  Ruinlist *rl = Ruinlist::getInstance();
-  for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
+
+  for (auto it: *Ruinlist::getInstance())
     {
-      if ((*it)->isUnnamed() == true)
+      if (it->isUnnamed() == true)
 	count++;
     }
   if (count > 0)
@@ -954,10 +935,9 @@ bool GameScenario::validate(std::list<Glib::ustring> &errors, std::list<Glib::us
     }
 
   count = 0;
-  Templelist *tl = Templelist::getInstance();
-  for (Templelist::iterator it = tl->begin(); it != tl->end(); it++)
+  for (auto it: *Templelist::getInstance())
     {
-      if ((*it)->isUnnamed() == true)
+      if (it->isUnnamed() == true)
 	count++;
     }
   if (count > 0)
@@ -967,10 +947,9 @@ bool GameScenario::validate(std::list<Glib::ustring> &errors, std::list<Glib::us
     }
 
   count = 0;
-  Stacklist *sl = Playerlist::getInstance()->getNeutral()->getStacklist();
-  for (Stacklist::iterator it = sl->begin(); it != sl->end(); it++)
+  for (auto it: *Playerlist::getInstance()->getNeutral()->getStacklist())
     {
-      if (Citylist::getInstance()->getObjectAt((*it)->getPos()) == NULL)
+      if (Citylist::getInstance()->getObjectAt(it->getPos()) == NULL)
 	count++;
     }
   if (count > 0)
@@ -1102,8 +1081,7 @@ public:
 	      {
 		int armyset_id;
 		helper->getData(armyset_id, "armyset");
-		Armysetlist *al = Armysetlist::getInstance();
-		Armyset *armyset = al->get(armyset_id);
+		Armyset *armyset = Armysetlist::getInstance()->get(armyset_id);
 		game_params.army_theme = armyset->getBaseName();
 	      }
 

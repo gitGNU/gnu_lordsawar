@@ -305,7 +305,6 @@ void Fight::calculateBaseStrength(std::list<Fighter*> fighters)
 void Fight::calculateTerrainModifiers(std::list<Fighter*> fighters, bool tower)
 { 
   guint32 army_bonus;
-  GameMap *gm = GameMap::getInstance();
   Maptile *mtile;
   std::list<Fighter*>::iterator fit;
   for (fit = fighters.begin(); fit != fighters.end(); fit++)
@@ -313,7 +312,7 @@ void Fight::calculateTerrainModifiers(std::list<Fighter*> fighters, bool tower)
       if ((*fit)->army->getStat(Army::SHIP))
 	continue;
 
-      mtile = gm->getTile((*fit)->pos);
+      mtile = GameMap::getInstance()->getTile((*fit)->pos);
       army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
 
       if (army_bonus & Army::ADD1STRINOPEN && mtile->isOpenTerrain() && !tower)
@@ -356,7 +355,6 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
 					Hero *strongestHero)
 {
   guint32 army_bonus;
-  GameMap *gm = GameMap::getInstance();
   Maptile *mtile;
   std::list<Fighter*>::iterator fit;
 
@@ -369,7 +367,7 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
 	continue;
       if ((*fit)->army->getStat(Army::SHIP))
         continue;
-      mtile = gm->getTile((*fit)->pos);
+      mtile = GameMap::getInstance()->getTile((*fit)->pos);
       army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
 
       if (army_bonus & Army::ADD1STACKINHILLS && mtile->isHillyTerrain())
@@ -434,7 +432,7 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
     {
       // calculate the city bonus
       fit = friendly.begin();
-      mtile = gm->getTile((*fit)->pos);
+      mtile = GameMap::getInstance()->getTile((*fit)->pos);
       City *c = Citylist::getInstance()->getNearestCity((*fit)->pos);
       if (c && mtile->getBuilding() == Maptile::CITY)
         {
@@ -711,9 +709,8 @@ void Fight::fillInInitialHPs()
 
 LocationBox Fight::calculateFightBox(Fight &fight)
 {
-  Citylist *cl = Citylist::getInstance();
   Vector<int> dest = fight.getAttackers().front()->getPos();
-  if (cl->getObjectAt(dest) == NULL)
+  if (Citylist::getInstance()->getObjectAt(dest) == NULL)
     return LocationBox(dest);
   Player *p = fight.getAttackers().front()->getOwner();
   Stack *s = fight.getAttackers().front();

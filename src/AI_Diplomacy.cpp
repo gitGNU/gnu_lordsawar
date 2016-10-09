@@ -43,20 +43,17 @@ AI_Diplomacy::~AI_Diplomacy()
 
 void AI_Diplomacy::considerCuspOfWar()
 {
-  Playerlist *pl = Playerlist::getInstance();
-  
   if (GameScenarioOptions::s_cusp_of_war &&
       GameScenarioOptions::s_round == CUSP_OF_WAR_ROUND)
   {
-    for (Playerlist::iterator it = pl->begin(); it != pl->end(); ++it)
+    for (auto other: *Playerlist::getInstance())
     {
-      Player *other = *it;
       if (other->getType() == Player::HUMAN && !other->isDead() &&
           d_owner->getDiplomaticState(other) != Player::AT_WAR)
       {
-        d_owner->proposeDiplomacy (Player::PROPOSE_WAR, *it);
+        d_owner->proposeDiplomacy (Player::PROPOSE_WAR, other);
         other->proposeDiplomacy (Player::PROPOSE_WAR, d_owner);
-        d_owner->declareDiplomacy (Player::AT_WAR, *it, false);
+        d_owner->declareDiplomacy (Player::AT_WAR, other, false);
       }
     }
   }
@@ -66,24 +63,23 @@ void AI_Diplomacy::makeFriendsAndEnemies()
 {
   // Declare war with enemies, make peace with friends
   // according to their diplomatic scores
-  Playerlist *pl = Playerlist::getInstance();
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+  for (auto it: *Playerlist::getInstance())
     {
-      if (pl->getNeutral() == (*it))
+      if (Playerlist::getInstance()->getNeutral() == it)
 	continue;
-      if ((*it)->isDead())
+      if (it->isDead())
 	continue;
-      if ((*it) == d_owner)
+      if (it == d_owner)
 	continue;
-      if (d_owner->getDiplomaticState(*it) != Player::AT_WAR)
+      if (d_owner->getDiplomaticState(it) != Player::AT_WAR)
 	{
-	  if (d_owner->getDiplomaticScore (*it) < DIPLOMACY_MIN_SCORE + 2)
-	    d_owner->proposeDiplomacy (Player::PROPOSE_WAR , *it);
+	  if (d_owner->getDiplomaticScore (it) < DIPLOMACY_MIN_SCORE + 2)
+	    d_owner->proposeDiplomacy (Player::PROPOSE_WAR , it);
 	}
-      else if (d_owner->getDiplomaticState(*it) != Player::AT_PEACE)
+      else if (d_owner->getDiplomaticState(it) != Player::AT_PEACE)
 	{
-	  if (d_owner->getDiplomaticScore (*it) > DIPLOMACY_MAX_SCORE - 2)
-	    d_owner->proposeDiplomacy (Player::PROPOSE_PEACE, *it);
+	  if (d_owner->getDiplomaticScore (it) > DIPLOMACY_MAX_SCORE - 2)
+	    d_owner->proposeDiplomacy (Player::PROPOSE_PEACE, it);
 	}
     }
 }
@@ -97,35 +93,34 @@ void AI_Diplomacy::makeRequiredEnemies()
 
 void AI_Diplomacy::neutralsDwindlingNeedFirstEnemy()
 {
-  Playerlist *pl = Playerlist::getInstance();
   // find a close player if neutral cities are getting low
-  Citylist *cl = Citylist::getInstance();
-  int target_level = (int)((float)cl->size() * (float) 0.06);
+  int target_level = (int)((float)Citylist::getInstance()->size() * (float) 0.06);
   target_level++;
   bool at_war = false;
-  guint32 neutral_cities = cl->countCities(pl->getNeutral());
+  guint32 neutral_cities = 
+    Citylist::getInstance()->countCities(Playerlist::getInstance()->getNeutral());
   if (neutral_cities && (int)neutral_cities > target_level)
     {
       //Pick a new opponent if we don't already have one.
-      for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+      for (auto it: *Playerlist::getInstance())
 	{
-	  if (pl->getNeutral() == (*it))
+	  if (Playerlist::getInstance()->getNeutral() == it)
 	    continue;
-	  if ((*it)->isDead())
+	  if (it->isDead())
 	    continue;
-	  if ((*it) == d_owner)
+	  if (it == d_owner)
 	    continue;
-	  if (d_owner->getDiplomaticState(*it) != Player::AT_WAR)
+	  if (d_owner->getDiplomaticState(it) != Player::AT_WAR)
 	    at_war = true;
 	}
       if (at_war == false)
 	{
 	  // not at war?  great.  let's pick a player to attack.
-	  City *first_city = d_owner->getFirstCity();
-	  if (first_city)
+	  City *first = d_owner->getFirstCity();
+	  if (first)
 	    {
-	      City *c;
-	      c = cl->getNearestForeignCity(first_city->getPos());
+	      City *c =
+                Citylist::getInstance()->getNearestForeignCity(first->getPos());
 	      if (c)
 		d_owner->proposeDiplomacy(Player::PROPOSE_WAR, c->getOwner());
 	    }
@@ -135,39 +130,38 @@ void AI_Diplomacy::neutralsDwindlingNeedFirstEnemy()
 
 void AI_Diplomacy::gangUpOnTheBully()
 {
-  Playerlist *pl = Playerlist::getInstance();
-  Citylist *cl = Citylist::getInstance();
   // declare war with the strong player.
   // declare peace with every other.
-  int target_level = (int)((float)cl->size() * (float)0.35);
-  if (pl->countPlayersAlive() <  MAX_PLAYERS / 2)
+  int target_level = (int)((float)Citylist::getInstance()->size() * (float)0.35);
+  if (Playerlist::getInstance()->countPlayersAlive() <  MAX_PLAYERS / 2)
     return;
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+  for (auto it: *Playerlist::getInstance())
     {
-      if (pl->getNeutral() == (*it))
+      if (Playerlist::getInstance()->getNeutral() == it)
 	continue;
-      if ((*it)->isDead())
+      if (it->isDead())
 	continue;
-      if ((*it) == d_owner)
+      if (it == d_owner)
 	continue;
-      if (cl->countCities(*it) > target_level && pl->countPlayersAlive() > 4)
+      if (Citylist::getInstance()->countCities(it) > target_level && 
+          Playerlist::getInstance()->countPlayersAlive() > 4)
 	{
-	  if (d_owner->getDiplomaticState(*it) != Player::AT_WAR)
-	    d_owner->proposeDiplomacy(Player::PROPOSE_WAR, *it);
-	  for (Playerlist::iterator pit = pl->begin(); pit != pl->end(); pit++)
+	  if (d_owner->getDiplomaticState(it) != Player::AT_WAR)
+	    d_owner->proposeDiplomacy(Player::PROPOSE_WAR, it);
+          for (auto pit: *Playerlist::getInstance())
 	    {
-	      if (pl->getNeutral() == (*pit))
+	      if (Playerlist::getInstance()->getNeutral() == pit)
 		continue;
-	      if ((*pit)->isDead())
+	      if (pit->isDead())
 		continue;
-	      if ((*pit) == d_owner)
+	      if (pit == d_owner)
 		continue;
-	      if ((*pit) == *it)
+	      if (pit == it)
 		continue;
-	      if ((*pit)->getType() == Player::HUMAN)
+	      if (pit->getType() == Player::HUMAN)
 		continue;
-	      if (d_owner->getDiplomaticState(*pit) != Player::AT_PEACE)
-		d_owner->declareDiplomacy(Player::AT_PEACE, *pit, false);
+	      if (d_owner->getDiplomaticState(pit) != Player::AT_PEACE)
+		d_owner->declareDiplomacy(Player::AT_PEACE, pit, false);
 	    }
 	}
     }

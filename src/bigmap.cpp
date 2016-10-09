@@ -299,8 +299,6 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface)
 {
   //this routine is for drawing the active stack.
   //for all other stacks see ImageCache::draw_tile_pic
-  GameMap *gm = GameMap::getInstance();
-  ImageCache *gc = ImageCache::getInstance();
   Vector<int> p = s->getPos();
   Player *player = s->getOwner();
   int tilesize = GameMap::getInstance()->getTileSize();
@@ -323,7 +321,7 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface)
       //we don't show the army or the flag if we're in fortified tent.
       if (s->hasShip())
 	{
-          PixMask *ship = gc->getShipPic(player)->copy();
+          PixMask *ship = ImageCache::getInstance()->getShipPic(player)->copy();
           ship->scale (ship, tilesize, tilesize);
           ship->blit(surface, p);
           delete ship;
@@ -336,12 +334,12 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface)
 	      if (player->getStacklist()->getActivestack() != s &&
 		  player == Playerlist::getActiveplayer())
 		show_army = false;
-	      Maptile *tile = gm->getTile(s->getPos());
+	      Maptile *tile = GameMap::getInstance()->getTile(s->getPos());
 	      if (tile->getBuilding() != Maptile::CITY &&
 		  tile->getBuilding() != Maptile::RUIN &&
 		  tile->getBuilding() != Maptile::TEMPLE)
                 {
-                  PixMask *tower = gc->getTowerPic(player)->copy();
+                  PixMask *tower = ImageCache::getInstance()->getTowerPic(player)->copy();
                   tower->scale (tower, tilesize, tilesize);
                   tower->blit(surface, p);
                   delete tower;
@@ -353,7 +351,7 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface)
 	  if (show_army == true)
 	    {
 	      Army *a = *s->begin();
-	      PixMask *armypic = gc->getArmyPic(a)->copy();
+	      PixMask *armypic = ImageCache::getInstance()->getArmyPic(a)->copy();
               armypic->scale (armypic, tilesize, tilesize);
               armypic->blit(surface, p);
               delete armypic;
@@ -376,7 +374,7 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface)
             stacksize = MAX_STACK_SIZE;
           if (stacksize > 0)
             {
-              PixMask *flag = gc->getFlagPic(stacksize, player)->copy();
+              PixMask *flag = ImageCache::getInstance()->getFlagPic(stacksize, player)->copy();
               flag->scale (flag, tilesize, tilesize);
               flag->blit(surface, p);
               delete flag;
@@ -429,8 +427,7 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> su
   guint32 tilesize = GameMap::getInstance()->getTileSize();
   Player *viewing = Playerlist::getViewingplayer();
   ImageCache *gc = ImageCache::getInstance();
-  GameMap *gm = GameMap::getInstance();
-  int tile_style_id = gm->getTile(tile)->getTileStyle()->getId();
+  int tile_style_id = GameMap::getInstance()->getTile(tile)->getTileStyle()->getId();
   int fog_type_id = 0;
   fog_type_id = viewing->getFogMap()->getShadeTile(tile);
 
@@ -442,7 +439,7 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> su
   int army_type_id = -1;
   bool has_ship = false;
   bool has_tower = false;
-  Maptile::Building building_type = gm->getTile(tile)->getBuilding();
+  auto building_type = GameMap::getInstance()->getTile(tile)->getBuilding();
   Vector<int> building_tile = Vector<int>(-1,-1);
   int building_subtype = -1;
   int building_player_id = -1;
@@ -486,7 +483,7 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> su
 	  if (Playerlist::getActiveplayer()->getActivestack() != stack)
 	    {
 	      stack_player_id = stack->getOwner()->getId();
-	      Maptile *m = gm->getTile(tile);
+	      Maptile *m = GameMap::getInstance()->getTile(tile);
 	      if (stack->getFortified() == true &&
 		  m->getBuilding() != Maptile::CITY &&
 		  m->getBuilding() != Maptile::RUIN &&

@@ -130,10 +130,8 @@ bool AI_Fast::startTurn()
 
     //setup production
     debug("examining cities");
-    Citylist *cl = Citylist::getInstance();
-    for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
+    for (auto c: *Citylist::getInstance())
       {
-        City *c = *cit;
         if (c->getOwner() != this || c->isBurnt())
           continue;
         if (c->getActiveProductionSlot() == -1)
@@ -401,394 +399,391 @@ bool AI_Fast::computerTurn()
     // we are using reversed order because new stacks come behind old stacks
     // and we want the freshly created stacks join the veterans and not the other
     // way round.
-    //d_stacklist->dump();
  
   std::list<Vector<int> > points = d_stacklist->getPositions();
-    for (std::list<Vector<int> >::iterator it = points.begin(); 
-         it != points.end(); it++)
-      {
-        Stack *s = GameMap::getFriendlyStack(*it);
-        if (!s)
-          continue;
+  for (auto it: points)
+    {
+      Stack *s = GameMap::getFriendlyStack(it);
+      if (!s)
+        continue;
 
-        d_stacklist->setActivestack(s);
+      d_stacklist->setActivestack(s);
 
-        //move stacks to enemy cities.
-        if (s->hasPath() == true && s->getParked() == false)
-          {
-            Vector<int> pos = s->getLastPointInPath();
-            City *enemy = GameMap::getEnemyCity(pos);
-            if (enemy)
-              {
-                if (enemy->isBurnt() == false)
-                  {
-                    stack_moved |= stackMove(s);
-                    if (d_stacklist->getActivestack() == NULL)
-                      return true;
-                    if (stack_moved)
-                      continue;
-                  }
-              }
-          }
-
-        //go to a temple or ruin
-        if (!d_maniac)
-          {
-            bool stack_died = false;
-            bool blessed = false;
-            if (s->hasHero() == false)
-              {
-                stack_moved = AI_maybeVisitTempleForBlessing
-                  (s, s->getMoves(), 50.0, blessed, stack_died);
-                if (stack_died)
-                  return true;
-                s = d_stacklist->getActivestack();
-                if (stack_moved)
-                  {
-                    GameMap::groupStacks(s);
-                    s->clearPath();
-                    continue;
-                  }
-              }
-            else if (s->hasHero() == true)
-              {
-                bool got_quest = false;
-                stack_moved = AI_maybeVisitTempleForQuest(s, s->getMoves(), 
-                                                          got_quest, 
-                                                          stack_died);
-                if (stack_died)
-                  return true;
-                if (!stack_moved)
-                  {
-                    bool ruin_visited = false;
-                    stack_moved = AI_maybeVisitRuin (s, s->getMoves(), 
-                                                     ruin_visited, stack_died);
-                    if (stack_died)
-                      return true;
-                  }
-                s = d_stacklist->getActivestack();
-                if (stack_moved)
-                  {
-                    GameMap::groupStacks(s);
-                    s->clearPath();
-                    continue;
-                  }
-              }
-          }
-
-        //pick up items
-        if (!d_maniac)
-          {
-            bool stack_died = false;
-            bool picked_up = false;
-
-            stack_moved = AI_maybePickUpItems(s, s->getMoves(), picked_up, 
-                                              stack_died);
-            if (stack_died)
-              return true;
-            s = d_stacklist->getActivestack();
-            if (picked_up && stack_moved)
-              stack_moved = false; //do this so we move it later on
-            else if (stack_moved)
-              continue;
-          }
-
-        debug(">>>> What to do with stack " <<s->getId() <<" at (" <<s->getPos().x
-              <<"," <<s->getPos().y <<") containing " <<s->size() << " armies ?")
-
-          // join armies if close
-          if (d_join && s->isFull() == false)
+      //move stacks to enemy cities.
+      if (s->hasPath() == true && s->getParked() == false)
+        {
+          Vector<int> pos = s->getLastPointInPath();
+          City *enemy = GameMap::getEnemyCity(pos);
+          if (enemy)
             {
-              Stack* target = NULL;
-              target = findNearOwnStackToJoin(s, 5);
-
-              if (target)
+              if (enemy->isBurnt() == false)
                 {
-                  debug("Joining with stack " <<target->getId() <<" at (" <<target->getPos().x <<"," <<target->getPos().y <<")")
-                    s->getPath()->calculate(s, target->getPos());
                   stack_moved |= stackMove(s);
-                  //in case we lost our stack
-                  if (!d_stacklist->getActivestack())
+                  if (d_stacklist->getActivestack() == NULL)
                     return true;
-                  if (s->getPos() == target->getPos())
-                    {
-                      GameMap::groupStacks(s);
-                      continue;
-                    }
+                  if (stack_moved)
+                    continue;
+                }
+            }
+        }
+
+      //go to a temple or ruin
+      if (!d_maniac)
+        {
+          bool stack_died = false;
+          bool blessed = false;
+          if (s->hasHero() == false)
+            {
+              stack_moved = AI_maybeVisitTempleForBlessing
+                (s, s->getMoves(), 50.0, blessed, stack_died);
+              if (stack_died)
+                return true;
+              s = d_stacklist->getActivestack();
+              if (stack_moved)
+                {
+                  GameMap::groupStacks(s);
+                  s->clearPath();
                   continue;
                 }
             }
+          else if (s->hasHero() == true)
+            {
+              bool got_quest = false;
+              stack_moved = AI_maybeVisitTempleForQuest(s, s->getMoves(), 
+                                                        got_quest, 
+                                                        stack_died);
+              if (stack_died)
+                return true;
+              if (!stack_moved)
+                {
+                  bool ruin_visited = false;
+                  stack_moved = AI_maybeVisitRuin (s, s->getMoves(), 
+                                                   ruin_visited, stack_died);
+                  if (stack_died)
+                    return true;
+                }
+              s = d_stacklist->getActivestack();
+              if (stack_moved)
+                {
+                  GameMap::groupStacks(s);
+                  s->clearPath();
+                  continue;
+                }
+            }
+        }
 
-        // second step: try to resupply
-        if (!d_maniac)
+      //pick up items
+      if (!d_maniac)
+        {
+          bool stack_died = false;
+          bool picked_up = false;
+
+          stack_moved = AI_maybePickUpItems(s, s->getMoves(), picked_up, 
+                                            stack_died);
+          if (stack_died)
+            return true;
+          s = d_stacklist->getActivestack();
+          if (picked_up && stack_moved)
+            stack_moved = false; //do this so we move it later on
+          else if (stack_moved)
+            continue;
+        }
+
+      debug(">>>> What to do with stack " <<s->getId() <<" at (" <<s->getPos().x
+            <<"," <<s->getPos().y <<") containing " <<s->size() << " armies ?")
+
+        // join armies if close
+        if (d_join && s->isFull() == false)
           {
-            City *target = Citylist::getInstance()->getNearestFriendlyCity(s->getPos());
-            if (s->isFull() == false && target)
+            Stack* target = NULL;
+            target = findNearOwnStackToJoin(s, 5);
+
+            if (target)
               {
-                debug("Restocking in " <<target->getName())
-                  // try to move to the north west part of the city (where the units
-                  // move after production), otherwise just wait and stand around
-
-                  if (target->contains(s->getPos()) == false)
-                    {
-                      debug("Stack is not in " << target->getName() << " yet" <<std::endl);
-                      int mp = s->getPath()->calculateToCity(s, target);
-                      if (mp > 0)
-                        {
-                          stack_moved |= stackMove(s);
-
-                          // the stack could have joined another stack waiting there
-                          if (!d_stacklist->getActivestack())
-                            return true;
-                          if (stack_moved)
-                            {
-                              GameMap::groupStacks(s);
-                              s->clearPath();
-                              continue;
-                            }
-                        }
-                    }
-                  else if (s->getPos() != target->getPos())
-                    {
-                      debug("Stack is inside " << target->getName() << std::endl);
-                      //if we're not in the upper right corner
-                      s->getPath()->calculate(s, target->getPos());
-                      //go there, and take as many as we can
-                      Stack *new_stack = NULL;
-                      stack_moved |= stackSplitAndMove(s, new_stack);
-                      //in case we lost our stack
-                      if (!d_stacklist->getActivestack())
-                        return true;
-                      if (stack_moved)
-                        {
-                          GameMap::groupStacks(s);
-                          s->clearPath();
-                          GameMap::groupStacks(target->getPos());
-                          return true;
-                        }
-                    }
-                  else
-                    {
-                      //otherwise just stay put in the city
-                      GameMap::groupStacks(s);
-                      continue;
-                    }
-              }
-
-            // third step: non-maniac players attack only enemy cities
-            else
-              {
-                target = NULL;
-                PathCalculator pc(s, true, 10, -1);
-                guint32 moves1 = 0, turns1 = 0, moves2 = 0, turns2 = 0;
-                guint32 left1 = 0, left2 = 0;
-                Path *target1_path = NULL;
-                Path *target2_path = NULL;
-                Citylist *cl = Citylist::getInstance();
-                City *target1;
-                if (Rnd::rand() % 3 == 0)
-                  target1 = cl->getClosestEnemyCity(s);
-                else
-                  target1 = cl->getNearestEnemyCity(s->getPos());
-                City *target2 = cl->getNearestForeignCity(s->getPos());
-                if (target1)
-                  target1_path = pc.calculateToCity(target1, moves1, turns1, left1);
-                else
-                  target1_path = new Path();
-                if (!target2)
-                  {
-                    delete target1_path;
-                    return false; //it's game over and we're still moving
-                  }
-                target2_path = pc.calculateToCity(target2, moves2, turns2, left2);
-
-                //no enemies?  then go for the nearest foreign city.
-                //if diplomacy isn't on and we hit this, then it's game over
-                if (!target1)
-                  target = target2;
-
-                //is the enemy city far enough away that a foreign city
-                //outweighs it?
-                else if (target1_path->size() / 13 > target2_path->size())
-                  target = target2;
-                else
-                  target = target1;
-                delete target1_path;
-                delete target2_path;
-
-                if (target == target2)
-                  {
-                    if (GameScenarioOptions::s_diplomacy == true)
-                      d_diplomacy->needNewEnemy(target->getOwner());
-                    // try to wait a turn until we're at war
-                    if (target1)
-                      target = target1;
-                  }
-
-                if (!target)    // strange situation
-                  {
-                    std::cerr << "yet another bad situation!!" << std::endl;
-                    stackPark(s);
-                    return true;
-                  }
-
-                debug("Attacking " << target->getName() << " (" << 
-                      target->getPos().x <<","<< target->getPos().y << ")")
-                  int moves = s->getPath()->calculateToCity(s, target);
-                debug("Moves to enemy city: " << moves);
-
-                if (moves >= 1)
-                  {
-                    stack_moved |= stackMove(s);
-                    s = d_stacklist->getActivestack();
-                    if (!d_stacklist->getActivestack())
-                      return true;
-                    //if we didn't get there
-                    if (target->getOwner() != s->getOwner())
-                      {
-                        //and the target city is empty
-                        if (target->countDefenders() == 0)
-                          {
-                            //attack it if we can reach it.
-                            Stack *new_stack = NULL;
-                            int moved = stackSplitAndMove(s, new_stack);
-                            stack_moved |=  moved;
-                            if (moved)
-                              {
-                                //either s or new_stack could be dead.
-                                if (d_stacklist->getActivestack() != NULL)
-                                  GameMap::groupStacks(s);
-                                GameMap::groupStacks(target->getPos());
-                                return true;
-                              }
-                          }
-                      }
-                  }
-                else
-                  {
-                    // an enemy city is completely surrouned by other stacks, or the way is blocked by a signle enemy stack
-                    //let us presume this is temporary and just leave the stack here
-                    //for some reason we can't set parked on this thing
-                    //and have it realize it, after we return true.
-                    //why is that?
-                    printf("crap, it happened with a stack at %d,%d\n", s->getPos().x, s->getPos().y);
-                    printf("moves is %d\n", moves);
-                    printf("Destination was %d,%d (%s)\n", target->getPos().x, target->getPos().y, target->getName().c_str());
-                    stackDisband(s);
-                    return true;
-                  }
-
-                // a stack has died ->restart
+                debug("Joining with stack " <<target->getId() <<" at (" <<target->getPos().x <<"," <<target->getPos().y <<")")
+                  s->getPath()->calculate(s, target->getPos());
+                stack_moved |= stackMove(s);
+                //in case we lost our stack
                 if (!d_stacklist->getActivestack())
                   return true;
-
+                if (s->getPos() == target->getPos())
+                  {
+                    GameMap::groupStacks(s);
+                    continue;
+                  }
                 continue;
               }
           }
 
+      // second step: try to resupply
+      if (!d_maniac)
+        {
+          City *target = Citylist::getInstance()->getNearestFriendlyCity(s->getPos());
+          if (s->isFull() == false && target)
+            {
+              debug("Restocking in " <<target->getName())
+                // try to move to the north west part of the city (where the units
+                // move after production), otherwise just wait and stand around
 
-        // fourth step: maniac players attack everything that is close if they can
-        // reach it or cities otherwise.
-        if (d_maniac)
-          {
-            const Threatlist* threats = d_analysis->getThreatsInOrder(s->getPos());
-            Threatlist::const_iterator tit = threats->begin();
-            const Threat* target = 0;
-
-            // prefer weak forces (take strong if neccessary) and stop after 10
-            // stacks
-            for (int i = 0; tit != threats->end() && i < 10; tit++, i++)
-              {
-                // in a first step, we only look at enemy stacks
-                if ((*tit)->isCity() || (*tit)->isRuin())
-                  continue;
-
-                // ignore stacks out of reach
-                Vector<int> threatpos = (*tit)->getClosestPoint(s->getPos());
-                if (threatpos == Vector<int>(-1, -1))
-                  continue;
-
-                guint32 mp = s->getPath()->calculate(s, threatpos);
-                if ((int)mp <= 0 || mp > s->getMoves())
-                  continue;
-
-                target = *tit;
-                break;
-
-              }
-
-            // now we need to choose. If we found a target, attack it, otherwise
-            // attack the closest city.
-            Vector<int> pos = Vector<int>(-1,-1);
-            if (target)
-              {
-                pos = target->getClosestPoint(s->getPos());
-                debug("Maniac mode, found target at (" <<pos.x <<"," <<pos.y <<")")
-              }
-            else
-              {
-                Citylist *cl = Citylist::getInstance();
-                City *enemy_city = cl->getNearestForeignCity(s->getPos());
-                if (enemy_city)
+                if (target->contains(s->getPos()) == false)
                   {
-                    pos  = enemy_city->getPos();
-                    debug("Maniac, found no targets, attacking city " << enemy_city->getName() << " at (" <<pos.x <<"," <<pos.y <<")")
-                  }
-              }
-
-            if (pos == Vector<int>(-1,-1))
-              return false;
-
-            int mp = s->getPath()->calculate(s, pos);
-            if (mp > 0)
-              {
-                //printf ("stack %d at %d,%d moving %d with %d moves\n",
-                //s->getId(), s->getPos().x, s->getPos().y,
-                //mp, s->getMoves());
-                bool moved = stackMove(s);
-                //printf("result of move: %d\n", moved);
-                stack_moved |= moved;
-                //in case we lost our stack
-                if (!d_stacklist->getActivestack())
-                  return true;
-                s = d_stacklist->getActivestack();
-              }
-            else
-              {
-                printf ("we're going the wrong way (mp is %d)!!\n", mp);
-                printf ("this means we couldn't calculate a path from %d,%d to %d,%d\n", s->getPos().x, s->getPos().y, pos.x, pos.y);
-                //sleep (10);
-                Citylist *cl = Citylist::getInstance();
-                City *friendly_city = cl->getNearestFriendlyCity(s->getPos());
-                if (friendly_city)
-                  {
-                    mp = s->getPath()->calculate(s, friendly_city->getPos());
+                    debug("Stack is not in " << target->getName() << " yet" <<std::endl);
+                    int mp = s->getPath()->calculateToCity(s, target);
                     if (mp > 0)
                       {
                         stack_moved |= stackMove(s);
-                        //in case we lost our stack
+
+                        // the stack could have joined another stack waiting there
                         if (!d_stacklist->getActivestack())
                           return true;
+                        if (stack_moved)
+                          {
+                            GameMap::groupStacks(s);
+                            s->clearPath();
+                            continue;
+                          }
                       }
-                    else
-                      stack_moved |= false;
+                  }
+                else if (s->getPos() != target->getPos())
+                  {
+                    debug("Stack is inside " << target->getName() << std::endl);
+                    //if we're not in the upper right corner
+                    s->getPath()->calculate(s, target->getPos());
+                    //go there, and take as many as we can
+                    Stack *new_stack = NULL;
+                    stack_moved |= stackSplitAndMove(s, new_stack);
+                    //in case we lost our stack
+                    if (!d_stacklist->getActivestack())
+                      return true;
+                    if (stack_moved)
+                      {
+                        GameMap::groupStacks(s);
+                        s->clearPath();
+                        GameMap::groupStacks(target->getPos());
+                        return true;
+                      }
                   }
                 else
                   {
-                    //we can't find anyplace to move to!
-                    //so we stay put.
-                    stack_moved |= false;
+                    //otherwise just stay put in the city
+                    GameMap::groupStacks(s);
+                    continue;
                   }
-              }
+            }
 
-            if (!d_stacklist->getActivestack())
-              return true;
-            continue;
+          // third step: non-maniac players attack only enemy cities
+          else
+            {
+              target = NULL;
+              PathCalculator pc(s, true, 10, -1);
+              guint32 moves1 = 0, turns1 = 0, moves2 = 0, turns2 = 0;
+              guint32 left1 = 0, left2 = 0;
+              Path *target1_path = NULL;
+              Path *target2_path = NULL;
+              City *target1;
+              if (Rnd::rand() % 3 == 0)
+                target1 = Citylist::getInstance()->getClosestEnemyCity(s);
+              else
+                target1 = Citylist::getInstance()->getNearestEnemyCity(s->getPos());
+              City *target2 = Citylist::getInstance()->getNearestForeignCity(s->getPos());
+              if (target1)
+                target1_path = pc.calculateToCity(target1, moves1, turns1, left1);
+              else
+                target1_path = new Path();
+              if (!target2)
+                {
+                  delete target1_path;
+                  return false; //it's game over and we're still moving
+                }
+              target2_path = pc.calculateToCity(target2, moves2, turns2, left2);
 
-          }
-        if (abort_requested)
-          break;
-      }
+              //no enemies?  then go for the nearest foreign city.
+              //if diplomacy isn't on and we hit this, then it's game over
+              if (!target1)
+                target = target2;
+
+              //is the enemy city far enough away that a foreign city
+              //outweighs it?
+              else if (target1_path->size() / 13 > target2_path->size())
+                target = target2;
+              else
+                target = target1;
+              delete target1_path;
+              delete target2_path;
+
+              if (target == target2)
+                {
+                  if (GameScenarioOptions::s_diplomacy == true)
+                    d_diplomacy->needNewEnemy(target->getOwner());
+                  // try to wait a turn until we're at war
+                  if (target1)
+                    target = target1;
+                }
+
+              if (!target)    // strange situation
+                {
+                  std::cerr << "yet another bad situation!!" << std::endl;
+                  stackPark(s);
+                  return true;
+                }
+
+              debug("Attacking " << target->getName() << " (" << 
+                    target->getPos().x <<","<< target->getPos().y << ")")
+                int moves = s->getPath()->calculateToCity(s, target);
+              debug("Moves to enemy city: " << moves);
+
+              if (moves >= 1)
+                {
+                  stack_moved |= stackMove(s);
+                  s = d_stacklist->getActivestack();
+                  if (!d_stacklist->getActivestack())
+                    return true;
+                  //if we didn't get there
+                  if (target->getOwner() != s->getOwner())
+                    {
+                      //and the target city is empty
+                      if (target->countDefenders() == 0)
+                        {
+                          //attack it if we can reach it.
+                          Stack *new_stack = NULL;
+                          int moved = stackSplitAndMove(s, new_stack);
+                          stack_moved |=  moved;
+                          if (moved)
+                            {
+                              //either s or new_stack could be dead.
+                              if (d_stacklist->getActivestack() != NULL)
+                                GameMap::groupStacks(s);
+                              GameMap::groupStacks(target->getPos());
+                              return true;
+                            }
+                        }
+                    }
+                }
+              else
+                {
+                  // an enemy city is completely surrouned by other stacks, or the way is blocked by a signle enemy stack
+                  //let us presume this is temporary and just leave the stack here
+                  //for some reason we can't set parked on this thing
+                  //and have it realize it, after we return true.
+                  //why is that?
+                  printf("crap, it happened with a stack at %d,%d\n", s->getPos().x, s->getPos().y);
+                  printf("moves is %d\n", moves);
+                  printf("Destination was %d,%d (%s)\n", target->getPos().x, target->getPos().y, target->getName().c_str());
+                  stackDisband(s);
+                  return true;
+                }
+
+              // a stack has died ->restart
+              if (!d_stacklist->getActivestack())
+                return true;
+
+              continue;
+            }
+        }
+
+
+      // fourth step: maniac players attack everything that is close if they can
+      // reach it or cities otherwise.
+      if (d_maniac)
+        {
+          const Threatlist* threats = d_analysis->getThreatsInOrder(s->getPos());
+          Threatlist::const_iterator tit = threats->begin();
+          const Threat* target = 0;
+
+          // prefer weak forces (take strong if neccessary) and stop after 10
+          // stacks
+          for (int i = 0; tit != threats->end() && i < 10; tit++, i++)
+            {
+              // in a first step, we only look at enemy stacks
+              if ((*tit)->isCity() || (*tit)->isRuin())
+                continue;
+
+              // ignore stacks out of reach
+              Vector<int> threatpos = (*tit)->getClosestPoint(s->getPos());
+              if (threatpos == Vector<int>(-1, -1))
+                continue;
+
+              guint32 mp = s->getPath()->calculate(s, threatpos);
+              if ((int)mp <= 0 || mp > s->getMoves())
+                continue;
+
+              target = *tit;
+              break;
+
+            }
+
+          // now we need to choose. If we found a target, attack it, otherwise
+          // attack the closest city.
+          Vector<int> pos = Vector<int>(-1,-1);
+          if (target)
+            {
+              pos = target->getClosestPoint(s->getPos());
+              debug("Maniac mode, found target at (" <<pos.x <<"," <<pos.y <<")")
+            }
+          else
+            {
+              City *enemy_city = 
+                Citylist::getInstance()->getNearestForeignCity(s->getPos());
+              if (enemy_city)
+                {
+                  pos  = enemy_city->getPos();
+                  debug("Maniac, found no targets, attacking city " << enemy_city->getName() << " at (" <<pos.x <<"," <<pos.y <<")")
+                }
+            }
+
+          if (pos == Vector<int>(-1,-1))
+            return false;
+
+          int mp = s->getPath()->calculate(s, pos);
+          if (mp > 0)
+            {
+              //printf ("stack %d at %d,%d moving %d with %d moves\n",
+              //s->getId(), s->getPos().x, s->getPos().y,
+              //mp, s->getMoves());
+              bool moved = stackMove(s);
+              //printf("result of move: %d\n", moved);
+              stack_moved |= moved;
+              //in case we lost our stack
+              if (!d_stacklist->getActivestack())
+                return true;
+              s = d_stacklist->getActivestack();
+            }
+          else
+            {
+              printf ("we're going the wrong way (mp is %d)!!\n", mp);
+              printf ("this means we couldn't calculate a path from %d,%d to %d,%d\n", s->getPos().x, s->getPos().y, pos.x, pos.y);
+              //sleep (10);
+              City *friendly_city = 
+                Citylist::getInstance()->getNearestFriendlyCity(s->getPos());
+              if (friendly_city)
+                {
+                  mp = s->getPath()->calculate(s, friendly_city->getPos());
+                  if (mp > 0)
+                    {
+                      stack_moved |= stackMove(s);
+                      //in case we lost our stack
+                      if (!d_stacklist->getActivestack())
+                        return true;
+                    }
+                  else
+                    stack_moved |= false;
+                }
+              else
+                {
+                  //we can't find anyplace to move to!
+                  //so we stay put.
+                  stack_moved |= false;
+                }
+            }
+
+          if (!d_stacklist->getActivestack())
+            return true;
+          continue;
+
+        }
+      if (abort_requested)
+        break;
+    }
     return stack_moved;
 }
 

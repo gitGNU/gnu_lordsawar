@@ -410,104 +410,93 @@ bool CreateScenario::tooNearToOtherCapitalCities(City *c, std::list<City*> capit
 
 bool CreateScenario::distributePlayers()
 {
-    debug("CreateScenario::distributePlayers")
+  debug("CreateScenario::distributePlayers")
 
-    Citylist* cl = Citylist::getInstance();
-    const Playerlist* pl = Playerlist::getInstance();
+  //okay, everyone starts out as neutral.
+  for (auto c: *Citylist::getInstance())
+    if (c->isBurnt() == false)
+      c->setOwner(Playerlist::getInstance()->getNeutral());
 
-    //okay, everyone starts out as neutral.
-    for (Citylist::iterator cit = cl->begin(); cit != cl->end(); cit++)
-      {
-        City *c = *cit;
-	if (c->isBurnt() == false)
-	  c->setOwner(pl->getNeutral());
-      }
+  std::list<City*> capitals;
+  //now pick some equidistant cities for capitals, that aren't too close.
+  for (auto pit: *Playerlist::getInstance())
+    {
+      int tries = 0;
+      if (pit == Playerlist::getInstance()->getNeutral())
+        continue;
+      while (1)
+        {
+          Vector<int> pos = 
+            Vector<int>(Rnd::rand() % d_width, Rnd::rand() % d_height);
+          City *city = Citylist::getInstance()->getNearestCity(pos);
+          if (city->isBurnt() == false && city->isCapital() == false)
+            {
+              if (tooNearToOtherCapitalCities(city, capitals, 30) == false || 
+                  tries > 50)
+                {
+                  createCapitalCity(pit, city);
+                  capitals.push_back(city);
+                  break;
+                }
+              else
+                tries++;
+            }
+          else
+            tries++;
+          if (tries > 100)
+            break;
+        }
+    }
 
-    std::list<City*> capitals;
-    //now pick some equidistant cities for capitals, that aren't too close.
-    for (Playerlist::const_iterator pit = pl->begin(); pit != pl->end(); pit++)
-      {
-	int tries = 0;
-	if (*pit == pl->getNeutral())
-	  continue;
-	while (1)
-	  {
-	    Vector<int> pos = Vector<int>(Rnd::rand() % d_width, Rnd::rand() % d_height);
-	    City *city = Citylist::getInstance()->getNearestCity(pos);
-	    if (city->isBurnt() == false && city->isCapital() == false)
-	      {
-		if (tooNearToOtherCapitalCities(city, capitals, 30) == false || 
-		    tries > 50)
-		  {
-		    createCapitalCity(*pit, city);
-		    capitals.push_back(city);
-		    break;
-		  }
-		else
-		  tries++;
-	      }
-	    else
-	      tries++;
-	    if (tries > 100)
-	      break;
-	  }
-      }
-
-    return true;
+  return true;
 }
 
 bool CreateScenario::setupCities(bool cities_can_produce_allies,
 				 int number_of_armies_factor)
 {
-    debug("CreateScenario::setupCities")
+  debug("CreateScenario::setupCities")
 
-    for (Citylist::iterator it = Citylist::getInstance()->begin();
-        it != Citylist::getInstance()->end(); it++)
+  for (auto c: *Citylist::getInstance())
     {
-        City *c = *it;
-        //1. set a reasonable cityname
-        c->setName(popRandomCityName());
+      //1. set a reasonable cityname
+      c->setName(popRandomCityName());
 
-        //2. distribute the income a bit (TBD)
+      //2. distribute the income a bit (TBD)
 
-        //3. set the city production
-        c->setRandomArmytypes(cities_can_produce_allies, 
-			      number_of_armies_factor);
+      //3. set the city production
+      c->setRandomArmytypes(cities_can_produce_allies, 
+                            number_of_armies_factor);
 
-	c->setGold(getRandomCityIncome(c->isCapital()));
+      c->setGold(getRandomCityIncome(c->isCapital()));
     }
 
-    return true;
+  return true;
 }
 
 bool CreateScenario::setupRoads()
 {
-  Roadlist* rl = Roadlist::getInstance();
-  for (Roadlist::iterator it = rl->begin(); it != rl->end(); it++)
-    (*it)->setType(calculateRoadType((*it)->getPos()));
+  for (auto it: *Roadlist::getInstance())
+    it->setType(calculateRoadType(it->getPos()));
   return true;
 }
 
 bool CreateScenario::setupBridges()
 {
-  Bridgelist* bl = Bridgelist::getInstance();
-  for (Bridgelist::iterator it = bl->begin(); it != bl->end(); it++)
-    (*it)->setType(Bridgelist::getInstance()->calculateType((*it)->getPos()));
+  for (auto it: *Bridgelist::getInstance())
+    it->setType(Bridgelist::getInstance()->calculateType(it->getPos()));
   return true;
 }
 
 bool CreateScenario::setupTemples()
 {
-    Templelist* tl = Templelist::getInstance();
-    for (Templelist::iterator it = tl->begin(); it != tl->end(); it++)
+  for (auto it: *Templelist::getInstance())
     {
-        // set a random temple type
-        int type= (int) ((TEMPLE_TYPES*1.0) * (Rnd::rand() / (RAND_MAX + 1.0)));
-        (*it)->setType(type);
+      // set a random temple type
+      int type= (int) ((TEMPLE_TYPES*1.0) * (Rnd::rand() / (RAND_MAX + 1.0)));
+      it->setType(type);
 
     }
-
-    return true;
+  return true;
 }
 
 bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
@@ -570,46 +559,36 @@ bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
 
 bool CreateScenario::setupSignposts(int ratio)
 {
-    int randno;
-    int dynamicPercent = static_cast<int>(1.0 / ratio * 100);
-    debug("CreateScenario::setupSignposts")
-    Signpostlist *sl = Signpostlist::getInstance();
+  int randno;
+  int dynamicPercent = static_cast<int>(1.0 / ratio * 100);
+  debug("CreateScenario::setupSignposts")
 
-    for (Signpostlist::iterator it = sl->begin(); it != sl->end(); it++)
+  for (auto it: *Signpostlist::getInstance())
     {
-	if (randomSignpostsEmpty())
-	    randno = dynamicPercent;
-	else
-	    randno = Rnd::rand() % 100;
-	if (randno < dynamicPercent)
-	{
-            // set up a signpost from the list of signposts
-	    (*it)->setName(popRandomSignpost());
-	}
-	else
-	{
-            (*it)->setName(getDynamicSignpost(*it));
-	}
+      if (randomSignpostsEmpty())
+        randno = dynamicPercent;
+      else
+        randno = Rnd::rand() % 100;
+      if (randno < dynamicPercent) // set up a signpost from the list of signposts
+        it->setName(popRandomSignpost());
+      else
+        it->setName(getDynamicSignpost(it));
     }
 
-    return true;
+  return true;
 }
 
 bool CreateScenario::setupPlayers(bool random_turns, 
 				  int base_gold)
 {
-    debug("CreateScenario::setupPlayers")
-
-    Playerlist *pl = Playerlist::getInstance();
-
-    // Give players some gold to start with
-    for (Playerlist::iterator pit = pl->begin(); pit != pl->end(); pit++)
-      (*pit)->setGold(adjustBaseGold(base_gold));
+  debug("CreateScenario::setupPlayers");
+  for (auto pit: *Playerlist::getInstance())
+    pit->setGold(adjustBaseGold(base_gold));
 
 
-    if (random_turns)
-      pl->randomizeOrder();
-    return true;
+  if (random_turns)
+    Playerlist::getInstance()->randomizeOrder();
+  return true;
 }
 
 bool CreateScenario::setupItems()
@@ -697,9 +676,6 @@ void CreateScenario::getCityDifficulty(int difficulty,
 
 int CreateScenario::calculateRoadType (Vector<int> t)
 {
-    Roadlist *rl = Roadlist::getInstance();
-    Bridgelist *bl = Bridgelist::getInstance();
-
     // examine neighbour tiles to discover whether there's a road or
     // bridge on them
     bool u = false; //up
@@ -708,22 +684,22 @@ int CreateScenario::calculateRoadType (Vector<int> t)
     bool r = false; //right
 
     if (t.y > 0)
-      u = rl->getObjectAt(t + Vector<int>(0, -1));
+      u = Roadlist::getInstance()->getObjectAt(t + Vector<int>(0, -1));
     if (t.y < GameMap::getHeight() - 1)
-      b = rl->getObjectAt(t + Vector<int>(0, 1));
+      b = Roadlist::getInstance()->getObjectAt(t + Vector<int>(0, 1));
     if (t.x > 0)
-      l = rl->getObjectAt(t + Vector<int>(-1, 0));
+      l = Roadlist::getInstance()->getObjectAt(t + Vector<int>(-1, 0));
     if (t.x < GameMap::getWidth() - 1)
-      r = rl->getObjectAt(t + Vector<int>(1, 0));
+      r = Roadlist::getInstance()->getObjectAt(t + Vector<int>(1, 0));
 
     if (!u && t.y > 0)
-      u = bl->getObjectAt(t + Vector<int>(0, -1));
+      u = Bridgelist::getInstance()->getObjectAt(t + Vector<int>(0, -1));
     if (!b && t.y < GameMap::getHeight() - 1)
-      b = bl->getObjectAt(t + Vector<int>(0, 1));
+      b = Bridgelist::getInstance()->getObjectAt(t + Vector<int>(0, 1));
     if (!l && t.x > 0)
-      l = bl->getObjectAt(t + Vector<int>(-1, 0));
+      l = Bridgelist::getInstance()->getObjectAt(t + Vector<int>(-1, 0));
     if (!r && t.x < GameMap::getWidth() - 1)
-      r = bl->getObjectAt(t + Vector<int>(1, 0));
+      r = Bridgelist::getInstance()->getObjectAt(t + Vector<int>(1, 0));
 
     // then translate this to the type
     int type = 2; 
