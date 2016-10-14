@@ -107,6 +107,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
         bool hasDeadArmies() const;
 
+        bool isGarrisoned() const;
 
 	// Set Methods
 
@@ -178,6 +179,11 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
         //! Erase the stack, deleting the Army units too.
         void flClear();
+
+        //! Garrison the stack.  don't visit it with next unit button.
+        void garrison();
+        //! Ungarrison the stack.  visit it with next unit button.
+        void ungarrison();
 
         /** 
 	 * Erase an Army unit from the Stack, and free the contents of 
@@ -517,6 +523,13 @@ static bool compareIds(const Army *lhs, const Army *rhs);
 	 */
 	//! Whether or not this stack is in the midst of being deleted.
         bool d_deleting;
+
+        /**
+         * Whether or not we visit this stack when we are clicking through
+         * next-unit.  It gets set when we click the button, and unset when
+         * we select the stack.  It doesn't get saved to a file.
+         */
+        bool d_garrison;
 };
 
 guint32 getFightOrder(std::list<guint32> values, guint32 value);

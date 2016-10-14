@@ -638,6 +638,20 @@ Clicking this button causes all stacks that have a path set, to travel along the
 </para>
 </listitem>
 <listitem>
+<figure id="mainscreen-garrison-button-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_garrison_button.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+<para>
+Clicking this button works just like the park button, but the effect endures for the rest of the gaming session, instead of the turn.  Clicking the garrison button causes selected stacks to become permanently stationed in the city.  It doesn't confer any sort of bonus, rather it means that the stack will not be selected on subsequent clicks of "Next Stack" for the duration of the current gaming session.  Selecting a garrisoned stack causes it to become ungarrisoned.
+</para>
+</listitem>
+<listitem>
 <figure id="mainscreen-end-turn-button-fig">
 <screenshot>
 <mediaobject>
@@ -649,20 +663,6 @@ Clicking this button causes all stacks that have a path set, to travel along the
 </figure>
 <para>
 Clicking this button causes the player to end her turn.  This means that the player is finished moving stacks for this turn.
-</para>
-</listitem>
-<listitem>
-<figure id="mainscreen-move-stack-dir-buttons-fig">
-<screenshot>
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_move_stack_dir_buttons.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot>
-</figure>
-<para>
-Clicking these buttons causes the stack to move in the given direction.  These buttons are tied to the keypad; pressing keys on the keypad activates these buttons.  Often it is preferable to move stacks by clicking on the map instead of using these movement buttons.
 </para>
 </listitem>
 </itemizedlist>
@@ -980,7 +980,7 @@ The screen contains information about the selected city.  The title of the scree
 Below that are statistics about the army unit currently being produced.
 </para>
 <para>
-The army units can be right-clicked on to get extra information about them.
+The army units can be right-clicked on to get extra information about them, in particular the movement bonus.
 </para>
 
 <para>

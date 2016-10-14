@@ -2907,6 +2907,14 @@ void GameWindow::on_popup_stack_menu (Stack *stack)
   item->show();
   menu->add(*item);
 
+  s = _("Garrison");
+  item = manage(new Gtk::MenuItem(s));
+  item->signal_activate().connect
+    (sigc::mem_fun(game, &Game::garrison_selected_stack));
+  item->set_sensitive(GameMap::getCity(stack->getPos()) != NULL);
+  item->show();
+  menu->add(*item);
+
   s = _("Disband...");
   item = manage(new Gtk::MenuItem(s));
   item->signal_activate().connect (method(on_disband_activated));

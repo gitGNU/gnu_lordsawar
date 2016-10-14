@@ -123,7 +123,8 @@ class ImageCache
       STACK_DESELECT,
       DIPLOMACY_NEW_PROPOSALS,
       STACK_SEARCH,
-      END_TURN
+      END_TURN,
+      GARRISON
     };
 
         //! Method for getting/creating the soliton instance.

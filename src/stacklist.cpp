@@ -253,7 +253,7 @@ Stack* Stacklist::getNextMovable() const
     {
 	Stack *s = *it;
         if (s->getOwner() == player && !s->getDefending() && 
-	    !s->getParked() && s->canMove())
+	    !s->getParked() && s->canMove() && !s->isGarrisoned())
 	    return s;
     }
     
@@ -264,15 +264,16 @@ Stack* Stacklist::getNextMovable() const
         return 0;
 
     for (it = begin(); *it != d_activestack; ++it)
-    {
-	Stack *s = *it;
+      {
+        Stack *s = *it;
         if (s->getOwner() == player && !s->getDefending() &&
-	    !s->getParked() && s->canMove())
-	    return s;
-    }
+            !s->getParked() && s->canMove() && !s->isGarrisoned())
+          return s;
+      }
 
     //still there? well, then we have only one stack left.
-    if (d_activestack->getDefending() || d_activestack->getParked())
+    if (d_activestack->getDefending() || d_activestack->getParked() ||
+        d_activestack->isGarrisoned())
 	return 0;
     else
 	return d_activestack;

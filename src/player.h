@@ -578,6 +578,17 @@ class Player: public sigc::trackable
         //! Callback to disband a player's stack.
         bool stackDisband(Stack* stack);
 
+        /**
+         * Garrison the stack.  Don't visit this stack when we go through
+         * next stack buttons, etc.
+         *
+         * @param stack            The stack to garrison.
+         */
+        void stackGarrison(Stack *stack);
+
+        /*The opposite of garrison. */
+        void stackUngarrison(Stack *stack);
+
         //! Recharge the player's stacks with hp and movement points.
         void stacksReset();
 
@@ -1649,6 +1660,8 @@ class Player: public sigc::trackable
         void doStackUnpark(Stack *stack);
         void doStackSelect(Stack *stack);
         void doStackDeselect();
+        void doStackGarrison(Stack *stack);
+        void doStackUngarrison(Stack *stack);
 	const Army *doCityProducesArmy(City *city, Stack *& stack, bool &vectored);
 	Army *doVectoredUnitArrives(VectoredUnit *unit, Stack *& stack);
 	bool doChangeVectorDestination(Vector<int> src, Vector<int> dest,

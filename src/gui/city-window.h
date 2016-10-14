@@ -50,6 +50,7 @@ class CityWindow: public LwDialog
     Gtk::Label *status_label;
     Gtk::Label *production_info_label1;
     Gtk::Label *production_info_label2;
+    Gtk::Label *bonus_label;
     Gtk::Button *buy_button;
     Gtk::Button *on_hold_button;
     Gtk::Button *rename_button;

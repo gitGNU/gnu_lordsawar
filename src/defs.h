@@ -91,7 +91,7 @@ const unsigned int MOVE_BONUS_HEIGHT = 20;
 const unsigned int MOVE_BONUS_TYPES = 6;
 const unsigned int MEDAL_TYPES = 3;
 const unsigned int NUM_WAYPOINTS = 2;
-const unsigned int NUM_GAME_BUTTON_IMAGES = 11;
+const unsigned int NUM_GAME_BUTTON_IMAGES = 12;
 const unsigned int NUM_ARROW_IMAGES = 8;
 
 const int MAX_GOLD_TO_CARRY_OVER_TO_NEXT_SCENARIO = 5000;

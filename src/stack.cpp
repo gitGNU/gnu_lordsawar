@@ -48,14 +48,14 @@ Glib::ustring Stack::d_tag = "stack";
 
 Stack::Stack(Player* player, Vector<int> pos)
     : UniquelyIdentified(), Movable(pos), Ownable(player), d_defending(false), 
-    d_parked(false), d_deleting(false)
+    d_parked(false), d_deleting(false), d_garrison(false)
 {
     d_path = new Path();
 }
 
 Stack::Stack(guint32 id, Player* player, Vector<int> pos)
     : UniquelyIdentified(id), Movable(pos), Ownable(player), 
-    d_defending(false), d_parked(false), d_deleting(false)
+    d_defending(false), d_parked(false), d_deleting(false), d_garrison(false)
 {
     d_path = new Path();
 }
@@ -63,7 +63,7 @@ Stack::Stack(guint32 id, Player* player, Vector<int> pos)
 Stack::Stack(const Stack& s, bool uniq)
     : UniquelyIdentified(s), Movable(s), Ownable(s), std::list<Army*>(),
     sigc::trackable(s), d_defending(s.d_defending), d_parked(s.d_parked), 
-    d_deleting(false)
+    d_deleting(false), d_garrison (s.d_garrison)
 {
   d_unique = uniq;
   if (s.d_path == NULL)
@@ -83,7 +83,7 @@ Stack::Stack(const Stack& s, bool uniq)
 
 Stack::Stack(XML_Helper* helper)
   : UniquelyIdentified(helper), Movable(helper), Ownable(helper), 
-    d_deleting(false)
+    d_deleting(false), d_garrison(false)
 {
   helper->getData(d_defending, "defending");
   helper->getData(d_parked, "parked");
@@ -1350,5 +1350,20 @@ bool Stack::removeArmiesWithoutArmyType(guint32 armyset)
         }
     }
   return removedArmy;
+}
+
+void Stack::garrison ()
+{
+  d_garrison = true;
+}
+
+void Stack::ungarrison ()
+{
+  d_garrison = false;
+}
+
+bool Stack::isGarrisoned() const
+{
+  return d_garrison;
 }
 // End of file
