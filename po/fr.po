@@ -4794,8 +4794,8 @@ msgid ""
 msgid_plural ""
 "Ability to produce %1 units has been lost\n"
 "and only 1 unit remains"
-msgstr[0] "Capacité de produire %1 unité a été perdu\n"
-msgstr[1] "Capacité de produire %1 unités a été perdu\n"
+msgstr[0] "Capacité de produire %1 unité a été perdu"
+msgstr[1] "Capacité de produire %1 unités a été perdu"
 
 #: ../src/gui/game-window.cpp:2249
 msgid "%1 gp"
@@ -5331,8 +5331,8 @@ msgstr "Que leurs têtes tombent ! Je veux TOUT !"
 #: ../src/gui/surrender-dialog.cpp:34
 msgid "Your enemy grudgingly surrenders!\n"
 msgid_plural "Your enemies respectfully surrender!\n"
-msgstr[0] "Votre ennemi se rend à contre-cœur"
-msgstr[1] "Vos ennemis se rendent à contre-cœur"
+msgstr[0] "Votre ennemi se rend à contre-cœur\n"
+msgstr[1] "Vos ennemis se rendent à contre-cœur\n"
 
 #: ../src/gui/surrender-dialog.cpp:37
 msgid "Do you accept?"
@@ -6324,7 +6324,6 @@ msgstr "Rasé !"
 msgid "Capital of\n"
 msgstr ""
 "Capitale de\n"
-" "
 
 #: ../src/gui/game-lobby-dialog.cpp:236
 msgid "Person"
