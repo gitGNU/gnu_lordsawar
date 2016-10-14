@@ -66,6 +66,7 @@ CityWindow::CityWindow(Gtk::Window &parent, City *c, bool razing_possible,
     xml->get_widget("current_image", current_image);
     xml->get_widget("production_info_label1", production_info_label1);
     xml->get_widget("production_info_label2", production_info_label2);
+    xml->get_widget("bonus_label", bonus_label);
     xml->get_widget("buy_button", buy_button);
     xml->get_widget("on_hold_button", on_hold_button);
     on_hold_button->signal_clicked().connect(method(on_on_hold_clicked));
@@ -238,7 +239,7 @@ void CityWindow::fill_in_production_info()
     Glib::RefPtr<Gdk::Pixbuf> empty_pic =
       ImageCache::getInstance()->getCircledArmyPic(as, 0, player, NULL, false, Shield::NEUTRAL, false)->to_pixbuf();
     
-    Glib::ustring s1, s2, s3;
+    Glib::ustring s1, s2, s3, s5;
     Glib::ustring s4 = _("Current:");
     
     if (slot == -1)
@@ -248,6 +249,7 @@ void CityWindow::fill_in_production_info()
 	s1 += "\n\n";
 	s2 = "\n\n";
         s3 = "";
+        s5 = "";
     }
     else
     {
@@ -279,6 +281,7 @@ void CityWindow::fill_in_production_info()
           }
       pic = gc->getCircledArmyPic(as, a->getTypeId(), player, NULL, false,
                                   Shield::NEUTRAL, true)->to_pixbuf();
+      s5 = a->getArmyBonusDescription();
     }
     
     current_image->property_pixbuf() = pic;
@@ -286,6 +289,7 @@ void CityWindow::fill_in_production_info()
     production_info_label2->set_markup(s2);
     turns_left_label->set_markup("<i>" + s3 + "</i>");
     current_label->set_markup("<i>" + s4 + "</i>");
+    bonus_label->set_text(s5);
 
     if (city->getOwner () != Playerlist::getActiveplayer())
       {
@@ -302,6 +306,7 @@ void CityWindow::fill_in_production_info()
           production_toggles[i]->set_active(false);
         production_info_label1->set_text("");
         production_info_label2->set_text("");
+        bonus_label->set_text("");
       }
     else
       {
@@ -315,6 +320,7 @@ void CityWindow::fill_in_production_info()
         on_hold_button->set_sensitive(true);
         production_info_label1->show();
         production_info_label2->show();
+        bonus_label->show();
       }
 }
 
