@@ -50,7 +50,7 @@ lordsawar_upgrade_file_DEPENDENCIES = \
 localedir = $(datadir)/locale
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
-AM_CXXFLAGS = -Wall -Wshadow -Wextra -pedantic -Wno-deprecated-declarations
+AM_CXXFLAGS = -Wall -Wshadow -Wextra -pedantic -Wno-deprecated-declarations -std=c++11
 AM_CPPFLAGS = $(GTKMM_CFLAGS) \
 	      $(XMLPP_CFLAGS) \
     $(XSLT_CFLAGS) \
