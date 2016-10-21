@@ -127,7 +127,7 @@
                             <property name="can_focus">True</property>
                             <property name="model">liststore1</property>
                             <child internal-child="selection">
-                              <object class="GtkTreeSelection"/>
+                              <object class="GtkTreeSelection" id="cccc"/>
                             </child>
                           </object>
                           <packing>

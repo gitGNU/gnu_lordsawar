@@ -93,7 +93,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="hover_selection">True</property>
                                 <child internal-child="selection">
-                                  <object class="GtkTreeSelection"/>
+                                  <object class="GtkTreeSelection" id="oooo"/>
                                 </child>
                               </object>
                             </child>
@@ -159,7 +159,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <child internal-child="selection">
-                                      <object class="GtkTreeSelection"/>
+                                      <object class="GtkTreeSelection" id="nnn"/>
                                     </child>
                                   </object>
                                 </child>

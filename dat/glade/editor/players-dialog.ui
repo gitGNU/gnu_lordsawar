@@ -78,7 +78,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child internal-child="selection">
-                          <object class="GtkTreeSelection"/>
+                          <object class="GtkTreeSelection" id="aaaa"/>
                         </child>
                       </object>
                     </child>

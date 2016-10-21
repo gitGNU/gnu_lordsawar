@@ -195,7 +195,7 @@ whose game you would like to join.</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <child internal-child="selection">
-                          <object class="GtkTreeSelection"/>
+                          <object class="GtkTreeSelection" id="eeee"/>
                         </child>
                       </object>
                     </child>
@@ -262,7 +262,7 @@ whose game you would like to join.</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <child internal-child="selection">
-                          <object class="GtkTreeSelection"/>
+                          <object class="GtkTreeSelection" id="dddd"/>
                         </child>
                       </object>
                     </child>

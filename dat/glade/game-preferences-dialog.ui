@@ -202,11 +202,11 @@
                         <property name="orientation">vertical</property>
                         <property name="spacing">8</property>
                         <child>
-                          <object class="GtkBox">
+                          <object class="GtkBox" id="kkkkk" >
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkLabel">
+                              <object class="GtkLabel" id="llll">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Number of
@@ -241,7 +241,7 @@ Players:</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSeparator">
+                          <object class="GtkSeparator" id="mmmm">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                           </object>

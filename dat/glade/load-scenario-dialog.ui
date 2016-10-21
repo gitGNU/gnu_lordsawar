@@ -101,7 +101,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="headers_visible">False</property>
                                 <child internal-child="selection">
-                                  <object class="GtkTreeSelection"/>
+                                  <object class="GtkTreeSelection" id="ggggg" />
                                 </child>
                               </object>
                             </child>

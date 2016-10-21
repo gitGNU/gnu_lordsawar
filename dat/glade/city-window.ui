@@ -102,7 +102,7 @@
                         <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkBox">
+                          <object class="GtkBox" id="vvvv">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
@@ -219,7 +219,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox">
+                          <object class="GtkBox" id="wwww">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
@@ -258,7 +258,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkBox">
+                              <object class="GtkBox" id="xxxxx">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <child>
