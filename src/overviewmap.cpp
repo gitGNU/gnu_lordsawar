@@ -542,21 +542,18 @@ void OverviewMap::draw(Player *player)
               if (Playerlist::getViewingplayer()->getFogMap()->isFogged(pos) == true)
                 {
                   pos = mapToSurface(pos);
-                  draw_filled_rect(true, pos.x, pos.y, size, size, FOG_COLOUR);
+                  draw_filled_rect(true, pos.x-1, pos.y-1, size, size, FOG_COLOUR);
                 }
             }
       }
 
-    //the idea here is that we want to show what happens when an AI-owned
-    //stack moves through our area.  so we block the view of computer
-    //players after the fact.
-    if (Playerlist::getViewingplayer()->getType() != Player::HUMAN &&
+  if (Playerlist::getViewingplayer()->getType() != Player::HUMAN &&
        	GameScenarioOptions::s_hidden_map == true)
-      {
-	int width = get_width();
-	int height = get_height();
-	draw_filled_rect(true, 0, 0, width, height, FOG_COLOUR);
-      }
+    {
+      int width = get_width();
+      int height = get_height();
+      draw_filled_rect(true, 0, 0, width, height, FOG_COLOUR);
+    }
 
   if (blank_screen)
     {

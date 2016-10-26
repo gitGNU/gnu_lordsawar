@@ -388,21 +388,8 @@ void BigMap::draw_buffer()
 {
   draw_buffer (buffer_view, buffer);
     
-  //the idea here is that we want to show what happens when an AI-owned
-  //stack moves through our area.  in lieu of that, we just block everything
-  //if we're a computer player.
-  if (Playerlist::getViewingplayer()->getType() != Player::HUMAN &&
-      GameScenarioOptions::s_hidden_map == true)
-    {
-      int width = image.get_width();
-      int height = image.get_height();
-      buffer_gc->set_source_rgba(FOG_COLOUR.get_red(), FOG_COLOUR.get_green(), FOG_COLOUR.get_blue(), FOG_COLOUR.get_alpha());
-      buffer_gc->rectangle(0, 0, width, height);
-      buffer_gc->fill();
-    }
-  else
+  if (Playerlist::getViewingplayer()->getType() == Player::HUMAN)
     after_draw();
-
 }
 
 bool BigMap::saveAsBitmap(Glib::ustring filename)
@@ -429,7 +416,11 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> su
   ImageCache *gc = ImageCache::getInstance();
   int tile_style_id = GameMap::getInstance()->getTile(tile)->getTileStyle()->getId();
   int fog_type_id = 0;
-  fog_type_id = viewing->getFogMap()->getShadeTile(tile);
+  if (Playerlist::getViewingplayer()->getType() != Player::HUMAN &&
+      GameScenarioOptions::s_hidden_map == true)
+    fog_type_id = FogMap::ALL;
+  else
+    fog_type_id = viewing->getFogMap()->getShadeTile(tile);
 
   bool has_bag = false;
   bool has_standard = false;
