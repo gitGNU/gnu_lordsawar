@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: lordawar-0.3.0-pre3\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
 "POT-Creation-Date: 2014-07-09 10:19-0400\n"
-"PO-Revision-Date: 2016-10-14 11:13+0100\n"
+"PO-Revision-Date: 2016-10-26 11:35+0200\n"
 "Language-Team: James Manez <arasmo.wanadoo.fr>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Poedit 1.8.8\n"
 "Last-Translator: \n"
 
 #: ../dat/glade/about-dialog.ui.h:1
@@ -73,8 +73,7 @@ msgstr "Bonus d'Armée"
 #: ../dat/glade/main-preferences-dialog.ui.h:2
 #: ../dat/glade/preferences-dialog.ui.h:2 ../dat/glade/report-dialog.ui.h:1
 #: ../dat/glade/ruin-report-dialog.ui.h:2
-#: ../dat/glade/item-report-dialog.ui.h:2
-#: ../dat/glade/stack-info-dialog.ui.h:5
+#: ../dat/glade/item-report-dialog.ui.h:2 ../dat/glade/stack-info-dialog.ui.h:5
 #: ../dat/glade/editor/itemlist-dialog.ui.h:10
 #: ../dat/glade/editor/reward-list-dialog.ui.h:2
 #: ../dat/glade/editor/tile-preview-dialog.ui.h:2
@@ -160,7 +159,7 @@ msgstr "Saccager"
 
 #: ../dat/glade/city-defeated-dialog.ui.h:5 ../dat/glade/city-window.ui.h:8
 msgid "Raze"
-msgstr "Rasrer"
+msgstr "Raser"
 
 #: ../dat/glade/city-defeated-dialog.ui.h:6
 msgid "The city is yours! Will you..."
@@ -168,8 +167,7 @@ msgstr "La cité est vôtre ! Allez-vous..."
 
 #: ../dat/glade/city-looted-dialog.ui.h:1
 #: ../dat/glade/city-pillaged-dialog.ui.h:1
-#: ../dat/glade/city-razed-dialog.ui.h:2
-#: ../dat/glade/city-sacked-dialog.ui.h:1
+#: ../dat/glade/city-razed-dialog.ui.h:2 ../dat/glade/city-sacked-dialog.ui.h:1
 #: ../dat/glade/game-loaded-dialog.ui.h:2 ../dat/glade/game-over-dialog.ui.h:1
 #: ../dat/glade/hero-brings-allies-dialog.ui.h:1
 #: ../dat/glade/medal-awarded-dialog.ui.h:2
@@ -198,8 +196,7 @@ msgstr "Vos troupes ont mis à sac la cité !"
 msgid "Your troops have pillaged the city!"
 msgstr "Vos troupes ont pillé la cité !"
 
-#: ../dat/glade/city-razed-dialog.ui.h:1
-#: ../dat/glade/city-sacked-dialog.ui.h:2
+#: ../dat/glade/city-razed-dialog.ui.h:1 ../dat/glade/city-sacked-dialog.ui.h:2
 msgid "Your troops have sacked the city!"
 msgstr "Vos troupes ont saccagé la cité !"
 
@@ -228,9 +225,8 @@ msgstr "Vos troupes ont saccagé la cité !"
 msgid "OK"
 msgstr "OK"
 
-#: ../dat/glade/city-rename-dialog.ui.h:3
-#: ../dat/glade/game-lobby-dialog.ui.h:8 ../dat/glade/hero-offer-dialog.ui.h:3
-#: ../dat/glade/ruin-report-dialog.ui.h:3
+#: ../dat/glade/city-rename-dialog.ui.h:3 ../dat/glade/game-lobby-dialog.ui.h:8
+#: ../dat/glade/hero-offer-dialog.ui.h:3 ../dat/glade/ruin-report-dialog.ui.h:3
 #: ../dat/glade/editor/armyset-info-dialog.ui.h:5
 #: ../dat/glade/editor/armyset-window.ui.h:61
 #: ../dat/glade/editor/city-editor-dialog.ui.h:7
@@ -582,14 +578,12 @@ msgstr "Commencer "
 msgid "Quit"
 msgstr "Quitter"
 
-#: ../dat/glade/game-quit-dialog.ui.h:2
-#: ../dat/glade/temple-visit-dialog.ui.h:1
+#: ../dat/glade/game-quit-dialog.ui.h:2 ../dat/glade/temple-visit-dialog.ui.h:1
 #: ../src/gui/ruin-report-dialog.cpp:131 ../src/gui/ruin-report-dialog.cpp:163
 msgid "No"
 msgstr "Non"
 
-#: ../dat/glade/game-quit-dialog.ui.h:3
-#: ../dat/glade/temple-visit-dialog.ui.h:2
+#: ../dat/glade/game-quit-dialog.ui.h:3 ../dat/glade/temple-visit-dialog.ui.h:2
 #: ../src/gui/ruin-report-dialog.cpp:127
 msgid "Yes"
 msgstr "Oui"
@@ -736,8 +730,7 @@ msgstr "Voir"
 msgid "Fullscreen"
 msgstr "Plein écran"
 
-#: ../dat/glade/game-window.ui.h:34
-#: ../dat/glade/main-preferences-dialog.ui.h:1
+#: ../dat/glade/game-window.ui.h:34 ../dat/glade/main-preferences-dialog.ui.h:1
 #: ../dat/glade/preferences-dialog.ui.h:1 ../dat/glade/splash-window.ui.h:4
 msgid "Preferences"
 msgstr "Préférences"
@@ -1356,8 +1349,7 @@ msgid "Mountains"
 msgstr "Montagnes"
 
 #: ../dat/glade/new-random-map-dialog.ui.h:19
-#: ../dat/glade/editor/main-window.ui.h:28
-#: ../src/editor/new-map-dialog.cpp:132
+#: ../dat/glade/editor/main-window.ui.h:28 ../src/editor/new-map-dialog.cpp:132
 msgid "Random"
 msgstr "Aléatoire"
 
@@ -1629,27 +1621,27 @@ msgstr "Bonus de mouvement."
 
 #: ../dat/glade/editor/armyset-window.ui.h:46
 msgid "+1 Str in Open"
-msgstr "+1 For en plaine"
+msgstr "+1 Force en plaine"
 
 #: ../dat/glade/editor/armyset-window.ui.h:47
 msgid "+2 Str in Open"
-msgstr "+2 For en plaine"
+msgstr "+2 Force en plaine"
 
 #: ../dat/glade/editor/armyset-window.ui.h:48
 msgid "+1 Str in Forest"
-msgstr "+1 For en forêt"
+msgstr "+1 Force en forêt"
 
 #: ../dat/glade/editor/armyset-window.ui.h:49
 msgid "+1 Str in Hills"
-msgstr "+1 For dans les collines"
+msgstr "+1 Force dans les collines"
 
 #: ../dat/glade/editor/armyset-window.ui.h:50
 msgid "+1 Str in City"
-msgstr "+1 For en ville"
+msgstr "+1 Force en ville"
 
 #: ../dat/glade/editor/armyset-window.ui.h:51
 msgid "+2 Str in City"
-msgstr "+2 For en ville"
+msgstr "+2 Force en ville"
 
 #: ../dat/glade/editor/armyset-window.ui.h:52
 msgid "+1 to Stack in Hills"
@@ -1661,23 +1653,23 @@ msgstr "Soustrayez tous les bonus de ville."
 
 #: ../dat/glade/editor/armyset-window.ui.h:54
 msgid "-1 Str to Enemy Stack"
-msgstr "-1 For à la pile ennemie"
+msgstr "-1 Force à la pile ennemie"
 
 #: ../dat/glade/editor/armyset-window.ui.h:55
 msgid "+1 Str to Stack"
-msgstr "+1 For à la pile"
+msgstr "+1 Force à la pile"
 
 #: ../dat/glade/editor/armyset-window.ui.h:56
 msgid "+2 Str to Stack"
-msgstr "+2 For à la pile"
+msgstr "+2 Force à la pile"
 
 #: ../dat/glade/editor/armyset-window.ui.h:57
 msgid "Subtract All Non-Hero Bonuses"
-msgstr "Soustrayer tous les bonus de non-héros"
+msgstr "Soustrait tous les bonus de non-héros"
 
 #: ../dat/glade/editor/armyset-window.ui.h:58
 msgid "Subtract all Hero Bonuses"
-msgstr "Soustrayez tous les bonus de héros"
+msgstr "Soustrait tous les bonus de héros"
 
 #: ../dat/glade/editor/armyset-window.ui.h:59
 msgid "Fighting Bonus"
@@ -1706,7 +1698,7 @@ msgstr "Pas d'image"
 
 #: ../dat/glade/editor/armyset-window.ui.h:65
 msgid "Black Picture:"
-msgstr "mage noire :"
+msgstr "Image noire :"
 
 #: ../dat/glade/editor/armyset-window.ui.h:66
 msgid "Orange Picture:"
@@ -3555,8 +3547,7 @@ msgstr "Carte du Sud-Est"
 
 #: ../src/GameScenario.cpp:693
 msgid "saved game file has wrong version.  expecting %1 but got %2."
-msgstr ""
-"Le ichier de sauvegarde a la mauvaise version. Attend %1 mais a obtenu %2."
+msgstr "Mauvaise version du fichier de sauvegarde. Attend %1 mais a obtenu %2."
 
 #: ../src/GameScenario.cpp:860
 msgid ""
@@ -3721,7 +3712,7 @@ msgstr ""
 
 #: ../src/citysetlist.cpp:126
 msgid "Error!  cityset: `%1' is malformed.  Skipping."
-msgstr "Erreur !  lot de cités : `%1' est malformée.  Skipping."
+msgstr "Erreur !  lot de cités : `%1' est malformé.  Évité."
 
 #: ../src/citysetlist.cpp:133
 msgid ""
@@ -4410,7 +4401,7 @@ msgstr "%1 %2 trouve un sage !"
 
 #: ../src/gui/history-report-dialog.cpp:531
 msgid "%1 %2 emerges in %3"
-msgstr "%1 %2 surgit en %3"
+msgstr "%1 %2 surgit à %3"
 
 #: ../src/gui/history-report-dialog.cpp:539
 msgid "%1 %2 begins a quest!"
@@ -4422,7 +4413,7 @@ msgstr "%1 %2 termine une quête !"
 
 #: ../src/gui/history-report-dialog.cpp:555
 msgid "%1 %2 is killed in %3!"
-msgstr "%1 %2 est tué en %3 !"
+msgstr "%1 %2 est tué à/au %3 !"
 
 #: ../src/gui/history-report-dialog.cpp:563
 msgid "%1 %2 is killed in battle!"
@@ -5502,7 +5493,7 @@ msgstr[1] "Un héros à %2 veut se rallier à vous pour %1 pièces d'or !"
 
 #: ../src/gui/hero-offer-dialog.cpp:79
 msgid "A hero in %1 wants to join you!"
-msgstr "Un héros en %1 veut se rallier à vous !"
+msgstr "Un héros à %1 veut se rallier à vous !"
 
 #: ../src/gui/new-random-map-dialog.cpp:453
 msgid "Autogenerated"
@@ -5743,8 +5734,7 @@ msgid "Error!  Armyset could not be loaded."
 msgstr "Erreut ! Impossible de charger le lot d'armées."
 
 #: ../src/editor/armyset-window.cpp:1671 ../src/editor/cityset-window.cpp:827
-#: ../src/editor/tileset-window.cpp:1546
-#: ../src/editor/shieldset-window.cpp:761
+#: ../src/editor/tileset-window.cpp:1546 ../src/editor/shieldset-window.cpp:761
 msgid ""
 "Couldn't add %1.png to:\n"
 "%2"
@@ -5887,8 +5877,7 @@ msgid "Map was not saved!"
 msgstr "La carte n'a pas été sauvegardée !"
 
 #: ../src/editor/main-window.cpp:864 ../src/editor/main-window.cpp:896
-#: ../src/editor/tileset-window.cpp:1042
-#: ../src/editor/shieldset-window.cpp:734
+#: ../src/editor/tileset-window.cpp:1042 ../src/editor/shieldset-window.cpp:734
 #: ../src/editor/tileset-selector-editor-dialog.cpp:305
 #: ../src/editor/image-editor-dialog.cpp:46
 #: ../src/editor/masked-image-editor-dialog.cpp:57
@@ -6322,8 +6311,7 @@ msgstr "Rasé !"
 
 #: ../src/gui/city-info-tip.cpp:78
 msgid "Capital of\n"
-msgstr ""
-"Capitale de\n"
+msgstr "Capitale de\n"
 
 #: ../src/gui/game-lobby-dialog.cpp:236
 msgid "Person"
@@ -6436,31 +6424,31 @@ msgstr ""
 
 #: ../src/armybase.cpp:83
 msgid "+1 str in open"
-msgstr "+1 for en plaine"
+msgstr "+1 Force en plaine"
 
 #: ../src/armybase.cpp:86
 msgid "+2 str in open"
-msgstr "+2 for en plaine"
+msgstr "+2 Force en plaine"
 
 #: ../src/armybase.cpp:89
 msgid "+1 str in woods"
-msgstr "+1 for en forêt"
+msgstr "+1 Force en forêt"
 
 #: ../src/armybase.cpp:92
 msgid "+1 str in hills"
-msgstr "+1 for en forêt"
+msgstr "+1 Force en forêt"
 
 #: ../src/armybase.cpp:95
 msgid "+1 str in city"
-msgstr "+1 for en ville"
+msgstr "+1 Force en ville"
 
 #: ../src/armybase.cpp:98
 msgid "+2 str in city"
-msgstr "+2 for en ville"
+msgstr "+2 Force en ville"
 
 #: ../src/armybase.cpp:101
 msgid "+1 stack in hills"
-msgstr "+1 for dans collines"
+msgstr "+1 Force dans collines"
 
 #: ../src/armybase.cpp:104
 msgid "Cancel city bonus"
@@ -6560,7 +6548,7 @@ msgstr "+1 or par cité"
 
 #: ../src/cityset.cpp:193
 msgid "Error!  can't load cityset `%1'."
-msgstr "Erreur ! Impossibel de charger lot de cités `%1'."
+msgstr "Erreur ! Impossible de charger lot de cités `%1'."
 
 #. note to translators: %1 is a file extension, %2 is a directory.
 #: ../src/cityset.cpp:545
@@ -6598,15 +6586,13 @@ msgstr "valeur non numérique pour la taille de cache"
 msgid "non-numerical value for --seed"
 msgstr "valeur non numérique pour --seed"
 
-#: ../src/main.cpp:109 ../src/gls/main.cpp:66
-#: ../src/gls/gls-client-main.cpp:66 ../src/ghs/main.cpp:66
-#: ../src/ghs/ghs-client-main.cpp:63
+#: ../src/main.cpp:109 ../src/gls/main.cpp:66 ../src/gls/gls-client-main.cpp:66
+#: ../src/ghs/main.cpp:66 ../src/ghs/ghs-client-main.cpp:63
 msgid "non-numerical value for --port"
 msgstr "valeur non numérique pour --port"
 
-#: ../src/main.cpp:114 ../src/gls/main.cpp:71
-#: ../src/gls/gls-client-main.cpp:71 ../src/ghs/main.cpp:71
-#: ../src/ghs/ghs-client-main.cpp:68
+#: ../src/main.cpp:114 ../src/gls/main.cpp:71 ../src/gls/gls-client-main.cpp:71
+#: ../src/ghs/main.cpp:71 ../src/ghs/ghs-client-main.cpp:68
 msgid "invalid value for --port"
 msgstr "valeur invalide pour --port"
 
@@ -6698,7 +6684,7 @@ msgstr "Vos ennemis se moquent de vos actions pitoyables !"
 
 #: ../src/Commentator.cpp:81
 msgid "How much adversity can you endure?"
-msgstr "Combien d'épreuves pouvez-vous endurer ?"
+msgstr "Vous ê ?"
 
 #: ../src/Commentator.cpp:82
 msgid "Your enemies are beyond measure!"
@@ -6808,7 +6794,7 @@ msgstr "Ajouter une partie"
 
 #: ../src/gls/gls-client-main.cpp:119
 msgid "See a list of games"
-msgstr "Voir un liste de parties"
+msgstr "Voir une liste de parties"
 
 #: ../src/gls/gls-client-main.cpp:120 ../src/ghs/ghs-client-main.cpp:111
 msgid "Reload the game list from disk"
@@ -7143,7 +7129,7 @@ msgstr "Anneau de Téléportation"
 
 #: ../dat/citynames.xml.in.h:1
 msgid "Hellgate"
-msgstr "Hellgate"
+msgstr "Portail Infernal"
 
 #: ../dat/citynames.xml.in.h:2
 msgid "Karhain"
@@ -7151,11 +7137,11 @@ msgstr "Karhain"
 
 #: ../dat/citynames.xml.in.h:3
 msgid "Shady Hill"
-msgstr "Shady Hill"
+msgstr "Coline des Ombres"
 
 #: ../dat/citynames.xml.in.h:4
 msgid "Moonshine"
-msgstr "Moonshine"
+msgstr "Éclat de Lune"
 
 #: ../dat/citynames.xml.in.h:5
 msgid "Devilian"
@@ -7203,11 +7189,11 @@ msgstr "Lan"
 
 #: ../dat/citynames.xml.in.h:16
 msgid "Scarpdale"
-msgstr "Scarpdale"
+msgstr "Val Escarpé"
 
 #: ../dat/citynames.xml.in.h:17
 msgid "Watchtower"
-msgstr "Watchtower"
+msgstr "Tour de Garde"
 
 #: ../dat/citynames.xml.in.h:18
 msgid "Capewell"
@@ -7215,7 +7201,7 @@ msgstr "Capewell"
 
 #: ../dat/citynames.xml.in.h:19
 msgid "Ironfist"
-msgstr "Ironfist"
+msgstr "Poingdacier"
 
 #: ../dat/citynames.xml.in.h:20
 msgid "Forthmark"
@@ -7239,7 +7225,7 @@ msgstr "Atwood"
 
 #: ../dat/citynames.xml.in.h:25
 msgid "Heavensgate"
-msgstr "Heavensgate"
+msgstr "Portes-du-Paradis"
 
 #: ../dat/citynames.xml.in.h:26
 msgid "Lyrean"
@@ -7247,7 +7233,7 @@ msgstr "Lyrean"
 
 #: ../dat/citynames.xml.in.h:27
 msgid "Thornsdale"
-msgstr "Thornsdale"
+msgstr "Val des Épines"
 
 #: ../dat/citynames.xml.in.h:28
 msgid "West End"
@@ -7355,7 +7341,7 @@ msgstr "Innesfallen"
 
 #: ../dat/citynames.xml.in.h:54
 msgid "Spirit Cave"
-msgstr "Cave de l'esprit"
+msgstr "Cave de l'Esprit"
 
 #: ../dat/citynames.xml.in.h:55
 msgid "Yeol"
