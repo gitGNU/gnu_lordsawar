@@ -1374,7 +1374,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkBox" id="aaaa">
+                                  <object class="GtkBox" id="aaaaa">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <child>
