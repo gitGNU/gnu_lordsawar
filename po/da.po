@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the lordsawar package.
 # Joe Hansen <joedalton2@yahoo.dk>, 2008, 2009, 2010, 2011, 2014, 2016.
 # Korrekturlæsning: Lars Christian Jensen, 2009, 2010.
-# Korrekturlæsning: Ask Hjort Larsen, 2009, 2010.
+# Korrekturlæsning: Ask Hjorth Larsen, 2009, 2010, 2016.
 # Korrekturlæsning: Torben Grøn Helligsø, 2011.
 #
 # Konventioner
@@ -29,7 +29,7 @@ msgstr ""
 "Project-Id-Version: lordsawar 0.3.2-pre1\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
 "POT-Creation-Date: 2016-10-06 11:48-0400\n"
-"PO-Revision-Date: 2016-11-10 21:55-0400\n"
+"PO-Revision-Date: 2016-11-29 21:55-0400\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -53,8 +53,8 @@ msgid ""
 "so we can have new artwork created.  \n"
 "Our fundraising goal is $2000 USD.\n"
 msgstr ""
-"Overvej at foretag en donation til\n"
-"projektet så vi kan få ny grafik. \n"
+"Overvej at donere til projektet\n"
+"så vi kan få ny grafik. \n"
 "Vores indsamlingsmål er 2.000 USD.\n"
 
 #: ../dat/glade/about-dialog.ui.h:7
@@ -2951,15 +2951,15 @@ msgstr "Fejl! »%1« er forkert udformet. Udelader."
 
 #: ../src/setlist.h:149
 msgid "Error!  `%1' shares a duplicate basename `%2' with `%3'.  Skipping."
-msgstr "Fejl! »%1« deler et duplikeret basisnavn »%2« med »%3«. Udelader."
+msgstr "Fejl! »%1« har samme basisnavn »%2« med »%3«. Udelader."
 
 #: ../src/setlist.h:160
 msgid "Error!  `%1' shares a duplicate name `%2' with `%3'.  Skipping."
-msgstr "Fejl! »%1« deler et duplikeret navn »%2« med »%3«. Udelader."
+msgstr "Fejl! »%1« har samme navn »%2« med »%3«. Udelader."
 
 #: ../src/setlist.h:169
 msgid "Error!  `%1' shares a duplicate id with `%2'.  Skipping."
-msgstr "Fejl! »%1« deler et duplikeret id med »%2«. Udelader."
+msgstr "Fejl! »%1« har samme id med »%2«. Udelader."
 
 #: ../src/GameScenario.cpp:345
 msgid "Northwestern map"
@@ -3200,7 +3200,7 @@ msgstr "%1 runder"
 
 #: ../src/Configuration.cpp:110
 msgid "Okay, we're throwing your .lordsawarrc away."
-msgstr "Okay, vi smider din .lorsawarrc væk."
+msgstr "Okay, vi smider din .lordsawarrc væk."
 
 #: ../src/Configuration.cpp:198
 msgid "Configuration file has wrong version.  expected %1, but got %2"
@@ -5621,7 +5621,7 @@ msgstr "Henter skjoldsæt"
 
 #: ../src/utils/import.cpp:67
 msgid "a scenario called %1 converted by lordsawar-import version %2"
-msgstr "et scenarie kaldt %1 konverteret af lordsawar-import version %2"
+msgstr "et scenarie kaldt %1 blev konverteret af lordsawar-import version %2"
 
 #: ../src/utils/import.cpp:480
 #, c-format
@@ -5675,7 +5675,7 @@ msgstr "Advarsel: bybonus %1 for %2 blev ikke genkendt"
 
 #: ../src/utils/import.cpp:1113
 msgid "Warning: unrecognized open bonus of %1 for %2"
-msgstr "Advarsel: det åbne-bonus %1 for %2 blev ikke genkendt"
+msgstr "Advarsel: åbne terræn-bonus %1 for %2 blev ikke genkendt"
 
 #: ../src/utils/import.cpp:1124
 msgid "Warning: unrecognized forest bonus of %1 for %2"
@@ -5695,7 +5695,7 @@ msgstr "Advarsel: afbrydbonus %1 for %2 blev ikke genkendt"
 
 #: ../src/utils/import.cpp:1172
 msgid "Warning: unrecognized city plus flag of %1 for %2"
-msgstr "Advarsel: byplusflag %1 for %2 blev ikke genkendt"
+msgstr "Advarsel: by plus flag %1 for %2 blev ikke genkendt"
 
 #: ../src/utils/import.cpp:1191
 msgid "Warning: unrecognized ally flag of %1 for %2"
@@ -5738,7 +5738,7 @@ msgstr "Vis denne hjælpetekst og afslut"
 
 #: ../src/utils/import.cpp:1406
 msgid "Use this WL2 army file"
-msgstr "brug denne WL2-hærfil"
+msgstr "Brug denne WL2-hærfil"
 
 #: ../src/utils/import.cpp:1408 ../src/main.cpp:157 ../src/gls/main.cpp:89
 #: ../src/gls/gls-client-main.cpp:128 ../src/ghs/main.cpp:99
@@ -6020,7 +6020,7 @@ msgstr "Kunne ikke fortolke filen for udstyrsbeskrivelse »%1«. Afslutter."
 
 #: ../src/File.cpp:263
 msgid "Error: Couldn't find a single map!"
-msgstr "Fejl: Kunne ikke finde et enkelt kort!"
+msgstr "Fejl: Kunne ikke finde et eneste kort!"
 
 #: ../src/armyset.cpp:443
 msgid "Error!  can't load armyset `%1'."
@@ -6201,7 +6201,7 @@ msgstr "Ahh, forventningen om et kommende slag!"
 
 #: ../src/Commentator.cpp:123
 msgid "Warlord... a mighty battle is brewing!"
-msgstr "Krigsherre ... et stort slag er på vej!"
+msgstr "Krigsherre ... et stort slag er i opmarch!"
 
 #: ../src/Commentator.cpp:127
 msgid "As your capital city has fallen, so shall you!"
@@ -7874,347 +7874,3 @@ msgstr "Rundebaseret strategispil"
 #: ../dat/lordsawar.desktop.in.in.h:3
 msgid "Play a clone of Warlords II"
 msgstr "Spil en klon af Warlords II"
-
-#~ msgid ""
-#~ "Freedom is the most important \n"
-#~ "feature of this game."
-#~ msgstr ""
-#~ "Frihed er den vigtigste egenskab \n"
-#~ "ved dette spil."
-
-#~ msgid "The LordsAWar Website"
-#~ msgstr "Hjemmesiden for LordsAWar"
-
-#~ msgid "Joe Hansen"
-#~ msgstr "Joe Hansen"
-
-#~ msgid "Chat"
-#~ msgstr "Snak (chat)"
-
-#~ msgid "Difficulty"
-#~ msgstr "Sværhedsgrad"
-
-#~ msgid "Your Heroes"
-#~ msgstr "Dine helte"
-
-#~ msgid "Scenarios"
-#~ msgstr "Scenarier"
-
-#~ msgid "Sound"
-#~ msgstr "Lyd"
-
-#~ msgid "Profiles"
-#~ msgstr "Profiler"
-
-#~ msgid "Settings"
-#~ msgstr "Opsætning"
-
-#~ msgid "Details"
-#~ msgstr "Detaljer"
-
-#~ msgid "radiobutton"
-#~ msgstr "radioknap"
-
-#~ msgid "Movement Bonus"
-#~ msgstr "Bevægelsesbonus"
-
-#~ msgid "Fighting Bonus"
-#~ msgstr "Kampbonus"
-
-#~ msgid "toolbutton"
-#~ msgstr "værktøjsknap"
-
-#~ msgid "   Cities"
-#~ msgstr "   byer"
-
-#~ msgid "Image Sets"
-#~ msgstr "Billedsæt"
-
-#~ msgid "Reward"
-#~ msgstr "Belønninger"
-
-#~ msgid "Preview"
-#~ msgstr "Forhåndsvisning"
-
-#~ msgid "Stack Flags"
-#~ msgstr "Stakflag"
-
-#~ msgid "Explosion"
-#~ msgstr "Eksplosion"
-
-#~ msgid "Tile Style"
-#~ msgstr "Feltstil"
-
-#~ msgid "<b>Colours of Buildings on the Miniature map</b>"
-#~ msgstr "<b>Bygningsfarve på miniaturekortet</b>"
-
-#~ msgid "Pictures"
-#~ msgstr "Billeder"
-
-#~ msgid "Shield"
-#~ msgstr "Skjold"
-
-#~ msgid "Carthage"
-#~ msgstr "Carthage"
-
-#~ msgid "Hannibal"
-#~ msgstr "Hannibal"
-
-#~ msgid "Rome"
-#~ msgstr "Rom"
-
-#~ msgid "Roma"
-#~ msgstr "Roma"
-
-#~ msgid "Taras"
-#~ msgstr "Taras"
-
-#~ msgid "Gades"
-#~ msgstr "Gades"
-
-#~ msgid "New Carthage"
-#~ msgstr "Ny Karthago"
-
-#~ msgid "Numantia"
-#~ msgstr "Numantia"
-
-#~ msgid "Saguntum"
-#~ msgstr "Saguntum"
-
-#~ msgid "Capua"
-#~ msgstr "Capua"
-
-#~ msgid "Syracuse"
-#~ msgstr "Siracusa"
-
-#~ msgid "Ausculum"
-#~ msgstr "Ausculum"
-
-#~ msgid "Croton"
-#~ msgstr "Croton"
-
-#~ msgid "Clusium"
-#~ msgstr "Clusium"
-
-#~ msgid "Lilybaeum"
-#~ msgstr "Lilybaeum"
-
-#~ msgid "Lixus"
-#~ msgstr "Lixus"
-
-#~ msgid "Carales"
-#~ msgstr "Carales"
-
-#~ msgid "Hadrumentum"
-#~ msgstr "Hadrumentum"
-
-#~ msgid "Placentia"
-#~ msgstr "Placentia"
-
-#~ msgid "Massillia"
-#~ msgstr "Massillia"
-
-#~ msgid "Leptis"
-#~ msgstr "Leptis"
-
-#~ msgid "Tarraco"
-#~ msgstr "Tarraco"
-
-#~ msgid "Messana"
-#~ msgstr "Messana"
-
-#~ msgid "Gegovia"
-#~ msgstr "Gegovia"
-
-#~ msgid "Olisippo"
-#~ msgstr "Olisippo"
-
-#~ msgid "Temple of Io"
-#~ msgstr "Ios tempel"
-
-#~ msgid "Temple of Belisama"
-#~ msgstr "Belisamas tempel"
-
-#~ msgid "Temple of Apollo"
-#~ msgstr "Apollos tempel"
-
-#~ msgid "Temple of Jupiter"
-#~ msgstr "Jupiters tempel"
-
-#~ msgid "The Sibyl's Cave"
-#~ msgstr "Sibyls hule"
-
-#~ msgid "Defender's Helmet"
-#~ msgstr "Forsvarerens hjelm"
-
-#~ msgid "Scroll of Waterwalking"
-#~ msgstr "Skriftrulle til at gå på vandet med"
-
-#~ msgid "Shield of Parrying"
-#~ msgstr "Paradeskjoldet"
-
-#~ msgid "Field Plate"
-#~ msgstr "Pladerustning"
-
-#~ msgid "Healthy Cloak"
-#~ msgstr "Helbredende kappe"
-
-#~ msgid "Ring of Endurance"
-#~ msgstr "Udholdelsens ring"
-
-#~ msgid "Enchanted Dagger"
-#~ msgstr "Magisk daggert"
-
-#~ msgid "Enchanted Sword"
-#~ msgstr "Magisk sværd"
-
-#~ msgid "Enchanted Axe"
-#~ msgstr "Magisk økse"
-
-#~ msgid "Defense Rapier"
-#~ msgstr "Defensiv stødkårde"
-
-#~ msgid "Skull Crusher"
-#~ msgstr "Kranieknuser"
-
-#~ msgid "Orcish Dagger"
-#~ msgstr "Orkdaggert"
-
-#~ msgid "Orcish Sword"
-#~ msgstr "Orksværd"
-
-#~ msgid "Magic Spear"
-#~ msgstr "Magisk spyd"
-
-#~ msgid "Enchanted Greatsword"
-#~ msgstr "Magisk langsværd"
-
-#~ msgid "Orcish Greatsword"
-#~ msgstr "Orklangsværd"
-
-#~ msgid "Everburning Torch"
-#~ msgstr "Evig brændende fakkel"
-
-#~ msgid "Dwarven Hammer"
-#~ msgstr "Dværgehammer"
-
-#~ msgid "Berserker Axe"
-#~ msgstr "Besærkerøkse"
-
-#~ msgid "Elven Sword"
-#~ msgstr "Elversværd"
-
-#~ msgid "Power Halberd"
-#~ msgstr "Krafthellebard"
-
-#~ msgid "Baneblade"
-#~ msgstr "Dødsklinge"
-
-#~ msgid "Thrakil's Battleaxe"
-#~ msgstr "Thrakils krigsøkse"
-
-#~ msgid "Trident of the Seas"
-#~ msgstr "Havenes trefork"
-
-#~ msgid "Flaming Death"
-#~ msgstr "Flammende død"
-
-# skal det her ikke være morning star (morgenstjerne)? hører dem lige
-#~ msgid "Morningstar"
-#~ msgstr "Morgenstjerne"
-
-#~ msgid "Sword of the Avatar"
-#~ msgstr "Avatars sværd"
-
-#~ msgid "Studded Armour"
-#~ msgstr "Nittet læderrustning"
-
-#~ msgid "Ranger Vest"
-#~ msgstr "Skovvest"
-
-#~ msgid "Wall Aegis"
-#~ msgstr "Aegis' væg"
-
-#~ msgid "Golden Shield"
-#~ msgstr "Gyldent skjold"
-
-#~ msgid "Silver Cap"
-#~ msgstr "Sølvhætte"
-
-#~ msgid "Ruby Ring"
-#~ msgstr "Rubinring"
-
-#~ msgid "Golden Mask"
-#~ msgstr "Gylden maske"
-
-#~ msgid "Crystal Rose"
-#~ msgstr "Krystalrose"
-
-#~ msgid "Moon Blade"
-#~ msgstr "Måneklinge"
-
-#~ msgid "Mace of the Zealot"
-#~ msgstr "Fanatikerens stridskølle"
-
-#~ msgid "Tyrill lies to the southwest"
-#~ msgstr "Tyrill ligger mod sydvest"
-
-#~ msgid "Here in 255 BCE Marcus Atilius Regulus was defeated."
-#~ msgstr "På dette sted i 255 f.Kr. blev Marcus Atilius Regulus besejret."
-
-#~ msgid "Here in 279 BCE Pyrrhus won a \"Pyrrhic\" victory."
-#~ msgstr "På dette sted i 279 f.Kr. vandt Pyrrhus en »Pyrrhussejr«."
-
-#~ msgid "The Second Punic War"
-#~ msgstr "2. puniske krig"
-
-#~ msgid "Carthage has lost her dominance on the sea and you, Hannibal, are convinced that the only hope of avoiding the destruction of your city is to move to the attack - through Spain and across the Alps."
-#~ msgstr "Carthage har mistet sin dominans på havet og du, Hannibal, er overbevidst om, at det eneste håb, om undgåelse af din bys destruktion, er at angribe - via Spanien og over Alperne."
-
-#~ msgid "Error!  armyset: `%1' shares a duplicate armyset id with `%2'.  Skipping."
-#~ msgstr "Fejl! hærsæt: »%1« deler et duplikeret hærsæt-id med »%2«. Udelader."
-
-#~ msgid "Error!  cityset: `%1' is malformed.  Skipping."
-#~ msgstr "Fejl! bysæt: »%1« er forkert udformet. Udelader."
-
-#~ msgid "Error!  cityset: `%1' shares a duplicate cityset basename `%2' with `%3'.  Skipping."
-#~ msgstr "Fejl! bysæt: »%1« deler et duplikeret bysætbasisnavn »%2« med »%3«. Udelader."
-
-#~ msgid "Error!  cityset: `%1' has a duplicate cityset id with `%2'.  Skipping."
-#~ msgstr "Fejl! bysæt: »%1« har et duplikeret bysæt-id med »%2«. Udelader."
-
-#~ msgid "Error!  Tileset: `%1' is malformed.  Skipping."
-#~ msgstr "Fejl! Feltsæt: »%1« er forket udformet. Udelader."
-
-#~ msgid "Error!  tileset: `%1' shares a duplicate tileset subdir `%2' with `%3'. Skipping."
-#~ msgstr "Fejl! Feltsæt: »%1« deler et duplikeret feltsæts undermappe »%2« med »%3«. Udelader."
-
-#~ msgid "Error!  tileset: `%1' shares a duplicate tileset id with `%2'.  Skipping."
-#~ msgstr "Fejl! Feltsæt: »%1« deler et duplikeret feltsæt-id med »%2«. Udelader."
-
-#~ msgid "Error!  shieldset: `%1' is malformed.  Skipping."
-#~ msgstr "Fejl! skjoldsæt: »%1« er forkert udformet. Udelader."
-
-#~ msgid "Error!  shieldset: `%1' shares a duplicate shieldset basename `%2' with `%3'.  Skipping."
-#~ msgstr "Fejl! skjoldsæt: »%1« deler et duplikeret skjoldsæts basisnavn »%2« med »%3«."
-
-#~ msgid "Error!  shieldset: `%1' shares a duplicate shieldset id with `%2'.  Skipping."
-#~ msgstr "Fejl! skjoldsæt: »%1« deler et duplikeret skjoldsæt-id med »%2«. Udelader."
-
-#~ msgid "Can't load networked game from file."
-#~ msgstr "Kan ikke indlæse netværksspil fra fil."
-
-#~ msgid "Couldn't find any citysets (*%1) in `%2'."
-#~ msgstr "Kunne ikke finde nogle bysæt (*%1) i »%2«."
-
-#~ msgid "Couldn't find any shieldsets (*%1) in `%2'."
-#~ msgstr "Kan ikke finde nogle skjoldsæt (*%1) i »%2«."
-
-#~ msgid "Couldn't find any armysets (*%1) in `%2'."
-#~ msgstr "Kunne ikke finde et hærsæt (*%1) i mappen »%2«."
-
-#~ msgid "recently edited documents file"
-#~ msgstr "fil med seneste redigerede dokumenter"
-
-#~ msgid "Scenario Editor for LordsAWar!"
-#~ msgstr "Redigeringsprogram til LordsAWar for scenarier!"
