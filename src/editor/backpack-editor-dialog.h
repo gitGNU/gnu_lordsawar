@@ -21,9 +21,9 @@
 
 #include <gtkmm.h>
 #include "lw-editor-dialog.h"
+#include "Backpack.h"
 
 class Item;
-class Backpack;
 
 // dialog for showing info about a hero, esp. about the hero's items
 class BackpackEditorDialog: public LwEditorDialog
