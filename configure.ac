@@ -89,7 +89,7 @@ AC_ARG_ENABLE(sound, [  --enable-sound         Enable or disable sound usage (de
                 use_sound="$enableval", use_sound="yes")
 
 if test $use_sound = yes; then
-PKG_CHECK_MODULES(GSTREAMER, gstreamermm-0.10)
+PKG_CHECK_MODULES(GSTREAMER, gstreamermm-1.0)
 AC_SUBST(GSTREAMER_CFLAGS)
 AC_SUBST(GSTREAMER_LIBS)
 AC_DEFINE([LW_SOUND], 1, [enables sound])

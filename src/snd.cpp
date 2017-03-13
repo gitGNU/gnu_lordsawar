@@ -32,6 +32,7 @@
 
 #ifdef LW_SOUND
 #include <gstreamermm.h>
+#include <gstreamermm/playbin.h>
 #endif
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
@@ -41,8 +42,8 @@ struct Snd::Impl
 {
 #ifdef LW_SOUND
   // currently playing background and foreground piece
-  Glib::RefPtr<Gst::PlayBin2> back;
-  Glib::RefPtr<Gst::PlayBin2> effect;
+  Glib::RefPtr<Gst::PlayBin> back;
+  Glib::RefPtr<Gst::PlayBin> effect;
 #endif
   int placeholder;
 };
@@ -83,8 +84,8 @@ Snd::Snd()
     helper.close();
 
 #ifdef LW_SOUND
-    impl->back = Gst::PlayBin2::create();
-    impl->effect = Gst::PlayBin2::create();
+    impl->back = Gst::PlayBin::create();
+    impl->effect = Gst::PlayBin::create();
     impl->effect->get_bus()->add_watch(sigc::bind(sigc::hide<0>(sigc::mem_fun(*this, &Snd::on_bus_message)), 0));
     impl->back->get_bus()->add_watch(sigc::bind(sigc::hide<0>(sigc::mem_fun(*this, &Snd::on_bus_message)), 1));
 #endif
