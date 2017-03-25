@@ -2,7 +2,7 @@
 //  Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 //  Copyright (C) 2004, 2005, 2006 Andrea Paternesi
 //  Copyright (C) 2005 Josef Spillner
-//  Copyright (C) 2006, 2007, 2008, 2011, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2006, 2007, 2008, 2011, 2014, 2015, 2017 Ben Asselstine
 //  Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -40,7 +40,7 @@
 
 Glib::ustring Configuration::d_tag = "lordsawarrc";
 bool Configuration::s_showNextPlayer = true;
-Glib::ustring Configuration::configuration_file_path;
+Glib::ustring Configuration::s_configuration_file_path;
 Glib::ustring Configuration::s_dataPath = LORDSAWAR_DATADIR;
 Glib::ustring Configuration::s_savePath;
 Glib::ustring Configuration::s_lang = "";
@@ -79,7 +79,8 @@ guint32 Configuration::s_ui_form_factor = Configuration::UI_FORM_FACTOR_DESKTOP;
 
 Configuration::Configuration()
 {
-  configuration_file_path = File::getHomeFile (".lordsawarrc");
+  if (s_configuration_file_path == "")
+    s_configuration_file_path = File::getHomeFile (".lordsawarrc");
   s_savePath = File::add_slash_if_necessary (File::getHomeFile(".lordsawar"));
 
     char *s = setlocale(LC_ALL, "");
@@ -289,17 +290,17 @@ void initialize_configuration()
 {
     Configuration conf;
 
-    bool foundconf = conf.loadConfigurationFile(Configuration::configuration_file_path);
+    bool foundconf = conf.loadConfigurationFile();
     if (!foundconf)
     {
-	bool saveconf = conf.saveConfigurationFile(Configuration::configuration_file_path);
+	bool saveconf = conf.saveConfigurationFile();
 	if (!saveconf)
 	{
-          std::cerr << String::ucompose(_("Error!  couldn't save configuration file `%1'.  Exiting."), Configuration::configuration_file_path) << std::endl;
+          std::cerr << String::ucompose(_("Error!  couldn't save configuration file `%1'.  Exiting."), Configuration::s_configuration_file_path) << std::endl;
           exit(-1);
 	}
 	else
-          std::cerr << String::ucompose(_("Created default configuration file `%1'."), Configuration::configuration_file_path) << std::endl;
+          std::cerr << String::ucompose(_("Created default configuration file `%1'."), Configuration::s_configuration_file_path) << std::endl;
     }
     
     //Check if the save game directory exists. If not, try to create it.
@@ -526,7 +527,7 @@ bool Configuration::upgrade(Glib::ustring filename, Glib::ustring old_version,
 
 void Configuration::support_backward_compatibility()
 {
-  Glib::ustring ext = File::get_extension(Configuration::configuration_file_path);
+  Glib::ustring ext = File::get_extension(Configuration::s_configuration_file_path);
   FileCompat::getInstance()->support_type (FileCompat::CONFIGURATION, ext, 
                                            d_tag, false);
   FileCompat::getInstance()->support_version

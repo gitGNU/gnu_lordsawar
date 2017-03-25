@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2011, 2014 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -155,7 +155,7 @@ bool GameOptionsDialog::run()
     Configuration::s_cusp_of_war = GameScenarioOptions::s_cusp_of_war;
     Configuration::s_intense_combat = GameScenarioOptions::s_intense_combat;
     Configuration::s_military_advisor = GameScenarioOptions::s_military_advisor;
-    Configuration::saveConfigurationFile(Configuration::configuration_file_path);
+    Configuration::saveConfigurationFile();
     dialog->hide();
     return true;
 }

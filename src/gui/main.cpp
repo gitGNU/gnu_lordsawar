@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,16 @@
 #include <sigc++/functors/mem_fun.h>
 #include <time.h>
 #include "rnd.h"
+
+#include "recently-played-game-list.h"
+#include "citysetlist.h"
+#include "tilesetlist.h"
+#include "shieldsetlist.h"
+#include "armysetlist.h"
+#include "profilelist.h"
+#include "gamelist.h"
+#include "file-compat.h"
+#include "gui/builder-cache.h"
 
 #include "main.h"
 
@@ -132,3 +142,27 @@ sigc::connection Main::Impl::on_timer_registered(Timing::timer_slot s,
     return Glib::signal_timeout().connect(s, msecs_interval);
 }
 
+void Main::initialize ()
+{
+  if (configuration_file_path != "")
+    Configuration::s_configuration_file_path = configuration_file_path;
+  initialize_configuration();
+  if (cacheSize)
+    Configuration::s_cacheSize = cacheSize;
+  Profilelist::support_backward_compatibility();
+  RecentlyPlayedGameList::support_backward_compatibility();
+  Gamelist::support_backward_compatibility();
+  FileCompat::support_backward_compatibility_for_common_files();
+  FileCompat::getInstance()->initialize();
+  Vector<int>::setMaximumWidth(1000);
+  RecentlyPlayedGameList::getInstance()->load();
+
+
+  // Check if armysets are in the path (otherwise exit)
+  Armysetlist::scan(Armyset::file_extension);
+  Tilesetlist::scan(Tileset::file_extension);
+  Shieldsetlist::scan(Shieldset::file_extension);
+  Citysetlist::scan(Cityset::file_extension);
+  BuilderCache::getInstance();
+
+}

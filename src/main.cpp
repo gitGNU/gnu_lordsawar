@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2011, 2014, 2015 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2011, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 // Copyright (C) 2005, 2006 Josef Spillner
 //
@@ -23,22 +23,11 @@
 #include <config.h>
 
 #include <iostream>
+#include "Configuration.h"
 
 #ifdef LW_SOUND
 #include <gstreamermm/init.h>
 #endif
-
-#include "Configuration.h"
-#include "File.h"
-#include "recently-played-game-list.h"
-#include "citysetlist.h"
-#include "tilesetlist.h"
-#include "shieldsetlist.h"
-#include "armysetlist.h"
-#include "profilelist.h"
-#include "gamelist.h"
-#include "file-compat.h"
-#include "gui/builder-cache.h"
 
 #include "gui/main.h"
 
@@ -46,27 +35,7 @@
 int max_vector_width;
 int main(int argc, char* argv[])
 {
-
-  initialize_configuration();
-  Profilelist::support_backward_compatibility();
-  RecentlyPlayedGameList::support_backward_compatibility();
-  Gamelist::support_backward_compatibility();
-  FileCompat::support_backward_compatibility_for_common_files();
-  FileCompat::getInstance()->initialize();
-  Vector<int>::setMaximumWidth(1000);
-  RecentlyPlayedGameList::getInstance()->load();
-
-  #if ENABLE_NLS
-  //cout << "Configuration::s_lang.c_str(): " << Configuration::s_lang.c_str() << endl;
-  setlocale(LC_ALL, Configuration::s_lang.c_str());
-  //setlocale(LC_ALL, "");
-  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
-  #endif
-
   Main kit(argc, argv);
-
 
   if (argc > 1)
     {
@@ -84,8 +53,13 @@ int main(int argc, char* argv[])
                   std::cerr <<_("non-numerical value for cache size") <<std::endl;
 		  exit(-1);
 		}
-	      Configuration::s_cacheSize = size;
+              kit.cacheSize = size;
 	    }
+          else if (parameter == "-C" || parameter == "--config-file")
+            {
+	      i++;
+              kit.configuration_file_path = argv[i-1];
+            }
 	  else if (parameter == "--seed" || parameter == "-S")
 	    {
 	      i++;
@@ -144,6 +118,7 @@ int main(int argc, char* argv[])
               std::cout << "LordsAWar! " << _("version") << " " << VERSION << std::endl << std::endl;
               std::cout << _("Options:") << std::endl << std::endl; 
               std::cout << "  -h, --help                 " << _("Shows this help screen") <<std::endl;
+              std::cout << "  -C, --config-file <file>   " << _("Use file instead of ~/.lordsawarrc") <<std::endl;
               std::cout << "  -c, --cache-size <size>    " << _("Set the cache size for imagery to SIZE bytes") <<std::endl;
               std::cout << "  -t, --test                 " << _("Start with a test-scenario") << std::endl;
               std::cout << "  -S, --seed <number>        " << _("Seed the random number generator with NUMBER") << std::endl;
@@ -161,6 +136,16 @@ int main(int argc, char* argv[])
 	    kit.load_filename = parameter;
 	}
     }
+
+  kit.initialize ();
+  #if ENABLE_NLS
+  //cout << "Configuration::s_lang.c_str(): " << Configuration::s_lang.c_str() << endl;
+  setlocale(LC_ALL, Configuration::s_lang.c_str());
+  //setlocale(LC_ALL, "");
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
+  #endif
 
   if (kit.load_filename != "" && kit.start_test_scenario)
     {
@@ -185,15 +170,6 @@ int main(int argc, char* argv[])
       std::cerr <<_("Error: Must specify a file to load when specifying --turn.") << std::endl;
       exit (1);
     }
-
-
-  // Check if armysets are in the path (otherwise exit)
-  Armysetlist::scan(Armyset::file_extension);
-  Tilesetlist::scan(Tileset::file_extension);
-  Shieldsetlist::scan(Shieldset::file_extension);
-  Citysetlist::scan(Cityset::file_extension);
-  BuilderCache::getInstance();
-
 
 #ifdef LW_SOUND
   Gst::init(argc, argv);

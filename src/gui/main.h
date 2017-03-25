@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2010, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ class Main: public sigc::trackable
     // singleton interface
     static Main &instance();
     
+    void initialize ();
     void start_main_loop();
     void stop_main_loop();
 
@@ -45,6 +46,8 @@ class Main: public sigc::trackable
     bool start_headless_server;
     guint32 port;
     Glib::Rand rnd;
+    int cacheSize;
+    std::string configuration_file_path;
     
  private:
     struct Impl;
