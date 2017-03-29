@@ -52,7 +52,10 @@ class File
         static Glib::ustring getSaveFile(Glib::ustring filename);
         static Glib::ustring getTempFile(Glib::ustring tmpdir, Glib::ustring filename);
         static Glib::ustring getTarTempDir(Glib::ustring dir);
-        static Glib::ustring getHomeFile(Glib::ustring filename);
+        static Glib::ustring getConfigDir ();
+        static Glib::ustring getConfigFile(Glib::ustring filename);
+        static Glib::ustring getUserDataDir ();
+        static Glib::ustring getCacheDir ();
 
         //! load an xslt file.
         static Glib::ustring getXSLTFile(guint32 type, Glib::ustring old_version, Glib::ustring new_version);

@@ -24,6 +24,7 @@
 
 #include <iostream>
 #include "Configuration.h"
+#include "ucompose.hpp"
 
 #ifdef LW_SOUND
 #include <gstreamermm/init.h>
@@ -118,7 +119,7 @@ int main(int argc, char* argv[])
               std::cout << "LordsAWar! " << _("version") << " " << VERSION << std::endl << std::endl;
               std::cout << _("Options:") << std::endl << std::endl; 
               std::cout << "  -h, --help                 " << _("Shows this help screen") <<std::endl;
-              std::cout << "  -C, --config-file <file>   " << _("Use file instead of ~/.lordsawarrc") <<std::endl;
+              std::cout << "  -C, --config-file <file>   " << String::ucompose(_("Use file instead of default %1"), DEFAULT_CONFIG_FILENAME) << std::endl;
               std::cout << "  -c, --cache-size <size>    " << _("Set the cache size for imagery to SIZE bytes") <<std::endl;
               std::cout << "  -t, --test                 " << _("Start with a test-scenario") << std::endl;
               std::cout << "  -S, --seed <number>        " << _("Seed the random number generator with NUMBER") << std::endl;

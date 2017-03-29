@@ -174,5 +174,6 @@ const int SPEED_DELAY = 3000;
 const double ZOOM_STEP = 0.1;
 #endif
 
+const Glib::ustring DEFAULT_CONFIG_FILENAME = "lordsawarrc";
 #endif // DEFINITIONS_H
 

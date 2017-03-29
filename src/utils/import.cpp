@@ -1059,13 +1059,13 @@ import_armyset (FILE *a, Glib::ustring name)
   fread (armies, sizeof (struct army_t), 29, a);
   qsort (armies, 29, sizeof (struct army_t), compare_army_records);
 
-  armyset->setDirectory(Glib::get_tmp_dir());
+  armyset->setDirectory(File::getCacheDir());
   armyset->setBaseName(name);
   armyset->setInfo(String::ucompose(_("An armyset called %1 converted by lordsawar-import %2."), name, VERSION));
   armyset->setTileSize(40);
   //gotta save now so the copying of images works later on.
-  File::erase(File::getTempFile (Glib::get_tmp_dir(), name + ARMYSET_EXT));
-  armyset->save(File::getTempFile (Glib::get_tmp_dir(), name), ARMYSET_EXT);
+  File::erase(File::getTempFile (File::getCacheDir(), name + ARMYSET_EXT));
+  armyset->save(File::getTempFile (File::getCacheDir(), name), ARMYSET_EXT);
   for (int i = 0; i < 29; i++)
     {
       struct army_t ar = armies[i];
@@ -1290,8 +1290,8 @@ import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, FILE *sp, FILE *a, G
   if (a)
     {
       armyset = import_armyset (a, name);
-      armyset->save(File::getTempFile (Glib::get_tmp_dir(), name), ARMYSET_EXT);
-      Armysetlist::getInstance()->add(armyset, File::getTempFile(Glib::get_tmp_dir(), name + ARMYSET_EXT));
+      armyset->save(File::getTempFile (File::getCacheDir(), name), ARMYSET_EXT);
+      Armysetlist::getInstance()->add(armyset, File::getTempFile(File::getCacheDir(), name + ARMYSET_EXT));
     }
   if (!armyset)
     {
@@ -1310,8 +1310,8 @@ import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, FILE *sp, FILE *a, G
       //pretty hacky here.
       //we can sort it before we do fight order
       armyset->sort(compare_strength);
-      armyset->save(File::getTempFile (Glib::get_tmp_dir(), name), ARMYSET_EXT);
-      Armysetlist::getInstance()->add(armyset, File::getTempFile (Glib::get_tmp_dir(), name + ARMYSET_EXT));
+      armyset->save(File::getTempFile (File::getCacheDir(), name), ARMYSET_EXT);
+      Armysetlist::getInstance()->add(armyset, File::getTempFile (File::getCacheDir(), name + ARMYSET_EXT));
     }
   fseek (scn, at, SEEK_SET);
   import_ruins_and_temples (scn, sp);

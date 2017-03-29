@@ -188,14 +188,29 @@ Glib::ustring File::getTempFile(Glib::ustring tmpdir, Glib::ustring filename)
   return Glib::build_filename (tmpdir, filename);
 }
 
-Glib::ustring File::getHomeFile(Glib::ustring filename)
+Glib::ustring File::getCacheDir ()
 {
-  return Glib::build_filename (Glib::get_home_dir (), filename);
+  return Glib::build_filename (Glib::get_user_cache_dir (), PACKAGE_NAME);
+}
+
+Glib::ustring File::getUserDataDir ()
+{
+  return Glib::build_filename (Glib::get_user_data_dir (), PACKAGE_NAME);
+}
+
+Glib::ustring File::getConfigDir ()
+{
+  return Glib::build_filename (Glib::get_user_config_dir (), PACKAGE_NAME);
+}
+
+Glib::ustring File::getConfigFile(Glib::ustring filename)
+{
+  return Glib::build_filename (File::getConfigDir (), filename);
 }
 
 Glib::ustring File::getTarTempDir(Glib::ustring dir)
 {
-  return Glib::build_filename (Glib::get_tmp_dir (), 
+  return Glib::build_filename (File::getCacheDir (),
                                String::ucompose("%1.%2", dir, getpid()));
 }
 
@@ -261,7 +276,7 @@ std::list<Glib::ustring> File::scanMaps()
     if (retlist.empty())
     {
       std::cerr << _("Error: Couldn't find a single map!") << std::endl;
-      std::cerr << String::ucompose(_("Please check the path settings in %1"), File::getHomeFile(".lordsawarrc")) << std::endl;
+      std::cerr << String::ucompose(_("Please check the path settings in %1"), File::getConfigFile(DEFAULT_CONFIG_FILENAME)) << std::endl;
     }
 
     return retlist;

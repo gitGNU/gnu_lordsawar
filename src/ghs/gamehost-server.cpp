@@ -196,7 +196,7 @@ void GamehostServer::run_game(GameScenario *game_scenario, Glib::Pid *child_pid,
   argv.push_back(String::ucompose("%1", port));
   
   //run lordsawar <file> --host --port <port>
-  Glib::spawn_async (Glib::get_tmp_dir(), argv, 
+  Glib::spawn_async (File::getCacheDir (), argv,
                      Glib::SPAWN_STDOUT_TO_DEV_NULL | 
                      Glib::SPAWN_STDERR_TO_DEV_NULL, 
                      sigc::mem_fun(*this, &GamehostServer::on_child_setup), 

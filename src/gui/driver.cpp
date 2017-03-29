@@ -1117,7 +1117,7 @@ void Driver::stress_test()
   fflush(stdout);
   printf("winner type: %s\n", Player::playerTypeToString(Player::Type(Playerlist::getInstance()->getFirstLiving()->getType())).c_str());
   Glib::ustring s = 
-    File::getTempFile(Glib::get_tmp_dir(), 
+    File::getTempFile(File::getCacheDir(),
                       String::ucompose ("run-seed-%1", 
                                         Main::instance().random_number_seed));
   game_scenario->saveGame(s + SAVE_EXT);

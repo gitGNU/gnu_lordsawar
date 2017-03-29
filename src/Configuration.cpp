@@ -79,13 +79,16 @@ guint32 Configuration::s_ui_form_factor = Configuration::UI_FORM_FACTOR_DESKTOP;
 
 Configuration::Configuration()
 {
+  File::create_dir (File::getConfigDir ());
+  File::create_dir (File::getUserDataDir ());
+  File::create_dir (File::getCacheDir ());
   if (s_configuration_file_path == "")
-    s_configuration_file_path = File::getHomeFile (".lordsawarrc");
-  s_savePath = File::add_slash_if_necessary (File::getHomeFile(".lordsawar"));
+    s_configuration_file_path = File::getConfigFile (DEFAULT_CONFIG_FILENAME);
+  s_savePath = File::add_slash_if_necessary (File::getUserDataDir ());
 
-    char *s = setlocale(LC_ALL, "");
-    if (s)
-	Configuration::s_lang = s;
+  char *s = setlocale(LC_ALL, "");
+  if (s)
+    Configuration::s_lang = s;
 }
 
 // check if file exists and parse it
@@ -108,7 +111,7 @@ bool Configuration::loadConfigurationFile(Glib::ustring fileName)
         bool ret = helper.parseXML();
         helper.close();
         if (ret == false)
-          std::cerr << _("Okay, we're throwing your .lordsawarrc away.");
+          std::cerr << String::ucompose(_("Okay, we're throwing your config file %1 away"), File::getConfigFile (DEFAULT_CONFIG_FILENAME)) << std::endl;
         return ret;
     }
     else return false;
