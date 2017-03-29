@@ -295,8 +295,8 @@ void Driver::run()
 	  p.name = "";
 	  g.players.push_back(p);
 	}
-      g.map.width = 125;
-      g.map.height = 125;
+      g.map.width = 50;
+      g.map.height = 75;
       g.map.grass = 78;
       g.map.water = 7;
       g.map.swamp = 2;
@@ -306,26 +306,32 @@ void Driver::run()
       g.map.cities = 40;
       g.map.ruins = 25;
       g.map.temples = 3;
+      g.map.signposts = 0;
+
       g.map_path = "";
-      g.play_with_quests = GameParameters::NO_QUESTING;
-      g.hidden_map = false;
-      g.neutral_cities = GameParameters::STRONG;
-      g.razing_cities = GameParameters::ALWAYS;
-      g.diplomacy = false;
-      g.random_turns = false;
-      g.quick_start = GameParameters::NO_QUICK_START;
-      g.intense_combat = false;
-      g.military_advisor = false;
-      g.army_theme = "default";
       g.tile_theme = "default";
+      g.army_theme = "default";
       g.shield_theme = "default";
       g.city_theme = "default";
+
       g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
-      g.difficulty = GameScenario::calculate_difficulty_rating(g);
-      g.cities_can_produce_allies = false;
-      g.cusp_of_war = false;
       g.see_opponents_stacks = true;
       g.see_opponents_production = true;
+      g.play_with_quests = GameParameters::NO_QUESTING;
+      g.hidden_map = false;
+      g.diplomacy = false;
+
+      g.neutral_cities = GameParameters::STRONG;
+      g.razing_cities = GameParameters::ALWAYS;
+      g.quick_start = GameParameters::NO_QUICK_START;
+      g.cusp_of_war = false;
+      g.intense_combat = false;
+      g.military_advisor = false;
+      g.random_turns = false;
+      g.cities_can_produce_allies = false;
+      g.name = "";
+
+      g.difficulty = GameScenario::calculate_difficulty_rating(g);
       on_new_game_requested(g);
     }
   else if (Main::instance().start_robots != 0) 
