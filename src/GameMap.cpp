@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2014, 2015 Ben Asselstine
+// Copyright (C) 2006-2011, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 // Copyright (C) 2008 Janek Kozicki
 //
@@ -125,7 +125,6 @@ GameMap::GameMap(Glib::ustring TilesetName, Glib::ustring ShieldsetName,
   for (int j = 0; j < s_height; j++)
     for (int i = 0; i < s_width; i++)
       d_map[j*s_width + i] = 0;
-
 }
 
 bool GameMap::offmap(int x, int y)
@@ -2210,16 +2209,13 @@ int GameMap::calculateTilesPerOverviewMapTile(int width, int height)
   if (width <= (int)MAP_SIZE_NORMAL_WIDTH && 
       height <= (int)MAP_SIZE_NORMAL_HEIGHT)
     return 1;
-  else if (width <= (int)(MAP_SIZE_NORMAL_WIDTH  * 2) && 
-      height <= (int)(MAP_SIZE_NORMAL_HEIGHT * 2))
+  //i want the map to fit into say, 300 pixels wide.
+  //so we make sure the map fits into 100 pixels and then
+  //multiply it later on with pixels per tile in overviewmap
+  int w = width / 100;
+  if (w <= 1)
     return 2;
-  else if (width <= (int)(MAP_SIZE_NORMAL_WIDTH  * 3) && 
-      height <= (int)(MAP_SIZE_NORMAL_HEIGHT * 3))
-    return 3;
-  else if (width <= (int)(MAP_SIZE_NORMAL_WIDTH  * 4) && 
-      height <= (int)(MAP_SIZE_NORMAL_HEIGHT * 4))
-    return 4;
-  return 1;
+  return w;
 }
 
 int GameMap::calculateTilesPerOverviewMapTile()

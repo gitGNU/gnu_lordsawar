@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, 2008, Ole Laursen
-//  Copyright (C) 2007-2012, 2014-2016 Ben Asselstine
+//  Copyright (C) 2007-2012, 2014-2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -714,13 +714,31 @@ bool GameWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
   return true;
 }
 
+void GameWindow::get_default_magnifying_glass_hotspot (int *hotspot_x, int *hotspot_y)
+{
+  guint s =
+    Gdk::Display::get_default()->get_default_cursor_size ();
+
+  PixMask *p =
+    ImageCache::getInstance()->getCursorPic(ImageCache::MAGNIFYING_GLASS);
+
+  double x = 8.0 / (double)p->get_width ();
+  double y = 5.0 / (double)p->get_height ();
+
+  *hotspot_x = int((double)s * (double)x);
+  *hotspot_y = int((double)s * (double)y);
+}
+
 bool GameWindow::on_mouse_entered_smallmap()
 {
+  static int hotspot_x = -1, hotspot_y = -1;
+  if (hotspot_x == -1 && hotspot_y == -1)
+    get_default_magnifying_glass_hotspot (&hotspot_x, &hotspot_y);
   map_eventbox->get_window()->set_cursor
     (Gdk::Cursor::create (Gdk::Display::get_default(),
                           ImageCache::getInstance()->getCursorPic
                           (ImageCache::MAGNIFYING_GLASS)->to_pixbuf(),
-                          8, 5));
+                          hotspot_x, hotspot_y));
   return true;
 }
 

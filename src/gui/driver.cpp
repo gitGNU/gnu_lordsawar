@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, 2008, Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010, 2012, 2014, 2015, 2016 Ben Asselstine
+//  Copyright (C) 2007-2012, 2014-2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -295,8 +295,18 @@ void Driver::run()
 	  p.name = "";
 	  g.players.push_back(p);
 	}
-      g.map.width = 50;
-      g.map.height = 75;
+      //g.map.width = 50;
+      //g.map.height = 75;
+      //g.map.width = 70;
+      //g.map.height = 105;
+      //g.map.width = 112;
+      //g.map.height = 156;
+      g.map.width = 125;
+      g.map.height = 125;
+      //g.map.width = 255;
+      //g.map.height = 255;
+      //g.map.width = 500;
+      //g.map.height = 500;
       g.map.grass = 78;
       g.map.water = 7;
       g.map.swamp = 2;

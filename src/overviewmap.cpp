@@ -1,5 +1,5 @@
 // Copyright (C) 2006, 2007 Ulf Lorenz
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2014, 2015 Ben Asselstine
+// Copyright (C) 2006-2012, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 //  02110-1301, USA.
 
 #include <config.h>
@@ -85,7 +85,7 @@ bool OverviewMap::isShadowed(Tile::Type type, int i, int j)
   return false;
 }
 
-static int 
+static int
 prand(int i, int j)
 {
   (void)i;
@@ -93,14 +93,14 @@ prand(int i, int j)
   return (Rnd::rand () % 3);
 }
 
-static int 
+static int
 crand(int i, int j)
 {
   return (i + 1) ^ (j + 1);
   //return i + j + (i*j) + (i*100) + (j*43) / 43;
 }
 
-static int 
+static int
 drand(int i, int j)
 {
   float f = i / 43 * j / 43;
@@ -192,7 +192,7 @@ OverviewMap::draw_rect(bool front, int x, int y, int width, int height, const Gd
 
 void OverviewMap::draw_terrain_tile(Cairo::RefPtr<Cairo::Context> gc,
 				    SmallTile::Pattern pattern,
-				    Gdk::RGBA first, 
+				    Gdk::RGBA first,
 				    Gdk::RGBA second,
 				    Gdk::RGBA third,
 				    int i, int j, bool shadowed)
@@ -311,9 +311,9 @@ void OverviewMap::draw_terrain_tile(Cairo::RefPtr<Cairo::Context> gc,
 void OverviewMap::draw_terrain_tile(Maptile *t, int i, int j)
 {
   bool shadowed = isShadowed(t->getType(), i, j);
-  draw_terrain_tile (static_surface_gc, t->getPattern(), 
-		     t->getColor(), 
-		     t->getSecondColor(), 
+  draw_terrain_tile (static_surface_gc, t->getPattern(),
+		     t->getColor(),
+		     t->getSecondColor(),
 		     t->getThirdColor(),
 		     i, j, shadowed);
 }
@@ -321,14 +321,26 @@ void OverviewMap::draw_terrain_tile(Maptile *t, int i, int j)
 int OverviewMap::calculatePixelsPerTile(int width, int height)
 {
   int pixels = 2;
-  if (width <= (int)MAP_SIZE_TINY_WIDTH && 
-      height <= (int)MAP_SIZE_TINY_HEIGHT)
-    pixels = 4;
-  else if (width <= (int)MAP_SIZE_SMALL_WIDTH && 
-	   height <= (int)MAP_SIZE_SMALL_HEIGHT)
-    pixels = 3;
+  if (GameMap::calculateTilesPerOverviewMapTile() == 1)
+    {
+      if (width <= (int)MAP_SIZE_TINY_WIDTH &&
+          height <= (int)MAP_SIZE_TINY_HEIGHT)
+        pixels = 4;
+      else if (width <= (int)MAP_SIZE_SMALL_WIDTH &&
+               height <= (int)MAP_SIZE_SMALL_HEIGHT)
+        pixels = 3;
+      else
+        pixels = 2;
+    }
   else
-    pixels = 2;
+    {
+      int w = GameMap::getWidth () /
+        GameMap::calculateTilesPerOverviewMapTile();
+      pixels = int(300 / w);
+      if (pixels <= 0)
+        pixels = 1;
+    }
+
   switch (Configuration::UiFormFactor(Configuration::s_ui_form_factor))
     {
     case Configuration::UI_FORM_FACTOR_DESKTOP:
@@ -349,13 +361,14 @@ int OverviewMap::calculatePixelsPerTile()
 void OverviewMap::resize()
 {
   int factor = calculatePixelsPerTile();
-  resize(GameMap::get_dim() * factor, 
+  resize(GameMap::get_dim() * factor,
          GameMap::calculateTilesPerOverviewMapTile());
 }
 
 Vector<int> OverviewMap::calculate_smallmap_size()
 {
-  Vector<int> max_dimensions = GameMap::get_dim() * calculatePixelsPerTile();
+  int factor = calculatePixelsPerTile();
+  Vector<int> max_dimensions = GameMap::get_dim() * factor;
   Vector<int> d;
   double p = max_dimensions.x / double(GameMap::get_dim().x);
   d.x = max_dimensions.x;
@@ -366,6 +379,8 @@ Vector<int> OverviewMap::calculate_smallmap_size()
 	d.x = int(round(GameMap::get_dim().x * p));
 	d.y = max_dimensions.y;
     }
+  d.x /= GameMap::calculateTilesPerOverviewMapTile();
+  d.y /= GameMap::calculateTilesPerOverviewMapTile();
   return d;
 }
 
@@ -379,17 +394,23 @@ void OverviewMap::resize(Vector<int> max_dimensions, float scale)
 
     // first try scaling to horizontal size
     pixels_per_tile = max_dimensions.x / double(bigmap_dim.x);
+    if (scale > 1)
+      pixels_per_tile = calculatePixelsPerTile ();
     d.x = max_dimensions.x;
     d.y = int(round(bigmap_dim.y * pixels_per_tile));
-    
+
     if (d.y > max_dimensions.y)
     {
 	// if too big, scale to vertical
 	pixels_per_tile = max_dimensions.y / double(bigmap_dim.y);
+        if (scale > 1)
+          pixels_per_tile = calculatePixelsPerTile ();
 	d.x = int(round(bigmap_dim.x * pixels_per_tile));
 	d.y = max_dimensions.y;
     }
     map_tiles_per_tile = scale;
+    d.x /= map_tiles_per_tile;
+    d.y /= map_tiles_per_tile;
 
     Cairo::RefPtr<Cairo::Surface> empty = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, d.x, d.y);
     static_surface = Cairo::Surface::create(empty, Cairo::CONTENT_COLOR_ALPHA, d.x, d.y);
@@ -413,7 +434,7 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
 	tiles.pos -= Vector<int>(1, 1);
 	tiles.dim += Vector<int>(2, 2);
 	
-	// translate to pixel coordinates 
+	// translate to pixel coordinates
 	Vector<int> pos(int(round(tiles.x * pixels_per_tile)),
 			int(round(tiles.y * pixels_per_tile)));
 	Vector<int> dim(int(round(tiles.w * pixels_per_tile)),
@@ -465,17 +486,19 @@ Maptile* OverviewMap::getTile(int x, int y)
 void OverviewMap::draw_terrain_tiles(Rectangle r)
 {
   Gdk::RGBA rd = GameMap::getTileset()->getRoadColor();
-  for (int i = r.x; i < r.x + r.w; i+=int(map_tiles_per_tile))
-    for (int j = r.y; j < r.y + r.h; j+=int(map_tiles_per_tile))
+  r.w *= map_tiles_per_tile;
+  r.h *= map_tiles_per_tile;
+  for (int i = r.x; i < r.x + r.w; i += int(map_tiles_per_tile))
+    for (int j = r.y; j < r.y + r.h; j += int(map_tiles_per_tile))
       {
         int x = int(i / pixels_per_tile);
         int y = int(j / pixels_per_tile);
         Maptile *mtile = getTile(x,y);
 
         if (mtile->isRoadTerrain())
-          draw_pixel(static_surface_gc, i, j, rd);
+          draw_pixel(static_surface_gc, i /map_tiles_per_tile, j /map_tiles_per_tile, rd);
         else
-          draw_terrain_tile (mtile, i, j);
+          draw_terrain_tile (mtile, i /map_tiles_per_tile, j /map_tiles_per_tile);
       }
 }
 
@@ -491,11 +514,11 @@ void OverviewMap::draw(Player *player)
     assert(surface);
 
 
-    // During the whole drawing stuff, ALWAYS consider that 
+    // During the whole drawing stuff, ALWAYS consider that
     // there is an offset of 1 between map coordinates and coordinates
     // of the surface when drawing. I will implcitely assume this during this
     // function.
-    
+
     //put the static surface on the surface
     surface_gc->set_source(static_surface, 0, 0);
     surface_gc->paint();
@@ -507,7 +530,7 @@ void OverviewMap::draw(Player *player)
         it != Ruinlist::getInstance()->end(); it++)
     {
         Ruin *r = *it;
-        if (r->isHidden() == true && 
+        if (r->isHidden() == true &&
 	    r->getOwner() != Playerlist::getViewingplayer())
           continue;
         if (r->isVisible(Playerlist::getViewingplayer()) == false)
@@ -574,9 +597,9 @@ Cairo::RefPtr<Cairo::Surface> OverviewMap::get_surface()
 
 Vector<int> OverviewMap::mapFromScreen(Vector<int> pos)
 {
-    int x = int(pos.x / pixels_per_tile / map_tiles_per_tile);
-    int y = int(pos.y / pixels_per_tile / map_tiles_per_tile);
-    
+    int x = int(pos.x / pixels_per_tile * map_tiles_per_tile);
+    int y = int(pos.y / pixels_per_tile * map_tiles_per_tile);
+
     if (x >= GameMap::getWidth())
         x = GameMap::getWidth() - 1;
 
@@ -585,10 +608,10 @@ Vector<int> OverviewMap::mapFromScreen(Vector<int> pos)
 
     if (x < 0)
       x = 0;
-    
+
     if (y < 0)
       y = 0;
-    
+
     return Vector<int>(x,y);
 }
 
@@ -613,7 +636,7 @@ Vector<int> OverviewMap::mapToSurface(Vector<int> pos)
 
     if (pixels_per_tile > 2)
         y += int(0.5 * pixels_per_tile);
-    
+
     return Vector<int>(x, y);
 }
 
@@ -643,7 +666,7 @@ void OverviewMap::draw_cities (bool all_razed)
         tmp = ImageCache::getInstance()->getSmallRuinedCityImage();
       else
         tmp = ImageCache::getInstance()->getShieldPic(csize, c->getOwner());
-  
+
       Vector<int> pos = c->getPos();
       pos = mapToSurface(pos);
       tmp->blit_centered(surface, pos);
@@ -675,11 +698,11 @@ void OverviewMap::draw_target_box(Vector<int> pos, const Gdk::RGBA c)
   int xsize = 8;
   int ysize = 8;
   //draw an 8 by 8 box, with a smaller box inside of it
-  draw_rect(start.x - (xsize / 2), start.y - (ysize / 2), 
+  draw_rect(start.x - (xsize / 2), start.y - (ysize / 2),
 	    xsize, ysize, c);
   xsize = 5;
   ysize = 5;
-  draw_filled_rect(start.x - (xsize / 2), start.y - (ysize / 2), 
+  draw_filled_rect(start.x - (xsize / 2), start.y - (ysize / 2),
 		   xsize, ysize, c);
 }
 
@@ -709,7 +732,7 @@ void OverviewMap::draw_radial_gradient(Cairo::RefPtr<Cairo::Surface> surface, Gd
     max = (double)width;
   double xcenter = (double)width / 2.0;
   double ycenter = (double)height / 2.0;
-  Cairo::RefPtr<Cairo::RadialGradient> gradient = 
+  Cairo::RefPtr<Cairo::RadialGradient> gradient =
     Cairo::RadialGradient::create(xcenter, ycenter, 1, xcenter, ycenter, max);
   gradient->add_color_stop_rgb(0, ired, igreen, iblue);
   gradient->add_color_stop_rgb(1.0, ored, ogreen, oblue);

@@ -2,7 +2,7 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
 // Copyright (C) 2004 Thomas Plonka
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2014, 2015 Ben Asselstine
+// Copyright (C) 2006-2010, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -52,8 +52,8 @@ void SmallMap::draw_selection()
     // draw the selection rectangle that shows the viewed part of the map
     Vector<int> pos = mapToSurface(view.pos);
 
-    int w = int(view.w * pixels_per_tile);
-    int h = int(view.h * pixels_per_tile);
+    int w = int(view.w * pixels_per_tile / map_tiles_per_tile);
+    int h = int(view.h * pixels_per_tile / map_tiles_per_tile);
 
     int width = get_width();
     int height = get_height();
@@ -88,10 +88,16 @@ void SmallMap::center_view_on_tile(Vector<int> pos, bool slide_me)
 
 void SmallMap::center_view_on_pixel(Vector<int> pos, bool slide_me)
 {
-  pos.x = int(round(pos.x / pixels_per_tile));
-  pos.y = int(round(pos.y / pixels_per_tile));
+  pos.x = int(round(pos.x / pixels_per_tile * map_tiles_per_tile));
+  pos.y = int(round(pos.y / pixels_per_tile * map_tiles_per_tile));
 
-  pos -= view.dim / pixels_per_tile;
+  /* FIXME: i have no idea why 1.65 is the number i need here.
+   it controls the centeredness of the white box on where we clicked.
+   this works well for the 3 standard sizes of maps.
+   */
+
+  pos.x -= (view.w / 1.65);
+  pos.y -= (view.h / 1.65);
 
   pos = clip(Vector<int>(0, 0), pos, GameMap::get_dim() - view.dim);
 
@@ -151,20 +157,24 @@ void SmallMap::mouse_motion_event(MouseMotionEvent e)
 
 int SmallMap::slide (int x, int y)
 {
-  int skip = 2;
+  int skip = map_tiles_per_tile + 1;
   if (x < y)
     {
       if (x + skip < y)
 	x += skip;
+      else if (x + map_tiles_per_tile < y)
+	x += map_tiles_per_tile ;
       else
-	x++;
+	x += 1;
     }
   else if (x > y)
     {
       if (x - skip > y)
 	x -= skip;
+      else if (x - map_tiles_per_tile > y)
+	x -= map_tiles_per_tile;
       else
-	x--;
+	x -= 1;
     }
   return x;
 }
