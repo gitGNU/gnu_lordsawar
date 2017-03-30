@@ -136,7 +136,7 @@ void SwitchSetsDialog::on_tile_size_changed()
     }
 
   tile_theme_combobox->set_active(default_id);
-  if (tile_theme_combobox->get_children().size() == 0)
+  if (tile_theme_combobox->get_model()->children().size() == 0)
     accept_button->set_sensitive(false);
 
   army_theme_combobox->remove_all();
@@ -155,7 +155,7 @@ void SwitchSetsDialog::on_tile_size_changed()
     }
 
   army_theme_combobox->set_active(default_id);
-  if (army_theme_combobox->get_children().size() == 0)
+  if (army_theme_combobox->get_model()->children().size() == 0)
     accept_button->set_sensitive(false);
 
   city_theme_combobox->remove_all();
@@ -179,7 +179,7 @@ void SwitchSetsDialog::on_tile_size_changed()
     }
 
   city_theme_combobox->set_active(default_id);
-  if (city_theme_combobox->get_children().size() == 0)
+  if (city_theme_combobox->get_model()->children().size() == 0)
     accept_button->set_sensitive(false);
 }
 
