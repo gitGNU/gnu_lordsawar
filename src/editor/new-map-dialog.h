@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ class NewMapDialog: public LwEditorDialog
     
  private:
     Gtk::ComboBox *map_size_combobox;
-    Gtk::Grid *custom_size_table;
+    Gtk::Box *custom_size_box;
     Gtk::SpinButton *width_spinbutton;
     Gtk::SpinButton *height_spinbutton;
     Gtk::ComboBoxText *fill_style_combobox;

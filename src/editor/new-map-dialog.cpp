@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010, 2012, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007-2010, 2012, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ NewMapDialog::NewMapDialog(Gtk::Window &parent)
     map_set = false;
     
     xml->get_widget("map_size_combobox", map_size_combobox);
-    xml->get_widget("custom_size_table", custom_size_table);
+    xml->get_widget("custom_size_box", custom_size_box);
     xml->get_widget("width_spinbutton", width_spinbutton);
     xml->get_widget("height_spinbutton", height_spinbutton);
     xml->get_widget("random_map_container", random_map_container);
@@ -241,14 +241,14 @@ void NewMapDialog::on_map_size_changed()
     cities_scale->set_value(15);
     ruins_scale->set_value(20);
     temples_scale->set_value(20);
-    custom_size_table->set_sensitive(false);
+    custom_size_box->set_sensitive(false);
     break;
 
   case MAP_SIZE_TINY:
     cities_scale->set_value(10);
     ruins_scale->set_value(15);
     temples_scale->set_value(15);
-    custom_size_table->set_sensitive(false);
+    custom_size_box->set_sensitive(false);
     break;
 
   case MAP_SIZE_NORMAL:
@@ -256,13 +256,13 @@ void NewMapDialog::on_map_size_changed()
     cities_scale->set_value(20);
     ruins_scale->set_value(25);
     temples_scale->set_value(25);
-    custom_size_table->set_sensitive(false);
+    custom_size_box->set_sensitive(false);
     break;
   case MAP_SIZE_CUSTOM:
     cities_scale->set_value(20);
     ruins_scale->set_value(25);
     temples_scale->set_value(25);
-    custom_size_table->set_sensitive(true);
+    custom_size_box->set_sensitive(true);
     break;
   }
 }
