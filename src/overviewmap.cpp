@@ -475,6 +475,8 @@ Maptile* OverviewMap::getTile(int x, int y)
           favoured_tile = GameMap::getInstance()->getTile(pos);
         else if (GameMap::getInstance()->getBuilding(pos) == Maptile::RUIN)
           favoured_tile = GameMap::getInstance()->getTile(pos);
+        else if (GameMap::getInstance()->getBuilding(pos) == Maptile::ROAD)
+          favoured_tile = GameMap::getInstance()->getTile(pos);
         else if (GameMap::getInstance()->getTerrainType(pos) == Tile::WATER)
           favoured_tile = GameMap::getInstance()->getTile(pos);
         else if (GameMap::getInstance()->getTerrainType(pos) == Tile::MOUNTAIN)
