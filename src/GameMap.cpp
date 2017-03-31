@@ -121,10 +121,10 @@ GameMap::GameMap(Glib::ustring TilesetName, Glib::ustring ShieldsetName,
     d_cityset = CitysetName;
 
   Vector<int>::setMaximumWidth(s_width);
-  d_map = new Maptile*[s_width*s_height];
+  d_map = new Maptile[s_width*s_height];
   for (int j = 0; j < s_height; j++)
     for (int i = 0; i < s_width; i++)
-      d_map[j*s_width + i] = 0;
+      d_map[j*s_width + i].setPos(Vector<int>(i, j));
 }
 
 bool GameMap::offmap(int x, int y)
@@ -167,7 +167,7 @@ void GameMap::processStyles(Glib::ustring s, int chars_per_style)
 	    TileStyle *style = tileset->getTileStyle(id);
 	    if (!style)
 	      style = tileset->getTileStyle(0);
-	    d_map[j*s_width + i]->setTileStyle(style);
+	    d_map[j*s_width + i].setTileStyle(style);
         }
     }
 }
@@ -208,31 +208,23 @@ GameMap::GameMap(XML_Helper* helper)
     s_shieldset = shieldset;
     Vector<int>::setMaximumWidth(s_width);
     //create the map
-    d_map = new Maptile*[s_width*s_height];
+    d_map = new Maptile[s_width*s_height];
 
-    int offset = 0;
-    for (int j = 0; j < s_height; j++)
-    {
-        // remove newline and carriage return lines
-        char test = types[j*s_width + offset];
-        while (test == '\n' || test == '\r')
-        {
-            offset++;
-            test = types[j*s_width + offset];
-        }
-
-        for (int i = 0; i < s_width; i++)
-        {
-            //due to the circumstances, types is a long stream of
-            //numbers, so read it character for character (no \n's or so)
-            char type = types[j*s_width + i + offset];  
-
-            //the chars now hold the ascii representation of the numbers, which
-            //we don't want
-            type -= '0';
-            d_map[j*s_width + i] = new Maptile(i, j, type);
-        }
-    }
+    int row = 0, col = 0;
+    for (const char *letter = types.c_str(); *letter; letter++)
+      {
+        if (*letter == '\n' || *letter == '\r')
+          continue;
+        d_map[row*s_width + col].setPos(Vector<int>(col, row));
+        guint32 type = *letter - '0';
+        d_map[row*s_width + col].setIndex(GameMap::getTileset()->lookupIndexByType (type == 0 ? Tile::Type (type) : Tile::Type (pow(2,type-1))));
+        col++;
+        if (col >= s_width)
+          {
+            col = 0;
+            row++;
+          }
+      }
 
     int chars_per_style = determineCharsPerStyle(styles);
     processStyles(styles, chars_per_style);
@@ -241,18 +233,8 @@ GameMap::GameMap(XML_Helper* helper)
     helper->registerTag(MapBackpack::d_tag, sigc::mem_fun(this, &GameMap::loadItems));
 }
 
-
 GameMap::~GameMap()
 {
-    for (int i = 0; i < s_width; i++)
-    {
-        for (int j = 0; j < s_height; j++)
-        {
-            if (d_map[j*s_width + i])
-                delete d_map[j*s_width + i];
-        }
-    }
-
     delete[] d_map;
 }
 
@@ -280,7 +262,7 @@ bool GameMap::fill(MapGenerator* generator)
         {
             int index = tileset->getIndex(terrain[j*width + i]);
 	    if (index != -1)
-	      d_map[j*s_width + i] = new Maptile(i, j, (guint32)index);
+	      d_map[j*s_width + i].setIndex ((guint32)index);
         }
 
     applyTileStyles(0, 0, height, width, true);
@@ -291,7 +273,7 @@ bool GameMap::fill(guint32 type)
 {
   for (int i = 0; i < s_width; i++)
     for (int j = 0; j < s_height; j++)
-      d_map[j*s_width + i] = new Maptile(i, j, type);
+      d_map[j*s_width + i].setIndex(GameMap::getTileset()->lookupIndexByType (Tile::Type(type)));
 
   applyTileStyles(0, 0, s_height, s_width, false);
   return true;
@@ -309,7 +291,9 @@ bool GameMap::save(XML_Helper* helper) const
     {
         for (int j = 0; j < s_width; j++)
           {
-            guint32 tile_type = getTile(j, i)->getIndex();
+            guint32 tile_type = getTile(j, i)->getType();
+            if (tile_type != 0)
+              tile_type = log2(tile_type)+1;
             types << (guint32) tile_type;
           }
         types <<std::endl;
@@ -365,10 +349,9 @@ bool GameMap::loadItems(Glib::ustring tag, XML_Helper* helper)
     return true;
 }
 
-void GameMap::setTile(int x, int y, Maptile *tile)
+void GameMap::setTileIndex(int x, int y, guint32 new_index)
 {
-    delete d_map[y*s_width + x];
-    d_map[y*s_width + x] = tile;
+    d_map[y*s_width + x].setIndex (new_index);
     applyTileStyle (y, x);
 }
 
@@ -873,7 +856,7 @@ void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy,
 		//downgrade it
 		int idx = tileset->getIndex(outtype);
 		if (idx != -1)
-		  setTile(j, i, new Maptile (j, i, (guint32)idx));
+		  setTileIndex(j, i, (guint32)idx);
 	      }
 	  }
       }
@@ -915,9 +898,8 @@ std::vector<Vector<int> > GameMap::getItems()
   for (int j = 0; j < s_height; j++)
     for (int i = 0; i < s_width; i++)
       {
-	if (d_map[j*s_width + i])
-	  if (d_map[j*s_width + i]->getBackpack()->empty() == false)
-	    items.push_back(Vector<int>(i, j));
+        if (d_map[j*s_width + i].getBackpack()->empty() == false)
+          items.push_back(Vector<int>(i, j));
 
       }
   return items;
@@ -944,8 +926,7 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 		      if (idx != -1)
                         {
                           Maptile::Building b = getTile(j+J, i+I)->getBuilding();
-                          setTile(j+J, i+I,
-                                  new Maptile (j+J, i+I, (guint32)idx));
+                          setTileIndex(j+J, i+I, (guint32)idx);
                           if (b)
                             setBuilding(Vector<int>(j+J,i+I), b);
                         }
@@ -954,7 +935,7 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 		    {
 		    // water has priority here, there was some work done to conenct bodies of water
 		    // so don't break those connections.
-		      setTile(j, i, new Maptile (j, i, (guint32)idx));
+		      setTileIndex(j, i, (guint32)idx);
 		    }
 		}
       }
@@ -984,9 +965,6 @@ Vector<int> GameMap::findNearestObjectInDir(Vector<int> pos, Vector<int> dir)
   Road *road = Roadlist::getInstance()->getNearestObjectInDir(pos, dir);
   if (road)
     objects.push_back(road->getPos());
-  Bridge *bridge = Bridgelist::getInstance()->getNearestObjectInDir(pos, dir);
-  if (bridge)
-    objects.push_back(bridge->getPos());
   City *city = Citylist::getInstance()->getNearestObjectInDir(pos, dir);
   if (city)
     objects.push_back(city->getPos());
@@ -1257,7 +1235,7 @@ void GameMap::switchTileset(Tileset *tileset)
         //perhaps we need to get a new index, right? e.g. when we switch
         //the tileset for another one in the editor.
         //because "Grass" won't always be in the 0th spot in the tileset.
-        d_map[j*s_width + i]->setIndex(d_map[j*s_width + i]->getIndex());
+        d_map[j*s_width + i].setIndex(d_map[j*s_width + i].getIndex());
       }
   applyTileStyles (0, 0, s_width, s_height,  false);
 }

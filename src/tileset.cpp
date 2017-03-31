@@ -224,6 +224,15 @@ int Tileset::getIndex(Tile::Type type) const
   return -1;
 }
 
+int Tileset::lookupIndexByType(Tile::Type type) const
+{
+  TileTypeIndexMap::const_iterator it = d_tiletypes.find(type);
+  if (it == d_tiletypes.end())
+    return -1;
+  else
+    return (*it).second;
+}
+
 bool Tileset::loadTile(Glib::ustring tag, XML_Helper* helper)
 {
   debug("loadTile()")
@@ -232,6 +241,7 @@ bool Tileset::loadTile(Glib::ustring tag, XML_Helper* helper)
       {
 	// create a new tile with the information we got
 	Tile* tile = new Tile(helper);
+        d_tiletypes[tile->getType()] = this->size();
 	this->push_back(tile);
 
 	return true;

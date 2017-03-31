@@ -24,6 +24,7 @@
 
 #include <list>
 #include "Tile.h"
+#include "Movable.h"
 #include "SmallTile.h"
 #include "MapBackpack.h"
 class StackTile;
@@ -43,7 +44,7 @@ class StackTile;
  * The GameMap contains on Maptile object for every cell of the map.
  *
  */
-class Maptile
+class Maptile: public Movable
 {
     public:
         //! Enumeration of all possible constructed objects on the maptile.
@@ -69,6 +70,9 @@ class Maptile
 	  //! A Bridge is built here.
 	  BRIDGE=8
 	};
+
+	//! Default constructor.
+        Maptile();
 
 	//! Default constructor.
         /** 
@@ -120,28 +124,28 @@ class Maptile
         guint32 getMoves() const;
 
         //! Get the smalltile color of this maptile.
-	Gdk::RGBA getColor() const {return d_smalltile->getColor();}
+	Gdk::RGBA getColor() const;
 
 	//! Get the pattern of this maptile on the smalltile.
-       SmallTile::Pattern getPattern() const {return d_smalltile->getPattern();}
+       SmallTile::Pattern getPattern() const;
 
 	//! Get the associated colour with the pattern.
-       Gdk::RGBA getSecondColor() const {return d_smalltile->getSecondColor();}
+       Gdk::RGBA getSecondColor() const;
 
 	//! Get the associated colour with the pattern.
-       Gdk::RGBA getThirdColor() const {return d_smalltile->getThirdColor();}
+       Gdk::RGBA getThirdColor() const;
 
         //! Get the tile type (the type of the underlying terrain).
-        Tile::Type getType() const {return d_type;}
+        Tile::Type getType() const;
 
         //! Get the list of Item objects on this maptile.
-        MapBackpack *getBackpack() const {return d_backpack;};
-
-        //! Set the backpack for this tile.
-        void setBackpack(MapBackpack *bag) {if (d_backpack) delete d_backpack; d_backpack = bag;};
+        MapBackpack *getBackpack();
 
 	//! Get the list of Stack objects on this maptile.
-	StackTile *getStacks() const {return d_stacktile;};
+	StackTile *getStacks();
+
+        //! Set the backpack for this tile.
+        void setBackpack(MapBackpack *bag) {if (getBackpack()) delete getBackpack(); d_backpack = bag;};
         
 	//! Whether or not this map tile considered to be "open terrain".
 	/**
@@ -201,12 +205,6 @@ class Maptile
 	 */
         guint32 d_index;
 
-        //! what kind of tile this is
-        Tile::Type d_type;
-
-        //! how many moves it takes to cross this tile type ( == Tile::d_moves).
-        guint32 d_moves;
-
 	//! The look of the maptile.
 	TileStyle *d_tileStyle;
 
@@ -218,8 +216,6 @@ class Maptile
 
 	//! The list of pointers to stacks on this maptile.
 	StackTile *d_stacktile;
-
-        SmallTile *d_smalltile;
 };
 
 #endif // MAPTILE_H

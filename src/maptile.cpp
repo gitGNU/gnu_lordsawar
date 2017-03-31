@@ -26,35 +26,28 @@
 #include "army.h"
 #include "GameMap.h"
 
-Maptile::Maptile(int x, int y, guint32 index)
-    :d_index(index), d_building(NONE) 
+Maptile::Maptile()
+        :Movable(Vector<int>(-1,-1)), d_index(0), d_building(NONE)
 {
     d_tileStyle = NULL;
-    d_backpack = new MapBackpack(Vector<int>(x,y));
-    d_stacktile = new StackTile(Vector<int>(x,y));
-    Tileset *ts = GameMap::getTileset();
-    Tile *tile = (*ts)[d_index];
-    d_moves = tile->getMoves();
-    d_type = tile->getType();
-    d_smalltile = new SmallTile(*tile->getSmallTile());
+    d_stacktile = NULL;
+    d_backpack = NULL;
+}
+
+Maptile::Maptile(int x, int y, guint32 index)
+    :Movable (Vector<int>(x, y)), d_index(index), d_building(NONE)
+{
+    d_tileStyle = NULL;
+    d_stacktile = NULL;
+    d_backpack = NULL;
 }
 
 Maptile::Maptile(int x, int y, Tile::Type type)
+    : Movable (Vector<int>(x, y)), d_index(GameMap::getTileset()->lookupIndexByType (type)), d_building(NONE)
 {
     d_tileStyle = NULL;
-    d_building = NONE;
-    Tileset *ts = GameMap::getTileset();
-    int idx = ts->getIndex(type);
-    if (idx < 0)
-      idx = 0;
-    d_index = idx;
-    Tile *tile = (*ts)[d_index];
-    d_moves = tile->getMoves();
-    d_type = tile->getType();
-    d_smalltile = new SmallTile(*tile->getSmallTile());
-
-    d_backpack = new MapBackpack(Vector<int>(x,y));
-    d_stacktile = new StackTile(Vector<int>(x,y));
+    d_stacktile = NULL;
+    d_backpack = NULL;
 }
 
 Maptile::~Maptile()
@@ -63,8 +56,49 @@ Maptile::~Maptile()
     delete d_backpack;
   if (d_stacktile)
     delete d_stacktile;
-  if (d_smalltile)
-    delete d_smalltile;
+}
+
+Gdk::RGBA Maptile::getColor() const
+{
+  Tileset *ts = GameMap::getTileset();
+  return (*ts)[d_index]->getSmallTile()->getColor();
+}
+
+SmallTile::Pattern Maptile::getPattern() const
+{
+  Tileset *ts = GameMap::getTileset();
+  return (*ts)[d_index]->getSmallTile()->getPattern();
+}
+
+Gdk::RGBA Maptile::getSecondColor() const
+{
+  Tileset *ts = GameMap::getTileset();
+  return (*ts)[d_index]->getSmallTile()->getSecondColor();
+}
+
+Gdk::RGBA Maptile::getThirdColor() const
+{
+  Tileset *ts = GameMap::getTileset();
+  return (*ts)[d_index]->getSmallTile()->getThirdColor();
+}
+
+MapBackpack *Maptile::getBackpack()
+{
+  if (!d_backpack)
+    d_backpack = new MapBackpack (getPos());
+  return d_backpack;
+}
+
+StackTile *Maptile::getStacks()
+{
+  if (!d_stacktile)
+    d_stacktile = new StackTile (getPos());
+  return d_stacktile;
+}
+
+Tile::Type Maptile::getType() const
+{
+  return (*GameMap::getTileset())[d_index]->getType();
 }
 
 guint32 Maptile::getMoves() const
@@ -76,13 +110,13 @@ guint32 Maptile::getMoves() const
     else if (d_building == Maptile::BRIDGE)
         return 1;
 
-    if (d_type == Tile::WATER)
+    if ((*GameMap::getTileset())[d_index]->getType() == Tile::WATER)
       {
 	// if we're sailing and we're not on shore, then we move faster
 	if (d_tileStyle->getType() == TileStyle::INNERMIDDLECENTER)
-	  return d_moves / 2;
+	  return (*GameMap::getTileset())[d_index]->getMoves() / 2;
       }
-    return d_moves;
+    return (*GameMap::getTileset())[d_index]->getMoves();
 }
 
 void Maptile::setIndex(guint32 index)
@@ -92,13 +126,6 @@ void Maptile::setIndex(guint32 index)
   if (!tile)
     return;
   d_index = index;
-  d_moves = tile->getMoves();
-  d_type = tile->getType();
-
-  if (d_smalltile)
-    delete d_smalltile;
-  d_smalltile = new SmallTile(*tile->getSmallTile());
-
 }
 
 bool Maptile::isCityTerrain()

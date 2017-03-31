@@ -185,7 +185,8 @@ class GameMap: public sigc::trackable
           * \note This method deletes the old tile if one is already present.
           * \note A new TileStyle is automatically assigned to the Maptile.
           */
-	void setTile(int x, int y, Maptile *tile);
+	//void setTile(int x, int y, Maptile *tile);
+	void setTileIndex(int x, int y, guint32 new_index);
 
         /** Change a Maptile on the map.
           * 
@@ -195,7 +196,8 @@ class GameMap: public sigc::trackable
           * \note This method deletes the old tile if one is already present.
           * \note A new TileStyle is automatically assigned to the Maptile.
           */
-        void setTile(Vector<int> p, Maptile *t) {return setTile(p.x, p.y, t);}
+        //void setTile(Vector<int> p, Maptile *t) {return setTile(p.x, p.y, t);}
+        void setTileIndex(Vector<int> p, guint32 new_index) {return setTileIndex(p.x, p.y, new_index);}
 
         /** Return a pointer to the City at the given position on the map.
           * 
@@ -606,7 +608,7 @@ class GameMap: public sigc::trackable
          * @return Returns NULL when the given position is out of range.  
          * Otherwise a pointer to a Maptile object is returned.
          */
-        inline Maptile* getTile(int x, int y) const { return d_map[y*s_width + x]; };
+        inline Maptile* getTile(int x, int y) const { return &d_map[y*s_width + x]; };
 
         /** Return a pointer to the Maptile object at the given position.
          *
@@ -1462,7 +1464,7 @@ class GameMap: public sigc::trackable
         Glib::ustring d_shieldset; //the basename, not the friendly name.
         Glib::ustring d_cityset; //the basename, not the friendly name.
 
-        Maptile** d_map;
+        Maptile* d_map;
 };
 
 #endif

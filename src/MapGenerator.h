@@ -35,6 +35,8 @@
 #include "maptile.h"
 
 class Cityset;
+class RoadPathCalculator;
+class Path;
 
 //! Randomly generate terrain and buildings on a map.
 /** This class creates a map including the buildings (cities, ruins, temples).
@@ -279,16 +281,12 @@ class MapGenerator
           */
         void normalize();
 
-	bool makeRoad(int src_x, int src_y, int dest_x, int dest_y);
         void cleanupRoads();
 	bool makeRoad(Vector<int> src, Vector<int>dest);
-	int tryRoad(int src_x, int src_y, int dest_x, int dest_y);
-	int tryRoad(Vector<int> src, Vector<int>dest);
-	bool isAccessible(int src_x, int src_y, int dest_x, int dest_y);
-	bool isAccessible(Vector<int> src, Vector<int> dest);
-	bool makeAccessible(Vector<int> src, Vector<int> dest);
-	bool makeAccessible(int src_x, int src_y, int dest_x, int dest_y);
+        bool makeRoad2(Path *p);
+	bool makeAccessible(RoadPathCalculator *pcl, RoadPathCalculator *pcf, Vector<int> dest);
 	void makeRoads();
+        void makeCitiesAccessible();
 
         /** Find all places where it's possible to place a bridge:
           *

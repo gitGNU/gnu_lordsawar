@@ -34,7 +34,7 @@ class RoadPathCalculator
  public:
 
      //! Default constructor.
-     RoadPathCalculator(Vector<int> starting_point);
+     RoadPathCalculator(Vector<int> starting_point, bool fly = false);
 
      //! Copy constructor.
      RoadPathCalculator(const RoadPathCalculator&);
@@ -42,11 +42,17 @@ class RoadPathCalculator
      //! Destructor.
      ~RoadPathCalculator();
 
+     // Get Methods
+     Vector<int> getPos() const;
 
      // Methods that operate on the class data and modify the class.
  
      //! Return a calculated path from the starting point to the given position.
      Path* calculate(Vector<int> dest);
+     Path* calculate(Vector<int> dest, guint &moves);
+     guint32 calculate_moves(Vector<int> dest);
+
+     void regenerate();
 
  private:
 

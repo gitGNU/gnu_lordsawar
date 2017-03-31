@@ -314,6 +314,7 @@ void Driver::run()
       g.map.hills = 5;
       g.map.mountains = 5;
       g.map.cities = 40;
+      //g.map.cities = 80;
       g.map.ruins = 25;
       g.map.temples = 3;
       g.map.signposts = 0;

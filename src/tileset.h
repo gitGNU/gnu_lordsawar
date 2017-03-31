@@ -253,6 +253,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 
         //! Returns the index to the given terrain type.
         int getIndex(Tile::Type type) const;
+        int lookupIndexByType(Tile::Type type) const;
 
 	//! Lookup tilestyle by it's id in this tileset.
 	TileStyle *getTileStyle(guint32 id) const;
@@ -419,6 +420,10 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
         typedef std::map<guint32, TileStyle*> TileStyleIdMap;
 	//! A map that provides a TileStyle when supplying a TileStyle id.
         TileStyleIdMap d_tilestyles;
+
+        typedef std::map<Tile::Type, int> TileTypeIndexMap;
+	//! A map that provides an index when supplying a type of Tile.
+        TileTypeIndexMap d_tiletypes;
 
 	//! The colour of roads on the smallmap.
 	Gdk::RGBA d_road_color;
