@@ -29,6 +29,8 @@
 #include <gtkmm.h>
 #include <glibmm/threads.h>
 #include "network-common.h"
+#include <mutex>
+#include <condition_variable>
 
 //! A simple network connection for sending messages, encapsulates the protocol
 class NetworkConnection
@@ -58,7 +60,6 @@ public:
   Glib::ustring getHost() const {return d_host;};
   guint32 getPort() const {return d_port;};
 
-  //Glib::Threads::Thread * consumer;
   void send_queued_messages();
 
 private:
@@ -77,9 +78,9 @@ private:
   Glib::ustring d_host;
   guint32 d_port;
 
-  Glib::Threads::Mutex mutex;
-  Glib::Threads::Cond cond_push;
-  Glib::Threads::Cond cond_pop;
+  std::mutex mutex;
+  std::condition_variable cond_push;
+  std::condition_variable cond_pop;
 
   bool d_stop;
 

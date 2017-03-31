@@ -74,8 +74,11 @@ NetworkConnection *ConnectionManager::create_connection()
 
 void ConnectionManager::launch_thread(NetworkConnection *nc)
 {
-  Glib::Threads::Thread * consumer = Glib::Threads::Thread::create
-    (sigc::mem_fun(nc, &NetworkConnection::send_queued_messages));
+  std::thread * consumer = new std::thread
+    ([nc]
+      {
+        nc->send_queued_messages();
+      });
   getInstance()->threads[nc] = consumer;
 }
 

@@ -63,8 +63,8 @@ void NetworkConnection::tear_down_connection()
       }
     }
   d_stop = true;
-  cond_push.signal();
-  cond_pop.signal();
+  cond_push.notify_one();
+  cond_pop.notify_one();
   torn_down.emit();
 }
 
@@ -267,7 +267,20 @@ bool NetworkConnection::sendMessage(int type, const Glib::ustring &pay)
   //concatenate the payload
   memcpy (&buf[MESSAGE_HEADER_SIZE], pay.c_str(), pay.size());
   gsize bytessent = 0;
-  bool wrote_all = out->write_all (buf, (MESSAGE_HEADER_SIZE + pay.size()) * sizeof (gchar), bytessent);
+  bool wrote_all = false;
+  try
+    {
+      wrote_all =
+        out->write_all (buf, (MESSAGE_HEADER_SIZE + pay.size()) *
+                        sizeof (gchar), bytessent);
+    }
+  catch (Gio::Error &ex)
+    {
+      free (buf);
+      tear_down_connection();
+      connection_lost.emit();
+      return false;
+    }
   free (buf);
   return wrote_all;
 }
@@ -301,13 +314,13 @@ void NetworkConnection::disconnect()
 
 void NetworkConnection::queue_message(int type, const Glib::ustring &pay)
 {
-  Glib::Threads::Mutex::Lock lock (mutex);
+  std::unique_lock<std::mutex> lock (mutex);
 
   while(messages.size() >= 256)
     {
       if (d_stop)
         break;
-      cond_pop.wait(mutex);
+      cond_pop.wait(lock);
       if (d_stop)
         break;
     }
@@ -317,7 +330,7 @@ void NetworkConnection::queue_message(int type, const Glib::ustring &pay)
   m.type = type;
   m.payload = pay;
   messages.push(m);
-  cond_push.signal();
+  cond_push.notify_one();
 }
 
 void NetworkConnection::send_queued_messages()
@@ -327,12 +340,12 @@ void NetworkConnection::send_queued_messages()
         {
           if (d_stop)
             break;
-          Glib::Threads::Mutex::Lock lock (mutex);
+          std::unique_lock<std::mutex> lock (mutex);
           while(messages.empty())
             {
               if (d_stop)
                 break;
-              cond_push.wait(mutex);
+              cond_push.wait(lock);
               if (d_stop)
                 break;
             }
@@ -349,7 +362,7 @@ void NetworkConnection::send_queued_messages()
             sendMessage (m.type, m.payload);
           if (d_stop)
             break;
-          cond_pop.signal();
+          cond_pop.notify_one();
         }
     }
   queue_flushed.emit();

@@ -68,6 +68,7 @@ AC_SUBST(LIBSIGC_CFLAGS)
 AC_SUBST(LIBSIGC_LIBS)
 AC_SUBST(HOME)
 
+AC_CHECK_LIB(pthread, pthread_create)
 
 dnl----------------------------------------------------------------------
 dnl Below here are options to modify default behaviour

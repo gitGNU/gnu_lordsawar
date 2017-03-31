@@ -22,6 +22,7 @@
 #include <list>
 #include <gtkmm.h>
 #include <map>
+#include <thread>
 
 //! A store of NetworkConnection objects.
 /**
@@ -66,7 +67,7 @@ class ConnectionManager: public std::list<NetworkConnection*>
 	// DATA
 
         static ConnectionManager * s_instance;
-        std::map<NetworkConnection*,Glib::Threads::Thread*> threads;
+        std::map<NetworkConnection*,std::thread*> threads;
 
 };
 
