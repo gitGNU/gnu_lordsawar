@@ -281,6 +281,8 @@ bool MapGenerator::findBridgePurpose(Vector<int> pos, int type,
     }
   if (src == Vector<int>(-1,-1) || dest == Vector<int>(-1,-1))
     return false;
+  if (dist (src, dest) <= (int)cityset->getCityTileWidth())
+    return false;
   if ((unsigned int)GameMap::getWidth() > MAP_SIZE_NORMAL_WIDTH ||
       (unsigned int)GameMap::getHeight() > MAP_SIZE_NORMAL_HEIGHT)
     {
@@ -372,15 +374,26 @@ void MapGenerator::makeBridges()
         {
           RoadPathCalculator pc_src (src);
           RoadPathCalculator pc_dest (dest);
-          guint32 leg1 = 0, leg2 = 0;
-          guint32 shortcut = pc_src.calculate_moves (dest);
+          guint32 leg1 = 0, leg2 = 0, shortcut = 0;
+          guint32 original_route = pc_src.calculate_moves (dest);
           Path *path_leg1 = pc_src.calculate (edge1, leg1);
           Path *path_leg2 = pc_dest.calculate (edge2, leg2);
+          shortcut = leg1 + leg2 + 2;
           bool construct_bridge_and_roads = true;
           if (leg1 == 0 || leg2 == 0)
             construct_bridge_and_roads = false;
-          else if (shortcut > 0 && (leg1 + leg2 + 2) < shortcut)
-            construct_bridge_and_roads = false;
+          /* we haven't made everything accessible yet,
+             so leg1 or leg2 can be 0 */
+          else if (shortcut > 0 && original_route < shortcut)
+            {
+              /* the idea here is that we know the bridge doesn't make it
+                 faster, but we want to make bridges anyway, but not
+                 when it is stupefyingly needless */
+              construct_bridge_and_roads = false;
+              if (original_route / 2 < shortcut)
+                if (Rnd::rand() % 2 == 0)
+                  construct_bridge_and_roads = true;
+            }
 
           if (construct_bridge_and_roads)
             {
@@ -1672,10 +1685,9 @@ void MapGenerator::makeRoads()
       }
   GameMap::getInstance()->calculateBlockedAvenues();
 
+  guint32 roads_built = 0;
   for (auto it: *Citylist::getInstance())
     {
-      if (Rnd::rand() % 2 == 0)
-	continue;
       City *c = Citylist::getInstance()->getNearestCityPast(it->getPos(), 13);
       Vector<int> dest = c->getPos();
       Vector<int> src = it->getPos();
@@ -1683,7 +1695,12 @@ void MapGenerator::makeRoads()
       if (Roadlist::getInstance()->getNearestObjectBefore(dest, c->getSize() + 1))
 	continue;
 
-      makeRoad(src, dest);
+      if (makeRoad(src, dest))
+        {
+          roads_built++;
+          if (roads_built > Citylist::getInstance()->size()/3)
+            break;
+        }
       progress.emit(.810, _("paving roads..."));
     }
 
