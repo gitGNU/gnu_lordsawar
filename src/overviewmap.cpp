@@ -37,6 +37,9 @@
 #include "Configuration.h"
 #include "shieldset.h"
 #include "tileset.h"
+#include "roadlist.h"
+#include "bridgelist.h"
+#include "bridge.h"
 #include "rnd.h"
 
 OverviewMap::OverviewMap()
@@ -475,8 +478,6 @@ Maptile* OverviewMap::getTile(int x, int y)
           favoured_tile = GameMap::getInstance()->getTile(pos);
         else if (GameMap::getInstance()->getBuilding(pos) == Maptile::RUIN)
           favoured_tile = GameMap::getInstance()->getTile(pos);
-        else if (GameMap::getInstance()->getBuilding(pos) == Maptile::ROAD)
-          favoured_tile = GameMap::getInstance()->getTile(pos);
         else if (GameMap::getInstance()->getTerrainType(pos) == Tile::WATER)
           favoured_tile = GameMap::getInstance()->getTile(pos);
         else if (GameMap::getInstance()->getTerrainType(pos) == Tile::MOUNTAIN)
@@ -496,11 +497,23 @@ void OverviewMap::draw_terrain_tiles(Rectangle r)
         int x = int(i / pixels_per_tile);
         int y = int(j / pixels_per_tile);
         Maptile *mtile = getTile(x,y);
+        draw_terrain_tile (mtile, i /map_tiles_per_tile, j /map_tiles_per_tile);
+      }
 
-        if (mtile->isRoadTerrain())
-          draw_pixel(static_surface_gc, i /map_tiles_per_tile, j /map_tiles_per_tile, rd);
-        else
-          draw_terrain_tile (mtile, i /map_tiles_per_tile, j /map_tiles_per_tile);
+  int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
+  for (auto it : *Roadlist::getInstance())
+      {
+        Vector<int> pos = it->getPos();
+        pos = mapToSurface(pos);
+        pos -= Vector<int>(size,size) / 2;
+	draw_filled_rect(false, pos.x, pos.y, size, size, rd);
+      }
+  for (auto it : *Bridgelist::getInstance())
+      {
+        Vector<int> pos = it->getPos();
+        pos = mapToSurface(pos);
+        pos -= Vector<int>(size,size) / 2;
+	draw_filled_rect(false, pos.x, pos.y, size, size, rd);
       }
 }
 
