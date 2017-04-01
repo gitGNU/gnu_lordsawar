@@ -567,6 +567,7 @@ bool GameScenario::saveGame(Glib::ustring filename, Glib::ustring extension) con
 {
   bool retval = true;
   Glib::ustring goodfilename = File::add_ext_if_necessary(filename, extension);
+  std::cerr << "saving game to " << goodfilename << std::endl;
 
   Glib::ustring tmpfile = File::get_tmp_file();
   XML_Helper helper(tmpfile, std::ios::out);
@@ -828,23 +829,27 @@ bool GameScenario::autoSave()
     filename = "autosave" + SAVE_EXT;
   else
     return true;
-  // autosave to the file "autosave.sav". This is crude, but should work
+  // autosave to the file "autosave.sav".
   //
-  // As a more enhanced version: autosave to a temporary file, then rename
-  // the file. Avoids screwing up the autosave if something goes wrong
+  // We first save  to a temporary file, then rename it.
+  // This avoids screwing up the autosave if something goes wrong
   // (and we have a savefile for debugging)
-  if (!saveGame(File::getSaveFile("tmp" + SAVE_EXT)))
+  //
+  // We can be somewhat assured the rename works, because we are renaming
+  // from ~/.cache/lordsawar/<file> to ~/.local/share/lordsawar/<file>
+  //
+  Glib::ustring tmpfile = File::get_tmp_file (SAVE_EXT);
+  if (!saveGame(tmpfile))
     {
-      std::cerr<< "Autosave failed.\n";
+      std::cerr<< "Autosave failed, see " << tmpfile << std::endl;
       return false;
     }
   //erase the old autosave file if any, and then plop our new one in place.
   File::erase(File::getSaveFile(filename));
-  if (File::rename(File::getSaveFile("tmp" + SAVE_EXT),
-                   File::getSaveFile(filename)))
+  if (File::rename(tmpfile, File::getSaveFile(filename)))
     {
       char* err = strerror(errno);
-      std::cerr << String::ucompose(_("Error! can't rename the temporary file `%1' to the autosave file `%2'.  %3"), File::getSaveFile("tmp" + SAVE_EXT), File::getSaveFile(filename), err) << std::endl;
+      std::cerr << String::ucompose(_("Error! can't rename the temporary file `%1' to the autosave file `%2'.  %3"), tmpfile, File::getSaveFile(filename), err) << std::endl;
       return false;
     }
   return true;

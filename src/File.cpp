@@ -42,6 +42,7 @@
 #include "cityset.h"
 #include "file-compat.h"
 #include "ucompose.hpp"
+#include "rnd.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -459,10 +460,16 @@ char *File::sanify(const char *string)
   
 Glib::ustring File::get_tmp_file(Glib::ustring ext)
 {
-  std::string tmpfile = "lw.XXXX";
-  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
-  close(fd);
-  return tmpfile + ext;
+  Glib::ustring file = "";
+  // fixme, there's a race condition here.
+  while (1)
+    {
+      file = Glib::build_filename (getCacheDir (),
+                                   "lw." + String::ucompose ("%1", Rnd::rand () % 1000000) + ext);
+      if (File::exists (file) == false)
+        break;
+    }
+  return file;
 }
 
 Glib::ustring File::get_extension(Glib::ustring filename)

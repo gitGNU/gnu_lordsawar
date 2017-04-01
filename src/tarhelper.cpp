@@ -61,13 +61,15 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
   openmode = mode;
   if (mode & std::ios::in) 
     {
+      if (File::exists (file) == false)
+        return false;
       t = archive_read_new ();
       archive_read_support_format_tar(t);
       int r = archive_read_open_filename(t, file.c_str(), 8192);
       if (r != ARCHIVE_OK)
         {
           archive_read_free (t);
-          return true;
+          return false;
         }
     }
   else if (mode & std::ios::out)
@@ -78,11 +80,11 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
       if (archive_write_open_filename(t, file.c_str()))
         {
           archive_write_free (t);
-          return true;
+          return false;
         }
     }
   else
-    return true;
+    return false;
 
   if (mode & std::ios::in)
     {
