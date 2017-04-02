@@ -88,6 +88,8 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profil
     {
       GamelistClient::getInstance()->client_connected.connect
         (method(on_connected_to_gamelist_server));
+      GamelistClient::getInstance()->client_could_not_connect.connect
+        (method(on_could_not_connect_to_gamelist_server));
 
       GamelistClient::getInstance()->received_game_list.connect
         (method(on_game_list_received));
@@ -98,6 +100,11 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profil
     }
     games_treeview->signal_row_activated().connect(sigc::hide(sigc::hide(method(on_hosted_game_activated))));
   notebook->set_current_page(1);
+}
+
+void NetworkGameSelectorDialog::on_could_not_connect_to_gamelist_server()
+{
+  ;
 }
 
 void NetworkGameSelectorDialog::on_connected_to_gamelist_server()

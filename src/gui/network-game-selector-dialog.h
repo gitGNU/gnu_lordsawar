@@ -80,6 +80,7 @@ class NetworkGameSelectorDialog: public LwDialog
     void fill_games(RecentlyPlayedGameList *rpgl, Glib::RefPtr<Gtk::ListStore> list, const GamesColumns &columns, Profile *p);
 
     void on_connected_to_gamelist_server();
+    void on_could_not_connect_to_gamelist_server();
     void on_game_list_received(RecentlyPlayedGameList *rpgl, Glib::ustring err);
     void on_recent_game_activated();
     void on_hosted_game_activated();
