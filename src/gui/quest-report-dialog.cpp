@@ -25,6 +25,7 @@
 #include "hero.h"
 #include "defs.h"
 #include "playerlist.h"
+#include "rnd.h"
 
 #define method(x) sigc::mem_fun(*this, &QuestReportDialog::x)
 
@@ -100,7 +101,7 @@ void QuestReportDialog::fill_quest_info(Quest *q)
   else
     {
       dialog->set_title(_("No Quest"));
-      int num = rand() % 3;
+      int num = Rnd::rand() % 3;
       switch (num)
         {
         case 0:
