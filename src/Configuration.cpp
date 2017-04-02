@@ -71,9 +71,9 @@ bool Configuration::s_decorated = false;
 bool Configuration::s_remember_recent_games = true;
 bool Configuration::s_remember_recently_edited_files = true;
 guint32 Configuration::s_double_click_threshold = 400; //milliseconds
-Glib::ustring Configuration::s_gamelist_server_hostname = "lordsawar.com";
+Glib::ustring Configuration::s_gamelist_server_hostname = "";//lordsawar.com";
 guint32 Configuration::s_gamelist_server_port = LORDSAWAR_GAMELIST_PORT;
-Glib::ustring Configuration::s_gamehost_server_hostname = "lordsawar.com";
+Glib::ustring Configuration::s_gamehost_server_hostname = "";//lordsawar.com";
 guint32 Configuration::s_gamehost_server_port = LORDSAWAR_GAMEHOST_PORT;
 guint32 Configuration::s_ui_form_factor = Configuration::UI_FORM_FACTOR_DESKTOP;
 
