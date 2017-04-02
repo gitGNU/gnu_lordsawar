@@ -187,7 +187,7 @@ Player::Player(XML_Helper* helper)
     guint32 val;
     helper->getData(fight_order, "fight_order");
     sfight_order.str(fight_order);
-    for (auto i: *Armysetlist::getInstance())
+    for (auto i: *Armysetlist::getInstance()->get (d_armyset))
       {
         (void)i;
         sfight_order >> val;
@@ -384,12 +384,15 @@ bool Player::deleteStack(Stack* stack)
     return d_stacklist->flRemove(stack);
 }
 
-void Player::kill()
+void Player::kill(bool record_action)
 {
   doKill();
-  addAction(new Action_Kill());
-  if (d_immortal == false)
-    addHistory(new History_PlayerVanquished());
+  if (record_action)
+    {
+      addAction(new Action_Kill());
+      if (d_immortal == false)
+        addHistory(new History_PlayerVanquished());
+    }
   schangingStats.emit();
 }
 

@@ -1105,7 +1105,7 @@ class Player: public sigc::trackable
         bool maybeRecruitHero ();
 
         //! Mark the player as dead. Kills all Army units in the Stacklist.
-        void kill();
+        void kill(bool record_action = true);
 
         //! Put the given stack into defend-mode.
         void stackDefend(Stack *s);
