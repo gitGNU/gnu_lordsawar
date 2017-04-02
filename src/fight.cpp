@@ -736,7 +736,7 @@ LocationBox Fight::calculateFightBox(Fight &fight)
     {
       std::list<Vector<int> >::iterator it = tracks.end();
       it--; it--;
-      return LocationBox l(*it, dest);
+      return LocationBox (*it, dest);
     }
   else
     {
