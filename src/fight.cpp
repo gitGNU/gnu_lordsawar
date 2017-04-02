@@ -709,9 +709,26 @@ void Fight::fillInInitialHPs()
 
 LocationBox Fight::calculateFightBox(Fight &fight)
 {
+  /*
+   this is all about figuring out where the explosion
+   is supposed to appear on the big map.
+   the desired behaviour is:
+   when we attack a city the explosion covers where we are
+   attacking from, to where we are attacking to.
+   it's tricky though because we step into the city, so we
+   have to look at our track to see where we were.
+   when attacking in the field, the explosion covers the
+   enemy stack.
+   maybe defenders can be empty?
+   */
   Vector<int> dest = fight.getAttackers().front()->getPos();
   if (Citylist::getInstance()->getObjectAt(dest) == NULL)
-    return LocationBox(dest);
+    {
+      if (!fight.getDefenders().empty())
+        return LocationBox(fight.getDefenders().front()->getPos());
+      else
+        return LocationBox(dest);
+    }
   Player *p = fight.getAttackers().front()->getOwner();
   Stack *s = fight.getAttackers().front();
   std::list<Vector<int> > tracks = p->getStackTrack(s);
@@ -719,7 +736,7 @@ LocationBox Fight::calculateFightBox(Fight &fight)
     {
       std::list<Vector<int> >::iterator it = tracks.end();
       it--; it--;
-      return LocationBox(*it, dest);
+      return LocationBox l(*it, dest);
     }
   else
     {
