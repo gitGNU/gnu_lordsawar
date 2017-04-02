@@ -89,12 +89,13 @@ class GameLobbyDialog: public LwDialog
     class PlayerColumns: public Gtk::TreeModelColumnRecord {
     public:
 	PlayerColumns()
-	    {add(order); add(shield); add(sitting); add(person); add(name); add(type); add(turn); add(player_id);}
+	    {add(order); add(sitting); add(person); add(shield); add(name); add(type); add(turn); add(player_id);}
 	
 	Gtk::TreeModelColumn<guint32> order;
-	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > shield;
 	Gtk::TreeModelColumn<bool> sitting;
-	Gtk::TreeModelColumn<Glib::ustring> person, name, type;
+	Gtk::TreeModelColumn<Glib::ustring> person;
+	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > shield;
+	Gtk::TreeModelColumn<Glib::ustring> name, type;
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > turn;
 	Gtk::TreeModelColumn<guint32> player_id;
     };

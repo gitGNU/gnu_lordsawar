@@ -206,7 +206,6 @@ GameLobbyDialog::update_player_details()
 
   player_treeview->remove_all_columns();
 
-  player_treeview->append_column("", player_columns.shield);
 
   //the sitting toggle
   player_sitting_list = Gtk::ListStore::create(player_sitting_columns);
@@ -225,7 +224,10 @@ GameLobbyDialog::update_player_details()
   sitting_column.set_cell_data_func(sitting_renderer, method(cell_data_sitting));
   player_treeview->append_column(sitting_column);
 
-  player_treeview->append_column(_("Person"), player_columns.person);
+  player_treeview->append_column(_("Player"), player_columns.person);
+
+  //the shield
+  player_treeview->append_column("", player_columns.shield);
 
   // the name column
   player_name_list = Gtk::ListStore::create(player_name_columns);
