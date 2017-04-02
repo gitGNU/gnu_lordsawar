@@ -46,6 +46,11 @@ int main(int argc, char* argv[])
 	  if (parameter == "-c" || parameter == "--cache-size")
 	    {
 	      i++;
+              if (i - 1 >= argc)
+		{
+                  std::cerr <<_("missing argument for --cache-size") <<std::endl;
+		  exit(-1);
+                }
 	      //convert the next argument
 	      char* error = 0;
 	      long size = strtol(argv[i-1], &error, 10);
@@ -59,6 +64,11 @@ int main(int argc, char* argv[])
           else if (parameter == "-C" || parameter == "--config-file")
             {
 	      i++;
+              if (i - 1 >= argc)
+		{
+                  std::cerr <<_("missing argument for --config-file") <<std::endl;
+		  exit(-1);
+                }
               kit.configuration_file_path = argv[i-1];
             }
 	  else if (parameter == "--seed" || parameter == "-S")
@@ -66,6 +76,11 @@ int main(int argc, char* argv[])
 	      i++;
 	      //convert the next argument
 	      char* error = 0;
+              if (i - 1 >= argc)
+		{
+                  std::cerr <<_("missing argument for --seed") <<std::endl;
+		  exit(-1);
+                }
 	      long seed = strtol(argv[i-1], &error, 10);
 	      if (error && (*error != '\0'))
 		{
@@ -77,6 +92,11 @@ int main(int argc, char* argv[])
 	  else if (parameter == "--port" || parameter == "-p")
 	    {
 	      i++;
+              if (i - 1 >= argc)
+		{
+                  std::cerr <<_("missing argument for --port") <<std::endl;
+		  exit(-1);
+                }
 	      //convert the next argument
 	      char* error = 0;
 	      long port = strtol(argv[i-1], &error, 10);
@@ -95,6 +115,11 @@ int main(int argc, char* argv[])
 	  else if (parameter == "--turn")
 	    {
 	      i++;
+              if (i - 1 >= argc)
+		{
+                  std::cerr <<_("missing argument for --turn") <<std::endl;
+		  exit(-1);
+                }
 	      kit.turn_filename = argv[i-1];
 	    }
 	  else if (parameter == "--test" || parameter == "-t")
