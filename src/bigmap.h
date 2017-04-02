@@ -33,6 +33,7 @@
 #include "map-tip-position.h"
 #include "rectangle.h"
 #include "PixMask.h"
+#include "LocationBox.h"
 
 class Player;
 class Stack;
@@ -78,6 +79,10 @@ class BigMap: public sigc::trackable
     sigc::signal<void, Cairo::RefPtr<Cairo::Surface> > map_changed;
     void blank(bool on);
 
+    //the game object sets this when the active stack is fighting so we can 
+    //draw a fight graphic, or not
+    void setFighting(LocationBox ruckus) {d_fighting = ruckus;};
+
     //! Save the whole map as one big image (bmp file).
     bool saveAsBitmap(Glib::ustring filename);
 
@@ -117,6 +122,7 @@ class BigMap: public sigc::trackable
 
  protected:
     void draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface);
+    LocationBox d_fighting;
  private:
     void draw_buffer(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface);
     void draw_buffer_tiles(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface);

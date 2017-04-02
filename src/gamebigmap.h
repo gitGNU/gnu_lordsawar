@@ -28,7 +28,6 @@
 #include "input-events.h"
 #include "ImageCache.h"
 #include "bigmap.h"
-#include "LocationBox.h"
 #include "PixMask.h"
 
 class Stack;
@@ -81,10 +80,6 @@ class GameBigMap: public BigMap
     // emitted when the cursor changes
     sigc::signal<void, ImageCache::CursorType> cursor_changed;
 
-    //the game object sets this when the active stack is fighting so we can 
-    //draw a fight graphic, or not
-    void setFighting(LocationBox ruckus) {d_fighting = ruckus;};
-
     void reset_path_calculator(Stack *s);
 
     bool d_intense_combat; 
@@ -110,7 +105,6 @@ class GameBigMap: public BigMap
     bool on_selection_timeout();
 
     virtual void after_draw();
-    LocationBox d_fighting;
     PathCalculator *path_calculator;
 };
 

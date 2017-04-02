@@ -52,7 +52,7 @@
 #define debug(x)
 
 BigMap::BigMap()
-    : d_renderer(0), buffer(0)
+    : d_renderer(0), buffer(0), d_fighting(LocationBox(Vector<int>(-1,-1)))
 {
     // note: we are not fully initialized before set_view is called
     view.x = view.y = 0;
@@ -390,6 +390,23 @@ void BigMap::draw_buffer()
     
   if (Playerlist::getViewingplayer()->getType() == Player::HUMAN)
     after_draw();
+  if (blank_screen == false)
+    {
+      ImageCache *gc = ImageCache::getInstance();
+      int tilesize = GameMap::getInstance()->getTileSize();
+      if (d_fighting.getPos() != Vector<int>(-1,-1))
+        {
+          Vector<int> p = tile_to_buffer_pos(d_fighting.getPos());
+          PixMask *tmp = gc->getExplosionPic()->copy();
+          if (d_fighting.getSize() > 1)
+            {
+              PixMask::scale(tmp, d_fighting.getSize() * tilesize,
+                             d_fighting.getSize() * tilesize);
+            }
+          tmp->blit(buffer, p);
+          delete tmp;
+        }
+    }
 }
 
 bool BigMap::saveAsBitmap(Glib::ustring filename)

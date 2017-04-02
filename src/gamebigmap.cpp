@@ -49,7 +49,6 @@
 
 GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
 		       bool see_opponents_stacks, bool military_advisor)
-:d_fighting(LocationBox(Vector<int>(-1,-1)))
 {
   path_calculator = NULL;
   d_intense_combat = intense_combat;
@@ -854,7 +853,6 @@ void GameBigMap::after_draw()
   int tilesize = GameMap::getInstance()->getTileSize();
 
   Stack* stack = Playerlist::getActiveplayer()->getActivestack();
-
   // Draw Path
   if (stack && stack->getPath()->size() && 
       stack->getOwner()->getType() == Player::HUMAN)
@@ -970,18 +968,6 @@ void GameBigMap::after_draw()
         }
     }
 
-  if (d_fighting.getPos() != Vector<int>(-1,-1))
-    {
-      Vector<int> p = tile_to_buffer_pos(d_fighting.getPos());
-      PixMask *tmp = gc->getExplosionPic()->copy();
-      if (d_fighting.getSize() > 1)
-	{
-	  PixMask::scale(tmp, d_fighting.getSize() * tilesize,
-			 d_fighting.getSize() * tilesize);
-	}
-      tmp->blit(buffer, p);
-      delete tmp;
-    }
 }
 
 void GameBigMap::set_control_key_down (bool down)
