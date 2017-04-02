@@ -36,8 +36,7 @@ LocationBox::LocationBox(Vector<int> pos, guint32 size)
 }
 
 LocationBox::LocationBox(Vector<int> src, Vector<int> dest)
-    :Immovable(dist(Vector<int>(0,0), src) < dist(Vector<int>(0,0), dest) ?
-	       src : dest)
+    :Immovable(getTopLeftBoundingBox (src, dest))
 {
   if (dest.x > src.x)
     d_size =  dest.x - src.x + 1;
@@ -207,4 +206,9 @@ Vector<int> LocationBox::getNearestPos(Vector<int> pos) const
           }
       }
   return closest_tile;
+}
+
+Vector<int> LocationBox::getTopLeftBoundingBox(Vector<int> p1, Vector<int> p2)
+{
+  return Vector<int>(std::min (p1.x, p2.x), std::min (p1.y, p2.y));
 }

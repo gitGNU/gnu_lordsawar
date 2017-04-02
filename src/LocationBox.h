@@ -127,6 +127,7 @@ class LocationBox : public Immovable
 
     Vector<int> getNearestPos(Movable *m) const;
 
+    static Vector<int> getTopLeftBoundingBox(Vector<int> p1, Vector<int> p2);
  protected:
 
     //! Obtains a stack in the location to put an Army unit in.

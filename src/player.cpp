@@ -3656,7 +3656,7 @@ std::list<Vector<int> > Player::getStackTrack(Stack *s) const
     }
   if (points.size() >= 1)
     {
-      Vector<int> pos = points.front() + delta;
+      Vector<int> pos = points.front() - delta;
       if (pos != points.front())
 	points.push_front(pos);
     }
