@@ -776,7 +776,6 @@ bool Player::stackMove(Stack* s)
     return ret;
 }
 
-    
 bool Player::nextStepOnEnemyStackOrCity(Stack *s) const
 {
   Vector<int> dest = s->getFirstPointInPath();
@@ -882,7 +881,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
     
         Vector<int> pos = s->getFirstPointInPath();
         City* city = GameMap::getCity(pos);
-        Stack* target =GameMap::getStack(pos);
+        Stack* target = GameMap::getStack(pos);
 
 
         //first fight_city to avoid ambiguity with fight_army
@@ -933,7 +932,10 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
                 if (!target)
                   target = def_in_city[0];
  
-                result = stackFight(&s, &target);
+                Fight *fight = stackFight(&s, &target);
+                result = fight->getResult();
+                finishStackFight (fight, &s, &target);
+                delete fight;
             }
             else
                 result = Fight::ATTACKER_WON;
@@ -1002,8 +1004,11 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	    moveResult->setConsideredTreachery(treachery);
         
 	    moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
-            Fight::Result result = stackFight(&s, &target);
+            Fight *fight = stackFight(&s, &target);
+            Fight::Result result = fight->getResult();
             moveResult->setFightResult(result);
+            finishStackFight(fight, &s, &target);
+            delete fight;
             if (!target)
 	      {
                 if (stackMoveOneStep(s))
@@ -1226,13 +1231,10 @@ void Player::cleanupAfterFight(std::list<Stack*> &attackers,
   supdatingStack.emit(0);
 }
 
-Fight::Result Player::stackFight(Stack** attacker, Stack** defender) 
+Fight* Player::stackFight(Stack** attacker, Stack** defender)
 {
     debug("stackFight: player = " << getName()<<" at position "
           <<(*defender)->getPos().x<<","<<(*defender)->getPos().y << " with stack " << (*attacker)->getId());
-
-    // save the defender's player for future use
-    Player* pd = (*defender)->getOwner();
 
     // I suppose, this should be always true, but one can never be sure
     bool attacker_active = *attacker == d_stacklist->getActivestack();
@@ -1241,20 +1243,22 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
         assert(0);
       }
 
-    Fight fight(*attacker, *defender);
-    
-    std::list<Stack *> attackers = fight.getAttackers(),
-      defenders = fight.getDefenders();
-
-    fight.battle(GameScenarioOptions::s_intense_combat);
-
+    Fight *fight = new Fight(*attacker, *defender);
+    fight->battle(GameScenarioOptions::s_intense_combat);
     // add a fight item about the combat
-    addAction(new Action_Fight(&fight));
+    addAction(new Action_Fight(fight));
 
-    fight_started.emit(fight);
-    // cleanup
-    
+    fight_started.emit(*fight);
+    return fight;
+}
 
+void Player::finishStackFight (Fight *fight, Stack **attacker, Stack **defender)
+{
+    std::list<Stack *> attackers = fight->getAttackers(),
+      defenders = fight->getDefenders();
+
+    Player* pd = (*defender)->getOwner();
+    bool attacker_active = *attacker == d_stacklist->getActivestack();
     std::list<History*> attacker_history;
     std::list<History*> defender_history;
     cleanupAfterFight(attackers, defenders, attacker_history, defender_history);
@@ -1303,7 +1307,7 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
         (*defender) = 0;
 
     schangingStats.emit();
-    return fight.getResult();
+    return;
 }
 
 /*

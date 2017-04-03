@@ -510,11 +510,14 @@ class Player: public sigc::trackable
          * @param attacker         The list of attacking stacks.
          * @param defender         The list of defending stacks.
 	 *
-         * @return One of Fight::ATTACKER_WON, Fight::DEFENDER_WON, or
-	 *         Fight::DRAW (Fight::Result).
+         * @return A pointer to a fight object to be passed to
+         *         finishStackFight.
          */
 	//! Callback to adjudicate fights.
-        Fight::Result stackFight(Stack** attacker, Stack** defender);
+        Fight * stackFight(Stack** attacker, Stack** defender);
+
+        //! Finalize a fight (drop bags, delete stacks, etc)
+        void finishStackFight (Fight *fight, Stack **attacker, Stack **def);
         
         /** 
 	 * A stack searches a ruin.  The stack must contain a hero.
