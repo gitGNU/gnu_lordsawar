@@ -51,6 +51,7 @@
 //within the code, and sometimes you have to tweak them a little bit.
 const unsigned int TIMER_BIGMAP_SELECTOR = 150; //milliseconds
 const unsigned int TIMER_SMALLMAP_REFRESH = 8000; //microseconds
+const unsigned int TIMER_BIGMAP_EXPLOSION_DELAY = 1500000; //microseconds
 const unsigned int CITY_LEVELS = 4;
 const unsigned int MAX_PLAYERS = 8;
 const unsigned int TEMPLE_TYPES = 1;

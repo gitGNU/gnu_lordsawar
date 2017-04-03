@@ -37,6 +37,9 @@ class Army;
 class FightWindow: public sigc::trackable
 {
  public:
+
+    static bool s_quick_all; 
+
     FightWindow(Gtk::Window &parent, Fight &fight);
     ~FightWindow();
 
@@ -74,7 +77,7 @@ class FightWindow: public sigc::trackable
                   std::vector<Gtk::Box *> &hboxes,
 		  Gtk::Box *vbox, int current_no);
 
-    void on_key_release_event();
+    void on_key_release_event(GdkEventKey *ev);
 
     bool do_round();
     bool d_quick;

@@ -1417,7 +1417,7 @@ void GameWindow::on_player_died(Player *player)
       s += _("Press `CTRL-P' to stop the war\nand visit the sites of thy old battles.");
     }
 
-  TimedMessageDialog dialog(*window, s, 30);
+  TimedMessageDialog dialog(*window, s, FightWindow::s_quick_all ? 3: 30);
   dialog.run_and_hide();
 }
 
@@ -1698,13 +1698,13 @@ void GameWindow::on_fight_started(LocationBox box, Fight &fight)
   FightWindow d(*window, fight);
 
   game->get_bigmap().setFighting(box);
-  game->get_bigmap().draw(Playerlist::getViewingplayer());
+  game->get_bigmap().draw();
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
-  Glib::usleep (TIMER_BIGMAP_SELECTOR * 10000);
+  Glib::usleep (TIMER_BIGMAP_EXPLOSION_DELAY);
   d.run(&d_quick_fights);
   d.hide();
   game->get_bigmap().setFighting(LocationBox(Vector<int>(-1,-1)));
-  game->get_bigmap().draw(Playerlist::getViewingplayer());
+  game->get_bigmap().draw();
   if (Playerlist::getActiveplayer()->getType() == Player::HUMAN)
     d_quick_fights = false;
 }
@@ -2431,7 +2431,7 @@ void GameWindow::on_stack_moves(Stack *stack, Vector<int> pos)
   int step = TIMER_BIGMAP_SELECTOR * 1000;
   for (int i = 0; i < Configuration::s_displaySpeedDelay; i += step)
     {
-      game->get_bigmap().draw(Playerlist::getViewingplayer());
+      game->get_bigmap().draw();
       while (g_main_context_iteration(NULL, FALSE)); //doEvents
       Glib::usleep(step);
     }
@@ -2697,11 +2697,11 @@ void GameWindow::on_commentator_comments(Glib::ustring comment)
 void GameWindow::on_abbreviated_fight_started(LocationBox box)
 {
   game->get_bigmap().setFighting(box);
-  game->get_bigmap().draw(Playerlist::getViewingplayer());
+  game->get_bigmap().draw();
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
   Glib::usleep (TIMER_BIGMAP_SELECTOR * 10000);
   game->get_bigmap().setFighting(LocationBox(Vector<int>(-1,-1)));
-  game->get_bigmap().draw(Playerlist::getViewingplayer());
+  game->get_bigmap().draw();
 }
 
 Item* GameWindow::on_select_item(std::list<Item*> items)

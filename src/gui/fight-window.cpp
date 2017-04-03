@@ -40,6 +40,8 @@
 
 #define method(x) sigc::mem_fun(*this, &FightWindow::x)
 
+bool FightWindow::s_quick_all = false;
+
 FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
 {
   Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("fight-window.ui");
@@ -48,7 +50,7 @@ FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
   window->set_transient_for(parent);
 
   window->signal_key_release_event().connect_notify
-    (sigc::hide(method(on_key_release_event)));
+    (method(on_key_release_event));
 
   Gtk::Box *attacker_close_vbox;
   Gtk::Box *defender_close_vbox;
@@ -114,13 +116,20 @@ void FightWindow::run(bool *quick)
   round = 0;
   action_iterator = actions.begin();
 
-  Timing::instance().register_timer(method(do_round), *quick == true ?  fast_round_speed : normal_round_speed);
+  if (s_quick_all)
+    Timing::instance().register_timer (method(do_round), fast_round_speed / 3);
+  else
+    Timing::instance().register_timer(method(do_round), 
+                                      *quick == true ?
+                                      fast_round_speed : normal_round_speed);
 
   window->show_all();
   main_loop = Glib::MainLoop::create();
   main_loop->run();
   if (quick && *quick == false)
     *quick = d_quick;
+  if (s_quick_all)
+    d_quick = true;
 }
 
 void FightWindow::add_army(Army *army, int initial_hp,
@@ -243,8 +252,28 @@ bool FightWindow::do_round()
   return Timing::STOP;
 }
 
-void FightWindow::on_key_release_event()
+void FightWindow::on_key_release_event(GdkEventKey *e)
 {
-  Timing::instance().register_timer (method(do_round), fast_round_speed);
-  d_quick = true;
+  if (e->keyval == GDK_KEY_exclam)
+    {
+      if (s_quick_all)
+        {
+          Timing::instance().register_timer (method(do_round),
+                                             normal_round_speed);
+          d_quick = false;
+          s_quick_all = false;
+        }
+      else
+        {
+          d_quick = true;
+          s_quick_all = true;
+          Timing::instance().register_timer (method(do_round), 
+                                             fast_round_speed / 3);
+        }
+    }
+  else
+    {
+      Timing::instance().register_timer (method(do_round), fast_round_speed);
+      d_quick = true;
+    }
 }
