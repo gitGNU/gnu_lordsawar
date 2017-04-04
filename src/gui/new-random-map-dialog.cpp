@@ -20,6 +20,9 @@
 
 #include <sigc++/functors/mem_fun.h>
 #include <gtkmm.h>
+#include <algorithm>
+#include <map>
+#include <vector>
 
 #include "new-random-map-dialog.h"
 
@@ -42,122 +45,142 @@
 #define method(x) sigc::mem_fun(*this, &NewRandomMapDialog::x)
 
 NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
- : LwDialog(parent, "new-random-map-dialog.ui")
+        : LwDialog(parent, "new-random-map-dialog.ui")
 {
-    xml->get_widget("dialog-vbox1", dialog_vbox);
-    xml->get_widget("dialog-action_area1", dialog_action_area);
-    xml->get_widget("map_size_combobox", map_size_combobox);
-    xml->get_widget("grass_scale", grass_scale);
-    xml->get_widget("water_scale", water_scale);
-    xml->get_widget("swamp_scale", swamp_scale);
-    xml->get_widget("forest_scale", forest_scale);
-    xml->get_widget("hills_scale", hills_scale);
-    xml->get_widget("mountains_scale", mountains_scale);
-    xml->get_widget("cities_scale", cities_scale);
-    xml->get_widget("progressbar", progressbar);
-    xml->get_widget("accept2_button", accept_button);
-    accept_button->signal_clicked().connect (method(on_accept_clicked));
-    xml->get_widget("cancel2_button", cancel_button);
-    cancel_button->signal_clicked().connect (method(on_cancel_clicked));
-    xml->get_widget("grass_random_togglebutton", grass_random_togglebutton);
-    grass_random_togglebutton->signal_toggled().connect
-      (method(on_grass_random_toggled));
-    xml->get_widget("water_random_togglebutton", water_random_togglebutton);
-    water_random_togglebutton->signal_toggled().connect
-      (method(on_water_random_toggled));
-    xml->get_widget("swamp_random_togglebutton", swamp_random_togglebutton);
-    swamp_random_togglebutton->signal_toggled().connect
-      (method(on_swamp_random_toggled));
-    xml->get_widget("forest_random_togglebutton", forest_random_togglebutton);
-    forest_random_togglebutton->signal_toggled().connect
-      (method(on_forest_random_toggled));
-    xml->get_widget("hills_random_togglebutton", hills_random_togglebutton);
-    hills_random_togglebutton->signal_toggled().connect
-      (method(on_hills_random_toggled));
-    xml->get_widget("mountains_random_togglebutton", mountains_random_togglebutton);
-    mountains_random_togglebutton->signal_toggled().connect
-      (method(on_mountains_random_toggled));
-    xml->get_widget("cities_random_togglebutton", cities_random_togglebutton);
-    cities_random_togglebutton->signal_toggled().connect
-      (method(on_cities_random_toggled));
+  xml->get_widget("dialog-vbox1", dialog_vbox);
+  xml->get_widget("dialog-action_area1", dialog_action_area);
+  xml->get_widget("map_size_combobox", map_size_combobox);
+  xml->get_widget("grass_scale", grass_scale);
+  ActiveTerrainType terrain = GRASS;
+  grass_scale->signal_value_changed().connect
+    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain, grass_scale));
+  xml->get_widget("water_scale", water_scale);
+  terrain = WATER;
+  water_scale->signal_value_changed().connect
+    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain, water_scale));
+  xml->get_widget("swamp_scale", swamp_scale);
+  terrain = SWAMP;
+  swamp_scale->signal_value_changed().connect
+    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain, swamp_scale));
+  xml->get_widget("forest_scale", forest_scale);
+  terrain = FOREST;
+  forest_scale->signal_value_changed().connect
+    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain, forest_scale));
+  xml->get_widget("hills_scale", hills_scale);
+  terrain = HILLS;
+  hills_scale->signal_value_changed().connect
+    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain, hills_scale));
+  xml->get_widget("mountains_scale", mountains_scale);
+  terrain = MOUNTAINS;
+  mountains_scale->signal_value_changed().connect
+    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain, mountains_scale));
+  xml->get_widget("cities_scale", cities_scale);
+  xml->get_widget("progressbar", progressbar);
+  xml->get_widget("accept2_button", accept_button);
+  accept_button->signal_clicked().connect (method(on_accept_clicked));
+  xml->get_widget("cancel2_button", cancel_button);
+  cancel_button->signal_clicked().connect (method(on_cancel_clicked));
+  xml->get_widget("grass_random_checkbutton", grass_random_checkbutton);
+  grass_random_checkbutton->signal_toggled().connect
+    (method(on_grass_random_toggled));
+  xml->get_widget("water_random_checkbutton", water_random_checkbutton);
+  water_random_checkbutton->signal_toggled().connect
+    (method(on_water_random_toggled));
+  xml->get_widget("swamp_random_checkbutton", swamp_random_checkbutton);
+  swamp_random_checkbutton->signal_toggled().connect
+    (method(on_swamp_random_toggled));
+  xml->get_widget("forest_random_checkbutton", forest_random_checkbutton);
+  forest_random_checkbutton->signal_toggled().connect
+    (method(on_forest_random_toggled));
+  xml->get_widget("hills_random_checkbutton", hills_random_checkbutton);
+  hills_random_checkbutton->signal_toggled().connect
+    (method(on_hills_random_toggled));
+  xml->get_widget("mountains_random_checkbutton", mountains_random_checkbutton);
+  mountains_random_checkbutton->signal_toggled().connect
+    (method(on_mountains_random_toggled));
+  xml->get_widget("cities_random_checkbutton", cities_random_checkbutton);
+  cities_random_checkbutton->signal_toggled().connect
+    (method(on_cities_random_toggled));
 
-    // fill in tile themes combobox
-    
-    guint32 counter = 0;
-    guint32 default_id = 0;
-    Gtk::Box *box;
+  // fill in tile themes combobox
 
-    //fill in tile sizes combobox
-    tile_size_combobox = manage(new Gtk::ComboBoxText);
-    std::list<guint32> sizes;
-    Tilesetlist::getInstance()->getSizes(sizes);
-    Citysetlist::getInstance()->getSizes(sizes);
-    Armysetlist::getInstance()->getSizes(sizes);
-    for (std::list<guint32>::iterator it = sizes.begin(); it != sizes.end();
-	 it++)
-      {
-	Glib::ustring s = String::ucompose("%1x%1", *it);
-	tile_size_combobox->append(s);
-	if ((*it) == Tileset::getDefaultTileSize())
-	  default_id = counter;
-	counter++;
-      }
-    tile_size_combobox->set_active(default_id);
-    xml->get_widget("tile_size_box", box);
-    box->pack_start(*tile_size_combobox, Gtk::PACK_SHRINK);
-    tile_size_combobox->signal_changed().connect (method(on_tile_size_changed));
+  guint32 counter = 0;
+  guint32 default_id = 0;
+  Gtk::Box *box;
 
-    // make new tile themes combobox
-    tile_theme_combobox = manage(new Gtk::ComboBoxText);
-    xml->get_widget("tile_theme_box", box);
-    box->pack_start(*tile_theme_combobox, Gtk::PACK_SHRINK);
+  //fill in tile sizes combobox
+  tile_size_combobox = manage(new Gtk::ComboBoxText);
+  std::list<guint32> sizes;
+  Tilesetlist::getInstance()->getSizes(sizes);
+  Citysetlist::getInstance()->getSizes(sizes);
+  Armysetlist::getInstance()->getSizes(sizes);
+  for (std::list<guint32>::iterator it = sizes.begin(); it != sizes.end();
+       it++)
+    {
+      Glib::ustring s = String::ucompose("%1x%1", *it);
+      tile_size_combobox->append(s);
+      if ((*it) == Tileset::getDefaultTileSize())
+        default_id = counter;
+      counter++;
+    }
+  tile_size_combobox->set_active(default_id);
+  xml->get_widget("tile_size_box", box);
+  box->pack_start(*tile_size_combobox, Gtk::PACK_SHRINK);
+  tile_size_combobox->signal_changed().connect (method(on_tile_size_changed));
 
-    // make new army themes combobox
-    army_theme_combobox = manage(new Gtk::ComboBoxText);
-    xml->get_widget("army_theme_box", box);
-    box->pack_start(*army_theme_combobox, Gtk::PACK_SHRINK);
+  // make new tile themes combobox
+  tile_theme_combobox = manage(new Gtk::ComboBoxText);
+  xml->get_widget("tile_theme_box", box);
+  box->pack_start(*tile_theme_combobox, Gtk::PACK_SHRINK);
 
-    // make new city themes combobox
-    city_theme_combobox = manage(new Gtk::ComboBoxText);
-    xml->get_widget("city_theme_box", box);
-    box->pack_start(*city_theme_combobox, Gtk::PACK_SHRINK);
+  // make new army themes combobox
+  army_theme_combobox = manage(new Gtk::ComboBoxText);
+  xml->get_widget("army_theme_box", box);
+  box->pack_start(*army_theme_combobox, Gtk::PACK_SHRINK);
 
-    counter = 0;
-    default_id = 0;
-    shield_theme_combobox = manage(new Gtk::ComboBoxText);
-    Shieldsetlist *sl = Shieldsetlist::getInstance();
-    std::list<Glib::ustring> shield_themes = sl->getValidNames();
-    for (std::list<Glib::ustring>::iterator i = shield_themes.begin(),
-	 end = shield_themes.end(); i != end; ++i)
-      {
-	if (*i == _("Default"))
-	  default_id = counter;
-	shield_theme_combobox->append(Glib::filename_to_utf8(*i));
-	counter++;
-      }
+  // make new city themes combobox
+  city_theme_combobox = manage(new Gtk::ComboBoxText);
+  xml->get_widget("city_theme_box", box);
+  box->pack_start(*city_theme_combobox, Gtk::PACK_SHRINK);
 
-    shield_theme_combobox->set_active(default_id);
+  counter = 0;
+  default_id = 0;
+  shield_theme_combobox = manage(new Gtk::ComboBoxText);
+  Shieldsetlist *sl = Shieldsetlist::getInstance();
+  std::list<Glib::ustring> shield_themes = sl->getValidNames();
+  for (std::list<Glib::ustring>::iterator i = shield_themes.begin(),
+       end = shield_themes.end(); i != end; ++i)
+    {
+      if (*i == _("Default"))
+        default_id = counter;
+      shield_theme_combobox->append(Glib::filename_to_utf8(*i));
+      counter++;
+    }
 
-    xml->get_widget("shield_theme_box", box);
-    box->pack_start(*shield_theme_combobox, Gtk::PACK_SHRINK);
+  shield_theme_combobox->set_active(default_id);
 
-    on_tile_size_changed();
+  xml->get_widget("shield_theme_box", box);
+  box->pack_start(*shield_theme_combobox, Gtk::PACK_SHRINK);
 
-    // map size
-    map_size_combobox->set_active(MAP_SIZE_NORMAL);
-    map_size_combobox->signal_changed().connect(method(on_map_size_changed));
+  on_tile_size_changed();
+
+  // map size
+  map_size_combobox->set_active(MAP_SIZE_NORMAL);
+  map_size_combobox->signal_changed().connect(method(on_map_size_changed));
 
 
-    xml->get_widget("cities_can_produce_allies_checkbutton", 
-		    cities_can_produce_allies_checkbutton);
-    grass_scale->set_value(78);
-    water_scale->set_value(7);
-    swamp_scale->set_value(2);
-    forest_scale->set_value(3);
-    hills_scale->set_value(5);
-    mountains_scale->set_value(5);
-    on_map_size_changed();
-    dialog_response = Gtk::RESPONSE_CANCEL;
+  xml->get_widget("cities_can_produce_allies_checkbutton", 
+                  cities_can_produce_allies_checkbutton);
+  grass_scale->set_value(78);
+  water_scale->set_value(7);
+  swamp_scale->set_value(2);
+  forest_scale->set_value(3);
+  hills_scale->set_value(5);
+  mountains_scale->set_value(5);
+  on_map_size_changed();
+  dialog_response = Gtk::RESPONSE_CANCEL;
+  d_active_terrain = NONE;
+  d_inhibit_scales = false;
 }
 
 int NewRandomMapDialog::run()
@@ -215,7 +238,7 @@ void NewRandomMapDialog::on_tile_size_changed()
        end = tile_themes.end(); i != end; ++i)
     {
       if (*i == _("Default"))
-	default_id = counter;
+        default_id = counter;
       tile_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
@@ -224,7 +247,7 @@ void NewRandomMapDialog::on_tile_size_changed()
     tile_theme_combobox->set_active(default_id);
   else
     accept_button->set_sensitive(false);
-    
+
 
   army_theme_combobox->remove_all();
 
@@ -236,7 +259,7 @@ void NewRandomMapDialog::on_tile_size_changed()
        end = army_themes.end(); i != end; ++i)
     {
       if (*i == _("Default"))
-	default_id = counter;
+        default_id = counter;
       army_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
@@ -256,7 +279,7 @@ void NewRandomMapDialog::on_tile_size_changed()
        end = city_themes.end(); i != end; ++i)
     {
       if (*i == _("Default"))
-	default_id = counter;
+        default_id = counter;
       city_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
@@ -265,6 +288,91 @@ void NewRandomMapDialog::on_tile_size_changed()
     city_theme_combobox->set_active(default_id);
   else
     accept_button->set_sensitive(false);
+}
+
+void NewRandomMapDialog::assign_random_terrain (GameParameters &g)
+{
+  double sum = 0;
+  std::vector<ActiveTerrainType> ter;
+
+  if (!grass_random_checkbutton->get_active())
+    sum += grass_scale->get_value ();
+  else
+    {
+      ter.push_back(GRASS);
+      g.map.grass = 0;
+    }
+
+
+  if (!water_random_checkbutton->get_active())
+    sum += water_scale->get_value ();
+  else
+    {
+      ter.push_back(WATER);
+      g.map.water = 0;
+    }
+
+  if (!forest_random_checkbutton->get_active())
+    sum += forest_scale->get_value ();
+  else
+    {
+      ter.push_back(FOREST);
+      g.map.forest = 0;
+    }
+
+  if (!hills_random_checkbutton->get_active())
+    sum += hills_scale->get_value ();
+  else
+    {
+      ter.push_back(HILLS);
+      g.map.hills = 0;
+    }
+
+  if (!swamp_random_checkbutton->get_active())
+    sum += swamp_scale->get_value ();
+  else
+    {
+      ter.push_back(SWAMP);
+      g.map.swamp = 0;
+    }
+
+  if (!mountains_random_checkbutton->get_active())
+    sum += mountains_scale->get_value ();
+  else
+    {
+      ter.push_back(MOUNTAINS);
+      g.map.mountains= 0;
+    }
+  double excess = 100 - sum;
+  if (excess <= 0)
+    return;
+  for (int i = 0; i < int(excess); i++)
+    {
+      ActiveTerrainType type = ter[Rnd::rand() % ter.size()];
+      switch (type)
+        {
+        case GRASS:
+          g.map.grass++;
+          break;
+        case WATER:
+          g.map.water++;
+          break;
+        case FOREST:
+          g.map.forest++;
+          break;
+        case HILLS:
+          g.map.hills++;
+          break;
+        case SWAMP:
+          g.map.swamp++;
+          break;
+        case MOUNTAINS:
+          g.map.mountains++;
+          break;
+        default:
+          break;
+        }
+    }
 }
 
 GameParameters NewRandomMapDialog::getParams()
@@ -327,56 +435,27 @@ GameParameters NewRandomMapDialog::getParams()
     CreateScenario::calculateNumberOfSignposts(g.map.width, g.map.height,
                                                int(grass_scale->get_value()));
 
-  if (grass_random_togglebutton->get_active())
-    g.map.grass =  
-      int(grass_scale->get_adjustment()->get_lower()) + 
-      (Rnd::rand() % (int(grass_scale->get_adjustment()->get_upper()) -
-		 int(grass_scale->get_adjustment()->get_lower()) + 1));
-  else
+  if (!grass_random_checkbutton->get_active())
     g.map.grass = int(grass_scale->get_value());
 
-  if (water_random_togglebutton->get_active())
-    g.map.water =  
-      int(water_scale->get_adjustment()->get_lower()) + 
-      (Rnd::rand() % (int(water_scale->get_adjustment()->get_upper()) -
-		 int(water_scale->get_adjustment()->get_lower()) + 1));
-  else
+  if (!water_random_checkbutton->get_active())
     g.map.water = int(water_scale->get_value());
 
-  if (swamp_random_togglebutton->get_active())
-    g.map.swamp =  
-      int(swamp_scale->get_adjustment()->get_lower()) + 
-      (Rnd::rand() % (int(swamp_scale->get_adjustment()->get_upper()) -
-		 int(swamp_scale->get_adjustment()->get_lower()) + 1));
-  else
+  if (!swamp_random_checkbutton->get_active())
     g.map.swamp = int(swamp_scale->get_value());
 
-  if (forest_random_togglebutton->get_active())
-    g.map.forest =  
-      int(forest_scale->get_adjustment()->get_lower()) + 
-      (Rnd::rand() % (int(forest_scale->get_adjustment()->get_upper()) -
-		 int(forest_scale->get_adjustment()->get_lower()) + 1));
-  else
+  if (!forest_random_checkbutton->get_active())
     g.map.forest = int(forest_scale->get_value());
 
-  if (hills_random_togglebutton->get_active())
-    g.map.hills =  
-      int(hills_scale->get_adjustment()->get_lower()) + 
-      (Rnd::rand() % (int(hills_scale->get_adjustment()->get_upper()) -
-		 int(hills_scale->get_adjustment()->get_lower()) + 1));
-  else
+  if (!hills_random_checkbutton->get_active())
     g.map.hills = int(hills_scale->get_value());
 
-  if (mountains_random_togglebutton->get_active())
-    g.map.mountains =  
-      int(mountains_scale->get_adjustment()->get_lower()) + 
-      (Rnd::rand() % (int(mountains_scale->get_adjustment()->get_upper()) -
-		 int(mountains_scale->get_adjustment()->get_lower()) 
-		 + 1));
-  else
+  if (!mountains_random_checkbutton->get_active())
     g.map.mountains = int(mountains_scale->get_value());
 
-  if (cities_random_togglebutton->get_active())
+  assign_random_terrain (g);
+
+  if (cities_random_checkbutton->get_active())
     g.map.cities =  
       int(cities_scale->get_adjustment()->get_lower()) + 
       (Rnd::rand() % (int(cities_scale->get_adjustment()->get_upper()) -
@@ -425,37 +504,37 @@ GameParameters NewRandomMapDialog::getParams()
 
 void NewRandomMapDialog::on_grass_random_toggled()
 {
-  grass_scale->set_sensitive(!grass_random_togglebutton->get_active());
+  grass_scale->set_sensitive(!grass_random_checkbutton->get_active());
 }
 
 void NewRandomMapDialog::on_water_random_toggled()
 {
-  water_scale->set_sensitive(!water_random_togglebutton->get_active());
+  water_scale->set_sensitive(!water_random_checkbutton->get_active());
 }
 
 void NewRandomMapDialog::on_swamp_random_toggled()
 {
-  swamp_scale->set_sensitive(!swamp_random_togglebutton->get_active());
+  swamp_scale->set_sensitive(!swamp_random_checkbutton->get_active());
 }
 
 void NewRandomMapDialog::on_forest_random_toggled()
 {
-  forest_scale->set_sensitive(!forest_random_togglebutton->get_active());
+  forest_scale->set_sensitive(!forest_random_checkbutton->get_active());
 }
 
 void NewRandomMapDialog::on_hills_random_toggled()
 {
-  hills_scale->set_sensitive(!hills_random_togglebutton->get_active());
+  hills_scale->set_sensitive(!hills_random_checkbutton->get_active());
 }
 
 void NewRandomMapDialog::on_mountains_random_toggled()
 {
-  mountains_scale->set_sensitive(!mountains_random_togglebutton->get_active());
+  mountains_scale->set_sensitive(!mountains_random_checkbutton->get_active());
 }
 
 void NewRandomMapDialog::on_cities_random_toggled()
 {
-  cities_scale->set_sensitive(!cities_random_togglebutton->get_active());
+  cities_scale->set_sensitive(!cities_random_checkbutton->get_active());
 }
 
 Glib::ustring NewRandomMapDialog::create_and_dump_scenario(const Glib::ustring &file,
@@ -558,4 +637,215 @@ void NewRandomMapDialog::pulse()
 {
   progressbar->pulse();
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
+}
+
+void NewRandomMapDialog::take_percentages ()
+{
+  percentages[GRASS] = grass_scale->get_value();
+  percentages[WATER] = water_scale->get_value();
+  percentages[FOREST] = forest_scale->get_value();
+  percentages[HILLS] = hills_scale->get_value();
+  percentages[MOUNTAINS] = mountains_scale->get_value();
+  percentages[SWAMP] = swamp_scale->get_value();
+}
+
+void NewRandomMapDialog::alter_grass ()
+{
+  double excess = 100.0 - grass_scale->get_value() - water_scale->get_value() -
+    forest_scale->get_value() - hills_scale->get_value() -
+    swamp_scale->get_value() - mountains_scale->get_value();
+
+  std::map<int,double> per;
+  //go get the sum
+  double sum = 0;
+  for (int i = GRASS + 1; i < MAX_TERRAINS; i++)
+    sum += percentages[i];
+
+  // how much is each of the other terrains of the whole, multiplied by excess
+  for (int i = GRASS + 1; i < MAX_TERRAINS; i++)
+    {
+      if (percentages[i] > 0)
+        per[i] = (double)percentages[i] / sum * excess;
+    }
+
+  //we can't sort the map, so we load a copy of it into a vector.
+  std::vector<std::pair<int, double> > percopy(per.begin(), per.end());
+
+  std::sort(percopy.begin(), percopy.end(), cmp);
+
+  sum = 0;
+  for (auto p : percopy)
+    {
+      p.second = round (p.second);
+      sum += p.second;
+    }
+
+  if (sum > excess)
+    {
+      //decrement from the bottom
+      int extra = sum - excess;
+      for (std::vector<std::pair<int, double> >::reverse_iterator it = percopy.rbegin();
+           it != percopy.rend(); ++it)
+        {
+          if ((*it).second == 0)
+            continue;
+          (*it).second -= 1;
+          extra--;
+          if (extra <= 0)
+            break;
+        }
+    }
+  else if (sum < excess)
+    {
+      int extra = excess - sum;
+      //add to the top.
+      for (auto it : percopy)
+        {
+          it.second++;
+          extra--;
+          if (extra <= 0)
+            break;
+        }
+    }
+  for (auto p : percopy)
+    augment_scale_value_by_type (ActiveTerrainType(p.first), p.second);
+}
+
+void NewRandomMapDialog::augment_scale_value_by_type (ActiveTerrainType type, double amt)
+{
+  switch (type)
+    {
+    case GRASS:
+      grass_scale->set_value(grass_scale->get_value() + amt);
+      break;
+    case WATER:
+      water_scale->set_value(water_scale->get_value() + amt);
+      break;
+    case FOREST:
+      forest_scale->set_value(forest_scale->get_value() + amt);
+      break;
+    case HILLS:
+      hills_scale->set_value(hills_scale->get_value() + amt);
+      break;
+    case SWAMP:
+      swamp_scale->set_value(swamp_scale->get_value() + amt);
+      break;
+    case MOUNTAINS:
+      mountains_scale->set_value(mountains_scale->get_value() + amt);
+      break;
+    default:
+      break;
+    }
+}
+
+int NewRandomMapDialog::cmp (std::pair<int,double> const &a, std::pair<int,double> const &b)
+{
+  return a.second != b.second ?  fabs(a.second) > fabs(b.second) : a.first > b.first;
+}
+
+void NewRandomMapDialog::alter_terrain (ActiveTerrainType type)
+{
+  double grass = 100.0 - water_scale->get_value() - forest_scale->get_value() -
+    hills_scale->get_value() - swamp_scale->get_value() -
+    mountains_scale->get_value();
+  int excess = 0;
+  if (grass < 0)
+    {
+      excess = int(grass) * -1;
+      grass = 0;
+    }
+  grass_scale->set_value (grass);
+  if (!excess)
+    return;
+  //okay we have EXCESS to take away from every other terrain that isn't TYPE
+  //and isn't grass.
+  std::map<int,double> per;
+  //go get the sum
+  double sum = 0;
+  for (int i = GRASS + 1; i < MAX_TERRAINS; i++)
+    {
+      if (ActiveTerrainType(i) == type)
+        continue;
+      sum += percentages[i];
+    }
+
+  // how much is each of the other terrains of the whole, multiplied by excess
+  for (int i = GRASS + 1; i < MAX_TERRAINS; i++)
+    {
+      if (ActiveTerrainType (i) == type)
+        continue;
+      if (percentages[i] > 0)
+        per[i] = (double)percentages[i] / sum * excess;
+    }
+
+  //we can't sort the map, so we load a copy of it into a vector.
+  std::vector<std::pair<int, double> > percopy(per.begin(), per.end());
+
+  std::sort(percopy.begin(), percopy.end(), cmp);
+
+  sum = 0;
+  for (auto p : percopy)
+    {
+      p.second = round (p.second);
+      sum += p.second;
+    }
+  if (sum > excess)
+    {
+      //decrement from the bottom
+      int extra = sum - excess;
+      for (std::vector<std::pair<int, double> >::reverse_iterator it = percopy.rbegin();
+           it != percopy.rend(); ++it)
+        {
+          if ((*it).second == 0)
+            continue;
+          (*it).second -= 1;
+          extra--;
+          if (extra <= 0)
+            break;
+        }
+    }
+  else if (sum < excess)
+    {
+      int extra = excess - sum;
+      //add to the top.
+      for (auto it : percopy)
+        {
+          it.second++;
+          extra--;
+          if (extra <= 0)
+            break;
+        }
+    }
+  for (auto p : percopy)
+    augment_scale_value_by_type (ActiveTerrainType(p.first), -p.second);
+}
+
+void NewRandomMapDialog::on_value_changed (ActiveTerrainType type, Gtk::Scale *scale)
+{
+  if (d_inhibit_scales)
+    return;
+  if (type != d_active_terrain)
+    {
+      take_percentages ();
+      d_active_terrain = type;
+    }
+  switch (type)
+    {
+    case GRASS:
+      d_inhibit_scales = true;
+      alter_grass ();
+      d_inhibit_scales = false;
+      break;
+    case WATER:
+    case FOREST:
+    case HILLS:
+    case MOUNTAINS:
+    case SWAMP:
+      d_inhibit_scales = true;
+      alter_terrain (type);
+      d_inhibit_scales = false;
+      break;
+    default:
+      break;
+    }
 }

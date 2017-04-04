@@ -77,20 +77,23 @@ static Glib::ustring create_and_dump_scenario(const Glib::ustring &file,
     Gtk::Scale *cities_scale;
     Gtk::Button *accept_button;
     Gtk::Button *cancel_button;
-    Gtk::ToggleButton *grass_random_togglebutton;
-    Gtk::ToggleButton *water_random_togglebutton;
-    Gtk::ToggleButton *swamp_random_togglebutton;
-    Gtk::ToggleButton *forest_random_togglebutton;
-    Gtk::ToggleButton *hills_random_togglebutton;
-    Gtk::ToggleButton *mountains_random_togglebutton;
-    Gtk::ToggleButton *cities_random_togglebutton;
+    Gtk::CheckButton *grass_random_checkbutton;
+    Gtk::CheckButton *water_random_checkbutton;
+    Gtk::CheckButton *swamp_random_checkbutton;
+    Gtk::CheckButton *forest_random_checkbutton;
+    Gtk::CheckButton *hills_random_checkbutton;
+    Gtk::CheckButton *mountains_random_checkbutton;
+    Gtk::CheckButton *cities_random_checkbutton;
 
     Gtk::CheckButton *cities_can_produce_allies_checkbutton;
 
     enum { MAP_SIZE_NORMAL = 0, MAP_SIZE_SMALL, MAP_SIZE_TINY };
 
-    void on_map_size_changed();
+    enum ActiveTerrainType { NONE, GRASS, WATER, FOREST, HILLS, MOUNTAINS,
+      SWAMP, MAX_TERRAINS };
 
+    //callbacks
+    void on_map_size_changed();
     void on_grass_random_toggled();
     void on_water_random_toggled();
     void on_swamp_random_toggled();
@@ -100,11 +103,23 @@ static Glib::ustring create_and_dump_scenario(const Glib::ustring &file,
     void on_cities_random_toggled();
     void on_accept_clicked();
     void on_cancel_clicked();
-
-    guint32 get_active_tile_size();
+    void on_value_changed (ActiveTerrainType type, Gtk::Scale *scale);
     void on_tile_size_changed();
+
+    //helpers
+    void alter_grass ();
+    void alter_terrain (ActiveTerrainType type);
+    guint32 get_active_tile_size();
+    void take_percentages ();
+    void augment_scale_value_by_type (ActiveTerrainType type, double amt);
+    void assign_random_terrain (GameParameters &g);
+
     int dialog_response;
     Glib::ustring d_filename;
+    double percentages[MAX_TERRAINS];
+    ActiveTerrainType d_active_terrain;
+    bool d_inhibit_scales;
+    static int cmp (std::pair<int,double> const &a, std::pair<int,double> const &b);
 };
 
 #endif
