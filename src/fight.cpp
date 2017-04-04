@@ -214,16 +214,17 @@ void Fight::battle(bool intense)
 
   if (d_type == FOR_KICKS)
     {
-      //fixme: this will heal armies who happen to have a single hitpoint left.
+      //revert the hitpoints to what they started out as.
+      //if they were already hurt prior to the battle, they go back to
+      //being already hurt.
       std::list<Stack*>::iterator it;
-      //heal the attackers and defenders to full hit points
       for (it = d_attackers.begin(); it != d_attackers.end(); it++)
 	for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
-	  (*sit)->heal((*sit)->getStat(Army::HP));
+          (*sit)->setHP(initial_hps[(*it)->getId()]);
 
       for (it = d_defenders.begin(); it != d_defenders.end(); it++)
 	for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
-	  (*sit)->heal((*sit)->getStat(Army::HP));
+          (*sit)->setHP(initial_hps[(*it)->getId()]);
     }
 }
 
