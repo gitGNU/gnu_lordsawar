@@ -39,8 +39,6 @@
 #include "game-parameters.h"
 
 #define method(x) sigc::mem_fun(*this, &GameLobbyDialog::x)
-#define SITTING _("Yes")
-#define NOT_SITTING _("No")
 namespace
 {
     Glib::ustring player_type_to_string(guint32 type)
@@ -208,19 +206,8 @@ GameLobbyDialog::update_player_details()
 
 
   //the sitting toggle
-  player_sitting_list = Gtk::ListStore::create(player_sitting_columns);
-  Gtk::TreeModel::iterator j;
-  j = player_sitting_list->append();
-  (*j)[player_sitting_columns.sitting] = NOT_SITTING;
-  j = player_sitting_list->append();
-  (*j)[player_sitting_columns.sitting] = SITTING;
-  sitting_renderer.property_model() = player_sitting_list;
-  sitting_renderer.property_text_column() = 0;
-  sitting_renderer.property_has_entry() = false;
-  sitting_renderer.property_editable() = true;
-
-  sitting_renderer.property_mode() = Gtk::CELL_RENDERER_MODE_EDITABLE;
-  sitting_renderer.signal_edited().connect(method(on_sitting_edited));
+  sitting_renderer.set_radio (false);
+  sitting_renderer.signal_toggled().connect(method(on_sitting_toggled));
   sitting_column.set_cell_data_func(sitting_renderer, method(cell_data_sitting));
   player_treeview->append_column(sitting_column);
 
@@ -280,14 +267,13 @@ GameLobbyDialog::update_player_details()
   update_turn_indicator();
 }
 
-void GameLobbyDialog::on_sitting_edited(const Glib::ustring &path,
-                                        const Glib::ustring &new_text)
+void GameLobbyDialog::on_sitting_toggled (const Glib::ustring &path)
 {
   Gtk::TreeModel::iterator iter = player_treeview->get_model()->get_iter(path);
-  if (new_text == SITTING && (*iter)[player_columns.sitting] == true)
-    return;
-  if (new_text == NOT_SITTING && (*iter)[player_columns.sitting] == false)
-    return;
+  //if (new_text == SITTING && (*iter)[player_columns.sitting] == true)
+    //return;
+  //if (new_text == NOT_SITTING && (*iter)[player_columns.sitting] == false)
+    //return;
   Playerlist *pl = Playerlist::getInstance();
   Player *player;
   //maybe we can't make other ppl stand up
@@ -313,7 +299,7 @@ GameLobbyDialog::GameLobbyDialog(Gtk::Window &parent,
  : LwDialog(parent, "game-lobby-dialog.ui"),
     name_column(_("Name"), name_renderer),
     type_column(_("Type"), type_renderer),
-    sitting_column(_("Controlled"), sitting_renderer)
+    sitting_column(_("Sit Down"), sitting_renderer)
 {
   d_has_ops = has_ops;
   d_play_button_clicked = false;
@@ -428,10 +414,8 @@ void GameLobbyDialog::on_name_edited(const Glib::ustring &path,
 void GameLobbyDialog::cell_data_sitting(Gtk::CellRenderer *renderer,
 					const Gtk::TreeIter& i)
 {
-  if ((*i)[player_columns.sitting] == true)
-    dynamic_cast<Gtk::CellRendererText*>(renderer)->property_text() = SITTING;
-  else
-    dynamic_cast<Gtk::CellRendererText*>(renderer)->property_text() = NOT_SITTING;
+  dynamic_cast<Gtk::CellRendererToggle*>(renderer)->property_active () =
+    (*i)[player_columns.sitting];
 }
 
 void GameLobbyDialog::add_player(guint32 order, const Glib::ustring &type,
