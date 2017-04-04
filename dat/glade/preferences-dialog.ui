@@ -150,7 +150,7 @@
                               <object class="GtkLabel" id="label5">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Slow</property>
+                                <property name="label" translatable="yes">Fast</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -164,7 +164,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="adjustment">adjustment2</property>
-                                <property name="inverted">True</property>
                                 <property name="lower_stepper_sensitivity">on</property>
                                 <property name="upper_stepper_sensitivity">on</property>
                                 <property name="draw_value">False</property>
@@ -179,7 +178,7 @@
                               <object class="GtkLabel" id="label6">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Fast</property>
+                                <property name="label" translatable="yes">Slow</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
