@@ -1344,6 +1344,9 @@ The yellow player commits to the battle by left-clicking on the red army unit wi
 Here is the fight screen.  The attacker is always depicted on the bottom of the fight window, while the defender is always shown on the top.  The shields of both players is shown, along with the army units that are in this battle.  Every army unit has precisely two hitpoints, and strength is used as the main determinator if the unit is hit or not.  In this battle the Orcish Mob dispatches the single unit of Light Infantry.
 </para>
 <para>
+To make the battle go faster, press the spacebar.  To make all future battles go faster, press the exclamation key.
+</para>
+<para>
 The battle finishes, and the yellow unit of Orcish Mob succeeds in killing the unit of red's Light infantry.  The red player loses the unit of Light Infantry:
 <figure id="fought-one-on-one-fig">
 <screenshot>
