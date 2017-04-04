@@ -1,4 +1,4 @@
-//  Copyright (C) 2011, 2012, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2011, 2012, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ UseItemOnCityDialog::UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Typ
 City* UseItemOnCityDialog::run()
 {
   citymap->resize();
-  citymap->draw(Playerlist::getActiveplayer());
+  citymap->draw();
   dialog->show_all();
   dialog->run();
   return citymap->get_selected_city();

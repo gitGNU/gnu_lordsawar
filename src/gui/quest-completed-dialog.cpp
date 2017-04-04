@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -112,7 +112,7 @@ QuestCompletedDialog::QuestCompletedDialog(Gtk::Window &parent, Quest *q, Reward
 void QuestCompletedDialog::run()
 {
   questmap->resize();
-  questmap->draw(quest->getHero()->getOwner());
+  questmap->draw();
 
   dialog->show_all();
   dialog->run();

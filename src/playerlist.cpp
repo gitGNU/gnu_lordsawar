@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009, 2010, 2014, 2015 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -181,7 +181,7 @@ void Playerlist::nextPlayer()
     }
 
     d_activeplayer = (*it);
-    viewingplayer = (*it);
+    updateViewingPlayer();
     debug("got player: " <<d_activeplayer->getName())
 }
 
@@ -271,11 +271,11 @@ bool Playerlist::load(Glib::ustring tag, XML_Helper* helper)
 
     //set neutral and active
     if (p->getId() == neutral)
-        d_neutral = p;
+      d_neutral = p;
     if (p->getId() == active)
       d_activeplayer = p;
 
-    viewingplayer = d_activeplayer;
+    updateViewingPlayer();
 
     return true;
 }
@@ -640,7 +640,7 @@ void Playerlist::syncPlayer(GameParameters::Player player)
 
 	  sort(inOrderOfId);
 	  d_activeplayer = getFirstLiving();
-	  viewingplayer = d_activeplayer;
+          updateViewingPlayer();
 	}
       return;
     }
@@ -695,7 +695,7 @@ void Playerlist::syncPlayer(GameParameters::Player player)
 
   sort(inOrderOfId);
   d_activeplayer = getFirstLiving();
-  viewingplayer = d_activeplayer;
+  updateViewingPlayer();
   return;
 }
 
@@ -819,7 +819,7 @@ void Playerlist::reorder(std::list<guint32> order)
   sort(inGivenOrder);
   given_turn_order.clear();
   d_activeplayer = getFirstLiving();
-  viewingplayer = d_activeplayer;
+  updateViewingPlayer();
 }
 
 std::list<History *>Playerlist::getHistoryForHeroId(guint32 id) const
@@ -933,4 +933,31 @@ Stack *Playerlist::getStackById(guint32 id) const
         return s;
     }
   return NULL;
+}
+
+void Playerlist::updateViewingPlayer ()
+{
+  /*
+   * the idea here is that the viewing player is related to the
+   * hidden map.
+   *
+   * imagine a computer player moving and then it walks into the area of
+   * your map that you have uncovered.
+   *
+   * i think the smallmap happens to be getting blanked right now,
+   * but this funciton is about retaining the last human player as the
+   * player who can see movements through his or her territory.
+   *
+   * the blanking of the smallmap/bigmap is because:
+   * it's not really fair to show one player some enemy units going through
+   * his or her territory, and not all players.  why should one player be
+   * rewarded in this way just by fluke?
+   *
+   * this is the story for hotseat anyway.  i'm not sure how it relates to
+   * network play.
+   */
+  if (d_activeplayer->getType() == Player::HUMAN)
+    viewingplayer = d_activeplayer;
+  else
+    viewingplayer = getNeutral();
 }

@@ -1,5 +1,5 @@
 // Copyright (C) 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2014, 2015 Ben Asselstine
+// Copyright (C) 2007-2012, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -94,15 +94,12 @@ class OverviewMap : public sigc::trackable
      * Draws the roads, cities, ruins, temples and roads onto the map in the
      * correct aspect ratio.
      *
-     * @param player draw the map from the given player's perspective.
-     *
-     *
      * The aspect ratio for the terrain features is governed by the dimensions 
      * passed to the OverviewMap::resize method.
      *
      * This method calls the after_draw method from the derived classes.
      */
-    void draw(Player *player);
+    void draw();
 
     //! Redraw a portion of the map graphic.
     /**

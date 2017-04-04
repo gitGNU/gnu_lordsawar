@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -125,7 +125,7 @@ bool CityWindow::on_map_mouse_button_event(GdkEventButton *e)
 void CityWindow::run()
 {
     prodmap->resize();
-    prodmap->draw(Playerlist::getActiveplayer());
+    prodmap->draw();
     dialog->show();
     dialog->run();
 }
@@ -371,7 +371,7 @@ void CityWindow::on_on_hold_clicked() //stop button
 	production_toggles[i]->set_active(false);
     ignore_toggles = false;
     fill_in_production_info();
-    prodmap->draw(Playerlist::getActiveplayer());
+    prodmap->draw();
 }
 
 void CityWindow::on_buy_clicked()
@@ -407,7 +407,7 @@ void CityWindow::on_destination_clicked()
     DestinationDialog d(*dialog, city, &d_see_all);
     d.run();
     fill_in_production_info();
-    prodmap->draw(Playerlist::getActiveplayer());
+    prodmap->draw();
 }
 
 void CityWindow::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -364,12 +364,12 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	  if (dest != city->getVectoring() && dest != Vector<int>(-1, -1))
 	    {
 	      setClickAction(CLICK_SELECTS);
-	      draw(Playerlist::getViewingplayer());
+	      draw();
 	    }
 	  else if (dest == Vector<int>(-1, -1)) //stop vectoring
 	    {
 	      setClickAction(CLICK_SELECTS);
-	      draw(Playerlist::getViewingplayer());
+	      draw();
 	    }
 	  break;
 	case CLICK_SELECTS:
@@ -380,7 +380,7 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	  if (nearestCity == NULL)
 	    return;
 	  city = nearestCity;
-	  draw(Playerlist::getViewingplayer());
+	  draw();
 	  break;
 	case CLICK_CHANGES_DESTINATION:
 	  nearestCity = Citylist::getInstance()->getNearestVisibleFriendlyCity(dest, 4);
@@ -412,7 +412,7 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	      //and we clicked back on our own city
 	      //this is the same thing as a cancel.
 	      setClickAction(CLICK_SELECTS);
-	      draw(Playerlist::getViewingplayer());
+	      draw();
 	      return;
 	    }
 	  bool is_source_city = false;
@@ -429,10 +429,10 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	  if (is_source_city == false)
 	    {
 	      setClickAction(CLICK_SELECTS);
-	      draw(Playerlist::getViewingplayer());
+	      draw();
 	      if (dest != planted_standard)
 		city = nearestCity;
-	      draw(Playerlist::getViewingplayer());
+	      draw();
 	    }
 	  break;
 	}
@@ -442,5 +442,5 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 void VectorMap::setCity(City *c)
 {
   city = c;
-  draw(Playerlist::getViewingplayer());
+  draw();
 }

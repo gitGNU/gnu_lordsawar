@@ -43,7 +43,7 @@ void SmallMap::set_view(Rectangle new_view)
     if (view != new_view)
     {
 	view = new_view;
-	draw(Playerlist::getViewingplayer());
+	draw();
     }
 }
 
@@ -192,7 +192,7 @@ void SmallMap::slide_view(Rectangle new_view)
 	  tmp_view.y = slide(tmp_view.y, new_view.y);
 
 	  view = tmp_view;
-	  draw(Playerlist::getViewingplayer());
+	  draw();
           view_slid.emit(view);
           if (sliding_to != new_view)
             break;

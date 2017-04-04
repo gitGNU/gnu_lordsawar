@@ -457,7 +457,7 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
 
 	draw_terrain_tiles(Rectangle(pos, dim));
     }
-    draw(Playerlist::getViewingplayer());
+    draw();
 }
 
 Maptile* OverviewMap::getTile(int x, int y)
@@ -521,10 +521,10 @@ void OverviewMap::after_draw()
 {
 }
 
-void OverviewMap::draw(Player *player)
+void OverviewMap::draw()
 {
     Tileset *ts = GameMap::getTileset();
-    Playerlist::getInstance()->setViewingplayer(player);
+    //Playerlist::getInstance()->setViewingplayer(player);
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
     assert(surface);
 
@@ -580,13 +580,17 @@ void OverviewMap::draw(Player *player)
               if (Playerlist::getViewingplayer()->getFogMap()->isFogged(pos) == true)
                 {
                   pos = mapToSurface(pos);
-                  draw_filled_rect(true, pos.x-1, pos.y-1, size, size, FOG_COLOUR);
+                  draw_filled_rect(true, pos.x, pos.y, size, size, FOG_COLOUR);
+                  if (i == 0)
+                    draw_filled_rect(true, pos.x-size, pos.y, size, size, FOG_COLOUR);
+                  if (j == 0)
+                    draw_filled_rect(true, pos.x, pos.y-size, size, size, FOG_COLOUR);
                 }
             }
       }
 
-  if (Playerlist::getViewingplayer()->getType() != Player::HUMAN &&
-       	GameScenarioOptions::s_hidden_map == true)
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+      GameScenarioOptions::s_hidden_map == true)
     {
       int width = get_width();
       int height = get_height();
@@ -691,7 +695,7 @@ void OverviewMap::draw_cities (bool all_razed)
 void OverviewMap::blank(bool on)
 {
   blank_screen = on;
-  draw(Playerlist::getViewingplayer());
+  draw();
 }
 
 void OverviewMap::draw_hero(Vector<int> pos, bool white)

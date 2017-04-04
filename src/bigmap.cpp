@@ -2,7 +2,7 @@
 // Copyright (C) 2003, 2004, 2005, 2006, 2007 Ulf Lorenz
 // Copyright (C) 2004, 2005 Bryan Duff
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2014, 2015, 2016 Ben Asselstine
+// Copyright (C) 2006-2010, 2014, 2015, 2016, 2017 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -96,7 +96,7 @@ void BigMap::set_view(Rectangle new_view)
 	if (view_pos != new_view_pos)
 	{
 	    view_pos = new_view_pos;
-	    draw(Playerlist::getViewingplayer());
+	    draw();
 	}
 	
 	return;
@@ -147,12 +147,12 @@ void BigMap::clip_viewable_buffer(Cairo::RefPtr<Cairo::Surface> pixmap, Vector<i
   return;
 }
 
-void BigMap::draw(Player *player, bool redraw_buffer)
+void BigMap::draw(bool redraw_buffer)
 {
     // no size and buffer yet, return
     if (!buffer)
         return;
-    Playerlist::getInstance()->setViewingplayer(player);
+    //Playerlist::getInstance()->setViewingplayer(player);
 
     int tilesize = GameMap::getInstance()->getTileSize();
 
@@ -387,9 +387,8 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface)
 void BigMap::draw_buffer()
 {
   draw_buffer (buffer_view, buffer);
-    
-  if (Playerlist::getViewingplayer()->getType() == Player::HUMAN)
-    after_draw();
+  // if we're hidden map this is hosed.
+  after_draw();
   if (blank_screen == false)
     {
       ImageCache *gc = ImageCache::getInstance();
@@ -613,7 +612,7 @@ void BigMap::draw_buffer(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surfa
 void BigMap::toggle_grid()
 {
   d_grid_toggled = !d_grid_toggled;
-  draw(Playerlist::getViewingplayer(), true);
+  draw(true);
 }
 
 void BigMap::blank(bool on)

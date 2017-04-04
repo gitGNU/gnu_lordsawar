@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2008, 2011, 2014, 2015 Ben Asselstine
+// Copyright (C) 2008, 2011, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -135,7 +135,6 @@ GameServer::~GameServer()
       if (network_server->isListening())
         network_server->stop();
     }
-  remove_all_participants();
 }
 
 bool GameServer::isListening()
@@ -252,7 +251,7 @@ bool GameServer::onGotMessage(void *conn, int type, Glib::ustring payload)
   //std::cerr << "got message of type " << type << std::endl;
   switch (MessageType(type)) {
   case MESSAGE_TYPE_PING:
-    std::cerr << "sending pong" << std::endl;
+    //std::cerr << "sending pong" << std::endl;
     network_server->send(conn, MESSAGE_TYPE_PONG, "");
     break;
 
@@ -476,7 +475,7 @@ void GameServer::notifyJoin(Glib::ustring nickname)
   remote_participant_joins.emit(nickname);
   for (auto i: participants)
     network_server->send(i->conn, MESSAGE_TYPE_PARTICIPANT_CONNECTED, nickname);
-  gotChatMessage("[server]", nickname + " connected.");
+  gotChatMessage("[server]", String::ucompose (_("%1 connected."), nickname));
 }
 
 void GameServer::notifyDepart(void *conn, Glib::ustring nickname)
@@ -489,9 +488,9 @@ void GameServer::notifyDepart(void *conn, Glib::ustring nickname)
       network_server->send(i->conn, MESSAGE_TYPE_PARTICIPANT_DISCONNECTED, 
                            nickname);
       network_server->send(i->conn, MESSAGE_TYPE_CHATTED, 
-                           nickname + " disconnected.");
+                           String::ucompose (_("%1 disconnected."), nickname));
     }
-  gotChatMessage("", nickname + " disconnected.");
+  gotChatMessage("", String::ucompose (_("%1 disconnected"), nickname));
 }
 
 void GameServer::notifySit(Player *player, Glib::ustring nickname)

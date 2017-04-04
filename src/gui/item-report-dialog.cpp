@@ -1,4 +1,4 @@
-//  Copyright (C) 2010, 2014 Ben Asselstine
+//  Copyright (C) 2010, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ ItemReportDialog::ItemReportDialog(Gtk::Window &parent, std::list<Stack*> item_l
 void ItemReportDialog::run()
 {
   itemmap->resize();
-  itemmap->draw(Playerlist::getActiveplayer());
+  itemmap->draw();
 
   dialog->show_all();
   dialog->run();

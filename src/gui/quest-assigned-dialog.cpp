@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ QuestAssignedDialog::QuestAssignedDialog(Gtk::Window &parent, Hero *h, Quest *q)
 void QuestAssignedDialog::run()
 {
     questmap->resize();
-    questmap->draw(Playerlist::getActiveplayer());
+    questmap->draw();
 
     dialog->show_all();
     dialog->run();

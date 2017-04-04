@@ -1,4 +1,4 @@
-// Copyright (C) 2010, 2014 Ben Asselstine
+// Copyright (C) 2010, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -126,7 +126,7 @@ void EditableSmallMap::change_map(Vector<int> tile)
       break;
     }
   if (redraw)
-    draw(Playerlist::getViewingplayer());
+    draw();
   return;
 }
 
@@ -155,7 +155,7 @@ void EditableSmallMap::set_pointer(Pointer p, int size, Tile::Type t)
   pointer_size = size;
 
   if (redraw)
-    draw(Playerlist::getViewingplayer());
+    draw();
 }
 
 Glib::RefPtr<Gdk::Pixbuf> EditableSmallMap::get_cursor(Vector<int> & hotspot) const
@@ -270,7 +270,7 @@ bool EditableSmallMap::create_road()
     }
   Rectangle r = Rectangle(0,0,GameMap::getWidth(), GameMap::getHeight());
   redraw_tiles(r);
-  draw(Playerlist::getViewingplayer());
+  draw();
   map_edited.emit();
   return success;
 }
@@ -279,6 +279,6 @@ void EditableSmallMap::clear_road()
 {
   road_start = Vector<int>(-1,-1);
   road_finish = Vector<int>(-1,-1);
-  draw(Playerlist::getViewingplayer());
+  draw();
   check_road();
 }

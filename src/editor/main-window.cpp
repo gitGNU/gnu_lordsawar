@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010, 2012, 2014, 2015, 2016 Ben Asselstine
+//  Copyright (C) 2007-2010, 2012, 2014, 2015, 2016, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -676,7 +676,7 @@ bool MainWindow::on_bigmap_mouse_button_event(GdkEventButton *e)
 	button_event = e;	// save it for later use
 	bigmap->mouse_button_event(to_input_event(e));
 	if (smallmap)
-	  smallmap->draw(Playerlist::getActiveplayer());
+	  smallmap->draw();
 	needs_saving = true;
         update_window_title();
     }
@@ -1760,8 +1760,8 @@ void MainWindow::on_import_map_activated()
       
 void MainWindow::redraw()
 {
-  bigmap->draw(Playerlist::getViewingplayer());
-  smallmap->draw(Playerlist::getActiveplayer());
+  bigmap->draw();
+  smallmap->draw();
 }
 
 void MainWindow::on_switch_sets_activated()

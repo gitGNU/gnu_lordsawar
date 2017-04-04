@@ -2,7 +2,7 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2005 Bryan Duff
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2012, 2014, 2015 Ben Asselstine
+// Copyright (C) 2006-2009, 2012, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -57,7 +57,7 @@ class BigMap: public sigc::trackable
     virtual ~BigMap();
 
     // draw everything
-    void draw(Player *player, bool redraw_buffer = true);
+    void draw(bool redraw_buffer = true);
 
     // view the rectangle, measured in tiles
     void set_view(Rectangle rect);

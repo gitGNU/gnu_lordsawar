@@ -1,4 +1,4 @@
-// Copyright (C) 2011, 2014 Ben Asselstine
+// Copyright (C) 2011, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ void SelectCityMap::mouse_button_event(MouseButtonEvent e)
             }
           if (valid)
             {
-              draw(Playerlist::getViewingplayer());
+              draw();
               d_selected_city = nearestCity;
               draw_square_around_city(d_selected_city, SELECTED_CITY_BOX_COLOUR);
               city_selected.emit(d_selected_city);

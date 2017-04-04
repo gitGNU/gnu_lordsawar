@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007-2010, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -84,7 +84,7 @@ void EditorBigMap::set_pointer(Pointer p, int size, Tile::Type t,
 
     moving_objects_from = Vector<int>(-1,-1);
     if (redraw)
-      draw(Playerlist::getViewingplayer());
+      draw();
     
 }
 
@@ -163,7 +163,7 @@ void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
 	    redraw_buffer = true;
 	}
 
-	draw(Playerlist::getViewingplayer(),redraw_buffer);
+	draw(redraw_buffer);
 	redraw = false;
 	mouse_state = DRAGGING;
     }
@@ -173,7 +173,7 @@ void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
       mouse_state = MOVE_DRAGGING;
 
     if (redraw && pointer != POINTER)
-	draw(Playerlist::getViewingplayer());
+	draw();
     
     prev_mouse_pos = mouse_pos;
 }
@@ -182,7 +182,7 @@ void EditorBigMap::mouse_leave_event()
 {
     mouse_pos.x = mouse_pos.y = -10000;
     mouse_on_tile.emit(Vector<int>(-100, -100));
-    draw(Playerlist::getViewingplayer());
+    draw();
 }
 
 std::vector<Vector<int> > EditorBigMap::get_screen_tiles()
@@ -535,7 +535,7 @@ void EditorBigMap::change_map_under_cursor()
   if (changed_tiles.w > 0 && changed_tiles.h > 0)
     map_tiles_changed.emit(changed_tiles);
 
-  draw(Playerlist::getViewingplayer());
+  draw();
 }
 
 void EditorBigMap::bring_up_details()
@@ -570,7 +570,7 @@ void EditorBigMap::smooth_view()
   Roadlist::iterator i = Roadlist::getInstance()->begin();
   for (; i != Roadlist::getInstance()->end(); i++)
     (*i)->setType(CreateScenario::calculateRoadType((*i)->getPos()));
-  draw(Playerlist::getViewingplayer());
+  draw();
 }
 
 void EditorBigMap::display_moving_building(Vector<int> src, Vector<int> dest)

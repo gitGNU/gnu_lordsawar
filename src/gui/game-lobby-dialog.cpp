@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2011, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ void GameLobbyDialog::update_city_map()
       if (d_game_scenario->getRound() > 1)
 	{
 	  citymap->resize();
-	  citymap->draw(Playerlist::getActiveplayer());
+	  citymap->draw();
 	}
     }
   else
@@ -745,7 +745,7 @@ bool GameLobbyDialog::run()
   if (d_game_scenario->s_hidden_map == false)
     {
       citymap->resize();
-      citymap->draw(Playerlist::getActiveplayer());
+      citymap->draw();
     }
 
   people_treeview->remove_all_columns();

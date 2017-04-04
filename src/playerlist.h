@@ -1,6 +1,6 @@
 // Copyright (C) 2000, 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009, 2014, 2015 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -59,7 +59,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	void setActiveplayer(Player *p) {d_activeplayer = p;};
 
 	//! set the player who is looking at the bigmap and smallmap.
-	void setViewingplayer(Player *p) {viewingplayer = p;};
+	//void setViewingplayer(Player *p) {viewingplayer = p;};
 
 	//! Get Methods
 
@@ -324,6 +324,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	//! Calculate new diplomatic states for all players.
 	void negotiateDiplomacy();
 
+        void updateViewingPlayer ();
 
         Glib::ustring get_title(int rank);
         // DATA

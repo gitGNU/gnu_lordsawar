@@ -1695,10 +1695,10 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
 
 void GameWindow::on_fight_started(LocationBox box, Fight &fight)
 {
-  FightWindow d(*window, fight);
-
   game->get_bigmap().setFighting(box);
   game->get_bigmap().draw();
+  FightWindow d(*window, fight);
+
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
   Glib::usleep (TIMER_BIGMAP_EXPLOSION_DELAY);
   d.run(&d_quick_fights);
@@ -2427,12 +2427,13 @@ void GameWindow::on_stack_moves(Stack *stack, Vector<int> pos)
     return;
   if (GameMap::getEnemyStack(pos))
     return;
-  game->get_smallmap().center_view_on_tile (pos, true);
   int step = TIMER_BIGMAP_SELECTOR * 1000;
   for (int i = 0; i < Configuration::s_displaySpeedDelay; i += step)
     {
       game->get_bigmap().draw();
       while (g_main_context_iteration(NULL, FALSE)); //doEvents
+      if (i + step > Configuration::s_displaySpeedDelay)
+        step = Configuration::s_displaySpeedDelay - i;
       Glib::usleep(step);
     }
 }

@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2011, 2014, 2015 Ben Asselstine
+// Copyright (C) 2011, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@
 #include "real_player.h" 
 #include "network_player.h" 
 #include "connection-manager.h"
+#include "timing.h"
 
 
 GameClient * GameClient::s_instance = 0;
@@ -61,6 +62,7 @@ GameClient::GameClient()
   d_connected = false;
   player_id = -1;
   network_connection = NULL;
+  first_ping = true;
 }
 
 GameClient::~GameClient()
@@ -95,13 +97,24 @@ void GameClient::onConnected()
   std::cerr << "connected" << std::endl;
   d_connected = true;
 
+  d_ping_timer =
+    Timing::instance().register_timer
+    (sigc::mem_fun(this, &GameClient::on_ping_timeout), 5000);
   network_connection->send(MESSAGE_TYPE_PING, "");
 
   client_connected.emit();
 }
 
+bool GameClient::on_ping_timeout()
+{
+  network_connection->send(MESSAGE_TYPE_PING, "");
+
+  return Timing::CONTINUE;
+}
+
 void GameClient::onConnectionLost()
 {
+  d_ping_timer.disconnect();
   std::cerr << "connection lost" << std::endl;
   if (d_connected)
     client_forcibly_disconnected.emit();
@@ -163,8 +176,12 @@ bool GameClient::onGotMessage(int type, Glib::ustring payload)
     break;
 
   case MESSAGE_TYPE_PONG:
-    network_connection->send(MESSAGE_TYPE_PARTICIPANT_CONNECT, 
-                             getNickname() + " " + getProfileId());
+    if (first_ping)
+      {
+        network_connection->send(MESSAGE_TYPE_PARTICIPANT_CONNECT,
+                                 getNickname() + " " + getProfileId());
+        first_ping = false;
+      }
     break;
 
   case MESSAGE_TYPE_SENDING_ACTIONS:
@@ -245,7 +262,7 @@ bool GameClient::onGotMessage(int type, Glib::ustring payload)
         gint32 action;
         bool reported;
         Glib::ustring data;
-        bool success = get_message_lobby_activity (payload, id, action, 
+        bool success = get_message_lobby_activity (payload, id, action,
                                                    reported, data);
         if (success)
           {
@@ -260,11 +277,11 @@ bool GameClient::onGotMessage(int type, Glib::ustring payload)
                     stood_up(Playerlist::getInstance()->getPlayer(id), data);
                     break;
                   case LOBBY_MESSAGE_TYPE_CHANGE_NAME:
-                    name_changed(Playerlist::getInstance()->getPlayer(id), 
+                    name_changed(Playerlist::getInstance()->getPlayer(id),
                                  data);
                     break;
                   case LOBBY_MESSAGE_TYPE_CHANGE_TYPE:
-                    type_changed(Playerlist::getInstance()->getPlayer(id), 
+                    type_changed(Playerlist::getInstance()->getPlayer(id),
                                  atoi(data.c_str()));
                     break;
                   default:
@@ -290,7 +307,7 @@ void GameClient::gotOffPlayer(Player *player)
 
 void GameClient::gotKillPlayer(Player *player)
 {
-  player->kill();
+  player->kill(false);
 }  
 
 void GameClient::onHistoryDone(NetworkHistory *history)
@@ -319,8 +336,8 @@ void GameClient::onActionDone(NetworkAction *action)
   actions.push_back(action);
   sendActions();
   clearNetworkActionlist(actions);
-
 }
+
 void GameClient::sendActions()
 {
   std::ostringstream os;
@@ -362,11 +379,10 @@ void GameClient::sit_or_stand (Player *player, bool sit)
 {
   if (!player)
     return;
-  Glib::ustring payload = 
-    String::ucompose("%1 %2 %3 %4", player->getId(), 
-                     sit ? LOBBY_MESSAGE_TYPE_SIT : LOBBY_MESSAGE_TYPE_STAND, 
-                     0, 
-                     d_nickname);
+  Glib::ustring payload =
+    String::ucompose("%1 %2 %3 %4", player->getId(),
+                     sit ? LOBBY_MESSAGE_TYPE_SIT : LOBBY_MESSAGE_TYPE_STAND,
+                     0, d_nickname);
   network_connection->send(MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
   if (sit)
     {
@@ -375,7 +391,7 @@ void GameClient::sit_or_stand (Player *player, bool sit)
       stopListeningForLocalEvents(player);
       listenForLocalEvents(new_p);
       delete player;
-      payload = String::ucompose("%1 %2 %3 %4", new_p->getId(), 
+      payload = String::ucompose("%1 %2 %3 %4", new_p->getId(),
                      LOBBY_MESSAGE_TYPE_CHANGE_TYPE, 0, new_p->getType());
       network_connection->send(MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
     }
@@ -392,16 +408,16 @@ void GameClient::sit_or_stand (Player *player, bool sit)
 
 void GameClient::change_name (Player *player, Glib::ustring name)
 {
-  Glib::ustring payload = 
-    String::ucompose("%1 %2 %3 %4", player->getId(), 
+  Glib::ustring payload =
+    String::ucompose("%1 %2 %3 %4", player->getId(),
                      LOBBY_MESSAGE_TYPE_CHANGE_NAME, 0, name);
   network_connection->send(MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
 }
 
 void GameClient::change_type (Player *player, int type)
 {
-  Glib::ustring payload = 
-    String::ucompose("%1 %2 %3 %4", player->getId(), 
+  Glib::ustring payload =
+    String::ucompose("%1 %2 %3 %4", player->getId(),
                      LOBBY_MESSAGE_TYPE_CHANGE_TYPE, 0, type);
   network_connection->send(MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
 }
@@ -450,6 +466,7 @@ void GameClient::disconnect()
   if (network_connection)
     network_connection->send(MESSAGE_TYPE_PARTICIPANT_DISCONNECT, d_nickname);
 }
+
 void GameClient::on_torn_down()
 {
   network_connection = NULL;

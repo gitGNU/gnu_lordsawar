@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011, 2012, 2014 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2012, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ DestinationDialog::DestinationDialog(Gtk::Window &parent, City *c, bool *see_all
 void DestinationDialog::run()
 {
   vectormap->resize();
-  vectormap->draw(Playerlist::getActiveplayer());
+  vectormap->draw();
   see_all_toggle->set_active(*d_see_all);
   dialog->show();
   dialog->run();
@@ -124,7 +124,7 @@ void DestinationDialog::on_see_all_toggled(Gtk::ToggleButton *toggle)
     vectormap->setShowVectoring(VectorMap::SHOW_ALL_VECTORING);
   else
     vectormap->setShowVectoring(VectorMap::SHOW_ORIGIN_CITY_VECTORING);
-  vectormap->draw(Playerlist::getActiveplayer());
+  vectormap->draw();
 }
 
 void DestinationDialog::on_vector_toggled(Gtk::ToggleButton *toggle)
@@ -135,13 +135,13 @@ void DestinationDialog::on_vector_toggled(Gtk::ToggleButton *toggle)
   if (toggle->get_active() == false)
     {
       vectormap->setClickAction(VectorMap::CLICK_SELECTS);
-      vectormap->draw(Playerlist::getActiveplayer());
+      vectormap->draw();
       fill_in_vectoring_info();
     }
   else
     {
       vectormap->setClickAction(VectorMap::CLICK_VECTORS);
-      vectormap->draw(Playerlist::getActiveplayer());
+      vectormap->draw();
     }
 }
 
@@ -153,13 +153,13 @@ void DestinationDialog::on_change_toggled(Gtk::ToggleButton *toggle)
   if (toggle->get_active() == false)
     {
       vectormap->setClickAction(VectorMap::CLICK_SELECTS);
-      vectormap->draw(Playerlist::getActiveplayer());
+      vectormap->draw();
       fill_in_vectoring_info();
     }
   else
     {
       vectormap->setClickAction(VectorMap::CLICK_CHANGES_DESTINATION);
-      vectormap->draw(Playerlist::getActiveplayer());
+      vectormap->draw();
     }
 }
 

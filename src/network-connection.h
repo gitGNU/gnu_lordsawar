@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2011, 2014, 2015 Ben Asselstine
+// Copyright (C) 2011, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -67,8 +67,9 @@ private:
   Glib::RefPtr<Gio::SocketConnection> conn;
   Glib::RefPtr<Gio::DataInputStream> in;
   Glib::RefPtr<Gio::DataOutputStream> out;
-  Glib::RefPtr<Glib::IOSource> source;
+  Glib::RefPtr<Gio::SocketSource> source;
   sigc::connection d_connect_timer;
+  sigc::connection d_in_cb;
   char *payload;
   int payload_left;
   int payload_size;

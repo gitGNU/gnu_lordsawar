@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010, 2011, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007-2011, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ void GameBigMap::select_active_stack()
 void GameBigMap::unselect_active_stack()
 {
   Playerlist::getActiveplayer()->stackDeselect();
-  draw(Playerlist::getViewingplayer());
+  draw();
   stack_selected.emit(0);
   if (path_calculator)
     {
@@ -112,7 +112,7 @@ bool GameBigMap::on_selection_timeout()
 {
   // redraw to update the selection
   if (Playerlist::getActiveplayer()->getActivestack())
-    draw(Playerlist::getViewingplayer());
+    draw();
 
   return Timing::CONTINUE;
 }
@@ -223,7 +223,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      //set in a course, mr crusher.
 	      stack->getPath()->calculate(stack, tile);
 	      path_set.emit();
-	      draw(Playerlist::getViewingplayer());
+	      draw();
 	      return;
 	    }
 	  Vector<int> p;
@@ -248,7 +248,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		    delete path_calculator;
                   stack = active->getActivestack();
 		  path_calculator = new PathCalculator(stack);
-		  draw(Playerlist::getViewingplayer());
+		  draw();
 		  stack_grouped_or_ungrouped.emit(stack);
 		  return;
 		}
@@ -273,7 +273,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		  // clear the path
 		  stack->getPath()->clear();
 		  path_set.emit();
-		  draw(Playerlist::getViewingplayer());
+		  draw();
 		  return;
 		}
 	    }
@@ -361,7 +361,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
 	  path_set.emit();
 
-	  draw(Playerlist::getViewingplayer());
+	  draw();
 	}
       // Stack hasn't been active yet
       else
@@ -775,10 +775,10 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	  view.x = new_view.x;
 	  view.y = new_view.y;
 	  view_changed.emit(view);
-	  draw(Playerlist::getViewingplayer(),true);
+	  draw(true);
 	}
       else
-	draw(Playerlist::getViewingplayer(), false);
+	draw(false);
       mouse_state = DRAGGING_MAP;
     }
 
@@ -831,7 +831,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	  delete new_path;
 	  //stack->getPath()->calculate(stack, tile);
 	  path_set.emit();
-	  draw(Playerlist::getViewingplayer());
+	  draw();
 	}
     }
 
@@ -899,7 +899,7 @@ void GameBigMap::after_draw()
 	}
     }
 
-  if (stack && d_fighting.getPos() == Vector<int>(-1,-1))
+  if (stack)
     {
       Player *viewer = Playerlist::getViewingplayer();
       // draw the selection
@@ -943,7 +943,8 @@ void GameBigMap::after_draw()
 	    }
 	}
 	  
-      if (current_tile != stack->getPos())
+      if (current_tile != stack->getPos() &&
+          Playerlist::getActiveplayer()->getType() == Player::HUMAN)
         {
           //this is where the ghosted army unit picture goes.
           PixMask *armypic = gc->getArmyPic(*stack->begin(), true)->copy();

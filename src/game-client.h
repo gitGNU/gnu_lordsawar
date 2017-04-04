@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2011, 2014, 2015 Ben Asselstine
+// Copyright (C) 2011, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -95,6 +95,8 @@ private:
   void name_changed (Player *player, Glib::ustring name);
   void type_changed (Player *player, int type);
 
+  bool on_ping_timeout();
+
   std::list<NetworkAction*> actions;
   std::list<NetworkHistory*> histories;
   //! A static pointer for the singleton instance.
@@ -102,6 +104,8 @@ private:
   bool d_connected;
   Glib::ustring d_host;
   guint32 d_port;
+  sigc::connection d_ping_timer;
+  bool first_ping;
 };
 
 #endif

@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2008, 2014, 2015 Ben Asselstine
+// Copyright (C) 2008, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,14 +32,14 @@
 
 void NetworkConnection::setup_connection()
 {
-  g_tcp_connection_set_graceful_disconnect((GTcpConnection*)conn->gobj(), true);
   in = Gio::DataInputStream::create(conn->get_input_stream());
   out = Gio::DataOutputStream::create(conn->get_output_stream());
   source = 
-    Glib::IOSource::create 
-    (conn->property_socket().get_value()->property_fd(), 
-     Glib::IO_IN | Glib::IO_PRI | Glib::IO_ERR);
-  source->connect(sigc::mem_fun(*this, &NetworkConnection::on_got_input));
+    Gio::SocketSource::create
+    (conn->property_socket(),
+     Glib::IO_IN | Glib::IO_PRI | Glib::IO_ERR | Glib::IO_HUP | Glib::IO_NVAL);
+  d_in_cb =
+    source->connect(sigc::mem_fun(*this, &NetworkConnection::on_got_input));
   header_size = MESSAGE_SIZE_BYTES;
   header_left = header_size;
   memset (header, 0, sizeof (header));
@@ -50,21 +50,12 @@ void NetworkConnection::setup_connection()
 
 void NetworkConnection::tear_down_connection()
 {
-  if (conn)
-    conn->clear_pending();
-  if (source)
-    source->destroy();
-  if (conn)
-    {
-    if (conn->is_closed() == false)
-      {
-        conn->close();
-        //conn.reset();
-      }
-    }
+  d_in_cb.disconnect();
   d_stop = true;
   cond_push.notify_one();
-  cond_pop.notify_one();
+
+  //this doesn't seem to be needed, and enabling it is crashy.
+  //cond_pop.notify_one(); 
   torn_down.emit();
 }
 
@@ -75,18 +66,25 @@ bool NetworkConnection::on_got_input(Glib::IOCondition cond)
     {
     case Glib::IO_IN:
     case Glib::IO_PRI:
+      try
+        {
       if (header_left > 0)
         len = on_header_received(in->fill (header_left));
       else if (payload_left > 0)
         len = on_payload_received(in->fill(payload_left));
+        }
+      catch (Gio::Error &ex)
+        {
+          len = -1;
+        }
       //break;  fallthrough here on purpose.
     case Glib::IO_ERR:
     case Glib::IO_HUP:
     case Glib::IO_NVAL:
       if (len <= 0)
         {
-          connection_lost.emit();
           tear_down_connection();
+          connection_lost.emit();
           return false;
         }
       break;
@@ -102,7 +100,7 @@ NetworkConnection::NetworkConnection(const Glib::RefPtr<Gio::SocketConnection> &
   //okay, i've been asked to create a SERVER side network connection.
   client = Gio::SocketClient::create();
   client->set_protocol(Gio::SOCKET_PROTOCOL_TCP);
-  if (c) 
+  if (c)
     {
       c->reference();
       conn = Gio::SocketConnection::create(c->property_socket());
@@ -182,7 +180,7 @@ gssize NetworkConnection::on_payload_received(gssize len)
       Glib::ustring path = File::getSaveFile(file);
 
       FILE *fp = fopen (path.c_str(), "wb");
-      fwrite (payload + MESSAGE_PREAMBLE_EXTRA_BYTES, 1, 
+      fwrite (payload + MESSAGE_PREAMBLE_EXTRA_BYTES, 1,
               payload_size - MESSAGE_PREAMBLE_EXTRA_BYTES, fp);
       fclose (fp);
       keep_going = got_message.emit (type, path);
@@ -213,7 +211,7 @@ void NetworkConnection::connectToHost(Glib::ustring host, int port)
     Timing::instance().register_timer
     (sigc::mem_fun(this, &NetworkConnection::on_connect_timeout), 5000);
   client->connect_to_host_async 
-    (host, port, sigc::mem_fun(*this, 
+    (host, port, sigc::mem_fun(*this,
                                &NetworkConnection::on_connect_connected));
 }
 

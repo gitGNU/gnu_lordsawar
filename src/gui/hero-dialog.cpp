@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010, 2012, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2012, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -201,7 +201,7 @@ void HeroDialog::addHistoryEvent(History *history)
 void HeroDialog::run()
 {
   heroesmap->resize();
-  heroesmap->draw(Playerlist::getActiveplayer());
+  heroesmap->draw();
   GameMap *gm = GameMap::getInstance();
   dialog->show_all();
   show_hero();
@@ -251,7 +251,7 @@ void HeroDialog::on_hero_changed()
       pos = Playerlist::getActiveplayer()->getPositionOfArmyById(hero->getId());
       heroesmap->setSelectedHero(hero);
       show_hero();
-      heroesmap->draw(Playerlist::getActiveplayer());
+      heroesmap->draw();
     }
 }
 
@@ -303,7 +303,7 @@ void HeroDialog::on_next_clicked()
       hero = *next;
       heroesmap->setSelectedHero(hero);
       show_hero();
-      heroesmap->draw(Playerlist::getActiveplayer());
+      heroesmap->draw();
     }
   update_hero_list();
 }
@@ -321,7 +321,7 @@ void HeroDialog::on_prev_clicked()
       hero = *prev;
       heroesmap->setSelectedHero(hero);
       show_hero();
-      heroesmap->draw(Playerlist::getActiveplayer());
+      heroesmap->draw();
     }
   update_hero_list();
 }
@@ -435,7 +435,7 @@ bool HeroDialog::on_map_mouse_button_event(GdkEventButton *e)
     hero = heroesmap->getSelectedHero();
     pos = Playerlist::getActiveplayer()->getPositionOfArmyById(hero->getId());
     show_hero();
-    heroesmap->draw(Playerlist::getActiveplayer());
+    heroesmap->draw();
     update_hero_list();
     return true;
 }

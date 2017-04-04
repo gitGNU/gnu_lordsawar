@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2008, 2011, 2015 Ben Asselstine
+// Copyright (C) 2008, 2011, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,10 +33,15 @@ NetworkServer::NetworkServer()
 
 NetworkServer::~NetworkServer()
 {
+  for (auto i: connections)
+    i->tear_down_connection();
+  connections.clear ();
   if (server)
     {
       if (server->is_active())
+        {
         server->stop();
+        }
     }
 }
 
@@ -106,8 +111,10 @@ bool NetworkServer::isListening()
 {
   return server->is_active();
 }
- void NetworkServer::stop()
+
+void NetworkServer::stop()
 {
+  server->close();
   return server->stop();
 }
   

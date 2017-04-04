@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ RuinRewardedDialog::RuinRewardedDialog(Gtk::Window &parent, Reward_Ruin *reward)
 void RuinRewardedDialog::run()
 {
   ruinmap->resize();
-  ruinmap->draw(Playerlist::getActiveplayer());
+  ruinmap->draw();
 
   Glib::ustring s = 
     String::ucompose(_("The sages show thee the site of %1\n"),

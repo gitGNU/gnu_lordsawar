@@ -171,7 +171,7 @@ const Gdk::RGBA BEVELED_CIRCLE_LIGHT(LIGHT_GREY_COLOUR);
 #ifdef GDK_WINDOWING_WIN32
 const int SPEED_DELAY = 0;
 #else
-const int SPEED_DELAY = 3000;
+const int SPEED_DELAY = 300000;
 const double ZOOM_STEP = 0.1;
 #endif
 

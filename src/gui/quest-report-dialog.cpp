@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -87,7 +87,7 @@ void QuestReportDialog::fill_quest_info(Quest *q)
   if (dialog->get_realized() == true)
     {
       questmap->resize();
-      questmap->draw(Playerlist::getActiveplayer());
+      questmap->draw();
     }
 
   if (q)
@@ -134,7 +134,7 @@ void QuestReportDialog::on_hero_changed()
 void QuestReportDialog::run()
 {
   questmap->resize();
-  questmap->draw(Playerlist::getActiveplayer());
+  questmap->draw();
 
   dialog->show_all();
   if (quests.size() <= 1)

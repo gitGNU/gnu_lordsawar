@@ -1,4 +1,4 @@
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2014, 2015, 2016 Ben Asselstine
+// Copyright (C) 2006-2010, 2014, 2015, 2016, 2017 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -297,8 +297,6 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
     smallmap->view_changed.connect(
 	sigc::mem_fun(bigmap.get(), &GameBigMap::set_view));
 
-    // get the maps up and running
-    Playerlist::getInstance()->setViewingplayer(Playerlist::getActiveplayer());
     bigmap->screen_size_changed(Gtk::Allocation(0,0,320,200));
 
     // connect player callbacks
@@ -400,15 +398,9 @@ void Game::update_sidebar_stats()
 void Game::redraw()
 {
     if (bigmap.get())
-      {
-	bigmap->draw(Playerlist::getViewingplayer());
-      }
+      bigmap->draw();
     if (smallmap.get())
-      {
-	//if (Playerlist::getActiveplayer()->getType() == Player::HUMAN ||
-	    //GameScenario::s_hidden_map == false)
-	smallmap->draw(Playerlist::getActiveplayer());
-      }
+      smallmap->draw();
 }
 
 void Game::select_next_movable_stack()
@@ -663,9 +655,6 @@ void Game::stackUpdate(Stack* s)
 
   if (s)
     smallmap->center_view_on_tile(s->getPos(), true);
-
-  if (!s)
-    redraw();
 
   update_stack_info();
   update_control_panel();

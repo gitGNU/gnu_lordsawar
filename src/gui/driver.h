@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011, 2014, 2015, 2016 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2014, 2015, 2016, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -87,6 +87,7 @@ class Driver: public sigc::trackable
     void on_client_player_changed_name(Player *player, Glib::ustring name);
     void on_client_player_changed_type(Player *player, int type);
     void on_server_went_away();
+    void on_server_went_away_text();
     void on_client_could_not_connect();
 
     GameScenario *new_game(GameParameters g);
@@ -96,6 +97,7 @@ class Driver: public sigc::trackable
 
     void lordsawaromatic(Glib::ustring host, unsigned short port, Player::Type type, int num_players);
     void on_game_scenario_received_for_robots(Glib::ustring path);
+    void on_game_over_for_headless_server(Player *p, GameScenario *g);
   
 
     bool heartbeat();

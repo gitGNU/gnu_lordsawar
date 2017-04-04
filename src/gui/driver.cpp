@@ -181,6 +181,7 @@ void Driver::serve (GameScenario *game_scenario)
 
   game_server->notifyClientsGameMayBeginNow();
   Game *game = new Game(game_scenario, next_turn);
+  game->game_over.connect (sigc::bind (sigc::mem_fun (this, &Driver::on_game_over_for_headless_server), game_scenario));
   if (game)
     game_server->player_sits.connect(sigc::hide(sigc::hide(method(on_client_sits_down_in_headless_server_game))));
 }
@@ -711,6 +712,13 @@ void Driver::on_load_hosted_network_game_requested(GameScenario *game_scenario,
     }
 }
 
+void Driver::on_server_went_away_text()
+{
+  /* same as on_server_went_away, but we're not doing graphics */
+  GameClient::deleteInstance();
+  on_quit_requested ();
+}
+
 void Driver::on_server_went_away()
 {
   upload_heartbeat_conn.disconnect();
@@ -906,7 +914,11 @@ void Driver::on_load_requested(Glib::ustring filename)
         bool retval = nngd.run();
         nngd.hide();
         if (retval == false)
-          splash_window->show();
+          {
+            delete game_scenario;
+            GameScenario::cleanup ();
+            splash_window->show();
+          }
         else
           {
             on_load_hosted_network_game_requested(game_scenario, LORDSAWAR_PORT,
@@ -1145,8 +1157,8 @@ void Driver::lordsawaromatic(Glib::ustring host, unsigned short port, Player::Ty
 {
   GameClient *game_client = GameClient::getInstance();
   game_client->game_scenario_received.connect(method(on_game_scenario_downloaded));
-  game_client->client_disconnected.connect (method(on_server_went_away));
-  game_client->client_forcibly_disconnected.connect (method(on_server_went_away));
+  game_client->client_disconnected.connect (method(on_server_went_away_text));
+  game_client->client_forcibly_disconnected.connect (method(on_server_went_away_text));
   game_client->client_could_not_connect.connect (method(on_client_could_not_connect));
   game_scenario_received.connect (method(on_game_scenario_received_for_robots));
   game_client->setNickname("robot");
@@ -1217,6 +1229,13 @@ void Driver::on_game_scenario_received_for_robots(Glib::ustring path)
   Game *game = new Game(game_scenario, next_turn);
   game->get_smallmap().set_slide_speed(0);
   game_client->request_seat_manifest();
+}
+
+void Driver::on_game_over_for_headless_server (Player *p, GameScenario *g)
+{
+  printf("all done!  player '%s' was the winner on turn %d\n", p->getName().c_str(), g->getRound());
+  GameServer::deleteInstance();
+  exit(0);
 }
 
 void Driver::on_show_lobby_requested()
