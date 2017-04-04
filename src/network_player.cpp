@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009, 2010, 2011, 2014, 2015 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2011, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -218,6 +218,7 @@ void NetworkPlayer::decodeActions(std::list<Action *> actions)
 
 void NetworkPlayer::decodeAction(const Action *a)
 {
+  sbusy.emit ();
   d_actions.push_back(Action::copy(a));
   switch(a->getType())
     {
@@ -376,6 +377,7 @@ void NetworkPlayer::decodeActionMove(const Action_Move *action)
             stack->updateShipStatus(action->getEndingPosition());
         }
     }
+  Playerlist::getActiveplayer()->setActivestack (stack);
   stack->moveToDest(action->getEndingPosition(), skipping);
   supdatingStack.emit(stack);
 }
