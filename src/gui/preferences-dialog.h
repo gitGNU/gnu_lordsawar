@@ -40,11 +40,10 @@ class PreferencesDialog: public LwDialog
     void hide() {dialog->hide();};
 
  private:
-    Gtk::CheckButton *commentator_checkbutton;
+    Gtk::Switch *commentator_switch;
     Gtk::Scale *speed_scale;
-    Gtk::CheckButton *play_music_checkbutton;
+    Gtk::Switch *play_music_switch;
     Gtk::Scale *music_volume_scale;
-    Gtk::Box *music_volume_hbox;
     Gtk::Box *players_vbox;
 
     bool d_readonly;

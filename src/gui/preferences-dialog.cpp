@@ -39,11 +39,10 @@ PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
  : LwDialog(parent, "preferences-dialog.ui")
 {
   d_readonly = readonly;
-    xml->get_widget("commentator_checkbutton", commentator_checkbutton);
+    xml->get_widget("commentator_switch", commentator_switch);
     xml->get_widget("speed_scale", speed_scale);
-    xml->get_widget("play_music_checkbutton", play_music_checkbutton);
+    xml->get_widget("play_music_switch", play_music_switch);
     xml->get_widget("music_volume_scale", music_volume_scale);
-    xml->get_widget("music_volume_hbox", music_volume_hbox);
     xml->get_widget("players_vbox", players_vbox);
     
     ImageCache *gc = ImageCache::getInstance();
@@ -60,7 +59,7 @@ PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
 	Gtk::ComboBoxText *type = new Gtk::ComboBoxText();
 	type->signal_changed().connect (sigc::bind(method(on_type_changed), type));
 	Gtk::CheckButton *observe = new Gtk::CheckButton(_("Observe"));
-	observe->signal_toggled().connect
+	observe->property_active().signal_changed().connect
 	  (sigc::bind(method(on_observe_toggled), observe));
 
 	observe->set_active(p->isObservable());
@@ -99,18 +98,18 @@ PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
 	players_vbox->pack_start(*manage(player_hbox));
       }
     players_vbox->show_all_children();
-    commentator_checkbutton->signal_toggled().connect(
+    commentator_switch->property_active().signal_changed().connect(
 	method(on_show_commentator_toggled));
     speed_scale->set_value(Configuration::s_displaySpeedDelay);
     speed_scale->signal_value_changed().connect(method(on_speed_changed));
-    play_music_checkbutton->signal_toggled().connect(method(on_play_music_toggled));
+    play_music_switch->property_active().signal_changed().connect(method(on_play_music_toggled));
     music_volume_scale->signal_value_changed().connect
       (method(on_music_volume_changed));
 
-    commentator_checkbutton->set_active(Configuration::s_displayCommentator);
-    play_music_checkbutton->set_active(Configuration::s_musicenable);
-    music_volume_hbox->set_sensitive(Configuration::s_musicenable);
+    commentator_switch->set_active(Configuration::s_displayCommentator);
+    play_music_switch->set_active(Configuration::s_musicenable);
     music_volume_scale->set_value(Configuration::s_musicvolume * 100.0 / 128);
+    music_volume_scale->set_sensitive(Configuration::s_musicenable);
     
 }
 
@@ -123,7 +122,7 @@ void PreferencesDialog::on_type_changed(Gtk::ComboBoxText *combo)
 	{
 	  /**
 	   * if we're turning this player into a human,
-	   * then we desensitize the associated checkbutton
+	   * then we desensitize the associated switch
 	   * otherwise, we presume that we want to observe it
 	   */
 	  if (combo->get_active_text() == _("Human"))
@@ -203,12 +202,12 @@ void PreferencesDialog::run(Game *game)
 
 void PreferencesDialog::on_show_commentator_toggled()
 {
-    Configuration::s_displayCommentator = commentator_checkbutton->get_active();
+    Configuration::s_displayCommentator = commentator_switch->get_active();
 }
 
 void PreferencesDialog::on_play_music_toggled()
 {
-    bool play_music = play_music_checkbutton->get_active();
+    bool play_music = play_music_switch->get_active();
 
     Configuration::s_musicenable = play_music;
 
@@ -221,7 +220,7 @@ void PreferencesDialog::on_play_music_toggled()
         Snd::getInstance()->halt();
         Snd::getInstance()->disableBackground();
     }
-    music_volume_hbox->set_sensitive(Configuration::s_musicenable);
+    music_volume_scale->set_sensitive(Configuration::s_musicenable);
 }
 
 void PreferencesDialog::on_speed_changed()
