@@ -170,6 +170,7 @@ void GamePreferencesDialog::add_player(GameParameters::Player::Type type,
   player_type->append(NO_PLAYER_TYPE);
   player_type->signal_changed().connect (method(on_player_type_changed));
   Gtk::Entry *player_name = new Gtk::Entry();
+  player_name->set_max_length (MAX_LENGTH_FOR_PLAYER_NAME);
   player_name->signal_changed().connect (method(on_player_name_changed));
   player_name->set_text(name);
 
