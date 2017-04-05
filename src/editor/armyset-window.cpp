@@ -154,16 +154,12 @@ ArmySetWindow::ArmySetWindow(Glib::ustring load_filename)
   exp_spinbutton->signal_changed().connect (method(on_exp_changed));
   exp_spinbutton->signal_insert_text().connect
     (sigc::hide(sigc::hide(method(on_exp_text_changed))));
-  xml->get_widget("gender_none_radiobutton", gender_none_radiobutton);
-  gender_none_radiobutton->signal_toggled().connect (method(on_gender_none_toggled));
-  xml->get_widget("gender_male_radiobutton", gender_male_radiobutton);
-  gender_male_radiobutton->signal_toggled().connect (method(on_gender_male_toggled));
-  xml->get_widget("gender_female_radiobutton", gender_female_radiobutton);
-  gender_female_radiobutton->signal_toggled().connect (method(on_gender_female_toggled));
-  xml->get_widget("awardable_checkbutton", awardable_checkbutton);
-  awardable_checkbutton->signal_toggled().connect (method(on_awardable_toggled));
-  xml->get_widget("defends_ruins_checkbutton", defends_ruins_checkbutton);
-  defends_ruins_checkbutton->signal_toggled().connect (method(on_defends_ruins_toggled));
+  xml->get_widget("hero_combobox", hero_combobox);
+  hero_combobox->signal_changed().connect (method(on_hero_combobox_changed));
+  xml->get_widget("awardable_switch", awardable_switch);
+  awardable_switch->property_active().signal_changed().connect (method(on_awardable_toggled));
+  xml->get_widget("defends_ruins_switch", defends_ruins_switch);
+  defends_ruins_switch->property_active().signal_changed().connect (method(on_defends_ruins_toggled));
   xml->get_widget("sight_spinbutton", sight_spinbutton);
   sight_spinbutton->set_range(double(MIN_SIGHT_FOR_ARMY_UNITS), 
                               double(MAX_SIGHT_FOR_ARMY_UNITS));
@@ -175,92 +171,92 @@ ArmySetWindow::ArmySetWindow(Glib::ustring load_filename)
   id_spinbutton->signal_changed().connect (method(on_id_changed));
   id_spinbutton->signal_insert_text().connect
     (sigc::hide(sigc::hide(method(on_id_text_changed))));
-  xml->get_widget("move_forests_checkbutton", move_forests_checkbutton);
-  move_forests_checkbutton->signal_toggled().connect
+  xml->get_widget("move_forests_switch", move_forests_switch);
+  move_forests_switch->property_active().signal_changed().connect
     (sigc::bind(method(on_movebonus_toggled),
-                move_forests_checkbutton, Tile::FOREST));
-  xml->get_widget("move_marshes_checkbutton", move_marshes_checkbutton);
-  move_marshes_checkbutton->signal_toggled().connect
+                move_forests_switch, Tile::FOREST));
+  xml->get_widget("move_marshes_switch", move_marshes_switch);
+  move_marshes_switch->property_active().signal_changed().connect
     (sigc::bind(method(on_movebonus_toggled),
-                move_marshes_checkbutton, Tile::SWAMP));
-  xml->get_widget("move_hills_checkbutton", move_hills_checkbutton);
-  move_hills_checkbutton->signal_toggled().connect
+                move_marshes_switch, Tile::SWAMP));
+  xml->get_widget("move_hills_switch", move_hills_switch);
+  move_hills_switch->property_active().signal_changed().connect
     (sigc::bind(method(on_movebonus_toggled),
-                move_hills_checkbutton, Tile::HILLS));
-  xml->get_widget("move_mountains_checkbutton", move_mountains_checkbutton);
-  move_mountains_checkbutton->signal_toggled().connect
+                move_hills_switch, Tile::HILLS));
+  xml->get_widget("move_mountains_switch", move_mountains_switch);
+  move_mountains_switch->property_active().signal_changed().connect
     (sigc::bind(method(on_movebonus_toggled),
-                move_mountains_checkbutton, Tile::MOUNTAIN));
-  xml->get_widget("can_fly_checkbutton", can_fly_checkbutton);
-  can_fly_checkbutton->signal_toggled().connect
+                move_mountains_switch, Tile::MOUNTAIN));
+  xml->get_widget("can_fly_switch", can_fly_switch);
+  can_fly_switch->property_active().signal_changed().connect
     (sigc::bind(method(on_movebonus_toggled),
-                can_fly_checkbutton, Tile::GRASS | Tile::WATER | 
+                can_fly_switch, Tile::GRASS | Tile::WATER | 
                 Tile::FOREST | Tile::HILLS | Tile::MOUNTAIN | Tile::SWAMP));
-  xml->get_widget("add1strinopen_checkbutton", add1strinopen_checkbutton);
-  add1strinopen_checkbutton->signal_toggled().connect
-    (sigc::bind(method(on_armybonus_toggled), add1strinopen_checkbutton, 
+  xml->get_widget("add1strinopen_switch", add1strinopen_switch);
+  add1strinopen_switch->property_active().signal_changed().connect
+    (sigc::bind(method(on_armybonus_toggled), add1strinopen_switch, 
                 Army::ADD1STRINOPEN));
-  xml->get_widget("add2strinopen_checkbutton", add2strinopen_checkbutton);
-  add2strinopen_checkbutton->signal_toggled().connect
-    (sigc::bind(method(on_armybonus_toggled), add2strinopen_checkbutton, 
+  xml->get_widget("add2strinopen_switch", add2strinopen_switch);
+  add2strinopen_switch->property_active().signal_changed().connect
+    (sigc::bind(method(on_armybonus_toggled), add2strinopen_switch, 
                 Army::ADD2STRINOPEN));
-  xml->get_widget("add1strinforest_checkbutton", add1strinforest_checkbutton);
-  add1strinforest_checkbutton->signal_toggled().connect
-    (sigc::bind(method(on_armybonus_toggled), add1strinforest_checkbutton, 
+  xml->get_widget("add1strinforest_switch", add1strinforest_switch);
+  add1strinforest_switch->property_active().signal_changed().connect
+    (sigc::bind(method(on_armybonus_toggled), add1strinforest_switch, 
                 Army::ADD1STRINFOREST));
-  xml->get_widget("add2strinforest_checkbutton", add2strinforest_checkbutton);
-  add2strinforest_checkbutton->signal_toggled().connect
-    (sigc::bind(method(on_armybonus_toggled), add2strinforest_checkbutton, 
+  xml->get_widget("add2strinforest_switch", add2strinforest_switch);
+  add2strinforest_switch->property_active().signal_changed().connect
+    (sigc::bind(method(on_armybonus_toggled), add2strinforest_switch, 
                 Army::ADD2STRINFOREST));
-  xml->get_widget("add1strinhills_checkbutton", add1strinhills_checkbutton);
-  add1strinhills_checkbutton->signal_toggled().connect
-    (sigc::bind(method(on_armybonus_toggled), add1strinhills_checkbutton, 
+  xml->get_widget("add1strinhills_switch", add1strinhills_switch);
+  add1strinhills_switch->property_active().signal_changed().connect
+    (sigc::bind(method(on_armybonus_toggled), add1strinhills_switch, 
                 Army::ADD1STRINHILLS));
-  xml->get_widget("add2strinhills_checkbutton", add2strinhills_checkbutton);
-  add2strinhills_checkbutton->signal_toggled().connect
-    (sigc::bind(method(on_armybonus_toggled), add2strinhills_checkbutton, 
+  xml->get_widget("add2strinhills_switch", add2strinhills_switch);
+  add2strinhills_switch->property_active().signal_changed().connect
+    (sigc::bind(method(on_armybonus_toggled), add2strinhills_switch, 
                 Army::ADD2STRINHILLS));
-  xml->get_widget("add1strincity_checkbutton", add1strincity_checkbutton);
-  add1strincity_checkbutton->signal_toggled().connect
-    (sigc::bind(method(on_armybonus_toggled), add1strincity_checkbutton,
+  xml->get_widget("add1strincity_switch", add1strincity_switch);
+  add1strincity_switch->property_active().signal_changed().connect
+    (sigc::bind(method(on_armybonus_toggled), add1strincity_switch,
                 Army::ADD1STRINCITY));
-  xml->get_widget("add2strincity_checkbutton", add2strincity_checkbutton);
-  add2strincity_checkbutton->signal_toggled().connect
-    (sigc::bind(method (on_armybonus_toggled), add2strincity_checkbutton, 
+  xml->get_widget("add2strincity_switch", add2strincity_switch);
+  add2strincity_switch->property_active().signal_changed().connect
+    (sigc::bind(method (on_armybonus_toggled), add2strincity_switch, 
                 Army::ADD2STRINCITY));
-  xml->get_widget("add1stackinhills_checkbutton", 
-                  add1stackinhills_checkbutton);
-  add1stackinhills_checkbutton->signal_toggled().connect
-    (sigc::bind(method (on_armybonus_toggled), add1stackinhills_checkbutton, 
+  xml->get_widget("add1stackinhills_switch", 
+                  add1stackinhills_switch);
+  add1stackinhills_switch->property_active().signal_changed().connect
+    (sigc::bind(method (on_armybonus_toggled), add1stackinhills_switch, 
                 Army::ADD1STACKINHILLS));
-  xml->get_widget("suballcitybonus_checkbutton", suballcitybonus_checkbutton);
-  suballcitybonus_checkbutton->signal_toggled().connect
-    (sigc::bind(method (on_armybonus_toggled), suballcitybonus_checkbutton,
+  xml->get_widget("suballcitybonus_switch", suballcitybonus_switch);
+  suballcitybonus_switch->property_active().signal_changed().connect
+    (sigc::bind(method (on_armybonus_toggled), suballcitybonus_switch,
                 Army::SUBALLCITYBONUS));
-  xml->get_widget("sub1enemystack_checkbutton", sub1enemystack_checkbutton);
-  sub1enemystack_checkbutton->signal_toggled().connect
+  xml->get_widget("sub1enemystack_switch", sub1enemystack_switch);
+  sub1enemystack_switch->property_active().signal_changed().connect
     (sigc::bind(method (on_armybonus_toggled),
-                sub1enemystack_checkbutton, Army::SUB1ENEMYSTACK));
-  xml->get_widget("sub2enemystack_checkbutton", sub2enemystack_checkbutton);
-  sub2enemystack_checkbutton->signal_toggled().connect
-    (sigc::bind(method(on_armybonus_toggled), sub2enemystack_checkbutton, 
+                sub1enemystack_switch, Army::SUB1ENEMYSTACK));
+  xml->get_widget("sub2enemystack_switch", sub2enemystack_switch);
+  sub2enemystack_switch->property_active().signal_changed().connect
+    (sigc::bind(method(on_armybonus_toggled), sub2enemystack_switch, 
                 Army::SUB2ENEMYSTACK));
-  xml->get_widget("add1stack_checkbutton", add1stack_checkbutton);
-  add1stack_checkbutton->signal_toggled().connect
-    (sigc::bind(method(on_armybonus_toggled), add1stack_checkbutton, 
+  xml->get_widget("add1stack_switch", add1stack_switch);
+  add1stack_switch->property_active().signal_changed().connect
+    (sigc::bind(method(on_armybonus_toggled), add1stack_switch, 
                 Army::ADD1STACK));
-  xml->get_widget("add2stack_checkbutton", add2stack_checkbutton);
-  add2stack_checkbutton->signal_toggled().connect
-    (sigc::bind(method (on_armybonus_toggled), add2stack_checkbutton, 
+  xml->get_widget("add2stack_switch", add2stack_switch);
+  add2stack_switch->property_active().signal_changed().connect
+    (sigc::bind(method (on_armybonus_toggled), add2stack_switch, 
                 Army::ADD2STACK));
-  xml->get_widget("suballnonherobonus_checkbutton", 
-                  suballnonherobonus_checkbutton);
-  suballnonherobonus_checkbutton->signal_toggled().connect
-    (sigc::bind(method (on_armybonus_toggled), suballnonherobonus_checkbutton,
+  xml->get_widget("suballnonherobonus_switch", 
+                  suballnonherobonus_switch);
+  suballnonherobonus_switch->property_active().signal_changed().connect
+    (sigc::bind(method (on_armybonus_toggled), suballnonherobonus_switch,
                 Army::SUBALLNONHEROBONUS));
-  xml->get_widget("suballherobonus_checkbutton", suballherobonus_checkbutton);
-  suballherobonus_checkbutton->signal_toggled().connect
-    (sigc::bind(method(on_armybonus_toggled), suballherobonus_checkbutton, 
+  xml->get_widget("suballherobonus_switch", suballherobonus_switch);
+  suballherobonus_switch->property_active().signal_changed().connect
+    (sigc::bind(method(on_armybonus_toggled), suballherobonus_switch, 
                 Army::SUBALLHEROBONUS));
   xml->get_widget("add_army_button", add_army_button);
   add_army_button->signal_clicked().connect (method(on_add_army_clicked));
@@ -383,31 +379,30 @@ ArmySetWindow::update_army_panel()
       strength_spinbutton->set_value(MIN_STRENGTH_FOR_ARMY_UNITS);
       moves_spinbutton->set_value(MIN_MOVES_FOR_ARMY_UNITS);
       exp_spinbutton->set_value(0);
-      gender_none_radiobutton->set_active(true);
-      gender_male_radiobutton->set_active(false);
-      gender_female_radiobutton->set_active(false);
-      awardable_checkbutton->set_active(false);
-      defends_ruins_checkbutton->set_active(false);
+
+      hero_combobox->set_active (0);
+      awardable_switch->set_active(false);
+      defends_ruins_switch->set_active(false);
       sight_spinbutton->set_value(0);
       id_spinbutton->set_value(0);
-      move_forests_checkbutton->set_active(false);
-      move_marshes_checkbutton->set_active(false);
-      move_hills_checkbutton->set_active(false);
-      move_mountains_checkbutton->set_active(false);
-      can_fly_checkbutton->set_active(false);
-      add1strinopen_checkbutton->set_active(false);
-      add2strinopen_checkbutton->set_active(false);
-      add1strinforest_checkbutton->set_active(false);
-      add1strinhills_checkbutton->set_active(false);
-      add1strincity_checkbutton->set_active(false);
-      add2strincity_checkbutton->set_active(false);
-      add1stackinhills_checkbutton->set_active(false);
-      suballcitybonus_checkbutton->set_active(false);
-      sub1enemystack_checkbutton->set_active(false);
-      add1stack_checkbutton->set_active(false);
-      add2stack_checkbutton->set_active(false);
-      suballnonherobonus_checkbutton->set_active(false);
-      suballherobonus_checkbutton->set_active(false);
+      move_forests_switch->set_active(false);
+      move_marshes_switch->set_active(false);
+      move_hills_switch->set_active(false);
+      move_mountains_switch->set_active(false);
+      can_fly_switch->set_active(false);
+      add1strinopen_switch->set_active(false);
+      add2strinopen_switch->set_active(false);
+      add1strinforest_switch->set_active(false);
+      add1strinhills_switch->set_active(false);
+      add1strincity_switch->set_active(false);
+      add2strincity_switch->set_active(false);
+      add1stackinhills_switch->set_active(false);
+      suballcitybonus_switch->set_active(false);
+      sub1enemystack_switch->set_active(false);
+      add1stack_switch->set_active(false);
+      add2stack_switch->set_active(false);
+      suballnonherobonus_switch->set_active(false);
+      suballherobonus_switch->set_active(false);
       white_image->clear();
       green_image->clear();
       yellow_image->clear();
@@ -898,66 +893,61 @@ void ArmySetWindow::fill_army_info(ArmyProto *army)
   strength_spinbutton->set_value(army->getStrength());
   moves_spinbutton->set_value(army->getMaxMoves());
   exp_spinbutton->set_value(int(army->getXpReward()));
-  switch (army->getGender())
-    {
-    case Hero::NONE: gender_none_radiobutton->set_active(true); break;
-    case Hero::MALE: gender_male_radiobutton->set_active(true); break;
-    case Hero::FEMALE: gender_female_radiobutton->set_active(true); break;
-    }
-  awardable_checkbutton->set_active(army->getAwardable());
-  defends_ruins_checkbutton->set_active(army->getDefendsRuins());
+  hero_combobox->set_active(int(army->getGender()));
+  awardable_switch->set_active(army->getAwardable());
+  defends_ruins_switch->set_active(army->getDefendsRuins());
   sight_spinbutton->set_value(army->getSight());
   id_spinbutton->set_value(army->getId());
 
   guint32 bonus = army->getMoveBonus();
-  can_fly_checkbutton->set_active (bonus == 
+  can_fly_switch->set_active (bonus == 
 				   (Tile::GRASS | Tile::WATER | 
 				    Tile::FOREST | Tile::HILLS | 
 				    Tile::MOUNTAIN | Tile::SWAMP));
-  if (can_fly_checkbutton->get_active() == false)
+  if (can_fly_switch->get_active() == false)
     {
-      move_forests_checkbutton->set_active
+      move_forests_switch->set_active
 	((bonus & Tile::FOREST) == Tile::FOREST);
-      move_marshes_checkbutton->set_active
+      move_marshes_switch->set_active
 	((bonus & Tile::SWAMP) == Tile::SWAMP);
-      move_hills_checkbutton->set_active
+      move_hills_switch->set_active
 	((bonus & Tile::HILLS) == Tile::HILLS);
-      move_mountains_checkbutton->set_active
+      move_mountains_switch->set_active
 	((bonus & Tile::MOUNTAIN) == Tile::MOUNTAIN);
     }
   else
     {
-      move_forests_checkbutton->set_active(false);
-      move_marshes_checkbutton->set_active(false);
-      move_hills_checkbutton->set_active(false);
-      move_mountains_checkbutton->set_active(false);
+      move_forests_switch->set_active(false);
+      move_marshes_switch->set_active(false);
+      move_hills_switch->set_active(false);
+      move_mountains_switch->set_active(false);
     }
   bonus = army->getArmyBonus();
-  add1strinopen_checkbutton->set_active
+  add1strinopen_switch->set_active
     ((bonus & Army::ADD1STRINOPEN) == Army::ADD1STRINOPEN);
-  add2strinopen_checkbutton->set_active
+  add2strinopen_switch->set_active
     ((bonus & Army::ADD2STRINOPEN) == Army::ADD2STRINOPEN);
-  add1strinforest_checkbutton->set_active
+  add1strinforest_switch->set_active
     ((bonus & Army::ADD1STRINFOREST) == Army::ADD1STRINFOREST);
-  add1strinhills_checkbutton->set_active
+  add1strinhills_switch->set_active
     ((bonus & Army::ADD1STRINHILLS) == Army::ADD1STRINHILLS);
-  add1strincity_checkbutton->set_active
+  add1strincity_switch->set_active
     ((bonus & Army::ADD1STRINCITY) == Army::ADD1STRINCITY);
-  add2strincity_checkbutton->set_active
+  add2strincity_switch->set_active
     ((bonus & Army::ADD2STRINCITY) == Army::ADD2STRINCITY);
-  add1stackinhills_checkbutton->set_active
+  add1stackinhills_switch->set_active
     ((bonus & Army::ADD1STACKINHILLS) == Army::ADD1STACKINHILLS);
-  suballcitybonus_checkbutton->set_active
+  suballcitybonus_switch->set_active
     ((bonus & Army::SUBALLCITYBONUS) == Army::SUBALLCITYBONUS);
-  sub1enemystack_checkbutton->set_active
+  sub1enemystack_switch->set_active
     ((bonus & Army::SUB1ENEMYSTACK) == Army::SUB1ENEMYSTACK);
-  add1stack_checkbutton->set_active
+  add1stack_switch->set_active
     ((bonus & Army::ADD1STACK) == Army::ADD1STACK);
-  add2stack_checkbutton->set_active
+  add2stack_switch->set_active
     ((bonus & Army::ADD2STACK) == Army::ADD2STACK);
-  suballnonherobonus_checkbutton->set_active
+  suballnonherobonus_switch->set_active
     ((bonus & Army::SUBALLNONHEROBONUS) == Army::SUBALLNONHEROBONUS);
-  suballherobonus_checkbutton->set_active
+  suballherobonus_switch->set_active
     ((bonus & Army::SUBALLHEROBONUS) == Army::SUBALLHEROBONUS);
 }
 
@@ -1293,7 +1283,7 @@ void ArmySetWindow::on_id_changed()
     }
 }
 
-void ArmySetWindow::on_gender_none_toggled()
+void ArmySetWindow::on_hero_combobox_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
   Gtk::TreeModel::iterator iterrow = selection->get_selected();
@@ -1302,43 +1292,7 @@ void ArmySetWindow::on_gender_none_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      a->setGender(Hero::NONE);
-      if (inhibit_needs_saving == false)
-        {
-          needs_saving = true;
-          update_window_title();
-        }
-    }
-}
-
-void ArmySetWindow::on_gender_male_toggled()
-{
-  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
-  Gtk::TreeModel::iterator iterrow = selection->get_selected();
-
-  if (iterrow) 
-    {
-      Gtk::TreeModel::Row row = *iterrow;
-      ArmyProto *a = row[armies_columns.army];
-      a->setGender(Hero::MALE);
-      if (inhibit_needs_saving == false)
-        {
-          needs_saving = true;
-          update_window_title();
-        }
-    }
-}
-
-void ArmySetWindow::on_gender_female_toggled()
-{
-  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
-  Gtk::TreeModel::iterator iterrow = selection->get_selected();
-
-  if (iterrow) 
-    {
-      Gtk::TreeModel::Row row = *iterrow;
-      ArmyProto *a = row[armies_columns.army];
-      a->setGender(Hero::FEMALE);
+      a->setGender(Hero::Gender(hero_combobox->get_active_row_number()));
       if (inhibit_needs_saving == false)
         {
           needs_saving = true;
@@ -1356,7 +1310,7 @@ void ArmySetWindow::on_awardable_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      a->setAwardable(awardable_checkbutton->get_active());
+      a->setAwardable(awardable_switch->get_active());
       if (inhibit_needs_saving == false)
         {
           needs_saving = true;
@@ -1374,7 +1328,7 @@ void ArmySetWindow::on_defends_ruins_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      a->setDefendsRuins(defends_ruins_checkbutton->get_active());
+      a->setDefendsRuins(defends_ruins_switch->get_active());
       if (inhibit_needs_saving == false)
         {
           needs_saving = true;
@@ -1383,7 +1337,7 @@ void ArmySetWindow::on_defends_ruins_toggled()
     }
 }
 
-void ArmySetWindow::on_movebonus_toggled(Gtk::CheckButton *button, guint32 val)
+void ArmySetWindow::on_movebonus_toggled(Gtk::Switch *button, guint32 val)
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
   Gtk::TreeModel::iterator iterrow = selection->get_selected();
@@ -1409,7 +1363,7 @@ void ArmySetWindow::on_movebonus_toggled(Gtk::CheckButton *button, guint32 val)
     }
 }
 
-void ArmySetWindow::on_armybonus_toggled(Gtk::CheckButton *button, guint32 val)
+void ArmySetWindow::on_armybonus_toggled(Gtk::Switch *button, guint32 val)
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
   Gtk::TreeModel::iterator iterrow = selection->get_selected();
