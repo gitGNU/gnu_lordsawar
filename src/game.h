@@ -74,7 +74,6 @@ class Game
     void park_selected_stack();
     void deselect_selected_stack();
     void search_selected_stack();
-    void garrison_selected_stack();
     void select_item_to_use();
     void search_stack(Stack *stack, bool &gotquest, bool &stackdied);
     void move_selected_stack_along_path();
@@ -121,7 +120,6 @@ class Game
 	can_see_diplomacy,
 	received_diplomatic_proposal,
 	city_too_poor_to_produce,
-	can_garrison_selected_stack,
 	can_end_turn;
     sigc::signal<void, Stack *> stack_info_changed;
     sigc::signal<void, Glib::ustring, MapTipPosition, bool> map_tip_changed;

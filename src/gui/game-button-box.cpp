@@ -98,7 +98,6 @@ void GameButtonBox::add_pictures_to_buttons(guint32 factor)
   add_picture_to_button (ImageCache::STACK_MOVE, move_button);
   add_picture_to_button (ImageCache::MOVE_ALL_STACKS, move_all_button);
   add_picture_to_button (ImageCache::END_TURN, end_turn_button);
-  add_picture_to_button (ImageCache::GARRISON, garrison_button);
 }
 
 GameButtonBox::GameButtonBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk::Builder> &xml)
@@ -114,7 +113,6 @@ GameButtonBox::GameButtonBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk:
   xml->get_widget("move_button", move_button);
   xml->get_widget("move_all_button", move_all_button);
   xml->get_widget("end_turn_button", end_turn_button);
-  xml->get_widget("garrison_button", garrison_button);
 }
 
 void GameButtonBox::drop_connections()
@@ -174,9 +172,6 @@ void GameButtonBox::setup_signals(Game *game, guint32 factor)
   setup_button(center_button,
                sigc::mem_fun(game, &Game::center_selected_stack),
                game->can_center_selected_stack);
-  setup_button(garrison_button,
-               sigc::mem_fun(game, &Game::garrison_selected_stack),
-               game->can_garrison_selected_stack);
   connections.push_back 
     (game->received_diplomatic_proposal.connect 
      (sigc::mem_fun(*this, &GameButtonBox::change_diplomacy_button_image)));

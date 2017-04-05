@@ -1479,27 +1479,6 @@ int Player::doStackVisitTemple(Stack *s)
   return count;
 }
 
-void Player::stackGarrison(Stack *s)
-{
-  //no action for garrisonning.
-  doStackGarrison(s);
-}
-void Player::stackUngarrison(Stack *s)
-{
-  //no action for ungarrisonning.
-  doStackUngarrison(s);
-}
-
-void Player::doStackGarrison(Stack *s)
-{
-  s->garrison();
-}
-
-void Player::doStackUngarrison(Stack *s)
-{
-  s->ungarrison();
-}
-
 int Player::stackVisitTemple(Stack* s, Temple* t)
 {
   debug("Player::stackVisitTemple");

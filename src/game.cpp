@@ -628,22 +628,6 @@ void Game::search_selected_stack()
   return;
 }
 
-void Game::garrison_selected_stack()
-{
-  Player *player = Playerlist::getActiveplayer();
-  Stack* stack = player->getActivestack();
-  player->stackGarrison(stack);
-
-  stack = player->getStacklist()->getNextMovable();
-  player->setActivestack(stack);
-
-  if (stack)
-    select_active_stack();
-  else
-    unselect_active_stack();
-  return;
-}
-
 void Game::stackUpdate(Stack* s)
 {
   if (!s)
@@ -899,7 +883,6 @@ void Game::update_control_panel()
       can_inspect.emit(false);
       can_see_hero_levels.emit(false);
       can_search_selected_stack.emit(false);
-      can_garrison_selected_stack.emit(false);
       can_use_item.emit(false);
       can_plant_standard_selected_stack.emit(false);
       can_move_selected_stack.emit(false);
@@ -920,7 +903,7 @@ void Game::update_control_panel()
 
   bool all_defending_or_parked = true;
   for (Stacklist::iterator i = sl->begin(); i != sl->end(); ++i)
-    if (!(*i)->getDefending() && !(*i)->getParked() && !(*i)->isGarrisoned() &&
+    if (!(*i)->getDefending() && !(*i)->getParked() &&
 	*i != sl->getActivestack())
       {
 	all_defending_or_parked = false;
@@ -930,7 +913,7 @@ void Game::update_control_panel()
   bool all_immobile = true;
   for (Stacklist::iterator i = sl->begin(); i != sl->end(); ++i)
     if (!(*i)->getDefending() && !(*i)->getParked() && (*i)->canMove() &&
-        !(*i)->isGarrisoned() && *i != sl->getActivestack())
+        *i != sl->getActivestack())
       {
 	all_immobile = false;
 	break;
@@ -960,8 +943,7 @@ void Game::update_control_panel()
       can_plant_standard_selected_stack.emit(GameMap::can_plant_flag(stack));
 
       can_search_selected_stack.emit(GameMap::can_search(stack));
-      can_garrison_selected_stack.emit(GameMap::getCity(stack->getPos()) != NULL);
-          
+
       can_use_item.emit(player->hasUsableItem());
 
       if (GameMap::getSignpost(stack))
@@ -981,7 +963,6 @@ void Game::update_control_panel()
       can_plant_standard_selected_stack.emit(false);
       can_search_selected_stack.emit(false);
       can_defend_selected_stack.emit(false);
-      can_garrison_selected_stack.emit(false);
     }
       
   if (d_gameScenario->getRound() > 1)
@@ -1231,7 +1212,6 @@ void Game::select_active_stack()
       //GameScenario::s_hidden_map == true)
     //return;
   Player *p = Playerlist::getInstance()->getActiveplayer();
-  Playerlist::getActiveplayer()->getActivestack()->ungarrison();
   smallmap->center_view_on_tile (p->getActivestack()->getPos(), true);
   bigmap->select_active_stack();
 }

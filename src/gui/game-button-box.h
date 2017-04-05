@@ -62,7 +62,6 @@ class GameButtonBox: public Gtk::Box
     Gtk::Button *move_button;
     Gtk::Button *move_all_button;
     Gtk::Button *end_turn_button;
-    Gtk::Button *garrison_button;
     static Glib::ustring get_file(Configuration::UiFormFactor factor);
 
     void setup_button(Gtk::Button *button, sigc::slot<void> slot,
