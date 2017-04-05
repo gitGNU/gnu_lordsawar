@@ -47,10 +47,6 @@ class CityWindow: public LwDialog
     Gtk::Image *map_image;
     Glib::RefPtr<Gdk::Pixbuf> map_pixbuf;
     Gtk::Label *city_label;
-    Gtk::Label *status_label;
-    Gtk::Label *production_info_label1;
-    Gtk::Label *production_info_label2;
-    Gtk::Label *bonus_label;
     Gtk::Button *buy_button;
     Gtk::Button *on_hold_button;
     Gtk::Button *rename_button;
@@ -59,6 +55,15 @@ class CityWindow: public LwDialog
     Gtk::Label *turns_left_label;
     Gtk::Image *current_image;
     Gtk::Label *current_label;
+    Gtk::Label *capital_city_label;
+    Gtk::Label *defense_label;
+    Gtk::Label *income_label;
+    Gtk::Label *unit_label;
+    Gtk::Label *time_label;
+    Gtk::Label *moves_label;
+    Gtk::Label *strength_label;
+    Gtk::Label *cost_label;
+    Gtk::Label *combat_bonus_label;
 
     City *city;
 

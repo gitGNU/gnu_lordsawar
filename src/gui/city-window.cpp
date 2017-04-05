@@ -60,13 +60,18 @@ CityWindow::CityWindow(Gtk::Window &parent, City *c, bool razing_possible,
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
     map_eventbox->signal_button_press_event().connect
       (method(on_map_mouse_button_event));
-    xml->get_widget("status_label", status_label);
     xml->get_widget("turns_left_label", turns_left_label);
     xml->get_widget("current_label", current_label);
     xml->get_widget("current_image", current_image);
-    xml->get_widget("production_info_label1", production_info_label1);
-    xml->get_widget("production_info_label2", production_info_label2);
-    xml->get_widget("bonus_label", bonus_label);
+    xml->get_widget("capital_city_label", capital_city_label);
+    xml->get_widget("defense_label", defense_label);
+    xml->get_widget("income_label", income_label);
+    xml->get_widget("unit_label", unit_label);
+    xml->get_widget("time_label", time_label);
+    xml->get_widget("moves_label", moves_label);
+    xml->get_widget("strength_label", strength_label);
+    xml->get_widget("cost_label", cost_label);
+    xml->get_widget("combat_bonus_label", combat_bonus_label);
     xml->get_widget("buy_button", buy_button);
     xml->get_widget("on_hold_button", on_hold_button);
     on_hold_button->signal_clicked().connect(method(on_on_hold_clicked));
@@ -135,18 +140,15 @@ void CityWindow::fill_in_city_info()
     dialog->set_title(city->getName());
 
     // fill in status label
-    Glib::ustring s;
     if (city->isCapital())
-    {
-	s += String::ucompose(_("Capital city of %1"),
-			      city->getCapitalOwner()->getName());
-	s += "\n";
-    }
+      capital_city_label->set_text
+        (String::ucompose(_("Capital city of %1"),
+                          city->getCapitalOwner()->getName()));
+    else
+      capital_city_label->set_text ("");
 
-    s += String::ucompose(_("Defence: %1"), city->getDefenseLevel());
-    s += "\n";
-    s += String::ucompose(_("Income: %1"), city->getGold());
-    status_label->set_text(s);
+    defense_label->set_text (String::ucompose("%1", city->getDefenseLevel()));
+    income_label->set_text (String::ucompose("%1", city->getGold()));
 }
 
 void CityWindow::fill_in_production_toggles()
@@ -245,51 +247,45 @@ void CityWindow::fill_in_production_info()
     if (slot == -1)
     {
         pic = empty_pic;
-	s1 = _("No production");
-	s1 += "\n\n";
-	s2 = "\n\n";
-        s3 = "";
-        s5 = "";
+        unit_label->set_text ("");
+        time_label->set_text ("");
+        moves_label->set_text ("");
+        strength_label->set_text ("");
+        cost_label->set_text ("");
+        combat_bonus_label->set_text ("");
     }
     else
     {
         const ArmyProdBase * a = city->getProductionBase(slot);
 
-	// fill in first column
-	s1 += a->getName();
-	s1 += "\n";
-	// note to translators: %1/%2 is the no. of steps completed out of the
-	// total no. of steps in the production
-	s1 += String::ucompose(_("Time: %1"), a->getProduction());
-	s1 += "\n";
-	s1 += String::ucompose(_("Strength: %1"),
-			      a->getStrength());
-	
-	// fill in second column
-	s2 += "\n";
-	s2 += String::ucompose(_("Moves: %1"), a->getMaxMoves());
-	s2 += "\n";
-	s2 += String::ucompose(_("Cost: %1"), a->getUpkeep());
+        unit_label->set_text(a->getName());
+        time_label->set_text(String::ucompose("%1", a->getProduction()));
+        strength_label->set_text(String::ucompose("%1", a->getStrength()));
+        moves_label->set_text(String::ucompose("%1", a->getMaxMoves()));
+        cost_label->set_text(String::ucompose("%1", a->getUpkeep()));
 
-        s3 = String::ucompose(_("%1t"), city->getDuration());
         if (city->getVectoring() != Vector<int>(-1, -1))
           {
             Citylist *cl = Citylist::getInstance();
             City *dest = cl->getNearestFriendlyCity(city->getVectoring(), 4);
-            s3 += String::ucompose(_(", then to %1"), 
-                                   dest ? dest->getName() : _("Standard"));
+            time_label->set_text
+              (String::ucompose(_("%1t, then to %2"), city->getDuration(),
+                                dest ? dest->getName() : _("Standard")));
           }
+        else
+          time_label->set_text (String::ucompose(_("%1t"),
+                                                 city->getDuration()));
       pic = gc->getCircledArmyPic(as, a->getTypeId(), player, NULL, false,
                                   Shield::NEUTRAL, true)->to_pixbuf();
-      s5 = a->getArmyBonusDescription();
+      Glib::ustring bonus = a->getArmyBonusDescription();
+      if (bonus == "")
+        bonus = "--";
+      combat_bonus_label->set_text(bonus);
     }
     
     current_image->property_pixbuf() = pic;
-    production_info_label1->set_markup(s1);
-    production_info_label2->set_markup(s2);
     turns_left_label->set_markup("<i>" + s3 + "</i>");
     current_label->set_markup("<i>" + s4 + "</i>");
-    bonus_label->set_text(s5);
 
     if (city->getOwner () != Playerlist::getActiveplayer())
       {
@@ -304,23 +300,20 @@ void CityWindow::fill_in_production_info()
         on_hold_button->set_sensitive(false);
         for (unsigned int i = 0; i < production_toggles.size(); ++i) 
           production_toggles[i]->set_active(false);
-        production_info_label1->set_text("");
-        production_info_label2->set_text("");
-        bonus_label->set_text("");
+        unit_label->set_text ("");
+        time_label->set_text ("");
+        moves_label->set_text ("");
+        strength_label->set_text ("");
+        cost_label->set_text ("");
+        combat_bonus_label->set_text ("");
       }
     else
       {
-        turns_left_label->show();
-        current_label->show();
-        current_image->show();
         buy_button->set_sensitive(true);
         raze_button->set_sensitive (d_razing_possible);
         rename_button->set_sensitive(true);
         destination_button->set_sensitive(true);
         on_hold_button->set_sensitive(true);
-        production_info_label1->show();
-        production_info_label2->show();
-        bonus_label->show();
       }
 }
 
