@@ -108,10 +108,16 @@ void RuinReportDialog::fill_in_ruin_info()
   Temple *temple = GameMap::getTemple(l->getPos());
   if (ruin)
     {
-      if (ruin->getType() == Ruin::RUIN)
+      switch (ruin->getType())
+        {
+        case Ruin::RUIN:
+        case Ruin::SAGE:
         type_label->set_text(_("Ruin"));
-      else if (ruin->getType() == Ruin::STRONGHOLD)
+          break;
+        case Ruin::STRONGHOLD:
         type_label->set_text(_("Stronghold"));
+          break;
+        }
 
       if (ruin->isSearched())
         explored_label->set_text(_("Yes"));
