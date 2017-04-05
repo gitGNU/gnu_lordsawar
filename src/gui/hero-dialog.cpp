@@ -63,8 +63,13 @@ HeroDialog::HeroDialog(Gtk::Window &parent, Hero *h, Vector<int> p)
   map_eventbox->signal_button_press_event().connect
     (method(on_map_mouse_button_event));
 
-  xml->get_widget("info_label1", info_label1);
-  xml->get_widget("info_label2", info_label2);
+  xml->get_widget("battle_label", battle_label);
+  xml->get_widget("strength_label", strength_label);
+  xml->get_widget("command_label", command_label);
+  xml->get_widget("moves_label", moves_label);
+  xml->get_widget("level_label", level_label);
+  xml->get_widget("upkeep_label", upkeep_label);
+  xml->get_widget("experience_label", experience_label);
 
   xml->get_widget("drop_button", drop_button);
   xml->get_widget("pickup_button", pickup_button);
@@ -366,8 +371,6 @@ void HeroDialog::add_item(Item *item, bool in_backpack)
 void HeroDialog::fill_in_info_labels()
 {
   guint32 bonus = 0;
-  Glib::ustring s;
-  // fill in first column
   Backpack *backpack = hero->getBackpack();
   for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
     {
@@ -378,8 +381,7 @@ void HeroDialog::fill_in_info_labels()
       if ((*i)->getBonus(Item::ADD3STR))
         bonus += 3;
     }
-  s += String::ucompose(_("Battle: %1"), bonus);
-  s += "\n";
+  battle_label->set_text(String::ucompose("%1", bonus));
 
   bonus = 0;
   for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
@@ -395,26 +397,17 @@ void HeroDialog::fill_in_info_labels()
   //now add natural command
   bonus += hero->calculateNaturalCommand ();
 
-  s += String::ucompose(_("Command: %1"), bonus);
-  s += "\n";
-  s += String::ucompose(_("Level: %1"), hero->getLevel());
-  s += "\n";
-  s += String::ucompose(_("Experience: %1"),
-                        std::setprecision(3), hero->getXP());
-  info_label1->set_text(s);
+  command_label->set_text (String::ucompose("%1", bonus));
+  level_label->set_text(String::ucompose("%1", hero->getLevel()));
+  experience_label->set_text(String::ucompose("%1", int(hero->getXP())));
 
-  // fill in second column
-  s = "";
-  // note to translators: %1 is melee strength, %2 is ranged strength
-  s += String::ucompose(_("Strength: %1"),
-                        hero->getStat(Army::STRENGTH));
-  s += "\n";
+  strength_label->set_text(String::ucompose("%1",
+                                            hero->getStat(Army::STRENGTH)));
+
   // note to translators: %1 is remaining moves, %2 is total moves
-  s += String::ucompose(_("Moves: %1/%2"),
-                        hero->getMoves(), hero->getStat(Army::MOVES));
-  s += "\n";
-  s += String::ucompose(_("Upkeep: %1"), hero->getUpkeep());
-  info_label2->set_text(s);
+  moves_label->set_text(String::ucompose(_("%1/%2"),
+                        hero->getMoves(), hero->getStat(Army::MOVES)));
+  upkeep_label->set_text(String::ucompose("%1", hero->getUpkeep()));
 }
 
 void HeroDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)

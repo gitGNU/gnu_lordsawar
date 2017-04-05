@@ -51,8 +51,13 @@ class HeroDialog: public LwDialog
     Gtk::TreeView *events_treeview;
     Gtk::Button *drop_button;
     Gtk::Button *pickup_button;
-    Gtk::Label *info_label1;
-    Gtk::Label *info_label2;
+    Gtk::Label *battle_label;
+    Gtk::Label *strength_label;
+    Gtk::Label *command_label;
+    Gtk::Label *moves_label;
+    Gtk::Label *level_label;
+    Gtk::Label *upkeep_label;
+    Gtk::Label *experience_label;
     Gtk::Button *next_button;
     Gtk::Button *prev_button;
 
