@@ -30,27 +30,26 @@
 MainPreferencesDialog::MainPreferencesDialog(Gtk::Window &parent)
  : LwDialog(parent, "main-preferences-dialog.ui")
 {
-  xml->get_widget("show_turn_popup_checkbutton", show_turn_popup_checkbutton);
-  xml->get_widget("commentator_checkbutton", commentator_checkbutton);
+  xml->get_widget("show_turn_popup_switch", show_turn_popup_switch);
+  xml->get_widget("commentator_switch", commentator_switch);
   xml->get_widget("ui_combobox", ui_combobox);
   ui_combobox->signal_changed().connect (method(on_ui_form_factor_changed));
 
-  xml->get_widget("play_music_checkbutton", play_music_checkbutton);
+  xml->get_widget("play_music_switch", play_music_switch);
   xml->get_widget("music_volume_scale", music_volume_scale);
-  xml->get_widget("music_volume_hbox", music_volume_hbox);
-  show_turn_popup_checkbutton->signal_toggled().connect
+  show_turn_popup_switch->property_active().signal_changed().connect
     (method(on_show_turn_popup_toggled));
-  commentator_checkbutton->signal_toggled().connect
+  commentator_switch->property_active().signal_changed().connect
     (method(on_show_commentator_toggled));
-  play_music_checkbutton->signal_toggled().connect (method(on_play_music_toggled));
+  play_music_switch->property_active().signal_changed().connect (method(on_play_music_toggled));
   music_volume_scale->signal_value_changed().connect
     (method(on_music_volume_changed));
 
-  show_turn_popup_checkbutton->set_active(Configuration::s_showNextPlayer);
-  commentator_checkbutton->set_active(Configuration::s_displayCommentator);
-  play_music_checkbutton->set_active(Configuration::s_musicenable);
-  music_volume_hbox->set_sensitive(Configuration::s_musicenable);
+  show_turn_popup_switch->set_active(Configuration::s_showNextPlayer);
+  commentator_switch->set_active(Configuration::s_displayCommentator);
+  play_music_switch->set_active(Configuration::s_musicenable);
   music_volume_scale->set_value(Configuration::s_musicvolume * 100.0 / 128);
+  music_volume_scale->set_sensitive(Configuration::s_musicenable);
   ui_combobox->set_active(Configuration::s_ui_form_factor);
 }
 
@@ -65,18 +64,18 @@ void MainPreferencesDialog::run()
 
 void MainPreferencesDialog::on_show_turn_popup_toggled()
 {
-  Configuration::s_showNextPlayer = show_turn_popup_checkbutton->get_active();
+  Configuration::s_showNextPlayer = show_turn_popup_switch->get_active();
 }
 
 void MainPreferencesDialog::on_play_music_toggled()
 {
-  Configuration::s_musicenable = play_music_checkbutton->get_active();
+  Configuration::s_musicenable = play_music_switch->get_active();
 
-  if (play_music_checkbutton->get_active())
+  if (play_music_switch->get_active())
     Snd::getInstance()->play("intro", -1, false);
   else
     Snd::getInstance()->halt(false);
-  music_volume_hbox->set_sensitive(Configuration::s_musicenable);
+  music_volume_scale->set_sensitive(Configuration::s_musicenable);
 }
 
 void MainPreferencesDialog::on_music_volume_changed()
@@ -89,7 +88,7 @@ void MainPreferencesDialog::on_music_volume_changed()
 
 void MainPreferencesDialog::on_show_commentator_toggled()
 {
-  Configuration::s_displayCommentator = commentator_checkbutton->get_active();
+  Configuration::s_displayCommentator = commentator_switch->get_active();
 }
 
 void MainPreferencesDialog::on_ui_form_factor_changed()

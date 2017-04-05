@@ -36,12 +36,11 @@ class MainPreferencesDialog: public LwDialog
     void hide() {dialog->hide();};
 
  private:
-    Gtk::CheckButton *show_turn_popup_checkbutton;
-    Gtk::CheckButton *commentator_checkbutton;
-    Gtk::CheckButton *play_music_checkbutton;
+    Gtk::Switch *show_turn_popup_switch;
+    Gtk::Switch *commentator_switch;
+    Gtk::Switch *play_music_switch;
     Gtk::ComboBox *ui_combobox;
     Gtk::Scale *music_volume_scale;
-    Gtk::Box *music_volume_hbox;
     void on_show_turn_popup_toggled();
     void on_play_music_toggled();
     void on_show_commentator_toggled();
