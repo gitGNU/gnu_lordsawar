@@ -89,12 +89,15 @@ PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
 	  type->set_sensitive(false);
 	player_hbox->pack_start(*manage(image), Gtk::PACK_SHRINK, 
 				Gtk::PACK_SHRINK);
+	Gtk::Label *name = new Gtk::Label(p->getName());
+        name->set_alignment (Gtk::ALIGN_START, Gtk::ALIGN_CENTER);
+        name->set_padding (12, 0);
+	player_hbox->pack_start(*manage(name), Gtk::PACK_EXPAND_PADDING, Gtk::PACK_EXPAND_PADDING);
 	player_hbox->pack_start(*manage(type), Gtk::PACK_SHRINK, 10);
 	player_hbox->pack_start(*manage(observe), Gtk::PACK_SHRINK, 10);
 	player_types[p] = type;
 	player_observed[p] = observe;
-	Gtk::Label *player_name = new Gtk::Label(p->getName());
-	player_hbox->pack_start(*manage(player_name), Gtk::PACK_SHRINK, 10);
+	player_name[p] = name;
 	players_vbox->pack_start(*manage(player_hbox));
       }
     players_vbox->show_all_children();
@@ -158,6 +161,18 @@ void PreferencesDialog::run(Game *game)
 	dialog->set_default_size(width, height);
     
     dialog->show();
+    int max = 0;
+    for (auto p :player_name)
+      {
+        int w = p.second->get_width();
+        if (w > max)
+          max = w;
+      }
+    for (auto p :player_name)
+      {
+        p.second->property_width_request() = max;
+        p.second->property_halign() = Gtk::ALIGN_START;
+      }
     dialog->run();
     
     dialog->get_size(width, height);

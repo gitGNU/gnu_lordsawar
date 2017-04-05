@@ -59,6 +59,9 @@ class PreferencesDialog: public LwDialog
 
     typedef std::map<Player*, Gtk::CheckButton*> PlayerObserveMap;
     PlayerObserveMap player_observed;
+
+    typedef std::map<Player*, Gtk::Label*> PlayerNameMap;
+    PlayerNameMap player_name;
 };
 
 #endif
