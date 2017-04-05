@@ -43,8 +43,12 @@ class BuyProductionDialog: public LwDialog
     
  private:
     ArmyInfoTip* army_info_tip;
-    Gtk::Label *production_info_label1;
-    Gtk::Label *production_info_label2;
+    Gtk::Label *unit_label;
+    Gtk::Label *cost_label;
+    Gtk::Label *time_label;
+    Gtk::Label *moves_label;
+    Gtk::Label *strength_label;
+    Gtk::Label *upkeep_label;
     Gtk::Button *buy_button;
 
     City *city;

@@ -44,9 +44,20 @@ BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)
     city = c;
     selected_army = NO_ARMY_SELECTED;
     
-    xml->get_widget("production_info_label1", production_info_label1);
-    xml->get_widget("production_info_label2", production_info_label2);
+    xml->get_widget("unit_label", unit_label);
+    xml->get_widget("cost_label", cost_label);
+    xml->get_widget("time_label", time_label);
+    xml->get_widget("moves_label", moves_label);
+    xml->get_widget("strength_label", strength_label);
+    xml->get_widget("upkeep_label", upkeep_label);
     xml->get_widget("buy_button", buy_button);
+
+    unit_label->set_text ("--");
+    cost_label->set_text ("--");
+    time_label->set_text ("--");
+    moves_label->set_text ("--");
+    strength_label->set_text ("--");
+    upkeep_label->set_text ("--");
 
     Gtk::Grid *toggles_table; 
     xml->get_widget("production_toggles_table", toggles_table);
@@ -137,35 +148,16 @@ void BuyProductionDialog::on_production_toggled(Gtk::ToggleButton *toggle)
 
 void BuyProductionDialog::fill_in_production_info()
 {
-    Glib::ustring s1, s2;
-    
-    if (selected_army == -1)
+  const ArmyProto *a = army_id_to_army();
+  if (a)
     {
-	s1 = _("No production");
-	s1 += "\n\n\n";
-	s2 = "\n\n\n";
+      unit_label->set_text(a->getName());
+      cost_label->set_text(String::ucompose("%1", a->getNewProductionCost()));
+      time_label->set_text(String::ucompose ("%1", a->getProduction()));
+      moves_label->set_text(String::ucompose ("%1", a->getMaxMoves()));
+      strength_label->set_text(String::ucompose ("%1", a->getStrength()));
+      upkeep_label->set_text(String::ucompose ("%1", a->getUpkeep()));
     }
-    else
-    {
-	const ArmyProto *a = army_id_to_army();
-
-	// fill in first column
-	s1 += a->getName();
-	s1 += "\n";
-	s1 += String::ucompose(_("Duration: %1"), a->getProduction());
-	s1 += "\n";
-	s1 += String::ucompose(_("Strength: %1"), a->getStrength());
-	
-	// fill in second column
-	s2 += String::ucompose(_("Cost: %1"), a->getNewProductionCost());
-	s2 += "\n";
-	s2 += String::ucompose(_("Moves: %1"), a->getMaxMoves());
-	s2 += "\n";
-	s2 += String::ucompose(_("Upkeep: %1"), a->getUpkeep());
-    }
-    
-    production_info_label1->set_markup("<i>" + s1 + "</i>");
-    production_info_label2->set_markup("<i>" + s2 + "</i>");
 }
 
 void BuyProductionDialog::set_buy_button_state()
