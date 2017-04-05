@@ -55,16 +55,16 @@ ItemlistDialog::ItemlistDialog(Gtk::Window &parent)
     summon_army_type_button->signal_clicked().connect(method(on_summon_army_type_clicked));
     xml->get_widget("building_type_to_summon_on_combobox", 
                     building_type_to_summon_on_combobox);
-    xml->get_widget("disease_city_checkbutton", disease_city_checkbutton);
-    disease_city_checkbutton->signal_toggled().connect(method(on_disease_city_toggled));
+    xml->get_widget("disease_city_switch", disease_city_switch);
+    disease_city_switch->property_active().signal_changed().connect(method(on_disease_city_toggled));
     xml->get_widget("disease_armies_percent_spinbutton", 
                     disease_armies_percent_spinbutton);
     disease_armies_percent_spinbutton->signal_changed().connect(method(on_disease_armies_percent_changed));
     disease_armies_percent_spinbutton->signal_insert_text().connect
       (sigc::hide(sigc::hide(method(on_disease_armies_percent_text_changed))));
 
-    xml->get_widget("raise_defenders_checkbutton", raise_defenders_checkbutton);
-    raise_defenders_checkbutton->signal_toggled().connect
+    xml->get_widget("raise_defenders_switch", raise_defenders_switch);
+    raise_defenders_switch->property_active().signal_changed().connect
       (method(on_raise_defenders_toggled));
     xml->get_widget("defender_army_type_button", defender_army_type_button);
     defender_army_type_button->signal_clicked().connect (method(on_defender_type_clicked));
@@ -72,13 +72,13 @@ ItemlistDialog::ItemlistDialog(Gtk::Window &parent)
     num_defenders_spinbutton->signal_changed().connect (method(on_num_defenders_changed));
     num_defenders_spinbutton->signal_insert_text().connect
       (sigc::hide(sigc::hide(method(on_num_defenders_text_changed))));
-    xml->get_widget("persuade_neutral_city_checkbutton", 
-                    persuade_neutral_city_checkbutton);
-    persuade_neutral_city_checkbutton->signal_toggled().connect
+    xml->get_widget("persuade_neutral_city_switch", 
+                    persuade_neutral_city_switch);
+    persuade_neutral_city_switch->property_active().signal_changed().connect
       (method(on_persuade_neutral_city_toggled));
-    xml->get_widget("teleport_to_city_checkbutton", 
-                    teleport_to_city_checkbutton);
-    teleport_to_city_checkbutton->signal_toggled().connect
+    xml->get_widget("teleport_to_city_switch", 
+                    teleport_to_city_switch);
+    teleport_to_city_switch->property_active().signal_changed().connect
       (method(on_teleport_to_city_toggled));
 
     items_list = Gtk::ListStore::create(items_columns);
@@ -91,50 +91,50 @@ ItemlistDialog::ItemlistDialog(Gtk::Window &parent)
       addItemProto((*iter).second);
       
 
-    xml->get_widget("add1str_checkbutton", add1str_checkbutton);
-    add1str_checkbutton->signal_toggled().connect(method(on_add1str_toggled));
-    xml->get_widget("add2str_checkbutton", add2str_checkbutton);
-    add2str_checkbutton->signal_toggled().connect(method(on_add2str_toggled));
-    xml->get_widget("add3str_checkbutton", add3str_checkbutton);
-    add3str_checkbutton->signal_toggled().connect(method(on_add3str_toggled));
-    xml->get_widget("add1stack_checkbutton", add1stack_checkbutton);
-    add1stack_checkbutton->signal_toggled().connect(method(on_add1stack_toggled));
-    xml->get_widget("add2stack_checkbutton", add2stack_checkbutton);
-    add2stack_checkbutton->signal_toggled().connect(method(on_add2stack_toggled));
-    xml->get_widget("add3stack_checkbutton", add3stack_checkbutton);
-    add3stack_checkbutton->signal_toggled().connect(method(on_add3stack_toggled));
-    xml->get_widget("flystack_checkbutton", flystack_checkbutton);
-    flystack_checkbutton->signal_toggled().connect(method(on_flystack_toggled));
-    xml->get_widget("doublemovestack_checkbutton", doublemovestack_checkbutton);
-    doublemovestack_checkbutton->signal_toggled().connect(method(on_doublemovestack_toggled));
-    xml->get_widget("add2goldpercity_checkbutton", add2goldpercity_checkbutton);
-    add2goldpercity_checkbutton->signal_toggled().connect
+    xml->get_widget("add1str_switch", add1str_switch);
+    add1str_switch->property_active().signal_changed().connect(method(on_add1str_toggled));
+    xml->get_widget("add2str_switch", add2str_switch);
+    add2str_switch->property_active().signal_changed().connect(method(on_add2str_toggled));
+    xml->get_widget("add3str_switch", add3str_switch);
+    add3str_switch->property_active().signal_changed().connect(method(on_add3str_toggled));
+    xml->get_widget("add1stack_switch", add1stack_switch);
+    add1stack_switch->property_active().signal_changed().connect(method(on_add1stack_toggled));
+    xml->get_widget("add2stack_switch", add2stack_switch);
+    add2stack_switch->property_active().signal_changed().connect(method(on_add2stack_toggled));
+    xml->get_widget("add3stack_switch", add3stack_switch);
+    add3stack_switch->property_active().signal_changed().connect(method(on_add3stack_toggled));
+    xml->get_widget("flystack_switch", flystack_switch);
+    flystack_switch->property_active().signal_changed().connect(method(on_flystack_toggled));
+    xml->get_widget("doublemovestack_switch", doublemovestack_switch);
+    doublemovestack_switch->property_active().signal_changed().connect(method(on_doublemovestack_toggled));
+    xml->get_widget("add2goldpercity_switch", add2goldpercity_switch);
+    add2goldpercity_switch->property_active().signal_changed().connect
       (method(on_add2goldpercity_toggled));
-    xml->get_widget("add3goldpercity_checkbutton", add3goldpercity_checkbutton);
-    add3goldpercity_checkbutton->signal_toggled().connect
+    xml->get_widget("add3goldpercity_switch", add3goldpercity_switch);
+    add3goldpercity_switch->property_active().signal_changed().connect
       (method(on_add3goldpercity_toggled));
-    xml->get_widget("add4goldpercity_checkbutton", add4goldpercity_checkbutton);
-    add4goldpercity_checkbutton->signal_toggled().connect
+    xml->get_widget("add4goldpercity_switch", add4goldpercity_switch);
+    add4goldpercity_switch->property_active().signal_changed().connect
       (method(on_add4goldpercity_toggled));
-    xml->get_widget("add5goldpercity_checkbutton", add5goldpercity_checkbutton);
-    add5goldpercity_checkbutton->signal_toggled().connect
+    xml->get_widget("add5goldpercity_switch", add5goldpercity_switch);
+    add5goldpercity_switch->property_active().signal_changed().connect
       (method(on_add5goldpercity_toggled));
-    xml->get_widget("steals_gold_checkbutton", steals_gold_checkbutton);
-    steals_gold_checkbutton->signal_toggled().connect (method(on_steals_gold_toggled));
-    xml->get_widget("pickup_bags_checkbutton", pickup_bags_checkbutton);
-    pickup_bags_checkbutton->signal_toggled().connect(method(on_pickup_bags_toggled));
-    xml->get_widget("add_mp_checkbutton", add_mp_checkbutton);
-    add_mp_checkbutton->signal_toggled().connect(method(on_add_mp_toggled));
-    xml->get_widget("sinks_ships_checkbutton", sinks_ships_checkbutton);
-    sinks_ships_checkbutton->signal_toggled().connect(method(on_sinks_ships_toggled));
-    xml->get_widget("banish_worms_checkbutton", banish_worms_checkbutton);
-    banish_worms_checkbutton->signal_toggled().connect(method(on_banish_worms_toggled));
-    xml->get_widget("burn_bridge_checkbutton", burn_bridge_checkbutton);
-    burn_bridge_checkbutton->signal_toggled().connect(method(on_burn_bridge_toggled));
-    xml->get_widget("capture_keeper_checkbutton", capture_keeper_checkbutton);
-    capture_keeper_checkbutton->signal_toggled().connect(method(on_capture_keeper_toggled));
-    xml->get_widget("summon_monster_checkbutton", summon_monster_checkbutton);
-    summon_monster_checkbutton->signal_toggled().connect
+    xml->get_widget("steals_gold_switch", steals_gold_switch);
+    steals_gold_switch->property_active().signal_changed().connect (method(on_steals_gold_toggled));
+    xml->get_widget("pickup_bags_switch", pickup_bags_switch);
+    pickup_bags_switch->property_active().signal_changed().connect(method(on_pickup_bags_toggled));
+    xml->get_widget("add_mp_switch", add_mp_switch);
+    add_mp_switch->property_active().signal_changed().connect(method(on_add_mp_toggled));
+    xml->get_widget("sinks_ships_switch", sinks_ships_switch);
+    sinks_ships_switch->property_active().signal_changed().connect(method(on_sinks_ships_toggled));
+    xml->get_widget("banish_worms_switch", banish_worms_switch);
+    banish_worms_switch->property_active().signal_changed().connect(method(on_banish_worms_toggled));
+    xml->get_widget("burn_bridge_switch", burn_bridge_switch);
+    burn_bridge_switch->property_active().signal_changed().connect(method(on_burn_bridge_toggled));
+    xml->get_widget("capture_keeper_switch", capture_keeper_switch);
+    capture_keeper_switch->property_active().signal_changed().connect(method(on_capture_keeper_toggled));
+    xml->get_widget("summon_monster_switch", summon_monster_switch);
+    summon_monster_switch->property_active().signal_changed().connect
       (method(on_summon_monster_toggled));
     xml->get_widget("uses_spinbutton", uses_spinbutton);
     uses_spinbutton->signal_changed().connect(method(on_uses_changed));
@@ -215,64 +215,64 @@ void ItemlistDialog::on_item_selected()
   update_itemlist_buttons();
 }
 
-static int inhibit_bonus_checkbuttons;
+static int inhibit_bonus_switches;
 
 void ItemlistDialog::fill_item_info(ItemProto *item)
 {
   name_entry->set_text(item->getName());
-  inhibit_bonus_checkbuttons = 1;
-  add1str_checkbutton->set_active(item->getBonus(ItemProto::ADD1STR));
-  add2str_checkbutton->set_active(item->getBonus(ItemProto::ADD2STR));
-  add3str_checkbutton->set_active(item->getBonus(ItemProto::ADD3STR));
-  add1stack_checkbutton->set_active(item->getBonus(ItemProto::ADD1STACK));
-  add2stack_checkbutton->set_active(item->getBonus(ItemProto::ADD2STACK));
-  add3stack_checkbutton->set_active(item->getBonus(ItemProto::ADD3STACK));
-  flystack_checkbutton->set_active(item->getBonus(ItemProto::FLYSTACK));
-  doublemovestack_checkbutton->set_active 
+  inhibit_bonus_switches = 1;
+  add1str_switch->set_active(item->getBonus(ItemProto::ADD1STR));
+  add2str_switch->set_active(item->getBonus(ItemProto::ADD2STR));
+  add3str_switch->set_active(item->getBonus(ItemProto::ADD3STR));
+  add1stack_switch->set_active(item->getBonus(ItemProto::ADD1STACK));
+  add2stack_switch->set_active(item->getBonus(ItemProto::ADD2STACK));
+  add3stack_switch->set_active(item->getBonus(ItemProto::ADD3STACK));
+  flystack_switch->set_active(item->getBonus(ItemProto::FLYSTACK));
+  doublemovestack_switch->set_active 
     (item->getBonus(ItemProto::DOUBLEMOVESTACK));
-  add2goldpercity_checkbutton->set_active
+  add2goldpercity_switch->set_active
     (item->getBonus(ItemProto::ADD2GOLDPERCITY));
-  add3goldpercity_checkbutton->set_active
+  add3goldpercity_switch->set_active
     (item->getBonus(ItemProto::ADD3GOLDPERCITY));
-  add4goldpercity_checkbutton->set_active
+  add4goldpercity_switch->set_active
     (item->getBonus(ItemProto::ADD4GOLDPERCITY));
-  add5goldpercity_checkbutton->set_active
+  add5goldpercity_switch->set_active
     (item->getBonus(ItemProto::ADD5GOLDPERCITY));
-  steals_gold_checkbutton->set_active (item->getBonus(ItemProto::STEAL_GOLD));
-  pickup_bags_checkbutton->set_active (item->getBonus(ItemProto::PICK_UP_BAGS));
-  add_mp_checkbutton->set_active (item->getBonus(ItemProto::ADD_2MP_STACK));
-  sinks_ships_checkbutton->set_active (item->getBonus(ItemProto::SINK_SHIPS));
-  banish_worms_checkbutton->set_active (item->getBonus(ItemProto::BANISH_WORMS));
-  burn_bridge_checkbutton->set_active (item->getBonus(ItemProto::BURN_BRIDGE));
-  capture_keeper_checkbutton->set_active 
+  steals_gold_switch->set_active (item->getBonus(ItemProto::STEAL_GOLD));
+  pickup_bags_switch->set_active (item->getBonus(ItemProto::PICK_UP_BAGS));
+  add_mp_switch->set_active (item->getBonus(ItemProto::ADD_2MP_STACK));
+  sinks_ships_switch->set_active (item->getBonus(ItemProto::SINK_SHIPS));
+  banish_worms_switch->set_active (item->getBonus(ItemProto::BANISH_WORMS));
+  burn_bridge_switch->set_active (item->getBonus(ItemProto::BURN_BRIDGE));
+  capture_keeper_switch->set_active 
     (item->getBonus(ItemProto::CAPTURE_KEEPER));
   uses_spinbutton->set_value(double(item->getNumberOfUsesLeft()));
   steal_percent_spinbutton->set_value(item->getPercentGoldToSteal());
   steal_percent_spinbutton->set_sensitive
-    (steals_gold_checkbutton->get_active());
+    (steals_gold_switch->get_active());
   add_mp_spinbutton->set_value(item->getMovementPointsToAdd());
-  add_mp_spinbutton->set_sensitive (add_mp_checkbutton->get_active());
-  summon_monster_checkbutton->set_active 
+  add_mp_spinbutton->set_sensitive (add_mp_switch->get_active());
+  summon_monster_switch->set_active 
     (item->getBonus(ItemProto::SUMMON_MONSTER));
   building_type_to_summon_on_combobox->set_active(item->getBuildingTypeToSummonOn());
-  building_type_to_summon_on_combobox->set_sensitive(summon_monster_checkbutton->get_active());
-  disease_city_checkbutton->set_active(item->getBonus(ItemProto::DISEASE_CITY));
-  disease_armies_percent_spinbutton->set_sensitive(disease_city_checkbutton->get_active());
+  building_type_to_summon_on_combobox->set_sensitive(summon_monster_switch->get_active());
+  disease_city_switch->set_active(item->getBonus(ItemProto::DISEASE_CITY));
+  disease_armies_percent_spinbutton->set_sensitive(disease_city_switch->get_active());
   disease_armies_percent_spinbutton->set_value(item->getPercentArmiesToKill());
   update_kill_army_type_name();
   update_summon_army_type_name();
-  raise_defenders_checkbutton->set_active
+  raise_defenders_switch->set_active
     (item->getBonus(ItemProto::RAISE_DEFENDERS));
   num_defenders_spinbutton->set_sensitive
-    (raise_defenders_checkbutton->get_active());
+    (raise_defenders_switch->get_active());
   num_defenders_spinbutton->set_value(item->getNumberOfArmiesToRaise());
   update_raise_defender_army_type_name();
-  persuade_neutral_city_checkbutton->set_active 
+  persuade_neutral_city_switch->set_active 
     (item->getBonus(ItemProto::PERSUADE_NEUTRALS));
-  teleport_to_city_checkbutton->set_active 
+  teleport_to_city_switch->set_active 
     (item->getBonus(ItemProto::TELEPORT_TO_CITY));
 
-  inhibit_bonus_checkbuttons = 0;
+  inhibit_bonus_switches = 0;
 }
 
 void ItemlistDialog::on_name_changed()
@@ -317,10 +317,10 @@ void ItemlistDialog::on_remove_item_clicked()
     }
 }
 
-void ItemlistDialog::on_checkbutton_toggled(Gtk::CheckButton *checkbutton, 
+void ItemlistDialog::on_switch_toggled(Gtk::Switch *sw, 
 					    ItemProto::Bonus bonus)
 {
-  if (inhibit_bonus_checkbuttons)
+  if (inhibit_bonus_switches)
     return;
   Glib::RefPtr<Gtk::TreeSelection> selection = items_treeview->get_selection();
   Gtk::TreeModel::iterator iterrow = selection->get_selected();
@@ -334,7 +334,7 @@ void ItemlistDialog::on_checkbutton_toggled(Gtk::CheckButton *checkbutton,
     }
   else
     return;
-  if (checkbutton->get_active())
+  if (sw->get_active())
     d_item->addBonus(bonus);
   else
     d_item->removeBonus(bonus);
@@ -342,101 +342,101 @@ void ItemlistDialog::on_checkbutton_toggled(Gtk::CheckButton *checkbutton,
 
 void ItemlistDialog::on_add1str_toggled()
 {
-  on_checkbutton_toggled(add1str_checkbutton, ItemProto::ADD1STR);
+  on_switch_toggled(add1str_switch, ItemProto::ADD1STR);
 }
 
 void ItemlistDialog::on_add2str_toggled()
 {
-  on_checkbutton_toggled(add2str_checkbutton, ItemProto::ADD2STR);
+  on_switch_toggled(add2str_switch, ItemProto::ADD2STR);
 }
 
 void ItemlistDialog::on_add3str_toggled()
 {
-  on_checkbutton_toggled(add3str_checkbutton, ItemProto::ADD3STR);
+  on_switch_toggled(add3str_switch, ItemProto::ADD3STR);
 }
 
 void ItemlistDialog::on_add1stack_toggled()
 {
-  on_checkbutton_toggled(add1stack_checkbutton, ItemProto::ADD1STACK);
+  on_switch_toggled(add1stack_switch, ItemProto::ADD1STACK);
 }
 
 void ItemlistDialog::on_add2stack_toggled()
 {
-  on_checkbutton_toggled(add2stack_checkbutton, ItemProto::ADD2STACK);
+  on_switch_toggled(add2stack_switch, ItemProto::ADD2STACK);
 }
 
 void ItemlistDialog::on_add3stack_toggled()
 {
-  on_checkbutton_toggled(add3stack_checkbutton, ItemProto::ADD3STACK);
+  on_switch_toggled(add3stack_switch, ItemProto::ADD3STACK);
 }
 
 void ItemlistDialog::on_flystack_toggled()
 {
-  on_checkbutton_toggled(flystack_checkbutton, ItemProto::FLYSTACK);
+  on_switch_toggled(flystack_switch, ItemProto::FLYSTACK);
 }
 
 void ItemlistDialog::on_doublemovestack_toggled()
 {
-  on_checkbutton_toggled(doublemovestack_checkbutton, ItemProto::DOUBLEMOVESTACK);
+  on_switch_toggled(doublemovestack_switch, ItemProto::DOUBLEMOVESTACK);
 }
 
 void ItemlistDialog::on_add2goldpercity_toggled()
 {
-  on_checkbutton_toggled(add2goldpercity_checkbutton, ItemProto::ADD2GOLDPERCITY);
+  on_switch_toggled(add2goldpercity_switch, ItemProto::ADD2GOLDPERCITY);
 }
 
 void ItemlistDialog::on_add3goldpercity_toggled()
 {
-  on_checkbutton_toggled(add2goldpercity_checkbutton, ItemProto::ADD3GOLDPERCITY);
+  on_switch_toggled(add2goldpercity_switch, ItemProto::ADD3GOLDPERCITY);
 }
 
 void ItemlistDialog::on_add4goldpercity_toggled()
 {
-  on_checkbutton_toggled(add4goldpercity_checkbutton, ItemProto::ADD4GOLDPERCITY);
+  on_switch_toggled(add4goldpercity_switch, ItemProto::ADD4GOLDPERCITY);
 }
 
 void ItemlistDialog::on_add5goldpercity_toggled()
 {
-  on_checkbutton_toggled(add5goldpercity_checkbutton, ItemProto::ADD5GOLDPERCITY);
+  on_switch_toggled(add5goldpercity_switch, ItemProto::ADD5GOLDPERCITY);
 }
 
 void ItemlistDialog::on_steals_gold_toggled()
 {
-  on_checkbutton_toggled(steals_gold_checkbutton, ItemProto::STEAL_GOLD);
+  on_switch_toggled(steals_gold_switch, ItemProto::STEAL_GOLD);
   steal_percent_spinbutton->set_sensitive
-    (steals_gold_checkbutton->get_active());
+    (steals_gold_switch->get_active());
 }
 
 void ItemlistDialog::on_pickup_bags_toggled()
 {
-  on_checkbutton_toggled(pickup_bags_checkbutton, ItemProto::PICK_UP_BAGS);
+  on_switch_toggled(pickup_bags_switch, ItemProto::PICK_UP_BAGS);
 }
 
 void ItemlistDialog::on_add_mp_toggled()
 {
-  on_checkbutton_toggled(add_mp_checkbutton, ItemProto::ADD_2MP_STACK);
-  add_mp_spinbutton->set_sensitive (add_mp_checkbutton->get_active());
+  on_switch_toggled(add_mp_switch, ItemProto::ADD_2MP_STACK);
+  add_mp_spinbutton->set_sensitive (add_mp_switch->get_active());
 }
 
 void ItemlistDialog::on_sinks_ships_toggled()
 {
-  on_checkbutton_toggled(sinks_ships_checkbutton, ItemProto::SINK_SHIPS);
+  on_switch_toggled(sinks_ships_switch, ItemProto::SINK_SHIPS);
 }
 	
 void ItemlistDialog::on_banish_worms_toggled()
 {
-  on_checkbutton_toggled(banish_worms_checkbutton, ItemProto::BANISH_WORMS);
-  kill_army_type_button->set_sensitive(banish_worms_checkbutton->get_active());
+  on_switch_toggled(banish_worms_switch, ItemProto::BANISH_WORMS);
+  kill_army_type_button->set_sensitive(banish_worms_switch->get_active());
 }
 
 void ItemlistDialog::on_burn_bridge_toggled()
 {
-  on_checkbutton_toggled(burn_bridge_checkbutton, ItemProto::BURN_BRIDGE);
+  on_switch_toggled(burn_bridge_switch, ItemProto::BURN_BRIDGE);
 }
 
 void ItemlistDialog::on_uses_changed()
 {
-  if (inhibit_bonus_checkbuttons)
+  if (inhibit_bonus_switches)
     return;
   Glib::RefPtr<Gtk::TreeSelection> selection = items_treeview->get_selection();
   Gtk::TreeModel::iterator iterrow = selection->get_selected();
@@ -472,7 +472,7 @@ void ItemlistDialog::update_kill_army_type_name()
 {
     Player *neutral = Playerlist::getInstance()->getNeutral();
     Glib::ustring name;
-    if (banish_worms_checkbutton->get_active() == true)
+    if (banish_worms_switch->get_active() == true)
       {
         kill_army_type_button->property_sensitive() = true;
         Armysetlist *asl = Armysetlist::getInstance();
@@ -490,23 +490,23 @@ void ItemlistDialog::update_kill_army_type_name()
 	
 void ItemlistDialog::on_capture_keeper_toggled()
 {
-  on_checkbutton_toggled(capture_keeper_checkbutton, ItemProto::CAPTURE_KEEPER);
+  on_switch_toggled(capture_keeper_switch, ItemProto::CAPTURE_KEEPER);
 }
     
 void ItemlistDialog::on_summon_monster_toggled()
 {
-  on_checkbutton_toggled(summon_monster_checkbutton, ItemProto::SUMMON_MONSTER);
+  on_switch_toggled(summon_monster_switch, ItemProto::SUMMON_MONSTER);
   summon_army_type_button->set_sensitive
-    (summon_monster_checkbutton->get_active());
+    (summon_monster_switch->get_active());
   building_type_to_summon_on_combobox->set_sensitive
-    (summon_monster_checkbutton->get_active());
+    (summon_monster_switch->get_active());
 }
     
 void ItemlistDialog::on_summon_army_type_clicked()
 {
     Player *neutral = Playerlist::getInstance()->getNeutral();
     Glib::ustring name;
-    if (summon_monster_checkbutton->get_active() == true)
+    if (summon_monster_switch->get_active() == true)
       {
         Armysetlist *asl = Armysetlist::getInstance();
 	name = asl->getArmy(neutral->getArmyset(), 
@@ -522,7 +522,7 @@ void ItemlistDialog::update_summon_army_type_name()
 {
     Player *neutral = Playerlist::getInstance()->getNeutral();
     Glib::ustring name;
-    if (summon_monster_checkbutton->get_active() == true)
+    if (summon_monster_switch->get_active() == true)
       {
         summon_army_type_button->set_sensitive(true);
         Armysetlist *asl = Armysetlist::getInstance();
@@ -540,35 +540,35 @@ void ItemlistDialog::update_summon_army_type_name()
 
 void ItemlistDialog::on_disease_city_toggled()
 {
-  on_checkbutton_toggled(disease_city_checkbutton, ItemProto::DISEASE_CITY);
+  on_switch_toggled(disease_city_switch, ItemProto::DISEASE_CITY);
   disease_armies_percent_spinbutton->set_sensitive
-    (disease_city_checkbutton->get_active());
+    (disease_city_switch->get_active());
 }
 
 void ItemlistDialog::on_persuade_neutral_city_toggled()
 {
-  on_checkbutton_toggled(persuade_neutral_city_checkbutton, 
+  on_switch_toggled(persuade_neutral_city_switch, 
                          ItemProto::PERSUADE_NEUTRALS);
 }
 
 void ItemlistDialog::on_teleport_to_city_toggled()
 {
-  on_checkbutton_toggled(teleport_to_city_checkbutton, 
+  on_switch_toggled(teleport_to_city_switch, 
                          ItemProto::TELEPORT_TO_CITY);
 }
 
 void ItemlistDialog::on_raise_defenders_toggled()
 {
-  on_checkbutton_toggled(raise_defenders_checkbutton, ItemProto::RAISE_DEFENDERS);
+  on_switch_toggled(raise_defenders_switch, ItemProto::RAISE_DEFENDERS);
   num_defenders_spinbutton->set_sensitive
-    (raise_defenders_checkbutton->get_active());
+    (raise_defenders_switch->get_active());
   defender_army_type_button->set_sensitive
-    (raise_defenders_checkbutton->get_active());
+    (raise_defenders_switch->get_active());
 }
 
 void ItemlistDialog::on_steal_percent_changed()
 {
-  if (inhibit_bonus_checkbuttons)
+  if (inhibit_bonus_switches)
     return;
   if (d_item)
     d_item->setPercentGoldToSteal(steal_percent_spinbutton->get_value());
@@ -582,7 +582,7 @@ void ItemlistDialog::on_steal_percent_text_changed()
 
 void ItemlistDialog::on_disease_armies_percent_changed()
 {
-  if (inhibit_bonus_checkbuttons)
+  if (inhibit_bonus_switches)
     return;
   if (d_item)
     d_item->setPercentArmiesToKill
@@ -597,7 +597,7 @@ void ItemlistDialog::on_disease_armies_percent_text_changed()
 
 void ItemlistDialog::on_add_mp_changed()
 {
-  if (inhibit_bonus_checkbuttons)
+  if (inhibit_bonus_switches)
     return;
   if (d_item)
     d_item->setMovementPointsToAdd (add_mp_spinbutton->get_value());
@@ -611,7 +611,7 @@ void ItemlistDialog::on_add_mp_text_changed()
 
 void ItemlistDialog::on_num_defenders_changed()
 {
-  if (inhibit_bonus_checkbuttons)
+  if (inhibit_bonus_switches)
     return;
   if (d_item)
     d_item->setNumberOfArmiesToRaise(num_defenders_spinbutton->get_value());
@@ -627,7 +627,7 @@ void ItemlistDialog::on_defender_type_clicked()
 {
     Player *neutral = Playerlist::getInstance()->getNeutral();
     Glib::ustring name;
-    if (raise_defenders_checkbutton->get_active() == true)
+    if (raise_defenders_switch->get_active() == true)
       {
         Armysetlist *asl = Armysetlist::getInstance();
 	name = asl->getArmy(neutral->getArmyset(), 
@@ -643,7 +643,7 @@ void ItemlistDialog::update_raise_defender_army_type_name()
 {
     Player *neutral = Playerlist::getInstance()->getNeutral();
     Glib::ustring name;
-    if (raise_defenders_checkbutton->get_active() == true)
+    if (raise_defenders_switch->get_active() == true)
       {
         defender_army_type_button->set_sensitive(true);
         Armysetlist *asl = Armysetlist::getInstance();

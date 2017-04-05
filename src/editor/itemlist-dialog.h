@@ -40,30 +40,30 @@ class ItemlistDialog: public LwEditorDialog
     Gtk::Button *add_item_button;
     Gtk::Button *remove_item_button;
     Gtk::Box *item_vbox;
-    Gtk::CheckButton *add1str_checkbutton;
-    Gtk::CheckButton *add2str_checkbutton;
-    Gtk::CheckButton *add3str_checkbutton;
-    Gtk::CheckButton *add1stack_checkbutton;
-    Gtk::CheckButton *add2stack_checkbutton;
-    Gtk::CheckButton *add3stack_checkbutton;
-    Gtk::CheckButton *flystack_checkbutton;
-    Gtk::CheckButton *doublemovestack_checkbutton;
-    Gtk::CheckButton *add2goldpercity_checkbutton;
-    Gtk::CheckButton *add3goldpercity_checkbutton;
-    Gtk::CheckButton *add4goldpercity_checkbutton;
-    Gtk::CheckButton *add5goldpercity_checkbutton;
-    Gtk::CheckButton *steals_gold_checkbutton;
-    Gtk::CheckButton *sinks_ships_checkbutton;
-    Gtk::CheckButton *pickup_bags_checkbutton;
-    Gtk::CheckButton *add_mp_checkbutton;
-    Gtk::CheckButton *banish_worms_checkbutton;
-    Gtk::CheckButton *burn_bridge_checkbutton;
-    Gtk::CheckButton *capture_keeper_checkbutton;
-    Gtk::CheckButton *summon_monster_checkbutton;
-    Gtk::CheckButton *disease_city_checkbutton;
-    Gtk::CheckButton *raise_defenders_checkbutton;
-    Gtk::CheckButton *persuade_neutral_city_checkbutton;
-    Gtk::CheckButton *teleport_to_city_checkbutton;
+    Gtk::Switch *add1str_switch;
+    Gtk::Switch *add2str_switch;
+    Gtk::Switch *add3str_switch;
+    Gtk::Switch *add1stack_switch;
+    Gtk::Switch *add2stack_switch;
+    Gtk::Switch *add3stack_switch;
+    Gtk::Switch *flystack_switch;
+    Gtk::Switch *doublemovestack_switch;
+    Gtk::Switch *add2goldpercity_switch;
+    Gtk::Switch *add3goldpercity_switch;
+    Gtk::Switch *add4goldpercity_switch;
+    Gtk::Switch *add5goldpercity_switch;
+    Gtk::Switch *steals_gold_switch;
+    Gtk::Switch *sinks_ships_switch;
+    Gtk::Switch *pickup_bags_switch;
+    Gtk::Switch *add_mp_switch;
+    Gtk::Switch *banish_worms_switch;
+    Gtk::Switch *burn_bridge_switch;
+    Gtk::Switch *capture_keeper_switch;
+    Gtk::Switch *summon_monster_switch;
+    Gtk::Switch *disease_city_switch;
+    Gtk::Switch *raise_defenders_switch;
+    Gtk::Switch *persuade_neutral_city_switch;
+    Gtk::Switch *teleport_to_city_switch;
     Gtk::SpinButton *uses_spinbutton;
     Gtk::Button *kill_army_type_button;
     Gtk::SpinButton *steal_percent_spinbutton;
@@ -101,7 +101,7 @@ class ItemlistDialog: public LwEditorDialog
     void on_item_selected();
 
 
-    void on_checkbutton_toggled(Gtk::CheckButton *checkbutton, 
+    void on_switch_toggled(Gtk::Switch *sw, 
 				ItemProto::Bonus bonus);
     void on_add1str_toggled();
     void on_add2str_toggled();
