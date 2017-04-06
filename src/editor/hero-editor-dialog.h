@@ -36,8 +36,7 @@ class HeroEditorDialog: public LwEditorDialog
  private:
     Hero*d_hero;
     Gtk::Entry *name_entry;
-    Gtk::RadioButton *male_radiobutton;
-    Gtk::RadioButton *female_radiobutton;
+    Gtk::ComboBox *gender_combobox;
     Gtk::Button *edit_backpack_button;
 	
     void on_edit_backpack_clicked();

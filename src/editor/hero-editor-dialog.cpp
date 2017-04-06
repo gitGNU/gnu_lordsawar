@@ -37,14 +37,10 @@ HeroEditorDialog::HeroEditorDialog(Gtk::Window &parent, Hero *hero)
     
     xml->get_widget("edit_backpack_button", edit_backpack_button);
     edit_backpack_button->signal_clicked().connect (method(on_edit_backpack_clicked));
-    xml->get_widget("male_radiobutton", male_radiobutton);
-    xml->get_widget("female_radiobutton", female_radiobutton);
+    xml->get_widget("gender_combobox", gender_combobox);
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(d_hero->getName());
-    if (d_hero->getGender() == Hero::FEMALE)
-      female_radiobutton->set_active(true);
-    else
-      male_radiobutton->set_active(true);
+    gender_combobox->set_active(d_hero->getGender()-1);
 }
 
 void HeroEditorDialog::run()
@@ -56,10 +52,7 @@ void HeroEditorDialog::run()
   if (response == Gtk::RESPONSE_ACCEPT)	// accepted
     {
       d_hero->setName(name_entry->get_text());
-      if (male_radiobutton->get_active() == true)
-	d_hero->setGender(Hero::MALE);
-      else
-	d_hero->setGender(Hero::FEMALE);
+      d_hero->setGender(Hero::Gender(gender_combobox->get_active_row_number()+1));
     }
   else
     {
