@@ -26,6 +26,7 @@
 #include "select-army-dialog.h"
 
 #include "ucompose.hpp"
+#include "playerlist.h"
 #include "defs.h"
 #include "armyproto.h"
 #include "ImageCache.h"
@@ -86,9 +87,9 @@ void SelectArmyDialog::fill_in_army_toggles()
 {
     const Armysetlist* al = Armysetlist::getInstance();
 
-    guint32 armyset = 0;
-    if (player)
-      armyset = player->getArmyset();
+    if (!player)
+      player = Playerlist::getInstance()->getNeutral();
+    int armyset = player->getArmyset();
     bool pushed_back = false;
 
     // fill in selectable armies
