@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2011, 2014 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -47,25 +47,13 @@ RewardEditorDialog::RewardEditorDialog(Gtk::Window &parent, Player *player, bool
   item = NULL;
   ally = NULL;
 
-  xml->get_widget("gold_hbox", gold_hbox);
-  xml->get_widget("gold_radiobutton", gold_radiobutton);
-  gold_radiobutton->signal_toggled().connect (method(on_gold_toggled));
-  xml->get_widget("item_hbox", item_hbox);
-  xml->get_widget("item_radiobutton", item_radiobutton);
-  item_radiobutton->signal_toggled().connect (method(on_item_toggled));
-  xml->get_widget("allies_hbox", allies_hbox);
-  xml->get_widget("allies_radiobutton", allies_radiobutton);
-  allies_radiobutton->signal_toggled().connect (method(on_allies_toggled));
-  xml->get_widget("map_hbox", map_hbox);
-  xml->get_widget("map_radiobutton", map_radiobutton);
-  map_radiobutton->signal_toggled().connect (method(on_map_toggled));
-  xml->get_widget("hidden_ruin_hbox", hidden_ruin_hbox);
-  xml->get_widget("hidden_ruin_radiobutton", hidden_ruin_radiobutton);
-  hidden_ruin_radiobutton->signal_toggled().connect(method(on_hidden_ruin_toggled));
+  xml->get_widget("reward_type_combobox", reward_type_combobox);
+  reward_type_combobox->signal_changed().connect
+    (method(on_reward_type_changed));
+  xml->get_widget("notebook", notebook);
   xml->get_widget("gold_spinbutton", gold_spinbutton);
   xml->get_widget("randomize_gold_button", randomize_gold_button);
   randomize_gold_button->signal_clicked().connect (method(on_randomize_gold_clicked));
-  on_gold_toggled();
   xml->get_widget("item_button", item_button);
   item_button->signal_clicked().connect (method(on_item_clicked));
   xml->get_widget("clear_item_button", clear_item_button);
@@ -103,7 +91,6 @@ RewardEditorDialog::RewardEditorDialog(Gtk::Window &parent, Player *player, bool
   randomize_hidden_ruin_button->signal_clicked().connect
     (method(on_randomize_hidden_ruin_clicked));
   set_hidden_ruin_name();
-  hidden_ruin_radiobutton->set_sensitive(hidden_ruins);
 
   if (r)
     {
@@ -127,7 +114,8 @@ RewardEditorDialog::RewardEditorDialog(Gtk::Window &parent, Player *player, bool
       else if (r->getType() == Reward::GOLD)
 	reward = new Reward_Gold(*static_cast<Reward_Gold*>(r));
     }
-    
+
+  reward_type_combobox->set_active(0);
   if (reward)
     fill_in_reward_info();
 }
@@ -138,19 +126,19 @@ void RewardEditorDialog::fill_in_reward_info()
     {
       Reward_Gold *r = static_cast<Reward_Gold*>(reward);
       gold_spinbutton->set_value(r->getGold());
-      gold_radiobutton->set_active(true);
+      reward_type_combobox->set_active (0);
     }
   else if (reward->getType() == Reward::ITEM)
     {
       set_item_name();
-      item_radiobutton->set_active(true);
+      reward_type_combobox->set_active (1);
     }
   else if (reward->getType() == Reward::ALLIES)
     {
       Reward_Allies *r = static_cast<Reward_Allies*>(reward);
       num_allies_spinbutton->set_value(r->getNoOfAllies());
       set_ally_name();
-      allies_radiobutton->set_active(true);
+      reward_type_combobox->set_active (2);
     }
   else if (reward->getType() == Reward::MAP)
     {
@@ -159,15 +147,13 @@ void RewardEditorDialog::fill_in_reward_info()
       map_y_spinbutton->set_value(r->getLocation().y);
       map_width_spinbutton->set_value(r->getSightMap()->w);
       map_height_spinbutton->set_value(r->getSightMap()->h);
-	  map_radiobutton->set_active(true);
+      reward_type_combobox->set_active (3);
     }
   else if (reward->getType() == Reward::RUIN)
     {
       set_hidden_ruin_name();
-      hidden_ruin_radiobutton->set_active(true);
+      reward_type_combobox->set_active (4);
     }
-
-  //reward holds a reward
 }
 
 int RewardEditorDialog::run()
@@ -177,20 +163,22 @@ int RewardEditorDialog::run()
 
   if (response == Gtk::RESPONSE_ACCEPT)	// accepted
     {
-      if (gold_radiobutton->get_active() == true)
+
+      if (reward_type_combobox->get_active_row_number() == 0)
 	reward = new Reward_Gold(gold_spinbutton->get_value_as_int());
-      else if (item_radiobutton->get_active() == true && item)
+      else if (reward_type_combobox->get_active_row_number() == 1 && item)
 	reward = new Reward_Item(item);
-      else if (allies_radiobutton->get_active() == true && ally)
+      else if (reward_type_combobox->get_active_row_number() == 2 && ally)
 	reward = new Reward_Allies(ally, 
 				   num_allies_spinbutton->get_value_as_int());
-      else if (map_radiobutton->get_active() == true)
+      else if (reward_type_combobox->get_active_row_number() == 3)
 	reward = new Reward_Map 
 	  (Vector<int>(map_x_spinbutton->get_value_as_int(), 
 		       map_y_spinbutton->get_value_as_int()), "",
 	   map_height_spinbutton->get_value_as_int(),
 	   map_width_spinbutton->get_value_as_int());
-      else if (hidden_ruin_radiobutton->get_active() == true && hidden_ruin)
+      else if (reward_type_combobox->get_active_row_number() == 4 &&
+               hidden_ruin)
 	reward = new Reward_Ruin(hidden_ruin);
       else
 	{
@@ -201,11 +189,8 @@ int RewardEditorDialog::run()
 	    }
 	}
 
-	  
       if (reward)
-	{
 	reward->setName(reward->getDescription());
-	}
     }
   else
     {
@@ -215,52 +200,6 @@ int RewardEditorDialog::run()
 	delete item;
     }
   return response;
-}
-
-
-void RewardEditorDialog::on_gold_toggled()
-{
-  gold_hbox->set_sensitive(true);
-  item_hbox->set_sensitive(false);
-  allies_hbox->set_sensitive(false);
-  map_hbox->set_sensitive(false);
-  hidden_ruin_hbox->set_sensitive(false);
-}
-
-void RewardEditorDialog::on_item_toggled()
-{
-  gold_hbox->set_sensitive(false);
-  item_hbox->set_sensitive(true);
-  allies_hbox->set_sensitive(false);
-  map_hbox->set_sensitive(false);
-  hidden_ruin_hbox->set_sensitive(false);
-}
-
-void RewardEditorDialog::on_allies_toggled()
-{
-  gold_hbox->set_sensitive(false);
-  item_hbox->set_sensitive(false);
-  allies_hbox->set_sensitive(true);
-  map_hbox->set_sensitive(false);
-  hidden_ruin_hbox->set_sensitive(false);
-}
-
-void RewardEditorDialog::on_map_toggled()
-{
-  gold_hbox->set_sensitive(false);
-  item_hbox->set_sensitive(false);
-  allies_hbox->set_sensitive(false);
-  map_hbox->set_sensitive(true);
-  hidden_ruin_hbox->set_sensitive(false);
-}
-
-void RewardEditorDialog::on_hidden_ruin_toggled()
-{
-  gold_hbox->set_sensitive(false);
-  item_hbox->set_sensitive(false);
-  allies_hbox->set_sensitive(false);
-  map_hbox->set_sensitive(false);
-  hidden_ruin_hbox->set_sensitive(true);
 }
 
 void RewardEditorDialog::on_randomize_gold_clicked()
@@ -309,7 +248,7 @@ void RewardEditorDialog::set_item_name()
 
   item_button->set_label(name);
 }
-    
+
 void RewardEditorDialog::on_ally_clicked()
 {
   SelectArmyDialog d(*dialog, d_player, false, false, true);
@@ -337,7 +276,7 @@ void RewardEditorDialog::on_randomize_allies_clicked()
   const ArmyProto *a = Reward_Allies::randomArmyAlly();
   if (!a)
     return;
-    
+
   on_clear_ally_clicked();
   ally = new ArmyProto(*a);
   num_allies_spinbutton->set_value(Reward_Allies::getRandomAmountOfAllies());
@@ -408,4 +347,9 @@ void RewardEditorDialog::set_hidden_ruin_name()
     name = _("No Ruin");
 
   hidden_ruin_button->set_label(name);
+}
+
+void RewardEditorDialog::on_reward_type_changed()
+{
+  notebook->property_page() =reward_type_combobox->get_active_row_number();
 }

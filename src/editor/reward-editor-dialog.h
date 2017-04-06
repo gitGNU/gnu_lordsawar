@@ -47,11 +47,8 @@ class RewardEditorDialog: public LwEditorDialog
     ArmyProto *ally;
     Ruin *hidden_ruin;
     bool d_hidden_ruins;
-    Gtk::RadioButton *gold_radiobutton;
-    Gtk::RadioButton *item_radiobutton;
-    Gtk::RadioButton *allies_radiobutton;
-    Gtk::RadioButton *map_radiobutton;
-    Gtk::RadioButton *hidden_ruin_radiobutton;
+    Gtk::ComboBox *reward_type_combobox;
+    Gtk::Notebook *notebook;
     Gtk::SpinButton *gold_spinbutton;
     Gtk::Button *randomize_gold_button;
     Gtk::Button *item_button;
@@ -70,16 +67,6 @@ class RewardEditorDialog: public LwEditorDialog
     Gtk::Button *clear_hidden_ruin_button;
     Gtk::Button *hidden_ruin_button;
 
-    Gtk::Box *gold_hbox;
-    Gtk::Box *item_hbox;
-    Gtk::Box *allies_hbox;
-    Gtk::Box *map_hbox;
-    Gtk::Box *hidden_ruin_hbox;
-    void on_gold_toggled();
-    void on_item_toggled();
-    void on_allies_toggled();
-    void on_map_toggled();
-    void on_hidden_ruin_toggled();
     void on_randomize_gold_clicked();
     void on_item_clicked();
     void on_clear_item_clicked();
@@ -96,6 +83,7 @@ class RewardEditorDialog: public LwEditorDialog
     void set_hidden_ruin_name();
 
     void fill_in_reward_info();
+    void on_reward_type_changed();
 
 };
 
