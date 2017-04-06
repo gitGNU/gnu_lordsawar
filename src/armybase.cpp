@@ -77,42 +77,70 @@ Glib::ustring ArmyBase::getArmyBonusDescription() const
 {
   guint32 bonus = d_army_bonus;
   Glib::ustring s = "";
-  if (bonus & ArmyBase::ADD1STRINOPEN)
-    s += String::ucompose("%1%2", s == "" ? " " : "& ", 
+  if (bonus & ArmyBase::ADD1STRINOPEN && bonus & ArmyBase::ADD2STRINOPEN)
+    s += String::ucompose("%1%2", s == "" ? " " : "& ",
+			  _("+3 str in open"));
+  else if (bonus & ArmyBase::ADD1STRINOPEN)
+    s += String::ucompose("%1%2", s == "" ? " " : "& ",
 			  _("+1 str in open"));
-  if (bonus & ArmyBase::ADD2STRINOPEN)
-    s += String::ucompose("%1%2", s == "" ? " " : "& ", 
+  else if (bonus & ArmyBase::ADD2STRINOPEN)
+    s += String::ucompose("%1%2", s == "" ? " " : "& ",
 			  _("+2 str in open"));
-  if (bonus & ArmyBase::ADD1STRINFOREST)
-    s += String::ucompose("%1%2", s == "" ? " " : "& ", 
+  if (bonus & ArmyBase::ADD1STRINFOREST && bonus & ArmyBase::ADD2STRINFOREST)
+    s += String::ucompose("%1%2", s == "" ? " " : "& ",
+			  _("+3 str in woods"));
+  else if (bonus & ArmyBase::ADD1STRINFOREST)
+    s += String::ucompose("%1%2", s == "" ? " " : "& ",
 			  _("+1 str in woods"));
-  if (bonus & ArmyBase::ADD1STRINHILLS)
-    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
+  else if (bonus & ArmyBase::ADD2STRINFOREST)
+    s += String::ucompose("%1%2", s == "" ? " " : "& ",
+			  _("+1 str in woods"));
+  if (bonus & ArmyBase::ADD1STRINHILLS && bonus & ArmyBase::ADD2STRINHILLS)
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
+			  _("+3 str in hills"));
+  else if (bonus & ArmyBase::ADD1STRINHILLS)
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
 			  _("+1 str in hills"));
-  if (bonus & ArmyBase::ADD1STRINCITY)
-    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
+  else if (bonus & ArmyBase::ADD2STRINHILLS)
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
+			  _("+2 str in hills"));
+
+  if (bonus & ArmyBase::ADD1STRINCITY && bonus & ArmyBase::ADD2STRINCITY)
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
+			  _("+3 str in city"));
+  else if (bonus & ArmyBase::ADD1STRINCITY)
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
 			  _("+1 str in city"));
-  if (bonus & ArmyBase::ADD2STRINCITY)
-    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
+  else if (bonus & ArmyBase::ADD2STRINCITY)
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
 			  _("+2 str in city"));
   if (bonus & ArmyBase::ADD1STACKINHILLS)
-    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
 			  _("+1 stack in hills"));
   if (bonus & ArmyBase::SUBALLCITYBONUS)
-    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
 			  _("Cancel city bonus"));
-  if (bonus & ArmyBase::SUB1ENEMYSTACK)
-    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
+  if (bonus & ArmyBase::SUB1ENEMYSTACK && bonus & ArmyBase::SUB2ENEMYSTACK)
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
+			  _("-3 enemy stack"));
+  else if (bonus & ArmyBase::SUB1ENEMYSTACK)
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
 			  _("-1 enemy stack"));
-  if (bonus & ArmyBase::ADD1STACK)
+  else if (bonus & ArmyBase::SUB2ENEMYSTACK)
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
+			  _("-2 enemy stack"));
+
+  if (bonus & ArmyBase::ADD1STACK && bonus & ArmyBase::ADD2STACK)
+    s += String::ucompose("%1%2", s == "" ? " " : " & ", _("+3 stack"));
+  else if (bonus & ArmyBase::ADD1STACK)
     s += String::ucompose("%1%2", s == "" ? " " : " & ", _("+1 stack"));
-  if (bonus & ArmyBase::ADD2STACK)
+  else if (bonus & ArmyBase::ADD2STACK)
     s += String::ucompose("%1%2", s == "" ? " " : " & ", _("+2 stack"));
   if (bonus & ArmyBase::SUBALLNONHEROBONUS)
-    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
 			  _("cancel non-hero"));
   if (bonus & ArmyBase::SUBALLHEROBONUS)
-    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
+    s += String::ucompose("%1%2", s == "" ? " " : " & ",
 			  _("cancel hero"));
   return s;
 }
