@@ -43,6 +43,7 @@ ItemlistDialog::ItemlistDialog(Gtk::Window &parent)
 
     xml->get_widget("name_entry", name_entry);
     name_entry->signal_changed().connect (method(on_name_changed));
+    name_entry->set_max_length (MAX_LENGTH_FOR_ITEM_NAME);
     xml->get_widget("items_treeview", items_treeview);
     xml->get_widget("add_item_button", add_item_button);
     add_item_button->signal_clicked().connect (method(on_add_item_clicked));

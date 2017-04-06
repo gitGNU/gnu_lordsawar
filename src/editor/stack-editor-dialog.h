@@ -65,7 +65,7 @@ class StackEditorDialog: public LwEditorDialog
     Gtk::Button *remove_button;
     Gtk::Button *copy_button;
     Gtk::Button *edit_hero_button;
-    Gtk::CheckButton *fortified_checkbutton;
+    Gtk::Switch *fortified_switch;
 
     Stack *stack;
     int min_size;

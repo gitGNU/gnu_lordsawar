@@ -181,5 +181,8 @@ const Glib::ustring DEFAULT_CONFIG_FILENAME = "lordsawarrc";
 //this unfortunate limit
 const int MAX_LENGTH_FOR_PLAYER_NAME = 20;
 const int MAX_LENGTH_FOR_NETWORKED_GAME_NAME = 20;
+const int MAX_LENGTH_FOR_ITEM_NAME = 20;
+const int MAX_LENGTH_FOR_RUIN_NAME = 20;
+const int MAX_LENGTH_FOR_ARMY_NAME = 20;
 #endif // DEFINITIONS_H
 

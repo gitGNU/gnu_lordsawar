@@ -104,9 +104,9 @@ StackEditorDialog::StackEditorDialog(Gtk::Window &parent, Stack *s, int m)
 
     army_treeview->append_column(_("Name"), army_columns.name);
 
-    xml->get_widget("fortified_checkbutton", fortified_checkbutton);
-    fortified_checkbutton->set_active(stack->getFortified());
-    fortified_checkbutton->signal_toggled().connect(method(on_fortified_toggled));
+    xml->get_widget("fortified_switch", fortified_switch);
+    fortified_switch->set_active(stack->getFortified());
+    fortified_switch->property_active().signal_changed().connect(method(on_fortified_toggled));
 
     xml->get_widget("add_button", add_button);
     xml->get_widget("remove_button", remove_button);
@@ -311,14 +311,14 @@ void StackEditorDialog::set_button_sensitivity()
       }
   Player *player = get_selected_player();
   if (player == Playerlist::getInstance()->getNeutral())
-    fortified_checkbutton->set_sensitive(false);
+    fortified_switch->set_sensitive(false);
   else
-    fortified_checkbutton->set_sensitive(true);
+    fortified_switch->set_sensitive(true);
 }
 
 void StackEditorDialog::on_fortified_toggled()
 {
-  stack->setFortified(fortified_checkbutton->get_active());
+  stack->setFortified(fortified_switch->get_active());
 }
 	  
 void StackEditorDialog::on_player_changed()
@@ -326,7 +326,7 @@ void StackEditorDialog::on_player_changed()
   ImageCache *gc = ImageCache::getInstance();
   Player *player = get_selected_player();
   if (player == Playerlist::getInstance()->getNeutral())
-    fortified_checkbutton->set_active(false);
+    fortified_switch->set_active(false);
   set_button_sensitivity();
 	
   for (Gtk::TreeIter j = army_list->children().begin(),

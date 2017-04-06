@@ -46,11 +46,10 @@ class RuinEditorDialog: public LwEditorDialog
     Gtk::Button *randomize_name_button;
     Gtk::Button *clear_keeper_button;
     Gtk::Button *randomize_keeper_button;
-    Gtk::CheckButton *hidden_button;
+    Gtk::Switch *hidden_switch;
     Gtk::ComboBoxText *player_combobox;
     Gtk::Box *new_reward_hbox;
-    Gtk::RadioButton *new_reward_radiobutton;
-    Gtk::RadioButton *random_reward_radiobutton;
+    Gtk::Switch *random_reward_switch;
     Gtk::Button *reward_button;
     Gtk::Button *clear_reward_button;
     Gtk::Button *randomize_reward_button;
@@ -69,7 +68,6 @@ class RuinEditorDialog: public LwEditorDialog
     void on_randomize_name_clicked();
     void on_randomize_keeper_clicked();
     void on_new_reward_toggled();
-    void on_random_reward_toggled();
     void on_clear_reward_clicked();
     void on_randomize_reward_clicked();
     void on_reward_list_clicked();

@@ -54,6 +54,7 @@ RuinEditorDialog::RuinEditorDialog(Gtk::Window &parent, Ruin *r, CreateScenarioR
 	keeper = new Stack(0, ruin->getPos());
     
     xml->get_widget("name_entry", name_entry);
+    name_entry->set_max_length (MAX_LENGTH_FOR_RUIN_NAME);
     name_entry->set_text(ruin->getName());
     xml->get_widget("description_entry", description_entry);
     description_entry->set_text(ruin->getDescription());
@@ -76,9 +77,9 @@ RuinEditorDialog::RuinEditorDialog(Gtk::Window &parent, Ruin *r, CreateScenarioR
 
     set_keeper_name();
    
-    xml->get_widget("hidden_checkbutton", hidden_button);
-    hidden_button->set_active(ruin->isHidden());
-    hidden_button->signal_toggled().connect(method(on_hidden_toggled));
+    xml->get_widget("hidden_switch", hidden_switch);
+    hidden_switch->set_active(ruin->isHidden());
+    hidden_switch->property_active().signal_changed().connect(method(on_hidden_toggled));
     // setup the player combo
     player_combobox = manage(new Gtk::ComboBoxText);
 
@@ -101,10 +102,8 @@ RuinEditorDialog::RuinEditorDialog(Gtk::Window &parent, Ruin *r, CreateScenarioR
     on_hidden_toggled();
 
     xml->get_widget("new_reward_hbox", new_reward_hbox);
-    xml->get_widget("new_reward_radiobutton", new_reward_radiobutton);
-    new_reward_radiobutton->signal_toggled().connect(method(on_new_reward_toggled));
-    xml->get_widget("random_reward_radiobutton", random_reward_radiobutton);
-    random_reward_radiobutton->signal_toggled().connect(method(on_random_reward_toggled));
+    xml->get_widget("random_reward_switch", random_reward_switch);
+    random_reward_switch->property_active().signal_changed().connect(method(on_new_reward_toggled));
 
     xml->get_widget("reward_button", reward_button);
     reward_button->signal_clicked().connect(method(on_reward_clicked));
@@ -119,11 +118,11 @@ RuinEditorDialog::RuinEditorDialog(Gtk::Window &parent, Ruin *r, CreateScenarioR
     reward_list_button->signal_clicked().connect(method(on_reward_list_clicked));
 
     if (ruin->getReward() == NULL)
-      random_reward_radiobutton->set_active(true);
+      random_reward_switch->set_active (true);
     else
       {
 	reward = ruin->getReward();
-	new_reward_radiobutton->set_active(true);
+        random_reward_switch->set_active (false);
       }
 
     set_reward_name();
@@ -155,8 +154,8 @@ int RuinEditorDialog::run()
         else
           ruin->setOccupant(keeper);
 
-        ruin->setHidden(hidden_button->get_active());
-        if (hidden_button->get_active())
+        ruin->setHidden(hidden_switch->get_active());
+        if (hidden_switch->get_active())
           {
 	    // set owner
 	    int c = 0, row = player_combobox->get_active_row_number();
@@ -199,7 +198,7 @@ void RuinEditorDialog::set_keeper_name()
 
 void RuinEditorDialog::on_hidden_toggled()
 {
-  if (hidden_button->get_active())
+  if (hidden_switch->get_active())
     player_combobox->set_sensitive (true);
   else
     player_combobox->set_sensitive (false);
@@ -251,12 +250,7 @@ void RuinEditorDialog::on_randomize_keeper_clicked()
 
 void RuinEditorDialog::on_new_reward_toggled()
 {
-  new_reward_hbox->set_sensitive(true);
-}
-
-void RuinEditorDialog::on_random_reward_toggled()
-{
-  new_reward_hbox->set_sensitive(false);
+  new_reward_hbox->set_sensitive(!random_reward_switch->get_active());
 }
 
 void RuinEditorDialog::on_reward_list_clicked()
