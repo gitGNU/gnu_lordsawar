@@ -41,10 +41,10 @@ class CityEditorDialog: public LwEditorDialog
     City *city;
     CreateScenarioRandomize *d_randomizer;
     Gtk::ComboBoxText *player_combobox;
-    Gtk::CheckButton *capital_checkbutton;
+    Gtk::Switch *capital_switch;
     Gtk::Entry *name_entry;
     Gtk::SpinButton *income_spinbutton;
-    Gtk::CheckButton *burned_checkbutton;
+    Gtk::Switch *burned_switch;
 
     Gtk::TreeView *army_treeview;
     

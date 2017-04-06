@@ -49,8 +49,8 @@ CityEditorDialog::CityEditorDialog(Gtk::Window &parent, City *cit, CreateScenari
     city = cit;
     d_randomizer = randomizer;
     
-    xml->get_widget("capital_checkbutton", capital_checkbutton);
-    capital_checkbutton->set_active(city->isCapital());
+    xml->get_widget("capital_switch", capital_switch);
+    capital_switch->set_active(city->isCapital());
 
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(city->getName());
@@ -58,8 +58,8 @@ CityEditorDialog::CityEditorDialog(Gtk::Window &parent, City *cit, CreateScenari
     xml->get_widget("income_spinbutton", income_spinbutton);
     income_spinbutton->set_value(city->getGold());
 
-    xml->get_widget("burned_checkbutton", burned_checkbutton);
-    burned_checkbutton->set_active(city->isBurnt());
+    xml->get_widget("burned_switch", burned_switch);
+    burned_switch->set_active(city->isBurnt());
     
     // setup the player combo
     player_combobox = manage(new Gtk::ComboBoxText);
@@ -179,7 +179,7 @@ int CityEditorDialog::run()
     {
       unsigned int c = 0;
       // set attributes
-      bool capital = capital_checkbutton->get_active();
+      bool capital = capital_switch->get_active();
       if (capital)
 	{
 	  // make sure player doesn't have other capitals
@@ -201,7 +201,7 @@ int CityEditorDialog::run()
 
       city->setName(name_entry->get_text());
       city->setGold(income_spinbutton->get_value_as_int());
-      city->setBurnt(burned_checkbutton->get_active());
+      city->setBurnt(burned_switch->get_active());
 
       // set production slots
       c = 0;
@@ -282,7 +282,7 @@ void CityEditorDialog::on_randomize_name_clicked()
 void CityEditorDialog::on_randomize_income_clicked()
 {
   int gold;
-  gold = d_randomizer->getRandomCityIncome(capital_checkbutton->get_active());
+  gold = d_randomizer->getRandomCityIncome(capital_switch->get_active());
   income_spinbutton->set_value(gold);
 }
 
@@ -428,6 +428,6 @@ void CityEditorDialog::on_player_changed()
 						a->getTypeId(), 
 						player, NULL)->to_pixbuf();
     }
-  if (capital_checkbutton->get_active())
-    capital_checkbutton->set_active(false);
+  if (capital_switch->get_active())
+    capital_switch->set_active(false);
 }
