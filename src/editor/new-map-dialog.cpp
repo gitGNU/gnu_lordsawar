@@ -41,7 +41,6 @@ NewMapDialog::NewMapDialog(Gtk::Window &parent)
     map_set = false;
     
     xml->get_widget("map_size_combobox", map_size_combobox);
-    xml->get_widget("custom_size_box", custom_size_box);
     xml->get_widget("width_spinbutton", width_spinbutton);
     xml->get_widget("height_spinbutton", height_spinbutton);
     xml->get_widget("random_map_container", random_map_container);
@@ -56,7 +55,7 @@ NewMapDialog::NewMapDialog(Gtk::Window &parent)
     xml->get_widget("temples_scale", temples_scale);
     xml->get_widget("signposts_scale", signposts_scale);
     xml->get_widget("accept_button", accept_button);
-    xml->get_widget("roads_checkbutton", roads_checkbutton);
+    xml->get_widget("random_roads_switch", random_roads_switch);
 
     // fill in tile themes combobox
     
@@ -216,7 +215,7 @@ void NewMapDialog::run()
 	  map.ruins = int(ruins_scale->get_value());
 	  map.temples = int(temples_scale->get_value());
 	  map.signposts = int(signposts_scale->get_value());
-          map.generate_roads = roads_checkbutton->get_active();
+          map.generate_roads = random_roads_switch->get_active();
 	}
 
       map_set = true;
@@ -231,7 +230,7 @@ void NewMapDialog::on_fill_style_changed()
   assert(row >= 0 && row < int(fill_style.size()));
   bool random_selected = fill_style[row] == -1;
   random_map_container->set_sensitive(random_selected);
-  roads_checkbutton->set_sensitive(random_selected);
+  random_roads_switch->set_sensitive(random_selected);
 }
 
 void NewMapDialog::on_map_size_changed()
@@ -241,14 +240,16 @@ void NewMapDialog::on_map_size_changed()
     cities_scale->set_value(15);
     ruins_scale->set_value(20);
     temples_scale->set_value(20);
-    custom_size_box->set_sensitive(false);
+    width_spinbutton->set_sensitive (false);
+    height_spinbutton->set_sensitive (false);
     break;
 
   case MAP_SIZE_TINY:
     cities_scale->set_value(10);
     ruins_scale->set_value(15);
     temples_scale->set_value(15);
-    custom_size_box->set_sensitive(false);
+    width_spinbutton->set_sensitive (false);
+    height_spinbutton->set_sensitive (false);
     break;
 
   case MAP_SIZE_NORMAL:
@@ -256,13 +257,15 @@ void NewMapDialog::on_map_size_changed()
     cities_scale->set_value(20);
     ruins_scale->set_value(25);
     temples_scale->set_value(25);
-    custom_size_box->set_sensitive(false);
+    width_spinbutton->set_sensitive (false);
+    height_spinbutton->set_sensitive (false);
     break;
   case MAP_SIZE_CUSTOM:
     cities_scale->set_value(20);
     ruins_scale->set_value(25);
     temples_scale->set_value(25);
-    custom_size_box->set_sensitive(true);
+    width_spinbutton->set_sensitive (true);
+    height_spinbutton->set_sensitive (true);
     break;
   }
 }

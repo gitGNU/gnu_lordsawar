@@ -56,7 +56,6 @@ class NewMapDialog: public LwEditorDialog
     
  private:
     Gtk::ComboBox *map_size_combobox;
-    Gtk::Box *custom_size_box;
     Gtk::SpinButton *width_spinbutton;
     Gtk::SpinButton *height_spinbutton;
     Gtk::ComboBoxText *fill_style_combobox;
@@ -77,7 +76,7 @@ class NewMapDialog: public LwEditorDialog
     Gtk::Scale *temples_scale;
     Gtk::Scale *signposts_scale;
     Gtk::Button *accept_button;
-    Gtk::CheckButton *roads_checkbutton;
+    Gtk::Switch *random_roads_switch;
 
     enum { MAP_SIZE_NORMAL = 0, MAP_SIZE_SMALL, MAP_SIZE_TINY, 
       MAP_SIZE_CUSTOM };
