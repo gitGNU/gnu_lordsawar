@@ -244,7 +244,7 @@ Glib::ustring ItemProto::getBonusDescription() const
   if (command > 0)
     s.push_back(String::ucompose(_("+%1 Command"), command));
   if (goldpercity > 0)
-    s.push_back(String::ucompose(_("+%1 gold per city"), goldpercity));
+    s.push_back(String::ucompose(_("+%1 Gold per City"), goldpercity));
 
   Glib::ustring str;
   bool first = true;
