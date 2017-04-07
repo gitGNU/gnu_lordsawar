@@ -30,8 +30,10 @@
 #include "armyset.h"
 
 int max_vector_width;
+
 int main(int argc, char* argv[])
 {
+  int err = EXIT_SUCCESS;
   Glib::ustring filename;
   Glib::ustring rewrite;
   bool identify_file = false;
@@ -45,6 +47,7 @@ int main(int argc, char* argv[])
   textdomain (GETTEXT_PACKAGE);
   #endif
 
+  Gtk::Main kit(argc, argv);
   if (argc > 1)
     {
       for (int i = 2; i <= argc; i++)
@@ -92,7 +95,7 @@ int main(int argc, char* argv[])
 
       if (same_version)
         {
-          std::cerr << String::ucompose(_("%1 is already the latest version."), 
+          std::cout << String::ucompose(_("%1 is already the latest version."), 
                                    filename) << std::endl;
 
           bool is_tar_file = false;
@@ -103,31 +106,31 @@ int main(int argc, char* argv[])
             {
               bool armyset = false, tileset = false, cityset = false, 
                    shieldset = false;
-              std::cerr << _("Trying to upgrade the other files inside the tar file...") << std::endl;
+              std::cout << _("Trying to upgrade the other files inside the tar file...") << std::endl;
               upgraded = FileCompat::getInstance()->upgradeGameScenario
                 (tmpfile, LORDSAWAR_SAVEGAME_VERSION, 
                  armyset, tileset, cityset, shieldset);
               if (upgraded)
                 {
                   if (armyset)
-                    std::cerr << _("Armyset has been upgraded.") << std::endl;
+                    std::cout << _("Armyset has been upgraded.") << std::endl;
                   if (tileset)
-                    std::cerr << _("Tileset has been upgraded.") << std::endl;
+                    std::cout << _("Tileset has been upgraded.") << std::endl;
                   if (cityset)
-                    std::cerr << _("Cityset has been upgraded.") << std::endl;
+                    std::cout << _("Cityset has been upgraded.") << std::endl;
                   if (shieldset)
-                    std::cerr << _("Shieldset has been upgraded.") << std::endl;
+                    std::cout << _("Shieldset has been upgraded.") << std::endl;
                   if (armyset || tileset || cityset || shieldset)
                     File::copy(tmpfile, filename);
                   if (!armyset && !tileset && !cityset && !shieldset)
-                    std::cerr << _("None of the other files needed to be upgraded.") << std::endl;
+                    std::cout << _("None of the other files needed to be upgraded.") << std::endl;
                 }
             }
           File::erase(tmpfile);
         }
       else if (!upgraded && !same_version)
         {
-          std::cerr << String::ucompose(_("Error: %1 could not be upgraded."), 
+          std::cout << String::ucompose(_("Error: %1 could not be upgraded."), 
                                    filename) << std::endl;
           File::erase(tmpfile);
         }
@@ -136,7 +139,8 @@ int main(int argc, char* argv[])
           File::copy(tmpfile, filename);
           File::erase(tmpfile);
         }
-      return !upgraded;
+      if (!upgraded)
+        err = EXIT_FAILURE;
     }
   else if (identify_file && rewrite == "")
     {
@@ -146,7 +150,6 @@ int main(int argc, char* argv[])
       std::cout << String::ucompose("%1 (%2 %3)", 
                                     FileCompat::typeToString(type), 
                                     tag, version) << std::endl;
-      return EXIT_SUCCESS;
     }
   else if (identify_file == false && rewrite != "")
     {
@@ -155,19 +158,17 @@ int main(int argc, char* argv[])
       FileCompat::Type type = fc->getType(filename);
       if (fc->get_tag_and_version_from_file(filename, type, tag, version))
         {
-          if (fc->rewrite_with_updated_version(filename, type, tag, rewrite))
-            return EXIT_SUCCESS;
-          else
-            return EXIT_FAILURE;
+          if (!fc->rewrite_with_updated_version(filename, type, tag, rewrite))
+            err = EXIT_FAILURE;
         }
       else
-        return EXIT_FAILURE;
+        err = EXIT_FAILURE;
     }
   else if (identify_file && rewrite != "")
     {
-      std::cerr << _("Error: The --identify and --rewrite options cannot be used at the same time.") << std::endl;
-      return EXIT_FAILURE;
+      std::cout << _("Error: The --identify and --rewrite options cannot be used at the same time.") << std::endl;
+      err = EXIT_FAILURE;
     }
-
+  return err;
 }
 
