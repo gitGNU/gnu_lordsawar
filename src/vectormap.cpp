@@ -363,11 +363,13 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	    }
 	  if (dest != city->getVectoring() && dest != Vector<int>(-1, -1))
 	    {
+              Playerlist::getActiveplayer()->vectorFromCity(city, dest);
 	      setClickAction(CLICK_SELECTS);
 	      draw();
 	    }
 	  else if (dest == Vector<int>(-1, -1)) //stop vectoring
 	    {
+              Playerlist::getActiveplayer()->vectorFromCity(city, dest);
 	      setClickAction(CLICK_SELECTS);
 	      draw();
 	    }
@@ -406,35 +408,34 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	  else
 	    dest = nearestCity->getPos();
 
-	  if (dest == Vector<int>(-1, -1)) //stop vectoring
-	    {
-	      //we were doing change destination,
-	      //and we clicked back on our own city
-	      //this is the same thing as a cancel.
-	      setClickAction(CLICK_SELECTS);
-	      draw();
-	      return;
-	    }
-	  bool is_source_city = false;
-          for (auto cit: Citylist::getInstance()->getCitiesVectoringTo(city))
-	    {
-	      if (cit->contains(dest))
-		{
-		  is_source_city = true;
-		  break;
-		}
-	    }
+          Player *active = Playerlist::getActiveplayer();
+          active->changeVectorDestination(city->getPos(), dest);
+	  //we were doing change destination,
+	  //and we clicked back on our own city
+	  //this is the same thing as a cancel.
+	  setClickAction(CLICK_SELECTS);
+	  draw();
+          break;
+	  //bool is_source_city = false;
+          //for (auto cit: Citylist::getInstance()->getCitiesVectoringTo(city))
+	    //{
+	      //if (cit->contains(dest))
+		//{
+		  //is_source_city = true;
+		  //break;
+		//}
+	    //}
 	  //if it's not one of our sources, then select it
 	  //why do we care if it's one of our sources anyway?
-	  if (is_source_city == false)
-	    {
-	      setClickAction(CLICK_SELECTS);
-	      draw();
-	      if (dest != planted_standard)
-		city = nearestCity;
-	      draw();
-	    }
-	  break;
+	  //if (is_source_city == false)
+	    //{
+	      //setClickAction(CLICK_SELECTS);
+	      //draw();
+	      //if (dest != planted_standard)
+		//city = nearestCity;
+	      //draw();
+	    //}
+	  //break;
 	}
     }
 }

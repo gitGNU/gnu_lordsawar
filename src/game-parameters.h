@@ -67,6 +67,13 @@ public:
       NO_QUESTING = 0, ONE_QUEST_PER_PLAYER, ONE_QUEST_PER_HERO
     };
     QuestPolicy play_with_quests;
+    enum QuickStartPolicy {
+      NO_QUICK_START = 0,
+      EVENLY_DIVIDED = 1,
+      AI_HEAD_START = 2
+    };
+    QuickStartPolicy quick_start;
+
     bool hidden_map;
     bool diplomacy;
 
@@ -79,12 +86,12 @@ public:
     };
     RazingCities razing_cities;
 
-    enum QuickStartPolicy {
-      NO_QUICK_START = 0,
-      EVENLY_DIVIDED = 1,
-      AI_HEAD_START = 2
+    enum VectoringMode {
+      VECTORING_ALWAYS_TWO_TURNS = 0,
+      VECTORING_VARIABLE_TURNS = 1,
     };
-    QuickStartPolicy quick_start;
+    VectoringMode vectoring_mode;
+
     bool cusp_of_war;
     bool intense_combat;
     bool military_advisor;

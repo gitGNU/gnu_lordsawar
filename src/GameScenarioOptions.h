@@ -46,6 +46,7 @@ class GameScenarioOptions: public sigc::trackable
         static bool s_random_turns;
 	static bool s_surrender_already_offered;
 	static int s_difficulty;
+        static GameParameters::VectoringMode s_vectoring_mode;
 
         static unsigned int s_round;
 

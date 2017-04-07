@@ -38,6 +38,7 @@ GameOptionsDialog::GameOptionsDialog(Gtk::Window &parent, bool readonly)
     xml->get_widget("quests_combobox", quests_combobox);
     xml->get_widget("hidden_map_switch", hidden_map_switch);
     xml->get_widget("neutral_combobox", neutral_cities_combobox);
+    xml->get_widget("vectoring_combobox", vectoring_combobox);
     xml->get_widget("razing_combobox", razing_cities_combobox);
     xml->get_widget("diplomacy_switch", diplomacy_switch);
     xml->get_widget("military_advisor_switch", 
@@ -51,13 +52,13 @@ GameOptionsDialog::GameOptionsDialog(Gtk::Window &parent, bool readonly)
 void GameOptionsDialog::fill_in_options()
 {
     neutral_cities_combobox->set_active(GameScenarioOptions::s_neutral_cities);
+    vectoring_combobox->set_active(GameScenarioOptions::s_vectoring_mode);
     razing_cities_combobox->set_active(GameScenarioOptions::s_razing_cities);
 
     view_enemies_switch->set_active(GameScenarioOptions::s_see_opponents_stacks);
     view_production_switch->set_active(GameScenarioOptions::s_see_opponents_production);
     quests_combobox->set_active(int(GameScenarioOptions::s_play_with_quests));
     hidden_map_switch->set_active(GameScenarioOptions::s_hidden_map);
-    neutral_cities_combobox->set_active(int(GameScenarioOptions::s_neutral_cities));
     razing_cities_combobox->set_active(int(GameScenarioOptions::s_razing_cities));
     diplomacy_switch->set_active(GameScenarioOptions::s_diplomacy);
     military_advisor_switch->set_active(GameScenarioOptions::s_military_advisor);
@@ -88,6 +89,8 @@ bool GameOptionsDialog::run()
                            (method(on_hidden_map_switch_clicked)));
     connections.push_back (neutral_cities_combobox->signal_changed().connect
                            (method(on_neutral_cities_combobox_changed)));
+    connections.push_back (vectoring_combobox->signal_changed().connect
+                           (method(on_vectoring_combobox_changed)));
     connections.push_back (razing_cities_combobox->signal_changed().connect
                            (method (on_razing_cities_combobox_changed)));
     connections.push_back (diplomacy_switch->property_active().signal_changed().connect
@@ -124,6 +127,9 @@ bool GameOptionsDialog::run()
     g.neutral_cities = GameParameters::NeutralCities (
 	neutral_cities_combobox->get_active_row_number());
     GameScenarioOptions::s_neutral_cities = g.neutral_cities;
+    g.vectoring_mode = GameParameters::VectoringMode(
+	vectoring_combobox->get_active_row_number());
+    GameScenarioOptions::s_vectoring_mode = g.vectoring_mode;
     g.razing_cities = GameParameters::RazingCities (
 	razing_cities_combobox->get_active_row_number());
     GameScenarioOptions::s_razing_cities = g.razing_cities;
@@ -149,6 +155,7 @@ bool GameOptionsDialog::run()
     Configuration::s_play_with_quests = GameScenarioOptions::s_play_with_quests;
     Configuration::s_hidden_map = GameScenarioOptions::s_hidden_map;
     Configuration::s_neutral_cities = GameScenarioOptions::s_neutral_cities;
+    Configuration::s_vectoring_mode = GameScenarioOptions::s_vectoring_mode;
     Configuration::s_razing_cities = GameScenarioOptions::s_razing_cities;
     Configuration::s_diplomacy = GameScenarioOptions::s_diplomacy;
     Configuration::s_random_turns = GameScenarioOptions::s_random_turns;
@@ -192,6 +199,12 @@ void GameOptionsDialog::on_neutral_cities_combobox_changed()
   GameScenarioOptions::s_neutral_cities = GameParameters::NeutralCities 
     (neutral_cities_combobox->get_active_row_number());
   difficulty_option_changed.emit();
+}
+
+void GameOptionsDialog::on_vectoring_combobox_changed()
+{
+  GameScenarioOptions::s_vectoring_mode = GameParameters::VectoringMode
+    (vectoring_combobox->get_active_row_number());
 }
 
 void GameOptionsDialog::on_razing_cities_combobox_changed()

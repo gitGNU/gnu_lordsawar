@@ -51,6 +51,7 @@ DestinationDialog::DestinationDialog(Gtk::Window &parent, City *c, bool *see_all
   xml->get_widget("current_label", current_label);
   xml->get_widget("current_image", current_image);
   xml->get_widget("turns_label", turns_label);
+  xml->get_widget("description_label", description_label);
   xml->get_widget("one_turn_away_image", one_turn_away_image);
   xml->get_widget("two_turns_away_image", two_turns_away_image);
   xml->get_widget("next_turn_1_image", next_turn_1_image);
@@ -84,7 +85,7 @@ void DestinationDialog::run()
 {
   vectormap->resize();
   vectormap->draw();
-  see_all_toggle->set_active(*d_see_all);
+  //see_all_toggle->set_active(*d_see_all);
   dialog->show();
   dialog->run();
 }
@@ -94,6 +95,9 @@ void DestinationDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
   if (vectormap->getClickAction() == VectorMap::CLICK_SELECTS &&
       vector_toggle->get_active() == true)
     vector_toggle->set_active(false);
+  else if (vectormap->getClickAction() == VectorMap::CLICK_SELECTS &&
+      change_toggle->get_active() == true)
+    change_toggle->set_active(false);
   else
     {
       city = vectormap->getCity();
@@ -117,8 +121,25 @@ bool DestinationDialog::on_map_mouse_button_event(GdkEventButton *e)
     return true;
 }
 
+void DestinationDialog::update_toggle_color (Gtk::ToggleButton *toggle)
+{
+  bool active = toggle->get_active();
+  Pango::AttrList attrs;
+  Pango::Attribute weight = 
+    Pango::Attribute::create_attr_weight(active ?
+                                         Pango::WEIGHT_BOLD :
+                                         Pango::WEIGHT_NORMAL);
+  Pango::Attribute color = active ?
+    Pango::Attribute::create_attr_foreground (65535,0,0) :
+    Pango::Attribute::create_attr_foreground (65535,65535,65535);
+  attrs.insert(color);
+  dynamic_cast<Gtk::Label*>(toggle->get_child())->set_attributes(attrs);
+}
+
 void DestinationDialog::on_see_all_toggled(Gtk::ToggleButton *toggle)
 {
+  update_toggle_color(toggle);
+
   *d_see_all = toggle->get_active();
   if (*d_see_all)
     vectormap->setShowVectoring(VectorMap::SHOW_ALL_VECTORING);
@@ -129,6 +150,7 @@ void DestinationDialog::on_see_all_toggled(Gtk::ToggleButton *toggle)
 
 void DestinationDialog::on_vector_toggled(Gtk::ToggleButton *toggle)
 {
+  update_toggle_color(toggle);
 // the idea here is that we click on the toggle,
 // and then after we click on the map, it gets untoggled
 // we act when it's untoggled.
@@ -147,6 +169,7 @@ void DestinationDialog::on_vector_toggled(Gtk::ToggleButton *toggle)
 
 void DestinationDialog::on_change_toggled(Gtk::ToggleButton *toggle)
 {
+  update_toggle_color(toggle);
 // the idea here is that we click on the toggle,
 // and then after we click on the map, it gets untoggled
 // we act when it's untoggled.
@@ -160,6 +183,37 @@ void DestinationDialog::on_change_toggled(Gtk::ToggleButton *toggle)
     {
       vectormap->setClickAction(VectorMap::CLICK_CHANGES_DESTINATION);
       vectormap->draw();
+    }
+}
+
+void DestinationDialog::update_description (std::list<VectoredUnit*> vectored)
+{
+  if (vectored.empty() == true)
+    {
+      if (city->getVectoring() != Vector<int>(-1,-1))
+        {
+          City *c = Citylist::getInstance()->getObjectAt(city->getVectoring());
+          int turns = VectoredUnit::get_travel_turns (city->getPos(), 
+                                                      city->getVectoring());
+          /* note to translators:
+             "standard" is the hero's flag that can be vectored to.
+             it is a flag that can be carried into battle.
+             e.g. a battle standard. */
+          description_label->set_text
+            (String::ucompose(_("+%1t to arrive at %2"),
+                              turns, c ? c->getName() : _("standard")));
+        }
+      else
+        description_label->set_text ("");
+    }
+  else
+    {
+      Vector<int> t = vectored.front()->getDestination();
+      City *c = Citylist::getInstance()->getObjectAt(t);
+      int turns = vectored.front()->getDuration();
+      description_label->set_text (String::ucompose(_("+%1t to arrive at %2"),
+                                                    turns, c ? c->getName() :
+                                                    _("standard")));
     }
 }
 
@@ -202,10 +256,12 @@ void DestinationDialog::fill_in_vectoring_info()
   Glib::ustring s1;
   Glib::ustring s4 = _("Current:");
 
+  vul->getVectoredUnitsComingFrom(city->getPos(), vectored);
   if (slot == -1)
     {
       pic = empty_pic;
       turns_label->set_markup("");
+      description_label->set_text("");
     }
   else
     {
@@ -214,13 +270,13 @@ void DestinationDialog::fill_in_vectoring_info()
                                   Shield::NEUTRAL, true)->to_pixbuf();
       s1 = String::ucompose(_("%1t"), city->getDuration());
       turns_label->set_markup("<i>" + s1 + "</i>");
+      update_description (vectored);
     }
     
   current_image->property_pixbuf() = pic;
   current_label->set_markup("<i>" + s4 + "</i>");
 
   //show the units that have been vectored from this city
-  vul->getVectoredUnitsComingFrom(city->getPos(), vectored);
   for (it = vectored.begin(); it != vectored.end(); it++)
     {
       int armytype = (*it)->getArmy()->getTypeId();

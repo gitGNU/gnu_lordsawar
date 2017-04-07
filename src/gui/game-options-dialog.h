@@ -52,6 +52,7 @@ class GameOptionsDialog: public LwDialog
     Gtk::Switch *random_turns_switch;
     Gtk::ComboBox *quick_start_combobox;
     Gtk::Switch *cusp_of_war_switch;
+    Gtk::ComboBox *vectoring_combobox;
     void fill_in_options();
     void on_view_enemies_switch_clicked();
     void on_view_production_switch_clicked();
@@ -63,6 +64,7 @@ class GameOptionsDialog: public LwDialog
     void on_cusp_of_war_switch_clicked();
     void on_random_turns_switch_clicked();
     void on_quick_start_combobox_changed();
+    void on_vectoring_combobox_changed();
     void on_intense_combat_switch_clicked();
     void on_military_advisor_switch_clicked();
     bool d_readonly;

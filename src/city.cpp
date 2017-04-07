@@ -239,10 +239,11 @@ const Army *City::armyArrives(Stack *& stack)
   // vector the army to the new spot
   if (d_vectoring)
     {
+      int turns = VectoredUnit::get_travel_turns (getPos(), d_vector);
       VectoredUnit *v = 
         new VectoredUnit (getPos(), d_vector, 
                           (*this)[d_active_production_slot]->getArmyProdBase(),
-                          MAX_TURNS_FOR_VECTORING, d_owner);
+                          turns, d_owner);
       VectoredUnitlist::getInstance()->push_back(v);
       d_owner->cityChangeProduction(this, d_active_production_slot);
       //we don't return an army when we've vectored it.

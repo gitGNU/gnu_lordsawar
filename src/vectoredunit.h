@@ -131,6 +131,11 @@ class VectoredUnit: public Ownable, public LocationBox, public sigc::trackable
 	 */
         bool nextTurn();
 
+        //Statics
+
+        //! Calculate the turns it takes to vector from SRC to DEST.
+        static int get_travel_turns (Vector<int> src, Vector<int> dest);
+
     private:
 
         // DATA

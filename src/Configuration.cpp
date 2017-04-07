@@ -58,6 +58,7 @@ Glib::ustring Configuration::s_filename = "";
 bool Configuration::s_see_opponents_stacks = false;
 bool Configuration::s_see_opponents_production = false;
 GameParameters::QuestPolicy Configuration::s_play_with_quests = GameParameters::ONE_QUEST_PER_PLAYER;
+GameParameters::VectoringMode Configuration::s_vectoring_mode = GameParameters::VECTORING_ALWAYS_TWO_TURNS;
 bool Configuration::s_hidden_map = false;
 bool Configuration::s_diplomacy = false;
 GameParameters::NeutralCities Configuration::s_neutral_cities = GameParameters::AVERAGE;
@@ -147,6 +148,8 @@ bool Configuration::saveConfigurationFile(Glib::ustring filename)
     retval &= helper.saveData("view_production", s_see_opponents_production);
     Glib::ustring quest_policy_str = questPolicyToString(GameParameters::QuestPolicy(s_play_with_quests));
     retval &= helper.saveData("quests", quest_policy_str);
+    Glib::ustring vectoring_mode_str = vectoringModeToString(GameParameters::VectoringMode(s_vectoring_mode));
+    retval &= helper.saveData("vectoring_mode", vectoring_mode_str);
     retval &= helper.saveData("hidden_map", s_hidden_map);
     retval &= helper.saveData("diplomacy", s_diplomacy);
     Glib::ustring neutral_cities_str = neutralCitiesToString(GameParameters::NeutralCities(s_neutral_cities));
@@ -259,6 +262,9 @@ bool Configuration::parseConfiguration(XML_Helper* helper)
     Glib::ustring quest_policy_str;
     helper->getData(quest_policy_str, "quests");
     s_play_with_quests = questPolicyFromString(quest_policy_str);
+    Glib::ustring vectoring_mode_str;
+    helper->getData(vectoring_mode_str, "vectoring_mode");
+    s_vectoring_mode = vectoringModeFromString(vectoring_mode_str);
     helper->getData(s_hidden_map, "hidden_map");
     helper->getData(s_diplomacy, "diplomacy");
     Glib::ustring neutral_cities_str;
@@ -490,6 +496,30 @@ GameParameters::QuestPolicy Configuration::questPolicyFromString(Glib::ustring s
     return GameParameters::ONE_QUEST_PER_HERO;
     
   return GameParameters::NO_QUESTING;
+}
+
+Glib::ustring Configuration::vectoringModeToString(const GameParameters::VectoringMode vectoring)
+{
+  switch (vectoring)
+    {
+      case GameParameters::VECTORING_ALWAYS_TWO_TURNS:
+	return "GameParameters::VECTORING_ALWAYS_TWO_TURNS";
+      case GameParameters::VECTORING_VARIABLE_TURNS:
+	return "GameParameters::VECTORING_VARIABLE_TURNS";
+    }
+  return "GameParameters::VECTORING_ALWAYS_TWO_TURNS";
+}
+
+GameParameters::VectoringMode Configuration::vectoringModeFromString(Glib::ustring str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return GameParameters::VectoringMode(atoi(str.c_str()));
+  if (str == "GameParameters::VECTORING_ALWAYS_TWO_TURNS")
+    return GameParameters::VECTORING_ALWAYS_TWO_TURNS;
+  else if (str == "GameParameters::VECTORING_VARIABLE_TURNS")
+    return GameParameters::VECTORING_VARIABLE_TURNS;
+
+  return GameParameters::VECTORING_ALWAYS_TWO_TURNS;
 }
 
 Glib::ustring Configuration::uiFormFactorToString(const Configuration::UiFormFactor factor)

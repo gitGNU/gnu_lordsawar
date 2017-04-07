@@ -655,6 +655,8 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   retval &= helper.saveData("neutral_cities", neutral_cities_str);
   Glib::ustring razing_cities_str = Configuration::razingCitiesToString(GameParameters::RazingCities(s_razing_cities));
   retval &= helper.saveData("razing_cities", razing_cities_str);
+  Glib::ustring vectoring_mode_str = Configuration::vectoringModeToString(GameParameters::VectoringMode(s_vectoring_mode));
+  retval &= helper.saveData("vectoring_mode", vectoring_mode_str);
   retval &= helper.saveData("intense_combat", s_intense_combat);
   retval &= helper.saveData("military_advisor", s_military_advisor);
   retval &= helper.saveData("random_turns", s_random_turns);
@@ -706,6 +708,9 @@ bool GameScenario::load(Glib::ustring tag, XML_Helper* helper)
       Glib::ustring razing_cities_str;
       helper->getData(razing_cities_str, "razing_cities");
       s_razing_cities = Configuration::razingCitiesFromString(razing_cities_str);
+      Glib::ustring vectoring_mode_str;
+      helper->getData(vectoring_mode_str, "vectoring_mode");
+      s_vectoring_mode = Configuration::vectoringModeFromString(vectoring_mode_str);
       helper->getData(s_intense_combat, "intense_combat");
       helper->getData(s_military_advisor, "military_advisor");
       helper->getData(s_random_turns, "random_turns");
@@ -1120,6 +1125,10 @@ public:
 	    helper->getData(razing_cities_str, "razing_cities");
 	    game_params.razing_cities = 
 	      Configuration::razingCitiesFromString(razing_cities_str);
+	    Glib::ustring vectoring_mode_str;
+	    helper->getData(vectoring_mode_str, "vectoring_mode");
+	    game_params.vectoring_mode = 
+	      Configuration::vectoringModeFromString(vectoring_mode_str);
 	    helper->getData(game_params.intense_combat, 
 			    "intense_combat");
 	    helper->getData(game_params.military_advisor, 

@@ -113,6 +113,7 @@ class Configuration : public sigc::trackable
         static bool s_see_opponents_stacks;
         static bool s_see_opponents_production;
         static GameParameters::QuestPolicy s_play_with_quests;
+        static GameParameters::VectoringMode s_vectoring_mode;
         static bool s_hidden_map;
         static bool s_diplomacy;
         static GameParameters::NeutralCities s_neutral_cities;
@@ -150,6 +151,8 @@ class Configuration : public sigc::trackable
         static Glib::ustring quickStartPolicyToString(const GameParameters::QuickStartPolicy policy);
         static GameParameters::QuestPolicy questPolicyFromString(Glib::ustring str);
         static Glib::ustring questPolicyToString(const GameParameters::QuestPolicy quest);
+        static Glib::ustring vectoringModeToString(const GameParameters::VectoringMode vectoring);
+        static GameParameters::VectoringMode vectoringModeFromString(Glib::ustring str);
 
         static bool upgrade(Glib::ustring filename, Glib::ustring old_version,
                             Glib::ustring new_version);

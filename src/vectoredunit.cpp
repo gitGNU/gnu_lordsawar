@@ -25,6 +25,7 @@
 #include "GameMap.h"
 #include "action.h"
 #include "MapBackpack.h"
+#include "GameScenario.h"
 
 Glib::ustring VectoredUnit::d_tag = "vectoredunit";
 
@@ -133,4 +134,21 @@ bool VectoredUnit::nextTurn()
   return false;
 }
 
+int VectoredUnit::get_travel_turns (Vector<int> src, Vector<int> dest)
+{
+  int turns = MAX_TURNS_FOR_VECTORING;
+  switch (GameScenario::s_vectoring_mode)
+    {
+    case GameParameters::VECTORING_ALWAYS_TWO_TURNS:
+      turns = MAX_TURNS_FOR_VECTORING;
+      break;
+    case GameParameters::VECTORING_VARIABLE_TURNS:
+      int d = dist(dest, src);
+      double r = (double) d /
+        (double)std::max(GameMap::getWidth(), GameMap::getHeight());
+      turns = (4 * r) + 1;
+      break;
+    }
+  return turns;
+}
 // End of file

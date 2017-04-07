@@ -25,6 +25,7 @@
 #include "vectormap.h"
 #include "lw-dialog.h"
 
+class VectoredUnit;
 // dialog for choosing the destination of the production of a city
 class DestinationDialog: public LwDialog
 {
@@ -45,6 +46,7 @@ class DestinationDialog: public LwDialog
     Gtk::Label *current_label;
     Gtk::Image *current_image;
     Gtk::Label *turns_label;
+    Gtk::Label *description_label;
     Gtk::Image *one_turn_away_image;
     Gtk::Image *two_turns_away_image;
     Gtk::Image *next_turn_1_image;
@@ -64,6 +66,8 @@ class DestinationDialog: public LwDialog
     void on_vector_toggled(Gtk::ToggleButton *toggle);
     void on_change_toggled(Gtk::ToggleButton *toggle);
     void fill_in_vectoring_info();
+    void update_toggle_color (Gtk::ToggleButton *toggle);
+    void update_description (std::list<VectoredUnit*> vectored);
     bool *d_see_all;
 };
 
