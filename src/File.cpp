@@ -122,7 +122,7 @@ Glib::ustring File::getXSLTFile(guint32 type, Glib::ustring old_version, Glib::u
   Glib::ustring filename = String::ucompose("%1-%2-%3",
                                             FileCompat::typeToCode(t), 
                                             old_version, new_version);
-  Glib::ustring file = getMiscFile(Glib::build_filename("various", "xslt") + filename + ".xsl");
+  Glib::ustring file = getMiscFile(Glib::build_filename("various", "xslt", filename + ".xsl"));
   if (File::exists(file))
     return file;
   else

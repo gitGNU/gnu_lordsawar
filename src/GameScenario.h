@@ -161,7 +161,7 @@ class GameScenario: public GameScenarioOptions
 	  void quickStartEvenlyDivided();
 	  void quickStartAIHeadStart();
 	  bool setupFog(bool hidden_map);
-	  bool setupCities(GameParameters::QuickStartPolicy quick_start);
+	  bool setupCities(GameParameters::QuickStartPolicy quick_start, GameParameters::BuildProductionMode build);
 	  bool setupRewards(bool hidden_map);
 	  bool setupMapRewards();
 	  bool setupRuinRewards();

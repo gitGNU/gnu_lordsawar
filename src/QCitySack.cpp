@@ -31,6 +31,7 @@
 #include "xmlhelper.h"
 #include "hero.h"
 #include "rnd.h"
+#include "GameScenarioOptions.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -118,6 +119,10 @@ void QuestCitySack::initDescription()
 
 City * QuestCitySack::chooseToSack(Player *p)
 {
+  if (GameScenarioOptions::s_sacking_mode == GameParameters::SACKING_NEVER ||
+      GameScenarioOptions::s_sacking_mode == GameParameters::SACKING_ON_CAPTURE)
+    return NULL;
+
   std::vector<City*> cities;
 
   // Collect all cities

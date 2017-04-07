@@ -187,6 +187,8 @@ void AI_Smart::heroGainsLevel(Hero * a)
 
 int AI_Smart::maybeBuyProduction(City *c, bool quick)
 {
+  if (c->getBuildProduction() == false)
+    return -1;
   int armytype = -1;
   int freeslot = c->getFreeSlot();
 

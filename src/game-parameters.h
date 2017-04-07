@@ -92,6 +92,22 @@ public:
     };
     VectoringMode vectoring_mode;
 
+    enum BuildProductionMode {
+      BUILD_PRODUCTION_ALWAYS = 0,
+      BUILD_PRODUCTION_USUALLY = 1,
+      BUILD_PRODUCTION_SELDOM = 2,
+      BUILD_PRODUCTION_NEVER = 3,
+    };
+    BuildProductionMode build_production_mode;
+
+    enum SackingMode {
+      SACKING_ALWAYS = 0,
+      SACKING_ON_CAPTURE = 1,
+      SACKING_ON_QUEST = 2,
+      SACKING_NEVER = 3,
+    };
+    SackingMode sacking_mode;
+
     bool cusp_of_war;
     bool intense_combat;
     bool military_advisor;

@@ -60,6 +60,9 @@ CityEditorDialog::CityEditorDialog(Gtk::Window &parent, City *cit, CreateScenari
 
     xml->get_widget("burned_switch", burned_switch);
     burned_switch->set_active(city->isBurnt());
+
+    xml->get_widget("build_production_switch", build_production_switch);
+    build_production_switch->set_active(city->getBuildProduction());
     
     // setup the player combo
     player_combobox = manage(new Gtk::ComboBoxText);
@@ -202,6 +205,7 @@ int CityEditorDialog::run()
       city->setName(name_entry->get_text());
       city->setGold(income_spinbutton->get_value_as_int());
       city->setBurnt(burned_switch->get_active());
+      city->setBuildProduction(build_production_switch->get_active());
 
       // set production slots
       c = 0;

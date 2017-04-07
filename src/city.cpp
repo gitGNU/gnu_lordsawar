@@ -38,6 +38,7 @@
 #include "action.h"
 #include "xmlhelper.h"
 #include "rnd.h"
+#include "GameScenarioOptions.h"
 
 Glib::ustring City::d_tag = "city";
 
@@ -49,7 +50,7 @@ City::City(Vector<int> pos, guint32 width, Glib::ustring name, guint32 gold,
     :Ownable((Player *)0), Location(pos, width), Renamable(name),
     ProdSlotlist(numslots), d_gold(gold), d_defense_level(1), d_burnt(false), 
     d_vectoring(false), d_vector(Vector<int>(-1,-1)), 
-    d_capital(false), d_capital_owner(0)
+    d_capital(false), d_capital_owner(0), d_build_production (true)
 
 {
   // set the tiles to city type
@@ -71,6 +72,7 @@ City::City(XML_Helper* helper, guint32 width)
     
     helper->getData(d_gold, "gold");
     helper->getData(d_burnt, "burnt");
+    helper->getData(d_build_production, "build_production");
     helper->getData(d_capital, "capital");
     if (d_capital)
       {
@@ -106,7 +108,7 @@ City::City(const City& c)
     :Ownable(c), Location(c), Renamable(c), ProdSlotlist(c),
     d_gold(c.d_gold), d_defense_level(c.d_defense_level), d_burnt(c.d_burnt),
     d_vectoring(c.d_vectoring),d_vector(c.d_vector), d_capital(c.d_capital), 
-    d_capital_owner(c.d_capital_owner)
+    d_capital_owner(c.d_capital_owner), d_build_production(c.d_build_production)
 {
 }
 
@@ -114,7 +116,7 @@ City::City(const City& c, Vector<int> pos)
     :Ownable(c), Location(c, pos), Renamable(c), ProdSlotlist(c),
     d_gold(c.d_gold), d_defense_level(c.d_defense_level), d_burnt(c.d_burnt),
     d_vectoring(c.d_vectoring),d_vector(c.d_vector), d_capital(c.d_capital), 
-    d_capital_owner(c.d_capital_owner)
+    d_capital_owner(c.d_capital_owner), d_build_production(c.d_build_production)
 {
 }
 
@@ -135,6 +137,7 @@ bool City::save(XML_Helper* helper) const
     retval &= helper->saveData("defense", d_defense_level);
     retval &= helper->saveData("gold", d_gold);
     retval &= helper->saveData("burnt", d_burnt);
+    retval &= helper->saveData("build_production", d_build_production);
     retval &= helper->saveData("capital", d_capital);
     if (d_capital)
       retval &= helper->saveData("capital_owner", d_capital_owner->getId());
@@ -569,6 +572,16 @@ void City::persuadeDefenders(Player *new_owner)
   std::vector<Stack*> stacks = getDefenders();
   for (unsigned int i = 0; i < stacks.size(); i++)
     getOwner()->getStacklist()->changeOwnership(stacks[i], new_owner);
+    switch (GameScenarioOptions::s_build_production_mode)
+      {
+      case GameParameters::BUILD_PRODUCTION_ALWAYS:
+      case GameParameters::BUILD_PRODUCTION_NEVER:
+        break;
+      case GameParameters::BUILD_PRODUCTION_USUALLY:
+      case GameParameters::BUILD_PRODUCTION_SELDOM:
+        setBuildProduction(true);
+        break;
+      }
   conquer(new_owner);
 }
 // End of file

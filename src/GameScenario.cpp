@@ -411,7 +411,8 @@ bool GameScenario::setupRewards(bool hidden_map)
   return true;
 }
 
-bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start)
+bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start,
+                               GameParameters::BuildProductionMode build)
 {
   debug("GameScenario::setupCities")
 
@@ -470,6 +471,89 @@ bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start)
 
 	  (*it)->setActiveProductionSlot(0);
 	}
+    }
+
+  //set up build production
+  std::list<City*> cities;
+  for (Citylist::iterator it = Citylist::getInstance()->begin();
+       it != Citylist::getInstance()->end(); it++)
+    {
+      if ((*it)->isBurnt())
+        continue;
+      if ((*it)->isCapital())
+        continue;
+      if ((*it)->getBuildProduction() == true)
+        continue;
+      cities.push_back(*it);
+    }
+  switch (build)
+    {
+    case GameParameters::BUILD_PRODUCTION_ALWAYS:
+      for (Citylist::iterator it = Citylist::getInstance()->begin();
+           it != Citylist::getInstance()->end(); it++)
+        {
+          if ((*it)->isBurnt())
+            continue;
+          (*it)->setBuildProduction(true);
+        }
+      break;
+    case GameParameters::BUILD_PRODUCTION_USUALLY:
+        {
+          //usually means 66% have their build production turned on.
+          int target = (double)Citylist::getInstance()->size() * 0.33;
+          int to_turn_off = cities.size() - target;
+          if (to_turn_off > 0)
+            {
+              for (Citylist::iterator it = Citylist::getInstance()->begin();
+                   it != Citylist::getInstance()->end(); it++)
+                {
+                  if ((*it)->isBurnt())
+                    continue;
+                  if ((*it)->isCapital())
+                    continue;
+                  if ((*it)->getBuildProduction() == false)
+                    continue;
+                  (*it)->setBuildProduction (false);
+                  to_turn_off--;
+                  if (to_turn_off == 0)
+                    break;
+                }
+            }
+        }
+      break;
+    case GameParameters::BUILD_PRODUCTION_SELDOM:
+        {
+          //seldom means 90% have their build production turned off.
+          int target = (double)Citylist::getInstance()->size() * 0.90;
+          int to_turn_off = target - cities.size ();
+          if (to_turn_off > 0)
+            {
+              for (Citylist::iterator it = Citylist::getInstance()->begin();
+                   it != Citylist::getInstance()->end(); it++)
+                {
+                  if ((*it)->isBurnt())
+                    continue;
+                  if ((*it)->isCapital())
+                    continue;
+                  if ((*it)->getBuildProduction() == false)
+                    continue;
+                  (*it)->setBuildProduction (false);
+                  to_turn_off--;
+                  if (to_turn_off == 0)
+                    break;
+                }
+            }
+        }
+      break;
+    case GameParameters::BUILD_PRODUCTION_NEVER:
+      for (Citylist::iterator it = Citylist::getInstance()->begin();
+           it != Citylist::getInstance()->end(); it++)
+        {
+          if ((*it)->isBurnt())
+            continue;
+          (*it)->setBuildProduction(false);
+        }
+      break;
     }
 
   return true;
@@ -657,6 +741,10 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   retval &= helper.saveData("razing_cities", razing_cities_str);
   Glib::ustring vectoring_mode_str = Configuration::vectoringModeToString(GameParameters::VectoringMode(s_vectoring_mode));
   retval &= helper.saveData("vectoring_mode", vectoring_mode_str);
+  Glib::ustring build_prod_mode_str = Configuration::buildProductionModeToString(GameParameters::BuildProductionMode(s_build_production_mode));
+  retval &= helper.saveData("build_production_mode", build_prod_mode_str);
+  Glib::ustring sacking_mode_str = Configuration::sackingModeToString(GameParameters::SackingMode(s_sacking_mode));
+  retval &= helper.saveData("sacking_mode", sacking_mode_str);
   retval &= helper.saveData("intense_combat", s_intense_combat);
   retval &= helper.saveData("military_advisor", s_military_advisor);
   retval &= helper.saveData("random_turns", s_random_turns);
@@ -711,6 +799,12 @@ bool GameScenario::load(Glib::ustring tag, XML_Helper* helper)
       Glib::ustring vectoring_mode_str;
       helper->getData(vectoring_mode_str, "vectoring_mode");
       s_vectoring_mode = Configuration::vectoringModeFromString(vectoring_mode_str);
+      Glib::ustring build_prod_mode_str;
+      helper->getData(build_prod_mode_str, "build_production_mode");
+      s_build_production_mode = Configuration::buildProductionModeFromString(build_prod_mode_str);
+      Glib::ustring sacking_mode_str;
+      helper->getData(sacking_mode_str, "sacking_mode");
+      s_sacking_mode = Configuration::sackingModeFromString(sacking_mode_str);
       helper->getData(s_intense_combat, "intense_combat");
       helper->getData(s_military_advisor, "military_advisor");
       helper->getData(s_random_turns, "random_turns");
@@ -999,7 +1093,7 @@ void GameScenario::initialize(GameParameters g)
 {
   Playerlist::getInstance()->clearAllActions();
   setupFog(g.hidden_map);
-  setupCities(g.quick_start);
+  setupCities(g.quick_start, g.build_production_mode);
   setupStacks(g.hidden_map);
   setupRewards(g.hidden_map);
   setupDiplomacy(g.diplomacy);
@@ -1319,7 +1413,10 @@ void GameScenario::support_backward_compatibility()
   FileCompat::getInstance()->support_type (FileCompat::GAMESCENARIO, SAVE_EXT, 
                                            d_top_tag, true);
   FileCompat::getInstance()->support_version
-    (FileCompat::GAMESCENARIO, "0.2.0", LORDSAWAR_SAVEGAME_VERSION,
+    (FileCompat::GAMESCENARIO, "0.2.1", "0.3.2",
+     sigc::ptr_fun(&GameScenario::upgrade));
+  FileCompat::getInstance()->support_version
+    (FileCompat::GAMESCENARIO, "0.2.0", "0.2.1",
      sigc::ptr_fun(&GameScenario::upgrade));
 }
 

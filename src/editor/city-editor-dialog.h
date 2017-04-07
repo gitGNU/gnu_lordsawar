@@ -45,6 +45,7 @@ class CityEditorDialog: public LwEditorDialog
     Gtk::Entry *name_entry;
     Gtk::SpinButton *income_spinbutton;
     Gtk::Switch *burned_switch;
+    Gtk::Switch *build_production_switch;
 
     Gtk::TreeView *army_treeview;
     

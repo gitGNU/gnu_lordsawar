@@ -39,6 +39,8 @@ bool GameScenarioOptions::s_random_turns = false;
 bool GameScenarioOptions::s_surrender_already_offered = false;
 unsigned int GameScenarioOptions::s_round = 0;
 GameParameters::VectoringMode GameScenarioOptions::s_vectoring_mode = GameParameters::VECTORING_ALWAYS_TWO_TURNS;
+GameParameters::BuildProductionMode GameScenarioOptions::s_build_production_mode = GameParameters::BUILD_PRODUCTION_ALWAYS;
+GameParameters::SackingMode GameScenarioOptions::s_sacking_mode = GameParameters::SACKING_ALWAYS;
 
 GameScenarioOptions::GameScenarioOptions()
 {

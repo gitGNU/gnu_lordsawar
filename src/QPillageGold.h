@@ -116,13 +116,7 @@ class QuestPillageGold : public Quest, public sigc::trackable
 	// Static Methods
 
 	//! Returns that this quest is feasible.
-        static bool isFeasible(guint32 heroId) 
-          {
-            if (heroId) 
-              return true;
-            else
-              return false;
-          }
+        static bool isFeasible(guint32 heroId);
 
     private:
 

@@ -253,6 +253,9 @@ bool CreateScenario::create(const GameParameters &g)
     GameScenario::s_see_opponents_stacks = g.see_opponents_stacks;
     GameScenario::s_see_opponents_production = g.see_opponents_production;
     GameScenario::s_play_with_quests = g.play_with_quests;
+    GameScenario::s_vectoring_mode = g.vectoring_mode;
+    GameScenario::s_build_production_mode = g.build_production_mode;
+    GameScenario::s_sacking_mode = g.sacking_mode;
     GameScenario::s_hidden_map = g.hidden_map;
     GameScenario::s_diplomacy = g.diplomacy;
     GameScenario::s_cusp_of_war = g.cusp_of_war;

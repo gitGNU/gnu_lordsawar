@@ -116,6 +116,10 @@ void GamePreferencesDialog::init(Glib::ustring filename)
   GameScenarioOptions::s_see_opponents_production = 
     Configuration::s_see_opponents_production;
   GameScenarioOptions::s_play_with_quests = Configuration::s_play_with_quests;
+  GameScenarioOptions::s_vectoring_mode = Configuration::s_vectoring_mode;
+  GameScenarioOptions::s_sacking_mode = Configuration::s_sacking_mode;
+  GameScenarioOptions::s_build_production_mode =
+    Configuration::s_build_production_mode;
   GameScenarioOptions::s_hidden_map = Configuration::s_hidden_map;
   GameScenarioOptions::s_neutral_cities = Configuration::s_neutral_cities;
   GameScenarioOptions::s_razing_cities = Configuration::s_razing_cities;
@@ -317,6 +321,9 @@ void GamePreferencesDialog::update_difficulty_rating()
   g.see_opponents_stacks = GameScenarioOptions::s_see_opponents_stacks;
   g.see_opponents_production = GameScenarioOptions::s_see_opponents_production;
   g.play_with_quests = GameScenarioOptions::s_play_with_quests;
+  g.vectoring_mode = GameScenarioOptions::s_vectoring_mode;
+  g.sacking_mode = GameScenarioOptions::s_sacking_mode;
+  g.build_production_mode = GameScenarioOptions::s_build_production_mode;
   g.hidden_map = GameScenarioOptions::s_hidden_map;
   g.neutral_cities = GameScenarioOptions::s_neutral_cities;
   g.razing_cities = GameScenarioOptions::s_razing_cities;
@@ -359,6 +366,9 @@ void GamePreferencesDialog::on_start_game_clicked()
   g.see_opponents_stacks = GameScenarioOptions::s_see_opponents_stacks;
   g.see_opponents_production = GameScenarioOptions::s_see_opponents_production;
   g.play_with_quests = GameScenarioOptions::s_play_with_quests;
+  g.vectoring_mode = GameScenarioOptions::s_vectoring_mode;
+  g.sacking_mode = GameScenarioOptions::s_sacking_mode;
+  g.build_production_mode = GameScenarioOptions::s_build_production_mode;
   g.hidden_map = GameScenarioOptions::s_hidden_map;
   g.neutral_cities = GameScenarioOptions::s_neutral_cities;
   g.razing_cities = GameScenarioOptions::s_razing_cities;

@@ -484,6 +484,9 @@ GameScenario *Driver::create_new_scenario(GameParameters &g, GameScenario::PlayM
   GameScenarioOptions::s_see_opponents_stacks = g.see_opponents_stacks;
   GameScenarioOptions::s_see_opponents_production = g.see_opponents_production;
   GameScenarioOptions::s_play_with_quests = g.play_with_quests;
+  GameScenarioOptions::s_vectoring_mode = g.vectoring_mode;
+  GameScenarioOptions::s_sacking_mode = g.sacking_mode;
+  GameScenarioOptions::s_build_production_mode = g.build_production_mode;
   GameScenarioOptions::s_hidden_map = g.hidden_map;
   GameScenarioOptions::s_diplomacy = g.diplomacy;
   GameScenarioOptions::s_cusp_of_war = g.cusp_of_war;

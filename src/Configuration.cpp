@@ -59,6 +59,8 @@ bool Configuration::s_see_opponents_stacks = false;
 bool Configuration::s_see_opponents_production = false;
 GameParameters::QuestPolicy Configuration::s_play_with_quests = GameParameters::ONE_QUEST_PER_PLAYER;
 GameParameters::VectoringMode Configuration::s_vectoring_mode = GameParameters::VECTORING_ALWAYS_TWO_TURNS;
+GameParameters::BuildProductionMode Configuration::s_build_production_mode = GameParameters::BUILD_PRODUCTION_ALWAYS;
+GameParameters::SackingMode Configuration::s_sacking_mode = GameParameters::SACKING_ALWAYS;
 bool Configuration::s_hidden_map = false;
 bool Configuration::s_diplomacy = false;
 GameParameters::NeutralCities Configuration::s_neutral_cities = GameParameters::AVERAGE;
@@ -150,6 +152,10 @@ bool Configuration::saveConfigurationFile(Glib::ustring filename)
     retval &= helper.saveData("quests", quest_policy_str);
     Glib::ustring vectoring_mode_str = vectoringModeToString(GameParameters::VectoringMode(s_vectoring_mode));
     retval &= helper.saveData("vectoring_mode", vectoring_mode_str);
+    Glib::ustring build_prod_mode_str = buildProductionModeToString(GameParameters::BuildProductionMode(s_build_production_mode));
+    retval &= helper.saveData("build_production_mode", build_prod_mode_str);
+    Glib::ustring sack_mode_str = sackingModeToString(GameParameters::SackingMode(s_sacking_mode));
+    retval &= helper.saveData("sacking_mode", sack_mode_str);
     retval &= helper.saveData("hidden_map", s_hidden_map);
     retval &= helper.saveData("diplomacy", s_diplomacy);
     Glib::ustring neutral_cities_str = neutralCitiesToString(GameParameters::NeutralCities(s_neutral_cities));
@@ -265,6 +271,13 @@ bool Configuration::parseConfiguration(XML_Helper* helper)
     Glib::ustring vectoring_mode_str;
     helper->getData(vectoring_mode_str, "vectoring_mode");
     s_vectoring_mode = vectoringModeFromString(vectoring_mode_str);
+    Glib::ustring build_prod_mode_str;
+    helper->getData(build_prod_mode_str, "build_production_mode");
+    s_build_production_mode =
+      buildProductionModeFromString(build_prod_mode_str);
+    Glib::ustring sack_mode_str;
+    helper->getData(sack_mode_str, "sacking_mode");
+    s_sacking_mode = sackingModeFromString(sack_mode_str);
     helper->getData(s_hidden_map, "hidden_map");
     helper->getData(s_diplomacy, "diplomacy");
     Glib::ustring neutral_cities_str;
@@ -520,6 +533,70 @@ GameParameters::VectoringMode Configuration::vectoringModeFromString(Glib::ustri
     return GameParameters::VECTORING_VARIABLE_TURNS;
 
   return GameParameters::VECTORING_ALWAYS_TWO_TURNS;
+}
+
+Glib::ustring Configuration::buildProductionModeToString(const GameParameters::BuildProductionMode mode)
+{
+  switch (mode)
+    {
+      case GameParameters::BUILD_PRODUCTION_ALWAYS:
+	return "GameParameters::BUILD_PRODUCTION_ALWAYS";
+      case GameParameters::BUILD_PRODUCTION_USUALLY:
+	return "GameParameters::BUILD_PRODUCTION_USUALLY";
+      case GameParameters::BUILD_PRODUCTION_SELDOM:
+	return "GameParameters::BUILD_PRODUCTION_SELDOM";
+      case GameParameters::BUILD_PRODUCTION_NEVER:
+	return "GameParameters::BUILD_PRODUCTION_NEVER";
+    }
+  return "GameParameters::BUILD_PRODUCTION_ALWAYS";
+}
+
+GameParameters::BuildProductionMode Configuration::buildProductionModeFromString(Glib::ustring str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return GameParameters::BuildProductionMode(atoi(str.c_str()));
+  if (str == "GameParameters::BUILD_PRODUCTION_ALWAYS")
+    return GameParameters::BUILD_PRODUCTION_ALWAYS;
+  else if (str == "GameParameters::BUILD_PRODUCTION_USUALLY")
+    return GameParameters::BUILD_PRODUCTION_USUALLY;
+  else if (str == "GameParameters::BUILD_PRODUCTION_SELDOM")
+    return GameParameters::BUILD_PRODUCTION_SELDOM;
+  else if (str == "GameParameters::BUILD_PRODUCTION_NEVER")
+    return GameParameters::BUILD_PRODUCTION_NEVER;
+
+  return GameParameters::BUILD_PRODUCTION_ALWAYS;
+}
+
+Glib::ustring Configuration::sackingModeToString(const GameParameters::SackingMode sack)
+{
+  switch (sack)
+    {
+      case GameParameters::SACKING_ALWAYS:
+	return "GameParameters::SACKING_ALWAYS";
+      case GameParameters::SACKING_ON_CAPTURE:
+	return "GameParameters::SACKING_ON_CAPTURE";
+      case GameParameters::SACKING_ON_QUEST:
+	return "GameParameters::SACKING_ON_QUEST";
+      case GameParameters::SACKING_NEVER:
+	return "GameParameters::SACKING_NEVER";
+    }
+  return "GameParameters::SACKING_ALWAYS";
+}
+
+GameParameters::SackingMode Configuration::sackingModeFromString(Glib::ustring str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return GameParameters::SackingMode(atoi(str.c_str()));
+  if (str == "GameParameters::SACKING_ALWAYS")
+    return GameParameters::SACKING_ALWAYS;
+  else if (str == "GameParameters::SACKING_ON_CAPTURE")
+    return GameParameters::SACKING_ON_CAPTURE;
+  else if (str == "GameParameters::SACKING_ON_QUEST")
+    return GameParameters::SACKING_ON_QUEST;
+  else if (str == "GameParameters::SACKING_NEVER")
+    return GameParameters::SACKING_NEVER;
+
+  return GameParameters::SACKING_ALWAYS;
 }
 
 Glib::ustring Configuration::uiFormFactorToString(const Configuration::UiFormFactor factor)

@@ -27,6 +27,7 @@
 #include "xmlhelper.h"
 #include "hero.h"
 #include "rnd.h"
+#include "GameScenarioOptions.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -123,3 +124,14 @@ void QuestPillageGold::cityAction(City *c, CityDefeatedAction action,
 	}
     }
 }
+
+bool QuestPillageGold::isFeasible(guint32 heroId)
+{
+  if (GameScenarioOptions::s_sacking_mode == GameParameters::SACKING_NEVER ||
+      GameScenarioOptions::s_sacking_mode == GameParameters::SACKING_ON_CAPTURE)
+    return false;
+  if (heroId)
+    return true;
+  return false;
+}
+

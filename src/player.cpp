@@ -2723,6 +2723,8 @@ void Player::improveAlliesRelationship(Player *player, guint32 amount,
 
 void Player::AI_maybeBuyScout(City *c)
 {
+  if (c->getBuildProduction() == false)
+    return;
   bool one_turn_army_exists = false;
   //do we already have something that can be produced in one turn?
   for (unsigned int i = 0; i < c->getMaxNoOfProductionBases(); i++)
@@ -3208,7 +3210,7 @@ bool Player::AI_maybeVector(City *c, guint32 safe_mp, guint32 min_defenders,
   p = pc2.calculate(target->getPos(), moves2, turns2, left2);
   if (p)
     delete p;
-  turns2+=MAX_TURNS_FOR_VECTORING;
+  turns2+=VectoredUnit::get_travel_turns(near_city->getPos(), target->getPos());
   if (turns1 <= turns2)
     return false;
 

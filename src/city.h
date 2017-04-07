@@ -104,6 +104,9 @@ class City : public Ownable, public Location, public Renamable,
 
 	//Get Methods
 	
+        //! Return if the city can produce new production lines.
+        bool getBuildProduction() const {return d_build_production;}
+
         //! Return the defense level of the city.
         int getDefenseLevel() const;
 
@@ -131,6 +134,9 @@ class City : public Ownable, public Location, public Renamable,
 
 
 	//Set Methods
+
+        //! Set whether or not the city can produce new production lines.
+        void setBuildProduction(bool build){d_build_production = build;}
 
         //! Set the gold the city produces each turn.
         void setGold(guint32 gold){d_gold = gold;}
@@ -344,6 +350,15 @@ class City : public Ownable, public Location, public Renamable,
 
 	//! The original owner of this capital city.
 	Player *d_capital_owner;
+
+        //! Whether or not we're allowed to build new production lines.
+        /**
+         * This refers to the "buy" button in the city window.
+         * If we're not allowed to build new production lines in the city,
+         * the buy button will be disabled.
+         *
+         */
+        bool d_build_production;
 };
 
 bool armyCompareStrength (const ArmyProdBase *lhs, const ArmyProdBase *rhs);

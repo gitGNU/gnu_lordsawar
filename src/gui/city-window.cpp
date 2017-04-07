@@ -37,6 +37,7 @@
 #include "destination-dialog.h"
 #include "citylist.h"
 #include "playerlist.h"
+#include "GameScenarioOptions.h"
 
 #define method(x) sigc::mem_fun(*this, &CityWindow::x)
 
@@ -83,6 +84,7 @@ CityWindow::CityWindow(Gtk::Window &parent, City *c, bool razing_possible,
     xml->get_widget("raze_button", raze_button);
     raze_button->signal_clicked().connect(method(on_raze_clicked));
 
+    xml->get_widget("rebellious_label", rebellious_label);
     xml->get_widget("production_toggles_hbox", production_toggles_hbox);
     for (unsigned int i = 1; i <= city->getMaxNoOfProductionBases(); ++i) {
 	Gtk::ToggleButton *toggle = new Gtk::ToggleButton();
@@ -149,6 +151,20 @@ void CityWindow::fill_in_city_info()
 
     defense_label->set_text (String::ucompose("%1", city->getDefenseLevel()));
     income_label->set_text (String::ucompose("%1", city->getGold()));
+    switch (GameScenarioOptions::s_build_production_mode)
+      {
+      case GameParameters::BUILD_PRODUCTION_ALWAYS:
+      case GameParameters::BUILD_PRODUCTION_NEVER:
+        rebellious_label->set_text ("");
+        break;
+      case GameParameters::BUILD_PRODUCTION_USUALLY:
+      case GameParameters::BUILD_PRODUCTION_SELDOM:
+        if (city->getBuildProduction())
+          rebellious_label->set_text (_("The inhabitants are unruly!"));
+        else
+          rebellious_label->set_text ("");
+        break;
+      }
 }
 
 void CityWindow::fill_in_production_toggles()
@@ -309,7 +325,7 @@ void CityWindow::fill_in_production_info()
       }
     else
       {
-        buy_button->set_sensitive(true);
+        buy_button->set_sensitive (city->getBuildProduction());
         raze_button->set_sensitive (d_razing_possible);
         rename_button->set_sensitive(true);
         destination_button->set_sensitive(true);

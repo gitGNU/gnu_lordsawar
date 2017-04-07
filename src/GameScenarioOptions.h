@@ -47,6 +47,8 @@ class GameScenarioOptions: public sigc::trackable
 	static bool s_surrender_already_offered;
 	static int s_difficulty;
         static GameParameters::VectoringMode s_vectoring_mode;
+        static GameParameters::BuildProductionMode s_build_production_mode;
+        static GameParameters::SackingMode s_sacking_mode;
 
         static unsigned int s_round;
 

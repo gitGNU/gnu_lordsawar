@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<lordsawar version="0.2.1">
+<lordsawar version="0.3.2">
 	<counter>
 		<d_curID>955</d_curID>
 	</counter>
@@ -1644,6 +1644,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -1698,6 +1699,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -1784,6 +1786,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -1838,6 +1841,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Heavy Cav.</d_name>
@@ -1892,6 +1896,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Cav.</d_name>
@@ -1946,6 +1951,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Cav.</d_name>
@@ -2032,6 +2038,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -2119,6 +2126,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Giant Bats</d_name>
@@ -2205,6 +2213,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -2275,6 +2284,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Cav.</d_name>
@@ -2346,6 +2356,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -2432,6 +2443,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -2518,6 +2530,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -2588,6 +2601,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -2658,6 +2672,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -2744,6 +2759,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -2830,6 +2846,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -2884,6 +2901,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -2970,6 +2988,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Catapults</d_name>
@@ -3056,6 +3075,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -3126,6 +3146,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -3212,6 +3233,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Wolfriders</d_name>
@@ -3282,6 +3304,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -3368,6 +3391,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -3454,6 +3478,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -3508,6 +3533,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Cav.</d_name>
@@ -3594,6 +3620,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -3680,6 +3707,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -3734,6 +3762,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -3804,6 +3833,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Orcish Mob</d_name>
@@ -3874,6 +3904,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -3944,6 +3975,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Cav.</d_name>
@@ -3998,6 +4030,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Cav.</d_name>
@@ -4053,6 +4086,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -4139,6 +4173,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -4225,6 +4260,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Cav.</d_name>
@@ -4279,6 +4315,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -4334,6 +4371,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -4420,6 +4458,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Giant Bats</d_name>
@@ -4506,6 +4545,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -4592,6 +4632,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Archers</d_name>
@@ -4646,6 +4687,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -4716,6 +4758,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -4770,6 +4813,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -4840,6 +4884,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -4910,6 +4955,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -4996,6 +5042,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -5066,6 +5113,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -5152,6 +5200,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -5206,6 +5255,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Catapults</d_name>
@@ -5277,6 +5327,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -5363,6 +5414,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -5449,6 +5501,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -5519,6 +5572,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Cav.</d_name>
@@ -5589,6 +5643,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -5643,6 +5698,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Archers</d_name>
@@ -5697,6 +5753,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Cav.</d_name>
@@ -5767,6 +5824,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -5821,6 +5879,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Wolfriders</d_name>
@@ -5875,6 +5934,7 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 			<d_vectoring>-1 -1</d_vectoring>
 			<d_active_production_slot>-1</d_active_production_slot>
 			<d_duration>-1</d_duration>
+			<d_build_production>true</d_build_production>
 			<slot>
 				<armyprodbase>
 					<d_name>Light Inf.</d_name>
@@ -7908,6 +7968,9 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 		<d_view_enemies>false</d_view_enemies>
 		<d_view_production>false</d_view_production>
 		<d_quests>GameParameters::ONE_QUEST_PER_PLAYER</d_quests>
+		<d_vectoring_mode>GameParameters::VECTORING_ALWAYS_TWO_TURNS</d_vectoring_mode>
+		<d_sacking_mode>GameParameters::SACKING_ALWAYS</d_sacking_mode>
+		<d_build_production_mode>GameParameters::BUILD_PRODUCTION_ALWAYS</d_build_production_mode>
 		<d_hidden_map>false</d_hidden_map>
 		<d_diplomacy>false</d_diplomacy>
 		<d_cusp_of_war>false</d_cusp_of_war>

@@ -64,6 +64,7 @@ class CityWindow: public LwDialog
     Gtk::Label *strength_label;
     Gtk::Label *cost_label;
     Gtk::Label *combat_bonus_label;
+    Gtk::Label *rebellious_label;
 
     City *city;
 

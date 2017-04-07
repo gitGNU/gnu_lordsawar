@@ -114,6 +114,8 @@ class Configuration : public sigc::trackable
         static bool s_see_opponents_production;
         static GameParameters::QuestPolicy s_play_with_quests;
         static GameParameters::VectoringMode s_vectoring_mode;
+        static GameParameters::BuildProductionMode s_build_production_mode;
+        static GameParameters::SackingMode s_sacking_mode;
         static bool s_hidden_map;
         static bool s_diplomacy;
         static GameParameters::NeutralCities s_neutral_cities;
@@ -153,6 +155,10 @@ class Configuration : public sigc::trackable
         static Glib::ustring questPolicyToString(const GameParameters::QuestPolicy quest);
         static Glib::ustring vectoringModeToString(const GameParameters::VectoringMode vectoring);
         static GameParameters::VectoringMode vectoringModeFromString(Glib::ustring str);
+        static Glib::ustring buildProductionModeToString(const GameParameters::BuildProductionMode mode);
+        static GameParameters::BuildProductionMode buildProductionModeFromString(Glib::ustring str);
+        static Glib::ustring sackingModeToString(const GameParameters::SackingMode mode);
+        static GameParameters::SackingMode sackingModeFromString(Glib::ustring str);
 
         static bool upgrade(Glib::ustring filename, Glib::ustring old_version,
                             Glib::ustring new_version);
