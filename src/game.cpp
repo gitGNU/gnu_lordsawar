@@ -963,6 +963,8 @@ void Game::update_control_panel()
       can_plant_standard_selected_stack.emit(false);
       can_search_selected_stack.emit(false);
       can_defend_selected_stack.emit(false);
+      can_change_signpost.emit(false);
+      can_use_item.emit(false);
     }
       
   if (d_gameScenario->getRound() > 1)
