@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include "xmlhelper.h"
 #include "hero.h"
 #include "rnd.h"
+#include "GameScenarioOptions.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -121,6 +122,8 @@ void QuestCityRaze::initDescription()
 
 City* QuestCityRaze::chooseToRaze(Player *p)
 {
+  if (GameScenarioOptions::s_razing_cities == GameParameters::NEVER)
+    return NULL;
   std::vector<City*> cities;
 
   // Collect all cities
