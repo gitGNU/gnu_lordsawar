@@ -146,6 +146,8 @@ void Main::initialize ()
 {
   if (configuration_file_path != "")
     Configuration::s_configuration_file_path = configuration_file_path;
+  if (save_path != "")
+    Configuration::s_savePath = save_path;
   initialize_configuration();
   if (cacheSize)
     Configuration::s_cacheSize = cacheSize;

@@ -144,6 +144,11 @@ Driver::Driver(Glib::ustring load_filename)
         return;
       }
     splash_window->show();
+    if (getenv ("LORDSAWAR_GUI_TEST") != NULL)
+      {
+        splash_window->get_window()->set_position(Gtk::WIN_POS_NONE);
+        splash_window->get_window()->move(0, 0);
+      }
     //here are the ones that do
     run();
 }

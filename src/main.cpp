@@ -24,6 +24,7 @@
 
 #include <iostream>
 #include "Configuration.h"
+#include "File.h"
 #include "ucompose.hpp"
 
 #ifdef LW_SOUND
@@ -70,6 +71,16 @@ int main(int argc, char* argv[])
 		  exit(-1);
                 }
               kit.configuration_file_path = argv[i-1];
+            }
+          else if (parameter == "-P" || parameter == "--save-path")
+            {
+	      i++;
+              if (i - 1 >= argc)
+		{
+                  std::cerr <<_("missing argument for --save-path") <<std::endl;
+		  exit(-1);
+                }
+              kit.save_path = argv[i-1];
             }
 	  else if (parameter == "--seed" || parameter == "-S")
 	    {
@@ -144,9 +155,10 @@ int main(int argc, char* argv[])
               std::cout << "LordsAWar! " << _("version") << " " << VERSION << std::endl << std::endl;
               std::cout << _("Options:") << std::endl << std::endl; 
               std::cout << "  -h, --help                 " << _("Shows this help screen") <<std::endl;
-              std::cout << "  -C, --config-file <file>   " << String::ucompose(_("Use file instead of default %1"), DEFAULT_CONFIG_FILENAME) << std::endl;
+              std::cout << "  -C, --config-file <file>   " << String::ucompose(_("Use FILE instead of %1"), std::string("~/.config/" PACKAGE "/") + std::string(DEFAULT_CONFIG_FILENAME)) << std::endl;
               std::cout << "  -c, --cache-size <size>    " << _("Set the cache size for imagery to SIZE bytes") <<std::endl;
               std::cout << "  -t, --test                 " << _("Start with a test-scenario") << std::endl;
+              std::cout << "  -P  --save-path <dir>      " << String::ucompose(_("Use DIR instead of %1"), "~/.locale/share/" PACKAGE) << std::endl;
               std::cout << "  -S, --seed <number>        " << _("Seed the random number generator with NUMBER") << std::endl;
               std::cout << "  -s, --stress-test          " << _("Non-interactive stress test") << std::endl;
               std::cout << "  -r, --robots               " << _("Non-interactive network stress test") << std::endl;

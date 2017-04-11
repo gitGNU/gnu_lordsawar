@@ -351,6 +351,11 @@ void GameWindow::show()
       }
       
     on_bigmap_surface_changed(bigmap_image->get_allocation());
+    if (getenv ("LORDSAWAR_GUI_TEST") != NULL)
+      {
+        window->set_position(Gtk::WIN_POS_NONE);
+        window->move(0, 0);
+      }
 }
 
 void GameWindow::init(int width, int height)

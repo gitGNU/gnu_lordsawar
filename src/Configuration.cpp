@@ -87,7 +87,8 @@ Configuration::Configuration()
   File::create_dir (File::getCacheDir ());
   if (s_configuration_file_path == "")
     s_configuration_file_path = File::getConfigFile (DEFAULT_CONFIG_FILENAME);
-  s_savePath = File::add_slash_if_necessary (File::getUserDataDir ());
+  if (s_savePath == "")
+    s_savePath = File::add_slash_if_necessary (File::getUserDataDir ());
 
   char *s = setlocale(LC_ALL, "");
   if (s)
@@ -114,7 +115,7 @@ bool Configuration::loadConfigurationFile(Glib::ustring fileName)
         bool ret = helper.parseXML();
         helper.close();
         if (ret == false)
-          std::cerr << String::ucompose(_("Okay, we're throwing your config file %1 away"), File::getConfigFile (DEFAULT_CONFIG_FILENAME)) << std::endl;
+          std::cerr << String::ucompose(_("Okay, we're throwing your config file %1 away"), fileName) << std::endl;
         return ret;
     }
     else return false;

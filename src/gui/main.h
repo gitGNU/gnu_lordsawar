@@ -48,6 +48,7 @@ class Main: public sigc::trackable
     Glib::Rand rnd;
     int cacheSize;
     std::string configuration_file_path;
+    std::string save_path;
     
  private:
     struct Impl;
