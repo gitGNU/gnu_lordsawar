@@ -956,7 +956,7 @@ void Playerlist::updateViewingPlayer ()
    * this is the story for hotseat anyway.  i'm not sure how it relates to
    * network play.
    */
-  if (d_activeplayer->getType() == Player::HUMAN)
+  if (d_activeplayer && d_activeplayer->getType() == Player::HUMAN)
     viewingplayer = d_activeplayer;
   else
     viewingplayer = getNeutral();
