@@ -126,10 +126,10 @@ if [ "x$grab" == "x1" ]; then
   sleep 19
   echo "image-31"
   image31=`./create-manual-screenshot.sh`
-  sleep 7
+  sleep 8
   echo "image-32"
   image32=`./create-manual-screenshot.sh`
-  sleep 15
+  sleep 14
   echo "image-33"
   image33=`./create-manual-screenshot.sh`
   usleep 3000000
@@ -194,7 +194,7 @@ if [ "x$grab" == "x1" ]; then
   $image29 $image29b $image30 $image31 $image32 $image33 $image34 \
   $image35 $image36 $image37 $image38
 
-  killall cnee
+  #killall cnee
 fi
 
 # create army_bonus.png
@@ -516,7 +516,8 @@ if [ "$ans" == "y" ]; then
   cp -v main_screen_swamp.png figures/
   cp -v main_screen_temple.png figures/
   cp -v main_screen_unselected_stack.png figures/
-  rm army_bonus.png army_unit_info.png buy_production.png city_window.png conquer_city.png fight_city_one_vs_two.png fighting_city_one_vs_two.png fighting_one_vs_one.png fight_one_vs_one.png fight_order.png fought_city_one_vs_two.png fought_one_vs_one.png main_screen_bag.png main_screen_buttons.png main_screen_center_on_stack_button.png main_screen_city.png main_screen_city_razed.png main_screen_defend_stack_button.png main_screen_deselect_stack_button.png main_screen_diplomacy_button.png main_screen_diplomacy_proposed_button.png main_screen_end_turn_button.png main_screen_forest.png main_screen_hills.png main_screen_mountains.png main_screen_move_all_stacks_button.png main_screen_move_bonus_flying.png main_screen_move_bonus_forest.png main_screen_move_bonus_hills_forest.png main_screen_move_bonus_hills.png main_screen_move_bonus_water.png main_screen_move_stack_button.png main_screen_park_stack_button.png main_screen.png main_screen_port.png main_screen_road.png main_screen_ruin.png main_screen_selected_stack_flags.png main_screen_selected_stack_one.png main_screen_select_next_stack_button.png main_screen_signpost.png main_screen_stack_search_button.png main_screen_stack_tray_4_units.png main_screen_stack_tray_5_units.png main_screen_stack_water_defend.png main_screen_stat_icons.png main_screen_swamp.png main_screen_temple.png main_screen_unselected_stack.png
+  cp -v main_screen_water.png figures/
+  rm army_bonus.png army_unit_info.png buy_production.png city_window.png conquer_city.png fight_city_one_vs_two.png fighting_city_one_vs_two.png fighting_one_vs_one.png fight_one_vs_one.png fight_order.png fought_city_one_vs_two.png fought_one_vs_one.png main_screen_bag.png main_screen_buttons.png main_screen_center_on_stack_button.png main_screen_city.png main_screen_city_razed.png main_screen_defend_stack_button.png main_screen_deselect_stack_button.png main_screen_diplomacy_button.png main_screen_diplomacy_proposed_button.png main_screen_end_turn_button.png main_screen_forest.png main_screen_hills.png main_screen_mountains.png main_screen_move_all_stacks_button.png main_screen_move_bonus_flying.png main_screen_move_bonus_forest.png main_screen_move_bonus_hills_forest.png main_screen_move_bonus_hills.png main_screen_move_bonus_water.png main_screen_move_stack_button.png main_screen_park_stack_button.png main_screen.png main_screen_port.png main_screen_road.png main_screen_ruin.png main_screen_selected_stack_flags.png main_screen_selected_stack_one.png main_screen_select_next_stack_button.png main_screen_signpost.png main_screen_stack_search_button.png main_screen_stack_tray_4_units.png main_screen_stack_tray_5_units.png main_screen_stack_water_defend.png main_screen_stat_icons.png main_screen_swamp.png main_screen_temple.png main_screen_unselected_stack.png main_screen_water.png
 fi
 
 rm image-01.png image-02.png image-03.png image-04.png image-05.png \
