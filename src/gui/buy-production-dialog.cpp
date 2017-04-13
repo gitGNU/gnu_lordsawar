@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007-2009, 2011, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -39,8 +39,7 @@
 BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)
  : LwDialog(parent, "buy-production-dialog.ui")
 {
-  army_info_tip = NULL;
-    ImageCache *gc = ImageCache::getInstance();
+    army_info_tip = NULL;
     city = c;
     selected_army = NO_ARMY_SELECTED;
     
@@ -79,23 +78,11 @@ BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)
     for (unsigned int i = 0; i < purchasables.size(); ++i)
     {
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
-	
-	bool greyed_out = false;
-        guint32 selected = Shield::NEUTRAL;
-	if (city->hasProductionBase(purchasables[i]) == true)
-	  selected = p->getId();
-	if ((int)purchasables[i]->getNewProductionCost() > 
-		 c->getOwner()->getGold())
-	  greyed_out = true;
-	Glib::RefPtr<Gdk::Pixbuf> pix
-	    = gc->getCircledArmyPic(p->getArmyset(), 
-                                    purchasables[i]->getId(), p, NULL, 
-                                    greyed_out, selected, true)->to_pixbuf();
-	
 	Gtk::Image *image = new Gtk::Image();
-	image->property_pixbuf() = pix;
 	toggle->add(*manage(image));
 	production_toggles.push_back(toggle);
+        fill_pixbuf (i);
+
 	int x = i % no_columns;
 	int y = i / no_columns;
 	toggles_table->attach(*toggle, x, y, 1 , 1);
@@ -110,6 +97,28 @@ BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)
 
     ignore_toggles = false;
     production_toggles[0]->set_active(true);
+}
+
+void
+BuyProductionDialog::fill_pixbuf (int i)
+{
+  Player *p = Playerlist::getInstance()->getActiveplayer();
+  ImageCache *gc = ImageCache::getInstance();
+  bool greyed_out = false;
+  guint32 selected = Shield::NEUTRAL;
+  if (city->hasProductionBase(purchasables[i]) == true)
+    greyed_out = true;
+  if ((int)purchasables[i]->getNewProductionCost() >
+      city->getOwner()->getGold())
+    greyed_out = true;
+  if (production_toggles[i]->get_active())
+    selected = p->getId();
+  Glib::RefPtr<Gdk::Pixbuf> pix
+    = gc->getCircledArmyPic(p->getArmyset(), purchasables[i]->getId(), p, NULL,
+                            greyed_out, selected, true)->to_pixbuf();
+  Gtk::Image *image =
+    dynamic_cast<Gtk::Image*>(production_toggles[i]->get_child());
+  image->property_pixbuf() = pix;
 }
 
 BuyProductionDialog::~BuyProductionDialog()
@@ -129,19 +138,25 @@ void BuyProductionDialog::run()
 
 void BuyProductionDialog::on_production_toggled(Gtk::ToggleButton *toggle)
 {
+  int i = lookup_slot (toggle);
+  if (toggle->get_active () == false)
+    {
+      if (i != -1)
+        fill_pixbuf (i);
+    }
+
     if (ignore_toggles)
 	return;
     
-    selected_army = NO_ARMY_SELECTED;
     ignore_toggles = true;
-    for (unsigned int i = 0; i < production_toggles.size(); ++i) {
-	if (toggle == production_toggles[i])
-	    selected_army = i;
-	
-	production_toggles[i]->set_active(toggle == production_toggles[i]);
-    }
+    if (i == -1)
+      selected_army = NO_ARMY_SELECTED;
+    else
+      selected_army = i;
+    for (unsigned int j = 0; j < production_toggles.size(); ++j)
+      production_toggles[j]->set_active(toggle == production_toggles[j]);
     ignore_toggles = false;
-
+    fill_pixbuf (selected_army);
     fill_in_production_info();
     set_buy_button_state();
 }
@@ -184,16 +199,23 @@ const ArmyProto *BuyProductionDialog::army_id_to_army()
     return purchasables[selected_army];
 }
 
+int BuyProductionDialog::lookup_slot (Gtk::ToggleButton *toggle)
+{
+  int slot = -1;
+  for (unsigned int i = 0; i < production_toggles.size(); ++i)
+    {
+      if (toggle == production_toggles[i])
+        slot = i;
+    }
+  return slot;
+}
+
 bool BuyProductionDialog::on_production_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle)
 {
     MouseButtonEvent event = to_input_event(e);
     if (event.button == MouseButtonEvent::RIGHT_BUTTON
 	&& event.state == MouseButtonEvent::PRESSED) {
-	int slot = -1;
-	for (unsigned int i = 0; i < production_toggles.size(); ++i) {
-	    if (toggle == production_toggles[i])
-		slot = i;
-	}
+	int slot = lookup_slot (toggle);
 	assert(slot != -1);
 
 	const ArmyProto *army = purchasables[slot];

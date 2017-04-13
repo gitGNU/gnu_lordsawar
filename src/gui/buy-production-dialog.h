@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
+//  Copyright (C) 2007-2009, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -61,8 +61,10 @@ class BuyProductionDialog: public LwDialog
     void on_production_toggled(Gtk::ToggleButton *toggle);
     bool on_production_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
     void fill_in_production_info();
+    void fill_pixbuf (int i);
     void set_buy_button_state();
     const ArmyProto *army_id_to_army();
+    int lookup_slot (Gtk::ToggleButton *toggle);
 };
 
 #endif
