@@ -30,22 +30,18 @@
 MainPreferencesDialog::MainPreferencesDialog(Gtk::Window &parent)
  : LwDialog(parent, "main-preferences-dialog.ui")
 {
-  xml->get_widget("show_turn_popup_switch", show_turn_popup_switch);
   xml->get_widget("commentator_switch", commentator_switch);
   xml->get_widget("ui_combobox", ui_combobox);
   ui_combobox->signal_changed().connect (method(on_ui_form_factor_changed));
 
   xml->get_widget("play_music_switch", play_music_switch);
   xml->get_widget("music_volume_scale", music_volume_scale);
-  show_turn_popup_switch->property_active().signal_changed().connect
-    (method(on_show_turn_popup_toggled));
   commentator_switch->property_active().signal_changed().connect
     (method(on_show_commentator_toggled));
   play_music_switch->property_active().signal_changed().connect (method(on_play_music_toggled));
   music_volume_scale->signal_value_changed().connect
     (method(on_music_volume_changed));
 
-  show_turn_popup_switch->set_active(Configuration::s_showNextPlayer);
   commentator_switch->set_active(Configuration::s_displayCommentator);
   play_music_switch->set_active(Configuration::s_musicenable);
   music_volume_scale->set_value(Configuration::s_musicvolume * 100.0 / 128);
@@ -60,11 +56,6 @@ void MainPreferencesDialog::run()
 
   Configuration::saveConfigurationFile();
   dialog->hide();
-}
-
-void MainPreferencesDialog::on_show_turn_popup_toggled()
-{
-  Configuration::s_showNextPlayer = show_turn_popup_switch->get_active();
 }
 
 void MainPreferencesDialog::on_play_music_toggled()

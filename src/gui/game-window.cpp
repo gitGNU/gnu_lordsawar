@@ -2294,26 +2294,22 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
   show_shield_turn();
   if (player->getType() != Player::HUMAN)
     return;
-      
-  if (Configuration::s_showNextPlayer == true)
-    {
-  
-      LwDialog dialog (*window, "next-player-turn-dialog.ui");
 
-      Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
-      Gtk::Image *image;
-      xml->get_widget("image", image);
-      image->property_file() = File::getVariousFile("ship.png");
+  LwDialog dialog (*window, "next-player-turn-dialog.ui");
 
-      Gtk::Label *label;
-      xml->get_widget("label", label);
-      Glib::ustring s = String::ucompose(_("%1\nTurn %2"), player->getName(), 
-					 turn_number);
-      label->set_text(s);
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
+  Gtk::Image *image;
+  xml->get_widget("image", image);
+  image->property_file() = File::getVariousFile("ship.png");
 
-      dialog.run_and_hide();
-      show();
-    }
+  Gtk::Label *label;
+  xml->get_widget("label", label);
+  Glib::ustring s = String::ucompose(_("%1\nTurn %2"), player->getName(), 
+                                     turn_number);
+  label->set_text(s);
+
+  dialog.run_and_hide();
+  show();
 }
 
 void GameWindow::on_medal_awarded_to_army(Army *army, int medaltype)

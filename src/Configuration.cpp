@@ -39,7 +39,6 @@
 // define static variables
 
 Glib::ustring Configuration::d_tag = "lordsawarrc";
-bool Configuration::s_showNextPlayer = true;
 Glib::ustring Configuration::s_configuration_file_path;
 Glib::ustring Configuration::s_dataPath = LORDSAWAR_DATADIR;
 Glib::ustring Configuration::s_savePath;
@@ -143,7 +142,6 @@ bool Configuration::saveConfigurationFile(Glib::ustring filename)
     retval &= helper.saveData("fightrounddelayfast", s_displayFightRoundDelayFast);
     retval &= helper.saveData("fightrounddelayslow", s_displayFightRoundDelaySlow);
     retval &= helper.saveData("commentator", s_displayCommentator);
-    retval &= helper.saveData("shownextplayer", s_showNextPlayer);
     retval &= helper.saveData("musicenable", s_musicenable);
     retval &= helper.saveData("musicvolume", s_musicvolume);
     retval &= helper.saveData("musiccache", s_musiccache);
@@ -255,9 +253,6 @@ bool Configuration::parseConfiguration(XML_Helper* helper)
 
     //parse whether or not the commentator should be shown
     helper->getData(s_displayCommentator, "commentator");
-
-    //parse if nextplayer dialog should be enabled
-    helper->getData(s_showNextPlayer, "shownextplayer");
 
     // parse musicsettings
     helper->getData(s_musicenable, "musicenable");
