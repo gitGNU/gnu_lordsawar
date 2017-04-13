@@ -12,7 +12,7 @@
 <articleinfo> 
 	<title>LordsAWar! User's Manual &manrevision;</title> 
 	<copyright> 
-		<year>2008, 2009, 2010, 2011, 2014, 2016</year>
+		<year>2008, 2009, 2010, 2011, 2014, 2016, 2017</year>
 		<holder>Ben Asselstine</holder> 
  	</copyright>
 	<publisher> 
@@ -39,10 +39,16 @@
                         To report a bug or make a suggestion regarding the game, the editors, or this documentation, see the <ulink type="help" url="http://sv.gnu.org/p/lordsawar">LordsAWar! Project Page</ulink> or send it in a mail to <ulink type="help" url="mailto:lordsawar-discuss@nongnu.org">lordsawar-discuss@nongnu.org</ulink>.  Go ahead and tell us how we're doing.  We like that.
 		</para>
 	</legalnotice>
+	<legalnotice id="translations"> 
+		<title>Translate this Manual</title> 
+                <para>
+                        If you choose to translate this manual into your language, please note that there are scripts to automatically generate the images found herein.  We know the images are a hassle to translators, so we hope this makes it a little easier.
+                </para>
+	</legalnotice>
 	<legalnotice id="alternatives"> 
 		<title>Alternative to Reading</title> 
 		<para>
-                        Watch the <ulink type="help" url="https://vimeo.com/95806152">introductory video.</ulink>  Because hey, maybe you don't want to read this manual.  You can watch a nine minute introduction video instead! The video is not as detailed as this manual is, but it serves as a simple introduction to the game.
+                        Watch the <ulink type="help" url="https://vimeo.com/95806152">introductory video.</ulink>  The introduction video is not as detailed as this manual is, but serves as a simple introduction to the game.
 		</para>
 	</legalnotice>
 </articleinfo>
@@ -67,7 +73,7 @@
 <sect1 id="lordsawar-prologue"> 
 	<title>Prologue</title> 
 	<para>
-The entire realm is holding its breath -- war is coming, and the citizens know what that means; cities will be sacked, towns will be looted, and flags will be raised.  There will be a shortage of food supplies, high taxes, and fire burning on the horizon, if not even closer.  The best thing to do is to join the army before getting drafted.  
+The entire realm is holding its breath -- war is coming, and the citizens know what that means; cities will be sacked, towns will be looted, and new flags will be raised.  There will be a shortage of food and supplies, high taxes, and fire burning on the horizon, if not even closer.  The best thing to do is to join the army before getting drafted.  
 </para>
 
 	<para>
@@ -203,7 +209,6 @@ Stacks appear as a ship when they are in the water.  When  a stack is in defend 
 City
 <para>
 A city is a place that creates army units, and provides valuable income.
-Cities can also be destroyed:
 </para>
 <screenshot> 
 <mediaobject>
@@ -340,7 +345,7 @@ Signposts contain information that the player can view by right-clicking on it.
 </mediaobject>
 </screenshot> 
 <para>
-Signposts used more often when the game has a hidden map (e.g. the map is all-black except for where your forces have explored).
+Signposts are used more often when the game has a hidden map (e.g. the map is all-black except for where your forces have explored).
 The contents of signposts can also be modified to give false information, or simply to slander your opponent.
 </para>
 </listitem>
@@ -404,7 +409,7 @@ The stack movement capabilities are shown to the right of the selected stack:
 <screenshot> 
 <mediaobject>
 <imageobject>
-<imagedata fileref="figures/main_screen_stack_info.png" format="PNG"/>
+<imagedata fileref="figures/main_screen_move_bonus_flying.png" format="PNG"/>
 </imageobject>
 </mediaobject>
 </screenshot> 
@@ -460,7 +465,7 @@ Above the number of moves is a picture denoting what kind of tiles the stack can
 <screenshot> 
 <mediaobject>
 <imageobject>
-<imagedata fileref="figures/main_screen_stack_info.png" format="PNG"/>
+<imagedata fileref="figures/main_screen_move_bonus_flying.png" format="PNG"/>
 </imageobject>
 </mediaobject>
 </screenshot> 
@@ -959,7 +964,7 @@ Army units may not move through a foreign city without conquering it first.
 </figure>
 
 <para>
-        The most noticeable thing in the screen is the miniature map that only shows all of the player's cities.  At a glance it shows; which cities are producing an army unit (shown by a white shield with an anvil), which ones are not (shown by a white shield without an anvil), and which city the player is currently visiting (shown by a black shield, with or without an anvil).  The player can see the details of another city by left-clicking on it.
+        The most noticeable thing in the screen is the miniature map that only shows all of the player's cities.  At a glance it shows; which cities are producing an army unit (shown by a white shield with an anvil), which ones are not (shown by a white shield without an anvil), and which city the player is currently visiting (shown by a black shield, with or without an anvil).  The player can see the details of another city by left-clicking it on the miniature map.
 </para>
 <para>
 The screen contains information about the selected city.  The title of the screen is the name of the city.  To the right of the map the defense level is shown, along with the amount of money in gold pieces that this city provides.  Next is the army unit that is currently being produced, and how many more turns until it becomes available for use.  The set of buttons in the middle of the screen represent the set of army unit types that this city can produce.
@@ -1125,7 +1130,7 @@ When the player right-clicks on an army unit in a stack, the following informati
 </figure>
 
 <para>
-Here we can see a unit of Light Infantry.  It fights with a strength of 2 (more strength is better), and has 10 movement points left of a maximum of 12.  The Light Infantry unit costs the player 3 gold pieces every turn.
+Here we can see a unit of Light Infantry.  It fights with a strength of 2 (more strength is better), and has 12 movement points remaining of a maximum of 14.  The Light Infantry unit costs the player 3 gold pieces every turn.
 </para>
 </para>
 </sect2>
@@ -1147,7 +1152,7 @@ Army units can visit temples and get blessed.  The blessing confers a single poi
 <sect2 id="lordsawar-cities-vectoring">
 	<title>Vectoring</title> 
 <para>
-Vectoring is a mechanism that invisibly transports new army units from one city to another city.  This is a great convenience for quickly moving newly created army units across large distances.  The cost for this convenience is time; the new army unit remains off the map for two whole turns.  At the end of these two turns, the new unit pops up at the destination.
+Vectoring is a mechanism that invisibly transports new army units from one city to another city.  This is a great convenience for quickly moving newly created army units across large distances.  The cost for this convenience is time; the new army unit remains off the map for two or more turns depending on the vectoring game option.  At the end of these in-transit turns, the new unit pops up at the destination.
 </para>
 <para>
 Vectoring is limited to new units, and to cities that the player already owns.  This means that you can't vector army units that have already been created, which can sometimes be a great inconvenience.   Another limitation is that a maximum of 4 cities can be vectored to a single destination city.
@@ -1317,7 +1322,7 @@ Here the yellow player wishes to attack the red player.  The yellow player has s
 </screenshot>
 </figure>
 <para>
-The yellow player commits to the battle by left-clicking on the red army unit withe sword cursor.  The battle ensues:
+The yellow player commits to the battle by left-clicking on the red army unit wit the sword cursor.  The battle ensues:
 <figure id="fighting-one-on-one-fig">
 <screenshot>
 <mediaobject>
@@ -1327,7 +1332,7 @@ The yellow player commits to the battle by left-clicking on the red army unit wi
 </mediaobject>
 </screenshot>
 </figure>
-Here is the fight screen.  The attacker is always depicted on the bottom of the fight window, while the defender is always shown on the top.  The shields of both players is shown, along with the army units that are in this battle.  Every army unit has precisely two hitpoints, and strength is used as the main determinator if the unit is hit or not.  In this battle the Orcish Mob dispatches the single unit of Light Infantry.
+Here is the fight screen.  The attacker is always depicted on the bottom of the fight window, while the defender is always shown on the top.  The shields of both players are shown, along with the army units that are in this battle.  Every army unit has precisely two hitpoints, and strength is used as the main determinator if the unit is hit or not.  In this battle the Orcish Mob dispatches the single unit of Light Infantry.
 </para>
 <para>
 To make the battle go faster, press the spacebar.  To make all future battles go faster, press the exclamation key.
@@ -1370,10 +1375,10 @@ The yellow player commits to the battle by left-clicking on the red city with th
 </mediaobject>
 </screenshot>
 </figure>
-Here is the fight screen.  The Orcish mob has just dispatched a single enemy army unit, and is continuing on.  The battle is now down to two units of Light Infantry, and a single injured unit of Orcish Mob.
+Here is the fight screen.  The Orcish mob has just dispatched two enemy army units, and is continuing on.  The battle is now down to a single unit of Light Infantry, and a single unit of Orcish Mob.
 </para>
 <para>
-The battle finishes, and the yellow unit of Orcish Mob does not succeed in killing the remaining enemy units, an as a result the unit Orcish Mob dies.  The red player has thwarted the attack and retains the city:
+The battle finishes, and the yellow unit of Orcish Mob does not succeed in killing the remaining enemy units, an as a result the unit Orcish Mob dies.  The red player has repelled the attack and retains the city:
 <figure id="fought-one-on-two-fig">
 <screenshot>
 <mediaobject>
@@ -1553,11 +1558,20 @@ There is a resting bonus that gives a stack more movement points if it didn't us
 	<title>Scenario options</title> 
 <para>
 Here are the options that are settable at the start of a game:
-<figure id="gameoptions-fig">
+<figure id="gameoptions1-fig">
 <screenshot>
 <mediaobject>
 <imageobject>
-<imagedata fileref="figures/game_options.png" format="PNG"/>
+<imagedata fileref="figures/game-options-1.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+<figure id="gameoptions2-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/game-options-2.png" format="PNG"/>
 </imageobject>
 </mediaobject>
 </screenshot>
@@ -1716,6 +1730,90 @@ Make the military advisor available.  This means the player can get advice on a 
 Change the order that the players get to take their turn.  This option changes the order every round of the game.
 </para>
 </listitem>
+<listitem>
+<para>Sacking &amp; Pillaging</para>
+<para>
+Sacking &amp; pillaging is something that can happen when a city is conquered.  This option can be one of:
+<itemizedlist>
+<listitem>
+<para>Always</para>
+<para>
+The player can always sack and pillage.
+</para>
+</listitem>
+<listitem>
+<para>On Capture</para>
+<para>
+The player can only sack and pillage when a city is conquered.
+</para>
+</listitem>
+<listitem>
+<para>On Quest</para>
+<para>
+Only a hero with a quest to sack or pillage a city can do so.
+</para>
+</listitem>
+<listitem>
+<para>Never</para>
+<para>
+Sacking and pillaging is disallowed.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+<listitem>
+<para>Build Production</para>
+<para>
+Building production refers to the addition of new army unit types.  (e.g. clicking the buy button in the city screen.)  It can be one of:
+<itemizedlist>
+<listitem>
+<para>Always</para>
+<para>
+The player can always build new production types.
+</para>
+</listitem>
+<listitem>
+<para>Usually</para>
+<para>
+Most of the cities can build new production but some cannot.
+</para>
+</listitem>
+<listitem>
+<para>Seldom</para>
+<para>
+Most of the cities cannot build new production but some can.
+</para>
+</listitem>
+<listitem>
+<para>Never</para>
+<para>
+No cities can build new production.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
+<listitem>
+<para>Vectoring</para>
+<para>
+Vectoring refers to the practice of shipping newly produced units off to another city.  They completely disappear from the map while they are in transit, and eventually they pop up at their destination.  Vectoring has two modes:
+<itemizedlist>
+<listitem>
+<para>Always Two Turns</para>
+<para>
+It takes a vectored army unit exactly two turns to arrive at a destination.
+</para>
+</listitem>
+<listitem>
+<para>Variable Turns</para>
+<para>
+The number of turns varies based on the distance between the city being vectored from, and the city being vectored to.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</listitem>
 </itemizedlist>
 </para>
 </sect2>
@@ -1723,7 +1821,7 @@ Change the order that the players get to take their turn.  This option changes t
 <sect1 id="lordsawar-keyboard-commands"> 
 	<title>Keyboard Commands</title> 
 <para>
-Here is a list of all of the keyboard shortcuts in &app;.  Please note that L means lowercase L, while Shift+L means uppercase L.
+Here is a list of all of the keyboard shortcuts in &app;.  Please note that L means lowercase L, while Shift+L means uppercase L.  These keyboard commands only work on the main screen.
 </para>
 <itemizedlist>
 <listitem>
@@ -1954,13 +2052,10 @@ Show the city production window.
 Show the city vectoring window.
 </para>
 </listitem>
-<listitem>
-<para>keypad keys</para>
-<para>
-The number keys on the keypad will move the selected stack in the given direction.
-</para>
-</listitem>
 </itemizedlist>
+<para>
+To make battles go faster, press the spacebar during a fight.  To make all future battles go faster, press the exclamation key.
+</para>
 </sect1>
 <sect1 id="lordsawar-multiplayer"> 
 	<title>Multi-player play</title> 
@@ -2008,7 +2103,7 @@ The lobby screen has three main portions: the chat window, the seats, and the ma
 As other people connect to the server, they appear in the People list of the chat window.  To send a message to all other players, type in a message into the box next to "Send:" and press the Enter key.
 </para>
 <para>
-To play the game, players need to "sit down" at a seat.  This is accomplished by clicking the "Controlled" checkbox beside the shield of the player the person wants to play as.  After this happens the player may choose to change their name.  This is accomplished by clicking on "The Sirians" (for example), and typing in a new name and pressing the Enter key.
+To play the game, players need to "sit down" at a seat.  This is accomplished by clicking the "Sit Down" checkbox beside the shield of the player the person wants to play as.  After this happens the player may choose to change their name.  This is accomplished by clicking on "The Sirians" (for example), and typing in a new name and pressing the Enter key.
 </para>
 <para>
 The person who is hosting the game can change the "Type" of the players to one of: Easy, Hard, Human, or Off.  This is accomplished left-clicking on the word "Human", or whatever the type happens to be.  If another person is controlling the player, the type cannot be changed.

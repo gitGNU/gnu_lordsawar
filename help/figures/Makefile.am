@@ -7,7 +7,8 @@ noinst_DATA = city_window.png conquer_city.png buy_production.png \
 	      fight_one_vs_one.png fighting_one_vs_one.png \
 	      fought_one_vs_one.png fight_city_one_vs_two.png \
 	      fighting_city_one_vs_two.png fought_city_one_vs_two.png \
-	      game_options.png main_screen.png main_screen_buttons.png \
+	      game-options-1.png game-options-2.png main_screen.png \
+	      main_screen_buttons.png \
 	      main_screen_move_stack_button.png \
 	      main_screen_select_next_stack_button.png \
 	      main_screen_park_stack_button.png \
