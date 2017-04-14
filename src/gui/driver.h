@@ -37,7 +37,7 @@ class Profile;
 class Driver: public sigc::trackable
 {
  public:
-    Driver(Glib::ustring load_filename);
+    Driver(bool start_editor, Glib::ustring load_filename);
     ~Driver();
 
     void run();
@@ -68,7 +68,7 @@ class Driver: public sigc::trackable
     void on_game_scenario_downloaded(Glib::ustring filename);
     void on_game_scenario_received(Glib::ustring path, Profile *p);
     void on_load_requested(Glib::ustring filename);
-    void on_editor_requested();
+    void on_editor_requested(Glib::ustring filename = "");
     void on_editor_quit ();
     void on_quit_requested();
 

@@ -149,12 +149,15 @@ int main(int argc, char* argv[])
 	    {
 	      kit.start_headless_server = true;
 	    }
+          else if (parameter == "--editor")
+            {
+	      kit.start_editor = true;
+            }
 	  else if (parameter == "--help" || parameter == "-h")
 	    {
               std::cout << Glib::get_prgname() << " [OPTION]... [FILE]" << std::endl << std::endl;
               std::cout << "LordsAWar! " << _("version") << " " << VERSION << std::endl << std::endl;
               std::cout << _("Options:") << std::endl << std::endl; 
-              std::cout << "  -h, --help                 " << _("Shows this help screen") <<std::endl;
               std::cout << "  -C, --config-file <file>   " << String::ucompose(_("Use FILE instead of %1"), std::string("~/.config/" PACKAGE "/") + std::string(DEFAULT_CONFIG_FILENAME)) << std::endl;
               std::cout << "  -c, --cache-size <size>    " << _("Set the cache size for imagery to SIZE bytes") <<std::endl;
               std::cout << "  -t, --test                 " << _("Start with a test-scenario") << std::endl;
@@ -164,6 +167,8 @@ int main(int argc, char* argv[])
               std::cout << "  -r, --robots               " << _("Non-interactive network stress test") << std::endl;
               std::cout << "  -H, --host                 " << _("Start a headless server") << std::endl;
               std::cout << "  -p, --port <number>        " << _("Start the server on the given port") << std::endl;
+              std::cout << "      --editor               " << _("Start the scenario builder") << std::endl;
+              std::cout << "  -h, --help                 " << _("Shows this help screen") <<std::endl;
               std::cout << std::endl;
               std::cout << _("FILE can be a saved game file (.sav), or a map (.map) file.") << std::endl;
               std::cout << std::endl;
@@ -208,6 +213,32 @@ int main(int argc, char* argv[])
       std::cerr <<_("Error: Must specify a file to load when specifying --turn.") << std::endl;
       exit (1);
     }
+
+  if (kit.start_editor)
+    {
+      if (kit.start_test_scenario)
+        {
+          std::cerr <<_("Error: Cannot specify --editor and --test simultaneously.") << std::endl;
+          exit (1);
+        }
+      if (kit.start_stress_test)
+        {
+          std::cerr <<_("Error: Cannot specify --editor and --stress-test simultaneously.") << std::endl;
+          exit (1);
+        }
+      if (kit.start_robots)
+        {
+          std::cerr <<_("Error: Cannot specify --editor and --robots simultaneously.") << std::endl;
+          exit (1);
+        }
+      if (kit.start_headless_server)
+        {
+          std::cerr <<_("Error: Cannot specify --editor and --host simultaneously.") << std::endl;
+          exit (1);
+        }
+    }
+
+
 
 #ifdef LW_SOUND
   Gst::init(argc, argv);

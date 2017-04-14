@@ -75,7 +75,7 @@
 
 #define method(x) sigc::mem_fun(*this, &Driver::x)
 
-Driver::Driver(Glib::ustring load_filename)
+Driver::Driver(bool start_editor, Glib::ustring load_filename)
 {
     game_window = NULL;
     game_lobby_dialog = NULL;
@@ -141,6 +141,11 @@ Driver::Driver(Glib::ustring load_filename)
           }
         if (game_scenario)
           serve (game_scenario);
+        return;
+      }
+    if (start_editor)
+      {
+        on_editor_requested(load_filename);
         return;
       }
     splash_window->show();
@@ -937,7 +942,7 @@ void Driver::on_load_requested(Glib::ustring filename)
       }
 }
 
-void Driver::on_editor_requested()
+void Driver::on_editor_requested(Glib::ustring filename)
 {
   if (splash_window)
     splash_window->hide();
@@ -949,7 +954,7 @@ void Driver::on_editor_requested()
   EditorSplashWindow d;
   d.run();
   d.hide();
-  editor_window = new MainWindow ();
+  editor_window = new MainWindow (filename);
   editor_window->editor_quit.connect (method(on_editor_quit));
   editor_window->show();
   editor_window->init();

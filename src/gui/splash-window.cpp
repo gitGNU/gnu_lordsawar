@@ -244,7 +244,7 @@ void SplashWindow::on_load_scenario_clicked()
 
 void SplashWindow::on_editor_clicked()
 {
-  editor_requested.emit ();
+  editor_requested.emit ("");
 }
 
 void SplashWindow::on_network_game_selected(Glib::ustring ip, unsigned short port, Profile *profile)

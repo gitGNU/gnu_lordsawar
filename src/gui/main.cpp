@@ -65,6 +65,7 @@ Main::Main(int &argc, char **&argv)
 
     start_test_scenario = false;
     start_stress_test = false;
+    start_editor = false;
     start_robots = 0;
     start_headless_server = false;
     load_filename = "";
@@ -117,7 +118,7 @@ void Main::start_main_loop()
           delete impl->driver;
           impl->driver = NULL;
         }
-      impl->driver = new Driver(load_filename);
+      impl->driver = new Driver(start_editor, load_filename);
       impl->gtk_main->run();
     }
   catch (const Glib::Error &ex) {

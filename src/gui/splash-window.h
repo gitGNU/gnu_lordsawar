@@ -54,7 +54,7 @@ class SplashWindow: public sigc::trackable
     sigc::signal<void, GameParameters> new_game_requested;
     sigc::signal<void, Glib::ustring> load_requested;
     sigc::signal<void> quit_requested;
-    sigc::signal<void> editor_requested;
+    sigc::signal<void, Glib::ustring> editor_requested;
 
  private:
     Gtk::Window* window;
