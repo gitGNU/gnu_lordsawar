@@ -1,4 +1,4 @@
-// Copyright (C) 2009, 2014, 2015 Ben Asselstine
+// Copyright (C) 2009, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -77,6 +77,9 @@ public:
 
     //! Add the given stack to this stacktile.
     void add(Stack *stack);
+
+    //! Remove the given stack from this stacktile.
+    bool remove(Stack* stack);
 
     //! Set all stacks on this tile to be defending.
     void setDefending(Player *owner, bool defending);

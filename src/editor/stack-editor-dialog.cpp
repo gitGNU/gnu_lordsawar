@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2012, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007-2009, 2012, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@
 #include "ImageCache.h"
 #include "playerlist.h"
 #include "stacklist.h"
+#include "stacktile.h"
 #include "hero-editor-dialog.h"
 #include "GameMap.h"
 
@@ -179,14 +180,20 @@ int StackEditorDialog::run()
 	// now set allegiance, it's important to do it after possibly new stack
 	// armies have been added
         // this also helps the stack ship icon show up when it's needed.
-        Player *player = get_selected_player();
-        Player *old_active = Playerlist::getActiveplayer();
-        Playerlist::getInstance()->setActiveplayer(player);
-        Stack *new_stack = new Stack(*stack);
-        GameMap::getInstance()->removeStack(stack);
-        new_stack->setPlayer(player);
-        GameMap::getInstance()->putStack(new_stack);
-        Playerlist::getInstance()->setActiveplayer(old_active);
+
+        if (get_selected_player()->getId() != stack->getOwner()->getId())
+          {
+            Player *player = get_selected_player();
+            Player *old_active = Playerlist::getActiveplayer();
+            Playerlist::getInstance()->setActiveplayer(player);
+            Stack *new_stack = new Stack(*stack);
+            GameMap::getStacks(new_stack->getPos())->remove(stack);
+            stack->sdying.emit(stack);
+            stack->getOwner()->deleteStack(stack);
+            new_stack->setPlayer(player);
+            GameMap::getInstance()->putStack(new_stack);
+            Playerlist::getInstance()->setActiveplayer(old_active);
+          }
     }
     return response;
 }
@@ -320,7 +327,7 @@ void StackEditorDialog::on_fortified_toggled()
 {
   stack->setFortified(fortified_switch->get_active());
 }
-	  
+
 void StackEditorDialog::on_player_changed()
 {
   ImageCache *gc = ImageCache::getInstance();
@@ -328,7 +335,7 @@ void StackEditorDialog::on_player_changed()
   if (player == Playerlist::getInstance()->getNeutral())
     fortified_switch->set_active(false);
   set_button_sensitivity();
-	
+
   for (Gtk::TreeIter j = army_list->children().begin(),
        jend = army_list->children().end(); j != jend; ++j)
     {
@@ -338,6 +345,7 @@ void StackEditorDialog::on_player_changed()
 						player, NULL)->to_pixbuf();
     }
 }
+
 void StackEditorDialog::cell_data_strength(Gtk::CellRenderer *renderer,
 				     const Gtk::TreeIter& i)
 {

@@ -1,4 +1,4 @@
-// Copyright (C) 2009, 2014, 2015 Ben Asselstine
+// Copyright (C) 2009, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -46,6 +46,15 @@ bool StackTile::canAdd(guint32 siz, Player *owner)
     return false;
   if (countNumberOfArmies(owner) + siz > MAX_ARMIES_ON_A_SINGLE_TILE)
     return false;
+  return true;
+}
+
+bool StackTile::remove(Stack* stack)
+{
+  iterator it = findStack(stack);
+  if (it == end())
+    return false;
+  erase(it);
   return true;
 }
 
