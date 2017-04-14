@@ -84,6 +84,7 @@ private:
   std::condition_variable cond_pop;
 
   bool d_stop;
+  bool d_bail;
 
   struct Message
     {
@@ -102,6 +103,7 @@ private:
   void queue_message(int type, const Glib::ustring &payload);
   bool sendMessage(int type, const Glib::ustring &payload);
   void sendFileMessage(int type, Glib::ustring filename);
+void on_client_event(Gio::SocketClientEvent event, const Glib::RefPtr<Gio::SocketConnectable>& connectable, const Glib::RefPtr<Gio::IOStream>& connection);
 
 };
 
