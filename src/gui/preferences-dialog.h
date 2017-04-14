@@ -45,6 +45,7 @@ class PreferencesDialog: public LwDialog
     Gtk::Switch *play_music_switch;
     Gtk::Scale *music_volume_scale;
     Gtk::Box *players_vbox;
+    Gtk::Button *game_options_button;
 
     bool d_readonly;
     void on_show_commentator_toggled();
@@ -53,6 +54,7 @@ class PreferencesDialog: public LwDialog
     void on_speed_changed();
     void on_observe_toggled(Gtk::CheckButton *button);
     void on_type_changed(Gtk::ComboBoxText *combo);
+    void on_game_options_clicked();
 
     typedef std::map<Player*, Gtk::ComboBoxText*> PlayerTypeMap;
     PlayerTypeMap player_types;

@@ -32,6 +32,7 @@
 #include "AI_Analysis.h"
 #include "ai_fast.h"
 #include "ImageCache.h"
+#include "game-options-dialog.h"
 
 #define method(x) sigc::mem_fun(*this, &PreferencesDialog::x)
 
@@ -44,6 +45,8 @@ PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
     xml->get_widget("play_music_switch", play_music_switch);
     xml->get_widget("music_volume_scale", music_volume_scale);
     xml->get_widget("players_vbox", players_vbox);
+    xml->get_widget("game_options_button", game_options_button);
+    game_options_button->signal_clicked().connect(method(on_game_options_clicked));
     
     ImageCache *gc = ImageCache::getInstance();
     for (unsigned int i = 0; i < MAX_PLAYERS; i++)
@@ -249,4 +252,10 @@ void PreferencesDialog::on_music_volume_changed()
     
     Configuration::s_musicvolume = volume;
     Snd::getInstance()->updateVolume();
+}
+    
+void PreferencesDialog::on_game_options_clicked()
+{
+  GameOptionsDialog gd(*dialog, true);
+  gd.run();
 }
