@@ -81,7 +81,8 @@ void GamelistClient::start(Glib::ustring host, guint32 port, Profile *p)
 
 void GamelistClient::onConnectionFailed()
 {
-  network_connection->tear_down_connection();
+  if (network_connection)
+    network_connection->tear_down_connection();
   client_could_not_connect.emit();
 }
 

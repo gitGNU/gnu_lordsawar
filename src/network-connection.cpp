@@ -95,7 +95,8 @@ bool NetworkConnection::on_got_input(Glib::IOCondition cond)
 }
 
 NetworkConnection::NetworkConnection(const Glib::RefPtr<Gio::SocketConnection> &c)
- : payload(NULL), d_host(""), d_port(0), d_stop(false)
+ : payload(NULL), d_host(""), d_port(0), d_stop(false),
+    d_cancellable(Gio::Cancellable::create())
 {
   //okay, i've been asked to create a SERVER side network connection.
   client = Gio::SocketClient::create();
@@ -109,7 +110,8 @@ NetworkConnection::NetworkConnection(const Glib::RefPtr<Gio::SocketConnection> &
 }
 
 NetworkConnection::NetworkConnection()
- : payload(NULL), d_host(""), d_port(0), d_stop(false)
+ : payload(NULL), d_host(""), d_port(0), d_stop(false),
+    d_cancellable(Gio::Cancellable::create())
 {
   client = Gio::SocketClient::create();
   client->set_protocol(Gio::SOCKET_PROTOCOL_TCP);
@@ -123,7 +125,10 @@ void NetworkConnection::on_connect_connected(Glib::RefPtr<Gio::AsyncResult> &res
 {
   d_connect_timer.disconnect();
   if (d_stop)
-    return;
+    {
+      connection_failed.emit();
+      return;
+    }
   try
     {
       conn = client->connect_to_host_finish (result);
@@ -212,30 +217,9 @@ void NetworkConnection::connectToHost(Glib::ustring host, int port)
   d_connect_timer = 
     Timing::instance().register_timer
     (sigc::mem_fun(this, &NetworkConnection::on_connect_timeout), 5000);
-  client->signal_event().connect(sigc::mem_fun(*this, &NetworkConnection::on_client_event));
   client->connect_to_host_async 
-    (host, port, sigc::mem_fun(*this,
-                               &NetworkConnection::on_connect_connected));
-}
-
-void NetworkConnection::on_client_event(Gio::SocketClientEvent event, const Glib::RefPtr<Gio::SocketConnectable>& connectable, const Glib::RefPtr<Gio::IOStream>& connection)
-{
-  switch (event)
-    {
-    case Gio::SOCKET_CLIENT_RESOLVING:
-    case Gio::SOCKET_CLIENT_RESOLVED:
-    case Gio::SOCKET_CLIENT_CONNECTING:
-    case Gio::SOCKET_CLIENT_CONNECTED:
-    case Gio::SOCKET_CLIENT_PROXY_NEGOTIATING:
-    case Gio::SOCKET_CLIENT_PROXY_NEGOTIATED:
-    case Gio::SOCKET_CLIENT_TLS_HANDSHAKING:
-    case Gio::SOCKET_CLIENT_TLS_HANDSHAKED:
-      break;
-    case Gio::SOCKET_CLIENT_COMPLETE:
-      if (!connection)
-        d_stop = true;
-      break;
-    }
+    (host, port, d_cancellable,
+     sigc::mem_fun(*this, &NetworkConnection::on_connect_connected));
 }
 
 void NetworkConnection::send(int type, const Glib::ustring &pay)
@@ -309,6 +293,8 @@ bool NetworkConnection::sendMessage(int type, const Glib::ustring &pay)
 bool NetworkConnection::on_connect_timeout()
 {
   d_connect_timer.disconnect();
+  d_stop = true;
+  d_cancellable->cancel();
   connection_failed.emit();
   return Timing::STOP;
 }
