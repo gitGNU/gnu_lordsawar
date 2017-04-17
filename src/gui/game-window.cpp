@@ -1376,6 +1376,9 @@ void GameWindow::stop_game(Glib::ustring action)
   if (game)
     {
       current_save_filename = "";
+        //{
+        //game->stopGame();
+        //}
       if (action == "game-over" && game->getScenario()->getPlayMode() == GameScenario::NETWORKED)
         give_some_cheese(game_winner);
       else
@@ -2254,7 +2257,7 @@ void GameWindow::show_shield_turn() //show turn indicator
 	{
 	  shield_image[c]->clear();
 	  turn_hbox->remove(dynamic_cast<Gtk::Widget&>(*shield_image[c]));
-	  turn_hbox->resize_children();
+          turn_hbox->queue_resize();
 	  continue;
 	}
       if (*i == pl->getActiveplayer())
