@@ -324,6 +324,7 @@ void Driver::run()
       g.map.forest = 3;
       g.map.hills = 5;
       g.map.mountains = 5;
+      //g.map.cities = 3;
       g.map.cities = 40;
       //g.map.cities = 80;
       g.map.ruins = 25;

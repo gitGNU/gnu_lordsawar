@@ -1380,7 +1380,6 @@ void GameWindow::stop_game(Glib::ustring action)
         give_some_cheese(game_winner);
       else
         game->stopGame();
-
     }
 }
 
@@ -2684,15 +2683,19 @@ void GameWindow::on_grid_toggled()
 
 void GameWindow::give_some_cheese(Player *winner)
 {
-  game->endOfGameRoaming(winner);
-  game_button_box->give_some_cheese();
-  end_turn_menuitem->set_sensitive(false);
-  save_game_menuitem->set_sensitive(false);
-  save_game_as_menuitem->set_sensitive(false);
-  Playerlist::getActiveplayer()->clearFogMap();
-  show_shield_turn();
-  game->redraw();
-  on_city_history_activated();
+  //this is so we only give cheese once
+  if (save_game_as_menuitem->property_sensitive() == true)
+    {
+      game->endOfGameRoaming(winner);
+      game_button_box->give_some_cheese();
+      end_turn_menuitem->set_sensitive(false);
+      save_game_menuitem->set_sensitive(false);
+      save_game_as_menuitem->set_sensitive(false);
+      Playerlist::getActiveplayer()->clearFogMap();
+      show_shield_turn();
+      game->redraw();
+      city_history_menuitem->activate();
+    }
 }
 
 void GameWindow::on_commentator_comments(Glib::ustring comment)
