@@ -122,7 +122,7 @@ bool AI_Smart::startTurn()
 	if (abort_requested)
 	  break;
     }
-        
+
     delete analysis;
     d_stacklist->setActivestack(0);
 
@@ -135,7 +135,7 @@ bool AI_Smart::startTurn()
         if (getStacklist()->check() == false)
           exit(1);
       }
-    return true;
+  return !(Playerlist::getInstance()->getNoOfPlayers() <= 1);
 }
 
 void AI_Smart::abortTurn()

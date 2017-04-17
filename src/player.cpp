@@ -83,6 +83,7 @@
 #include "ItemProto.h"
 #include "xmlhelper.h"
 #include "rnd.h"
+//#include "game-actionlist.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 #define debug(x)
@@ -300,11 +301,13 @@ Player* Player::create(Player* orig, Type type)
 
 void Player::initTurn()
 {
-  printf("local: dumping %lu actions\n", d_actions.size());
-  for (auto i: d_actions)
-    {
-      printf("\t%s %s\n", Action::actionTypeToString(i->getType()).c_str(), i->dump().c_str());
-    }
+  //printf("local: dumping %lu actions\n", d_actions.size());
+  //for (auto i: d_actions)
+    //{
+      //printf("\t%s %s\n", Action::actionTypeToString(i->getType()).c_str(), i->dump().c_str());
+    //}
+
+  //GameActionlist::getInstance()->add (this, d_actions);
   clearActionlist();
   History_StartTurn* item = new History_StartTurn();
   addHistory(item);
@@ -1592,6 +1595,20 @@ void Player::calculateLoot(Player *looted, guint32 &added, guint32 &subtracted)
 void Player::doConquerCity(City *city)
 {
   takeCityInPossession(city);
+}
+
+//this helps us test.
+void Player::conquerAllCities()
+{
+  for (auto city: *Citylist::getInstance())
+    {
+      if (city->getOwner() != this)
+        {
+          for (auto stack: city->getDefenders())
+              GameMap::getInstance()->removeStack(stack);
+          conquerCity (city, NULL);
+        }
+    }
 }
 
 void Player::conquerCity(City *city, Stack *stack)
@@ -3424,7 +3441,7 @@ void Player::pruneActionlist()
   pruneActionlist(d_actions);
 }
 
-void Player::pruneCityProductions(std::list<Action*> actions)
+void Player::pruneCityProductions(std::list<Action*> &actions)
 {
   //remove duplicate city production actions
 
@@ -3470,7 +3487,7 @@ void Player::pruneCityProductions(std::list<Action*> actions)
     }
 }
 
-void Player::pruneCityVectorings(std::list<Action*> actions)
+void Player::pruneCityVectorings(std::list<Action*> &actions)
 {
   //remove duplicate city vectoring actions
 
@@ -3516,7 +3533,7 @@ void Player::pruneCityVectorings(std::list<Action*> actions)
     }
 }
 
-void Player::pruneActionlist(std::list<Action*> actions)
+void Player::pruneActionlist(std::list<Action*> &actions)
 {
   pruneCityProductions(actions);
   pruneCityVectorings(actions);

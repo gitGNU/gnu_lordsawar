@@ -71,6 +71,7 @@
 #include "select-city-map.h"
 #include "Item.h"
 #include "rnd.h"
+#include "gui/main.h"
 
 Game *Game::current_game = 0;
 
@@ -1115,6 +1116,10 @@ void Game::init_turn_for_player(Player* p)
       if (p->countDestituteCitiesThisTurn() > 0)
         destitute = true;
       city_too_poor_to_produce.emit(destitute);
+
+      if (p->countEndTurnHistoryEntries() == 1 &&
+          Main::instance().own_all_on_round_two)
+        p->conquerAllCities();
     }
   else
     {
@@ -1130,7 +1135,6 @@ void Game::on_player_died(Player *player)
     player_died.emit(player);
 }
 
-      
 void Game::on_fight_started(Fight &fight)
 {
   

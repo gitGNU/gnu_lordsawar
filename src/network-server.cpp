@@ -101,8 +101,9 @@ bool NetworkServer::gotClientConnection(const Glib::RefPtr<Gio::SocketConnection
   return false;
 }
 
-void NetworkServer::onConnectionLost(NetworkConnection *c)
+void NetworkServer::onConnectionLost(void *conn)
 {
+  NetworkConnection *c = reinterpret_cast<NetworkConnection*>(conn);
   if (std::find (connections.begin(), connections.end(), c) != connections.end())
     connections.remove(c);
 }

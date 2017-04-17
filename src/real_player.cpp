@@ -83,8 +83,9 @@ bool RealPlayer::startTurn()
 
 void RealPlayer::endTurn()
 {
-  reportEndOfTurn();
   pruneActionlist();
+  reportEndOfTurn();
+  //this is where a lot of signals are piling up
 }
 
 void RealPlayer::invadeCity(City* c)

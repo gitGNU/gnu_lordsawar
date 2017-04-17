@@ -111,31 +111,31 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
     xml->get_widget("show_options_button", show_options_button);
     show_options_button->signal_clicked().connect (method(on_show_options_clicked));
 
-    game_station->remote_player_moved.connect
-      (sigc::hide(method(on_remote_player_ends_turn)));
-    game_station->remote_player_starts_move.connect
-      (sigc::hide(method(on_remote_player_starts_turn)));
-    game_station->local_player_moved.connect
-      (sigc::hide(method(on_local_player_ends_turn)));
-    game_station->local_player_starts_move.connect
-      (sigc::hide(method(on_local_player_starts_turn)));
-    game_station->remote_participant_joins.connect
-      (method(on_remote_participant_joins));
-    game_station->remote_participant_departs.connect
-      (method(on_remote_participant_departs));
-    game_station->player_sits.connect (method(on_player_sits));
-    game_station->player_stands.connect (sigc::hide(method(on_player_stands)));
-    game_station->player_changes_name.connect (method(on_player_changes_name));
-    game_station->player_changes_type.connect (method(on_player_changes_type));
-    game_station->remote_player_named.connect (method(on_remote_player_changes_name));
-    game_station->chat_message_received.connect (sigc::hide<0>(method(on_chatted)));
-    game_station->playerlist_reorder_received.connect (method(on_reorder_playerlist));
-    game_station->round_begins.connect (method(on_reorder_playerlist));
-    game_station->remote_player_died.connect (method(on_player_died));
-    game_station->local_player_died.connect (method(on_player_died));
-    game_station->nickname_changed.connect (method(on_nickname_changed));
-    game_station->game_may_begin.connect (method(on_play_message_received));
-    game_station->player_gets_turned_off.connect (method(on_player_turned_off));
+    connections.push_back(game_station->remote_player_moved.connect
+      (sigc::hide(method(on_remote_player_ends_turn))));
+    connections.push_back(game_station->remote_player_starts_move.connect
+      (sigc::hide(method(on_remote_player_starts_turn))));
+    connections.push_back(game_station->local_player_moved.connect
+      (sigc::hide(method(on_local_player_ends_turn))));
+    connections.push_back(game_station->local_player_starts_move.connect
+      (sigc::hide(method(on_local_player_starts_turn))));
+    connections.push_back(game_station->remote_participant_joins.connect
+      (method(on_remote_participant_joins)));
+    connections.push_back(game_station->remote_participant_departs.connect
+      (method(on_remote_participant_departs)));
+    connections.push_back(game_station->player_sits.connect (method(on_player_sits)));
+    connections.push_back(game_station->player_stands.connect (sigc::hide(method(on_player_stands))));
+    connections.push_back(game_station->player_changes_name.connect (method(on_player_changes_name)));
+    connections.push_back(game_station->player_changes_type.connect (method(on_player_changes_type)));
+    connections.push_back(game_station->remote_player_named.connect (method(on_remote_player_changes_name)));
+    connections.push_back(game_station->chat_message_received.connect (sigc::hide<0>(method(on_chatted))));
+    connections.push_back(game_station->playerlist_reorder_received.connect (method(on_reorder_playerlist)));
+    connections.push_back(game_station->round_begins.connect (method(on_reorder_playerlist)));
+    connections.push_back(game_station->remote_player_died.connect (method(on_player_died)));
+    connections.push_back(game_station->local_player_died.connect (method(on_player_died)));
+    connections.push_back(game_station->nickname_changed.connect (method(on_nickname_changed)));
+    connections.push_back(game_station->game_may_begin.connect (method(on_play_message_received)));
+    connections.push_back(game_station->player_gets_turned_off.connect (method(on_player_turned_off)));
 
     update_player_details();
     update_buttons();
@@ -319,6 +319,7 @@ GameLobbyDialog::GameLobbyDialog(Gtk::Window &parent,
 
 GameLobbyDialog::~GameLobbyDialog()
 {
+  disconnect_signals();
   if (citymap)
     delete citymap;
   clean_up_players();
@@ -573,8 +574,13 @@ void GameLobbyDialog::on_player_stands(Player *p)
 
 void GameLobbyDialog::on_local_player_ends_turn()
 {
-  update_turn_indicator();
-  update_scenario_details();
+  if ( dialog->get_visible())
+    {
+      //fixme, why are we getting all these updates at the end?
+      //they seem to pile up, one for every turn
+      update_turn_indicator();
+      update_scenario_details();
+    }
 }
 
 void GameLobbyDialog::update_turn_indicator()
@@ -848,4 +854,12 @@ void GameLobbyDialog::sort_player_list_by_turn_order()
 void GameLobbyDialog::clean_up_players()
 {
   player_list->clear();
+}
+
+void GameLobbyDialog::disconnect_signals()
+{
+  std::list<sigc::connection>::iterator it = connections.begin();
+  for (; it != connections.end(); it++)
+    (*it).disconnect();
+  connections.clear();
 }

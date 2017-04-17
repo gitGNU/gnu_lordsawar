@@ -55,8 +55,8 @@ public:
   // private callback
   bool gotClientConnection(const Glib::RefPtr<Gio::SocketConnection>& c);
 
+  void onConnectionLost(void *conn);
 private:
-  void onConnectionLost(NetworkConnection *conn);
   
   Glib::RefPtr<Gio::SocketService> server;
   std::list<NetworkConnection *> connections;

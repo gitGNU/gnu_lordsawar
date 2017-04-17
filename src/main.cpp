@@ -137,6 +137,18 @@ int main(int argc, char* argv[])
 	    {
 	      kit.start_test_scenario = true;
 	    }
+	  else if (parameter == "--net-test")
+	    {
+	      kit.start_net_test_scenario = true;
+	    }
+          else if (parameter == "--speedy")
+            {
+	      kit.speedy = true;
+            }
+          else if (parameter == "--own-all-on-round-two")
+            {
+	      kit.own_all_on_round_two= true;
+            }
 	  else if (parameter == "--stress-test" || parameter == "-s")
 	    {
 	      kit.start_stress_test = true;

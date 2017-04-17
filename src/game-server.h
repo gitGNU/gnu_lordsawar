@@ -75,6 +75,7 @@ public:
 
   void on_player_finished_turn(Player *player);
   void on_turn_aborted();
+  bool check_end_of_round();
 protected:
   GameServer();
   ~GameServer();
@@ -147,7 +148,6 @@ private:
 
   bool nextTurn();
 
-  bool check_end_of_round();
 
   void remove_all_participants();
 

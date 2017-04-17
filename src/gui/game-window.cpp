@@ -1376,9 +1376,6 @@ void GameWindow::stop_game(Glib::ustring action)
   if (game)
     {
       current_save_filename = "";
-        //{
-        //game->stopGame();
-        //}
       if (action == "game-over" && game->getScenario()->getPlayMode() == GameScenario::NETWORKED)
         give_some_cheese(game_winner);
       else
@@ -1955,7 +1952,9 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 
   Glib::ustring name;
   Player *p = Playerlist::getActiveplayer();
-  Army *h = p->getActivestack()->getFirstHero();
+  Army *h = NULL;
+  if (p->getActivestack())
+    h = p->getActivestack()->getFirstHero();
   if (h)
     name = h->getName();
   else

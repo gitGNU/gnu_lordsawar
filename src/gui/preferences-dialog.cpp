@@ -27,6 +27,7 @@
 #include "Configuration.h"
 #include "snd.h"
 #include "game.h"
+#include "GameScenario.h"
 #include "playerlist.h"
 #include "AI_Diplomacy.h"
 #include "AI_Analysis.h"
@@ -180,40 +181,43 @@ void PreferencesDialog::run(Game *game)
     
     dialog->get_size(width, height);
     Configuration::saveConfigurationFile();
-    PlayerTypeMap::iterator j = player_types.begin();
-    for (; j != player_types.end(); ++j)
+    if (game->getScenario()->getPlayMode() == GameScenario::HOTSEAT)
       {
-	Player *p = (*j).first;
-	if (p == NULL)
-	  continue;
-	if (p == Playerlist::getInstance()->getNeutral())
-	  continue;
-	if (p->getType() == Player::HUMAN) //changing human to:
-	  {
-	    if ((*j).second->get_active_text() == _("Human")) //human, no change
-	      ;
-	    else //computer, change to easy
-	      {
-		AI_Fast *new_player = new AI_Fast(*p);
-		Player *old_player = p;
-		Playerlist::getInstance()->swap(old_player, new_player);
-		//disconnect and connect game signals
-		game->addPlayer(new_player);
-		delete old_player;
-	      }
-	  }
-	else //changing computer to:
-	  {
-	    if ((*j).second->get_active_text() == _("Human")) //human, change it
-	      {
-		RealPlayer *new_player = new RealPlayer(*p);
-		Player *old_player = p;
-		Playerlist::getInstance()->swap(old_player, new_player);
-		//disconnect and connect game signals
-		game->addPlayer(new_player);
-		delete old_player;
-	      }
-	  }
+        PlayerTypeMap::iterator j = player_types.begin();
+        for (; j != player_types.end(); ++j)
+          {
+            Player *p = (*j).first;
+            if (p == NULL)
+              continue;
+            if (p == Playerlist::getInstance()->getNeutral())
+              continue;
+            if (p->getType() == Player::HUMAN) //changing human to:
+              {
+                if ((*j).second->get_active_text() == _("Human")) //human, no change
+                  ;
+                else //computer, change to easy
+                  {
+                    AI_Fast *new_player = new AI_Fast(*p);
+                    Player *old_player = p;
+                    Playerlist::getInstance()->swap(old_player, new_player);
+                    //disconnect and connect game signals
+                    game->addPlayer(new_player);
+                    delete old_player;
+                  }
+              }
+            else //changing computer to:
+              {
+                if ((*j).second->get_active_text() == _("Human")) //human, change it
+                  {
+                    RealPlayer *new_player = new RealPlayer(*p);
+                    Player *old_player = p;
+                    Playerlist::getInstance()->swap(old_player, new_player);
+                    //disconnect and connect game signals
+                    game->addPlayer(new_player);
+                    delete old_player;
+                  }
+              }
+          }
       }
     dialog->hide();
 }

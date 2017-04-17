@@ -59,6 +59,8 @@ void AI_Dummy::abortTurn()
   abort_requested = true;
   if (surrendered)
     aborted_turn.emit();
+  else if (Playerlist::getInstance()->countPlayersAlive() == 1)
+    aborted_turn.emit();
 }
 
 void AI_Dummy::setDefensiveProduction(City *city)
@@ -121,7 +123,7 @@ bool AI_Dummy::startTurn()
   //doing anything
   if (abort_requested)
     aborted_turn.emit();
-  return true;
+  return !(Playerlist::getInstance()->getNoOfPlayers() <= 1);
 }
 
 void AI_Dummy::invadeCity(City* c)

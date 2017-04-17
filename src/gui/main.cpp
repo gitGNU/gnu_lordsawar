@@ -43,6 +43,7 @@
 #include "File.h"
 #include "Configuration.h"
 #include "timing.h"
+#include "fight-window.h"
 
 
 struct Main::Impl: public sigc::trackable 
@@ -64,6 +65,9 @@ Main::Main(int &argc, char **&argv)
     singleton = this;
 
     start_test_scenario = false;
+    start_net_test_scenario = false;
+    speedy = false;
+    own_all_on_round_two = false;
     start_stress_test = false;
     start_editor = false;
     start_robots = 0;
@@ -117,6 +121,11 @@ void Main::start_main_loop()
         {
           delete impl->driver;
           impl->driver = NULL;
+        }
+      if (speedy)
+        {
+          FightWindow::s_quick_all = true;
+          Configuration::s_displaySpeedDelay = 0;
         }
       impl->driver = new Driver(start_editor, load_filename);
       impl->gtk_main->run();

@@ -52,6 +52,7 @@ class GameLobbyDialog: public LwDialog
   sigc::signal<void, GameScenario *, NextTurnNetworked*> start_network_game;
   sigc::signal<void> game_may_begin;
 
+  void disconnect_signals();
  private:
     //! The mini map that shows the scenario map
     CityMap* citymap;
@@ -142,6 +143,7 @@ class GameLobbyDialog: public LwDialog
     void cell_data_sitting(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
     
     Gtk::TreeView *people_treeview;
+    std::list<sigc::connection> connections;
     
     class PeopleColumns: public Gtk::TreeModelColumnRecord {
     public:

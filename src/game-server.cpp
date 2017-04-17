@@ -374,6 +374,7 @@ void GameServer::onConnectionLost(void *conn)
       remote_participant_disconnected.emit();
       delete part;
     }
+  network_server->onConnectionLost(conn);
 }
 
 Participant *GameServer::findParticipantByConn(void *conn)

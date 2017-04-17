@@ -41,6 +41,9 @@ class Main: public sigc::trackable
     bool start_editor;
     int start_robots;
     bool start_test_scenario;
+    bool start_net_test_scenario;
+    bool speedy;
+    bool own_all_on_round_two;
     Glib::ustring load_filename;
     Glib::ustring turn_filename;
     guint32 random_number_seed;

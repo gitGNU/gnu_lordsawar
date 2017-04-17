@@ -52,8 +52,8 @@
 #include "rnd.h"
 #include "GameScenarioOptions.h"
 
-#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
-//#define debug(x)
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
+#define debug(x)
 
 AI_Fast::AI_Fast(Glib::ustring name, guint32 armyset, Gdk::RGBA color, int width, int height, int player_no)
     :RealPlayer(name, armyset, color, width, height, Player::AI_FAST, player_no), d_join(true),
@@ -211,7 +211,7 @@ bool AI_Fast::startTurn()
 
     if (abort_requested)
       aborted_turn.emit();
-    return true;
+    return !(Playerlist::getInstance()->getNoOfPlayers() <= 1);
 }
 
 int AI_Fast::scoreArmyType(const ArmyProdBase *a)

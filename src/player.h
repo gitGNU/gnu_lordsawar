@@ -843,6 +843,9 @@ class Player: public sigc::trackable
         //! The player's stack takes a city.  Stack can be NULL.
         void conquerCity(City *city, Stack *stack);
 
+        //! Take them all!  (used for testing)
+        void conquerAllCities();
+
         /** 
 	 * Callback to have the active player occupy a given city.
 	 * The player has defeated a City and now it has been decided
@@ -1701,7 +1704,7 @@ class Player: public sigc::trackable
 	bool AI_maybeDisband(Stack *s, int safe_mp, bool &stack_killed);
 
 	void pruneActionlist();
-	static void pruneActionlist(std::list<Action*> actions);
+	static void pruneActionlist(std::list<Action*> &actions);
 	    
     private:
         //! Loads the subdata of a player (actions and stacklist)
@@ -1786,8 +1789,8 @@ class Player: public sigc::trackable
         void lootCity(City *city, Player *looted);
 	void calculateLoot(Player *looted, guint32 &added, guint32 &subtracted);
         void takeCityInPossession(City* c);
-	static void pruneCityVectorings(std::list<Action*> actions);
-	static void pruneCityProductions(std::list<Action*> actions);
+	static void pruneCityVectorings(std::list<Action*> &actions);
+	static void pruneCityProductions(std::list<Action*> &actions);
 
         std::list<Action *> getActionsThisTurn(int type) const;
 

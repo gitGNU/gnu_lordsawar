@@ -356,6 +356,62 @@ void Driver::run()
       g.difficulty = GameScenario::calculate_difficulty_rating(g);
       on_new_game_requested(g);
     }
+  else if (Main::instance().start_net_test_scenario)
+    {
+      // quick load a test scenario
+      GameParameters g;
+      GameParameters::Player p;
+      for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+	{
+	  p.type = GameParameters::Player::EASY;
+	  p.id = i;
+	  p.name = String::ucompose ("Player %1", i + 1);
+	  g.players.push_back(p);
+	}
+      g.map.width = 50;
+      g.map.height = 75;
+      g.map.grass = 78;
+      g.map.water = 7;
+      g.map.swamp = 2;
+      g.map.forest = 3;
+      g.map.hills = 5;
+      g.map.mountains = 5;
+      g.map.cities = 8;
+      g.map.ruins = 5;
+      g.map.temples = 3;
+      g.map.signposts = 0;
+
+      g.map_path = "";
+      g.tile_theme = "default";
+      g.army_theme = "default";
+      g.shield_theme = "default";
+      g.city_theme = "default";
+
+      g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
+      g.see_opponents_stacks = true;
+      g.see_opponents_production = true;
+      g.play_with_quests = GameParameters::NO_QUESTING;
+      g.hidden_map = false;
+      g.diplomacy = false;
+
+      g.neutral_cities = GameParameters::STRONG;
+      g.razing_cities = GameParameters::ALWAYS;
+      g.quick_start = GameParameters::NO_QUICK_START;
+      g.cusp_of_war = false;
+      g.intense_combat = false;
+      g.military_advisor = false;
+      g.random_turns = false;
+      g.cities_can_produce_allies = false;
+      g.name = "";
+
+      g.difficulty = GameScenario::calculate_difficulty_rating(g);
+      if (Profilelist::getInstance()->empty() == true)
+        Profilelist::getInstance()->push_back(new Profile(Glib::get_user_name()));
+
+      on_new_hosted_network_game_requested(g, LORDSAWAR_PORT,
+                                           Profilelist::getInstance()->front(),
+                                           false, false);
+    }
   else if (Main::instance().start_robots != 0) 
     {
       Snd::deleteInstance();

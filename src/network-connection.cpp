@@ -52,6 +52,7 @@ void NetworkConnection::tear_down_connection()
 {
   d_in_cb.disconnect();
   d_stop = true;
+  std::unique_lock<std::mutex> lock (mutex);
   cond_push.notify_one();
 
   //this doesn't seem to be needed, and enabling it is crashy.
