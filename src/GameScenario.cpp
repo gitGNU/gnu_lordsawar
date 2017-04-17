@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2010, 2011, 2014, 2015 Ben Asselstine
+// Copyright (C) 2006-2008, 2010, 2011, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -70,7 +70,7 @@
 #include "file-compat.h"
 #include "Item.h"
 #include "rnd.h"
-//#include "game-actionlist.h"
+#include "game-actionlist.h"
 
 Glib::ustring GameScenario::d_tag = "scenario";
 Glib::ustring GameScenario::d_top_tag = PACKAGE;
@@ -612,7 +612,7 @@ bool GameScenario::loadWithHelper(XML_Helper& helper)
   helper.registerTag(Bridgelist::d_tag, sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag(Portlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag(VectoredUnitlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
-  //helper.registerTag(GameActionlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(GameActionlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
 
   if (!helper.parseXML())
     broken = true;
@@ -720,7 +720,7 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   retval &= Bridgelist::getInstance()->save(&helper);
   retval &= QuestsManager::getInstance()->save(&helper);
   retval &= VectoredUnitlist::getInstance()->save(&helper);
-  //retval &= GameActionlist::getInstance()->save(&helper);
+  retval &= GameActionlist::getInstance()->save(&helper);
 
   //save the private GameScenario data last due to dependencies
   retval &= helper.openTag(GameScenario::d_tag);
@@ -919,11 +919,11 @@ bool GameScenario::load(Glib::ustring tag, XML_Helper* helper)
       return true;
     }
 
-  //if (tag == GameActionlist::d_tag)
-    //{
-      //GameActionlist::getInstance(helper);
-      //return true;
-    //}
+  if (tag == GameActionlist::d_tag)
+    {
+      GameActionlist::getInstance(helper);
+      return true;
+    }
 
   return false;
 }
@@ -1400,7 +1400,7 @@ void GameScenario::cleanup()
   QuestsManager::deleteInstance();
   VectoredUnitlist::deleteInstance();
   GameMap::deleteInstance();
-  //GameActionlist::deleteInstance();
+  GameActionlist::deleteInstance();
   if (fl_counter)
     {
       delete fl_counter;

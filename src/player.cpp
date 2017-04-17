@@ -83,7 +83,7 @@
 #include "ItemProto.h"
 #include "xmlhelper.h"
 #include "rnd.h"
-//#include "game-actionlist.h"
+#include "game-actionlist.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 #define debug(x)
@@ -307,7 +307,7 @@ void Player::initTurn()
       //printf("\t%s %s\n", Action::actionTypeToString(i->getType()).c_str(), i->dump().c_str());
     //}
 
-  //GameActionlist::getInstance()->add (this, d_actions);
+  GameActionlist::getInstance()->add (this, d_actions);
   clearActionlist();
   History_StartTurn* item = new History_StartTurn();
   addHistory(item);
