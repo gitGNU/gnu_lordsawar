@@ -1536,15 +1536,19 @@ bool Action_Produce::doSave(XML_Helper* helper) const
 
 Action_ProduceVectored::Action_ProduceVectored(ArmyProdBase *army, 
                                                Vector<int> dest, 
-                                               Vector<int> src)
-:Action(Action::PRODUCE_VECTORED_UNIT), d_army(NULL), d_dest(dest), d_src(src)
+                                               Vector<int> src, guint32 aid,
+                                               guint32 sid)
+:Action(Action::PRODUCE_VECTORED_UNIT), d_army(NULL), d_dest(dest), d_src(src),
+    d_target_army_id (aid), d_target_stack_id (sid)
 {
   if (army)
     d_army = new ArmyProdBase(*army);
 }
 
 Action_ProduceVectored::Action_ProduceVectored(const Action_ProduceVectored &a)
-: Action(a), d_dest(a.d_dest), d_src(a.d_src)
+: Action(a), d_dest(a.d_dest), d_src(a.d_src),
+    d_target_army_id (a.d_target_army_id),
+    d_target_stack_id (a.d_target_stack_id)
 {
   if (a.d_army)
     d_army = new ArmyProdBase(*a.d_army);
@@ -1559,6 +1563,8 @@ Action_ProduceVectored::Action_ProduceVectored(XML_Helper* helper)
   helper->getData(d_dest.y, "dest_y");
   helper->getData(d_src.x, "src_x");
   helper->getData(d_src.y, "src_y");
+  helper->getData(d_target_army_id, "target_army_id");
+  helper->getData(d_target_stack_id, "target_stack_id");
   d_army = NULL;
   helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &Action_ProduceVectored::load));
 }
@@ -1582,7 +1588,7 @@ Action_ProduceVectored::~Action_ProduceVectored()
 
 Glib::ustring Action_ProduceVectored::dump() const
 {
-  return String::ucompose("Vectored army of type %1 shows up at %2,%3 from %4,%5.\n", d_army->getTypeId(), d_dest.x, d_dest.y, d_src.x, d_src.y);
+  return String::ucompose("Vectored army of type %1 shows up at %2,%3 from %4,%5, as army id %6 in stack id %7.\n", d_army->getTypeId(), d_dest.x, d_dest.y, d_src.x, d_src.y, d_target_army_id, d_target_stack_id);
 }
 
 bool Action_ProduceVectored::doSave(XML_Helper* helper) const
@@ -1593,6 +1599,8 @@ bool Action_ProduceVectored::doSave(XML_Helper* helper) const
   retval &= helper->saveData("dest_y", d_dest.y);
   retval &= helper->saveData("src_x", d_src.x);
   retval &= helper->saveData("src_y", d_src.y);
+  retval &= helper->saveData("target_army_id", d_target_army_id);
+  retval &= helper->saveData("target_stack_id", d_target_stack_id);
   retval &= d_army->save(helper);
 
   return retval;

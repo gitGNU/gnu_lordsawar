@@ -3360,8 +3360,6 @@ Army* Player::doVectoredUnitArrives(VectoredUnit *unit, Stack *& s)
 
 bool Player::vectoredUnitArrives(VectoredUnit *unit)
 {
-  addAction(new Action_ProduceVectored(unit->getArmy(), unit->getDestination(),
-                                       unit->getPos()));
   Stack *stack = NULL;
   Army *army = doVectoredUnitArrives(unit, stack);
   if (!army)
@@ -3370,34 +3368,39 @@ bool Player::vectoredUnitArrives(VectoredUnit *unit)
       printf("whooops... this vectored unit failed to show up.\n");
       City *dest = GameMap::getCity(unit->getDestination());
       printf("the unit was being vectored to: %s, from %s by %s\n", 
-	     dest->getName().c_str(), 
-	     GameMap::getCity(unit->getPos())->getName().c_str(), getName().c_str());
+             dest->getName().c_str(),
+             GameMap::getCity(unit->getPos())->getName().c_str(), getName().c_str());
       printf("Army is a %s, turns is %d + 1\n", unit->getArmy()->getName().c_str(), unit->getArmy()->getProduction());
 
-      
+
       int turn = -1;
-  std::list<History*> h = dest->getOwner()->getHistoryForCityId(dest->getId());
-  std::list<History*>::const_iterator pit;
-  for (pit = h.begin(); pit != h.end(); pit++)
-    {
-      switch ((*pit)->getType())
-	{
-	case History::START_TURN:
-	    {
-	      turn++;
-	      break;
-	    }
-	case History::CITY_WON:
-          break;
-	case History::CITY_RAZED:
-          break;
-	default:
-	  break;
-	}
-    }
+      std::list<History*> h = dest->getOwner()->getHistoryForCityId(dest->getId());
+      std::list<History*>::const_iterator pit;
+      for (pit = h.begin(); pit != h.end(); pit++)
+        {
+          switch ((*pit)->getType())
+            {
+            case History::START_TURN:
+                {
+                  turn++;
+                  break;
+                }
+            case History::CITY_WON:
+              break;
+            case History::CITY_RAZED:
+              break;
+            default:
+              break;
+            }
+        }
       printf("was the destination city owned by us way back then?\n");
       exit (1);
     }
+  else
+    addAction(new Action_ProduceVectored(unit->getArmy(),
+                                         unit->getDestination(),
+                                         unit->getPos(), army->getId(),
+                                         stack->getId()));
 
   return true;
 }

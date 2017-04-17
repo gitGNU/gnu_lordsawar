@@ -731,6 +731,10 @@ void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *ac
   debug ("stack is " << s);
   assert (army != NULL);
   assert (s != NULL);
+  //printf("vectored unit landed in stack %d, and we expected %d\n", s->getId(), action->getTargetStackId());
+  //printf("new id of unit is %d, and we expected %d\n", army->getId(), action->getTargetArmyId());
+  assert (army->getId() == action->getTargetArmyId());
+  assert (s->getId() == action->getTargetStackId());
 }
 
 void NetworkPlayer::decodeActionDiplomacyState(const Action_DiplomacyState *action)

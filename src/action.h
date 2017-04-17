@@ -1187,7 +1187,8 @@ class Action_ProduceVectored: public Action
 	 * it has showing up.
 	 */
         Action_ProduceVectored(ArmyProdBase *army, Vector<int> dest, 
-                               Vector<int> src);
+                               Vector<int> src, guint32 target_army_id,
+                               guint32 target_stack_id);
 	//! Copy constructor
 	Action_ProduceVectored(const Action_ProduceVectored &action);
 	//! Load a new vector arrival action from an opened saved-game file.
@@ -1209,10 +1210,18 @@ class Action_ProduceVectored: public Action
 
 	//! Get the position on the map where the army is coming from.
 	Vector<int> getOrigination() const {return d_src;}
+
+        //! Get the expected army id of the newly arrived unit.
+        guint32 getTargetArmyId() const {return d_target_army_id;}
+
+        //! Get the expected stack id of the newly arrived unit.
+        guint32 getTargetStackId() const {return d_target_stack_id;}
     private:
 	ArmyProdBase *d_army;
         Vector<int> d_dest;
         Vector<int> d_src;
+        guint32 d_target_army_id;
+        guint32 d_target_stack_id;
 	bool load(Glib::ustring tag, XML_Helper *helper);
 };
 
