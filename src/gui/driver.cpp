@@ -165,21 +165,18 @@ void Driver::serve (GameScenario *game_scenario)
   Playerlist::getInstance()->syncNeutral();
   //okay we're going to host a game, using this file as a scenario.
   GameServer *game_server = GameServer::getInstance();
-  guint32 port = LORDSAWAR_PORT;
-  if (Main::instance().port)
-    port = Main::instance().port;
   game_server->port_in_use.connect(method(on_could_not_bind_to_port_for_headless_server));
   Glib::ustring id = "";
   if (Profilelist::getInstance()->empty() == false)
     id = Profilelist::getInstance()->front()->getId();
-  game_server->start(game_scenario, port, id, "admin");
+  game_server->start(game_scenario, get_port(), id, "admin");
   game_server = GameServer::getInstance();
   if (game_server->isListening() == false)
     {
       GameServer::deleteInstance();
       return;
     }
-  printf("Game Server is now listening on port %d\n", port);
+  printf("Game Server is now listening on port %d\n", get_port());
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_server->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
   game_server->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
@@ -409,14 +406,14 @@ void Driver::run()
       if (Profilelist::getInstance()->empty() == true)
         Profilelist::getInstance()->push_back(new Profile(Glib::get_user_name()));
 
-      on_new_hosted_network_game_requested(g, LORDSAWAR_PORT,
+      on_new_hosted_network_game_requested(g, get_port(),
                                            Profilelist::getInstance()->front(),
                                            false, false);
     }
   else if (Main::instance().start_robots != 0) 
     {
       Snd::deleteInstance();
-      lordsawaromatic("127.0.0.1", LORDSAWAR_PORT, Player::AI_FAST,
+      lordsawaromatic("127.0.0.1", get_port(), Player::AI_FAST,
 		      Main::instance().start_robots);
     }
   else
@@ -991,7 +988,7 @@ void Driver::on_load_requested(Glib::ustring filename)
           }
         else
           {
-            on_load_hosted_network_game_requested(game_scenario, LORDSAWAR_PORT,
+            on_load_hosted_network_game_requested(game_scenario, get_port(),
 						  nngd.getProfile(), 
                                                   nngd.isAdvertised(),
                                                   nngd.isRemotelyHosted());
@@ -1399,4 +1396,12 @@ void Driver::on_advertising_removal_response_received()
 void Driver::on_advertised_game_round_ends(GameScenario *game_scenario, Profile *p)
 {
   advertise_game(game_scenario, p);
+}
+
+guint32 Driver::get_port ()
+{
+  guint32 port = LORDSAWAR_PORT;
+  if (Main::instance().port)
+    port = Main::instance().port;
+  return port;
 }
