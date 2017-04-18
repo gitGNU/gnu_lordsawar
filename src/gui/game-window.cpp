@@ -1934,6 +1934,7 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
   Gtk::Button *raze_button;
   Gtk::Button *sack_button;
   Gtk::Button *pillage_button;
+  Gtk::Button *occupy_button;
   if (gold)
     on_city_looted (city, gold);
 
@@ -1976,6 +1977,7 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
   xml->get_widget("raze_button", raze_button);
   xml->get_widget("sack_button", sack_button);
   xml->get_widget("pillage_button", pillage_button);
+  xml->get_widget("occupy_button", occupy_button);
 
   switch (GameScenarioOptions::s_sacking_mode)
     {
@@ -1994,6 +1996,7 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
     (GameScenarioOptions::s_razing_cities == GameParameters::ON_CAPTURE || 
      GameScenarioOptions::s_razing_cities == GameParameters::ALWAYS);
 
+  bool quest_default = false;
   if (h) /* if there was a hero in the stack */
     {
       bool pillage, sack, raze, occupy;
@@ -2002,31 +2005,45 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 	{
 	  if (pillage)
 	    {
+              quest_default = true;
               pillage_button->set_sensitive(true);
               pillage_button->property_can_focus() = true;
+              pillage_button->property_has_focus() = true;
               pillage_button->property_can_default() = true;
+              pillage_button->property_receives_default() = true;
+              pillage_button->property_has_default() = true;
 	      pillage_button->grab_default();
 	    }
 	  if (sack)
 	    {
+              quest_default = true;
               sack_button->set_sensitive(true);
               sack_button->property_can_focus() = true;
+              sack_button->property_has_focus() = true;
               sack_button->property_can_default() = true;
+              sack_button->property_receives_default() = true;
+              sack_button->property_has_default() = true;
 	      sack_button->grab_default();
 	    }
 	  if (raze)
 	    {
+              quest_default = true;
               raze_button->property_can_focus() = true;
+              raze_button->property_has_focus() = true;
               raze_button->property_can_default() = true;
+              raze_button->property_receives_default() = true;
+              raze_button->property_has_default() = true;
 	      raze_button->grab_default();
 	    }
 	  if (occupy)
 	    {
-              Gtk::Button *button;
-	      xml->get_widget("occupy_button", button);
-              button->property_can_focus() = true;
-              button->property_can_default() = true;
-	      button->grab_default();
+              quest_default = true;
+              occupy_button->property_can_focus() = true;
+              occupy_button->property_has_focus() = true;
+              occupy_button->property_can_default() = true;
+              occupy_button->property_has_default() = true;
+              occupy_button->property_receives_default() = true;
+	      occupy_button->grab_default();
 	    }
 	}
     }
@@ -2038,6 +2055,16 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
     sack_button->hide();
 
   dialog.get()->show();
+
+  if (quest_default == false)
+    {
+      occupy_button->property_can_focus() = true;
+      occupy_button->property_has_focus() = true;
+      occupy_button->property_can_default() = true;
+      occupy_button->property_has_default() = true;
+      occupy_button->property_receives_default() = true;
+      occupy_button->grab_default();
+    }
 
   while (1)
     {
