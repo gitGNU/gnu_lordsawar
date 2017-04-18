@@ -105,5 +105,10 @@ bool GameActionlist::load(Glib::ustring tag, XML_Helper* helper)
 void GameActionlist::add(Player *player, std::list<Action*> &actions)
 {
   for (auto a : actions)
-    push_back (new NetworkAction (a, player->getId()));
+    add (player, a);
+}
+
+void GameActionlist::add(Player *player, const Action* action)
+{
+  push_back (new NetworkAction (action, player->getId()));
 }

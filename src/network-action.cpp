@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2014 Ben Asselstine
+// Copyright (C) 2008, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 
 Glib::ustring NetworkAction::d_tag = "networkaction";
 
-NetworkAction::NetworkAction(Action *action, guint32 owner)
+NetworkAction::NetworkAction(const Action *action, guint32 owner)
   : OwnerId(owner)
 {
   d_action = Action::copy(action);

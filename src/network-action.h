@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2014 Ben Asselstine
+// Copyright (C) 2008, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ public:
     static Glib::ustring d_tag; 
 
      //! Default constructor.
-     NetworkAction(Action *action, guint32 owner);
+     NetworkAction(const Action *action, guint32 owner);
 
      //! Loading constructor.
      NetworkAction(XML_Helper* helper);

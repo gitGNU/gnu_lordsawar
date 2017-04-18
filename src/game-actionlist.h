@@ -41,6 +41,7 @@ class GameActionlist : public std::list<NetworkAction*>, public sigc::trackable
 	static Glib::ustring d_tag; 
 
         void add(Player *player, std::list<Action*> &actions);
+        void add(Player *player, const Action* action);
 
 	// Methods that operate on the class data but do not modify the class.
 

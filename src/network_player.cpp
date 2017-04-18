@@ -52,6 +52,7 @@
 #include "MapBackpack.h"
 #include "stackreflist.h"
 #include "city.h"
+#include "game-actionlist.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -218,6 +219,7 @@ void NetworkPlayer::decodeActions(std::list<Action *> actions)
 
 void NetworkPlayer::decodeAction(const Action *a)
 {
+  GameActionlist::getInstance()->add(this, a);
   sbusy.emit ();
   d_actions.push_back(Action::copy(a));
   switch(a->getType())
