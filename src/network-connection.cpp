@@ -48,16 +48,29 @@ void NetworkConnection::setup_connection()
   source->attach(Glib::MainContext::get_default());
 }
 
-void NetworkConnection::tear_down_connection()
+void NetworkConnection::tear_down_connection(bool lockit)
 {
-  d_in_cb.disconnect();
-  d_stop = true;
-  std::unique_lock<std::mutex> lock (mutex);
-  cond_push.notify_one();
+  if (lockit)
+    {
+      d_in_cb.disconnect();
+      d_stop = true;
+      std::unique_lock<std::mutex> lock (mutex);
+      cond_push.notify_one();
 
-  //this doesn't seem to be needed, and enabling it is crashy.
-  //cond_pop.notify_one(); 
-  torn_down.emit();
+      //this doesn't seem to be needed, and enabling it is crashy.
+      //cond_pop.notify_one();
+      torn_down.emit();
+    }
+  else
+    {
+      d_in_cb.disconnect();
+      d_stop = true;
+      cond_push.notify_one();
+
+      //this doesn't seem to be needed, and enabling it is crashy.
+      //cond_pop.notify_one();
+      torn_down.emit();
+    }
 }
 
 bool NetworkConnection::on_got_input(Glib::IOCondition cond)
@@ -283,7 +296,7 @@ bool NetworkConnection::sendMessage(int type, const Glib::ustring &pay)
   catch (Gio::Error &ex)
     {
       free (buf);
-      tear_down_connection();
+      tear_down_connection(false);
       connection_lost.emit();
       return false;
     }

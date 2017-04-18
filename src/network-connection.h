@@ -55,7 +55,7 @@ public:
   void sendFile(int type, const Glib::ustring &filename);
   Glib::ustring get_peer_hostname();
 
-  void tear_down_connection();
+  void tear_down_connection(bool lockit = false);
   void disconnect();
   Glib::ustring getHost() const {return d_host;};
   guint32 getPort() const {return d_port;};
