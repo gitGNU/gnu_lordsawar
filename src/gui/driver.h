@@ -138,6 +138,7 @@ class Driver: public sigc::trackable
     void on_got_game_host_response(Glib::ustring err, GameScenario *game_scenario);
     void on_remote_game_hosted(guint32 port, Glib::ustring err);
     void on_could_not_connect_to_gamehost_server();
+    guint32 get_port ();
 };
 
 
