@@ -279,6 +279,9 @@ void Driver::get_default(int num_players, GameParameters &g)
   g.cusp_of_war = false;
   g.see_opponents_stacks = false;
   g.see_opponents_production = false;
+  g.vectoring_mode = GameParameters::VECTORING_ALWAYS_TWO_TURNS;
+  g.build_production_mode = GameParameters::BUILD_PRODUCTION_ALWAYS;
+  g.sacking_mode = GameParameters::SACKING_ALWAYS;
   g.difficulty = GameScenario::calculate_difficulty_rating(g);
 }
 
