@@ -274,11 +274,11 @@ void Driver::get_default(int num_players, GameParameters &g)
   g.shield_theme = "default";
   g.city_theme = "default";
   g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
-  g.difficulty = GameScenario::calculate_difficulty_rating(g);
   g.cities_can_produce_allies = false;
   g.cusp_of_war = false;
   g.see_opponents_stacks = false;
   g.see_opponents_production = false;
+  g.difficulty = GameScenario::calculate_difficulty_rating(g);
 }
 
 void Driver::run()
@@ -1301,6 +1301,7 @@ void Driver::on_game_scenario_received_for_robots(Glib::ustring path)
 void Driver::on_game_over_for_headless_server (Player *p, GameScenario *g)
 {
   printf("all done!  player '%s' was the winner on turn %d\n", p->getName().c_str(), g->getRound());
+  //g->saveGame("/tmp/run.sav");
   GameServer::deleteInstance();
   exit(0);
 }
