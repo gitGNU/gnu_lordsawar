@@ -76,6 +76,7 @@ Main::Main(int &argc, char **&argv)
     turn_filename = "";
     random_number_seed = 0;
     port = 0;
+    cacheSize = 0;
     
     Glib::thread_init();
     try
