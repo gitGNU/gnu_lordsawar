@@ -187,6 +187,7 @@ void Driver::serve (GameScenario *game_scenario)
     (sigc::mem_fun(GameServer::getInstance(), &GameServer::sendKillPlayer));
 
   game_server->notifyClientsGameMayBeginNow();
+  Configuration::s_autosave_policy = Configuration::NO_SAVING;
   Game *game = new Game(game_scenario, next_turn);
   game->game_over.connect (sigc::bind (sigc::mem_fun (this, &Driver::on_game_over_for_headless_server), game_scenario));
   if (game)
@@ -1293,6 +1294,7 @@ void Driver::on_game_scenario_received_for_robots(Glib::ustring path)
     if (Player::Type((*it)->getType()) == robot_player_type)
       GameClient::getInstance()->listenForLocalEvents(*it);
 
+  Configuration::s_autosave_policy = Configuration::NO_SAVING;
   Game *game = new Game(game_scenario, next_turn);
   game->get_smallmap().set_slide_speed(0);
   game_client->request_seat_manifest();
