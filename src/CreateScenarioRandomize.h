@@ -67,19 +67,18 @@ class CreateScenarioRandomize
 	//! Get the default player name for the given shield colour.
 	static Glib::ustring getPlayerName(Shield::Colour id);
 
-    private:
-
-	Glib::ustring popRandomListName(std::vector<Glib::ustring>& list);
-
-        Glib::ustring get_direction(int xdir, int ydir);
-
-	bool loadNames(std::vector<Glib::ustring>& list, std::ifstream& file);
-
+    protected:
         //the namelists
 	NameList *d_citynames;
 	NameList *d_signposts;
 	NameList *d_templenames;
 	NameList *d_ruinnames;
+
+    private:
+
+	Glib::ustring popRandomListName(std::vector<Glib::ustring>& list);
+        Glib::ustring get_direction(int xdir, int ydir);
+	bool loadNames(std::vector<Glib::ustring>& list, std::ifstream& file);
 };
 
 #endif  //CREATE_SCENARIO_RANDOMIZE_H
