@@ -68,8 +68,8 @@
 #include "game-parameters.h"
 #include "rnd.h"
 
-#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
-//#define debug(x)
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
+#define debug(x)
 
 CreateScenario::CreateScenario(int width, int height)
     :d_scenario(0), d_generator(0)
