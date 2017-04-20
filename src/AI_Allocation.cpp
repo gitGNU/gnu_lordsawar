@@ -46,8 +46,8 @@
 #include "QEnemyArmytype.h"
 #include "rnd.h"
 
-#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
-//#define debug(x)
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
+#define debug(x)
 
 AI_Allocation* AI_Allocation::s_instance = 0;
 
