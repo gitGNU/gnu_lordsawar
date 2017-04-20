@@ -653,7 +653,7 @@ bool GameScenario::saveGame(Glib::ustring filename, Glib::ustring extension) con
 {
   bool retval = true;
   Glib::ustring goodfilename = File::add_ext_if_necessary(filename, extension);
-  std::cerr << "saving game to " << goodfilename << std::endl;
+  debug("saving game to " + goodfilename);
 
   Glib::ustring tmpfile = File::get_tmp_file();
   XML_Helper helper(tmpfile, std::ios::out);
