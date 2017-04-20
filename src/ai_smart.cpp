@@ -40,8 +40,8 @@
 #include "Sage.h"
 #include "GameMap.h"
 
-#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
-//#define debug(x)
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
+#define debug(x)
 
 AI_Smart::AI_Smart(Glib::ustring name, unsigned int armyset, Gdk::RGBA color, int width, int height, int player_no)
   :RealPlayer(name, armyset, color, width, height, Player::AI_SMART, player_no),
