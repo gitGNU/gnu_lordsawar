@@ -1191,7 +1191,8 @@ void Stack::getUsableItems(std::list<Item*> &items) const
             i = backpack_items.erase(i);
         }
       if (backpack_items.size() > 0)
-        items.merge(backpack_items);
+        items.insert(std::end(items),
+                     std::begin(backpack_items), std::end(backpack_items));
     }
   return;
 }
