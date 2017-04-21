@@ -204,14 +204,14 @@ void StackTileBox::show_stack(StackTile *s)
 {
   reset_army_buttons();
   Player *p = Playerlist::getActiveplayer();
-  std::list<Stack *> stks;
+  std::vector<Stack *> stks;
   stks = s->getFriendlyStacks(p);
   unsigned int count= 0;
 	    
   guint32 colour_id = 0;
   if (colour_id == p->getId())
     colour_id = Shield::get_next_shield(colour_id);
-  for (std::list<Stack *>::iterator j = stks.begin(); j != stks.end(); j++)
+  for (std::vector<Stack *>::iterator j = stks.begin(); j != stks.end(); j++)
     {
       bool first = true;
       for (Stack::iterator i = (*j)->begin(); i != (*j)->end(); ++i)

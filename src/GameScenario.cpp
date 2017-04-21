@@ -131,7 +131,7 @@ bool GameScenario::loadArmysets(Tar_Helper *t)
   bool broken = false;
   std::list<Glib::ustring> armysets;
   armysets = t->getFilenamesWithExtension(Armyset::file_extension);
-  for (std::list<Glib::ustring>::iterator it = armysets.begin(); 
+  for (std::list<Glib::ustring>::iterator it = armysets.begin();
        it != armysets.end(); it++)
     {
       guint32 id = Armysetlist::getInstance()->import(t, *it, broken);
@@ -235,8 +235,8 @@ void GameScenario::quickStartEvenlyDivided()
 		    {
 		      StackTile *stile = 
 			GameMap::getStacks(c->getPos() + Vector<int>(x,y));
-		      std::list<Stack*> stks = stile->getStacks();
-		      for (std::list<Stack *>::iterator k = stks.begin();
+		      std::vector<Stack*> stks = stile->getStacks();
+		      for (std::vector<Stack *>::iterator k = stks.begin();
 			   k != stks.end(); k++)
 			Stacklist::changeOwnership(*k, p);
 		    }
@@ -283,8 +283,8 @@ void GameScenario::quickStartAIHeadStart()
 		    {
 		      StackTile *stile = 
 			GameMap::getStacks(c->getPos() + Vector<int>(x,y));
-		      std::list<Stack*> stks = stile->getStacks();
-		      for (std::list<Stack *>::iterator k = stks.begin(); 
+		      std::vector<Stack*> stks = stile->getStacks();
+		      for (std::vector<Stack *>::iterator k = stks.begin();
 			   k != stks.end(); k++)
 			Stacklist::changeOwnership(*k, p);
 		    }
@@ -318,7 +318,7 @@ bool GameScenario::setupStacks(bool hidden_map)
     {
       if ((*it) == Playerlist::getInstance()->getNeutral())
 	continue;
-      for (Stacklist::iterator sit = (*it)->getStacklist()->begin(); 
+      for (Stacklist::iterator sit = (*it)->getStacklist()->begin();
 	   sit != (*it)->getStacklist()->end(); sit++)
 	(*sit)->deFog();
     }
@@ -985,7 +985,7 @@ GameScenario::PlayMode GameScenario::playModeFromString(const Glib::ustring str)
     return GameScenario::PlayMode(atoi(str.c_str()));
   if (str == "GameScenario::HOTSEAT") return GameScenario::HOTSEAT;
   else if (str == "GameScenario::NETWORKED")
-    return GameScenario::NETWORKED; 
+    return GameScenario::NETWORKED;
   return GameScenario::HOTSEAT;
 }
 	

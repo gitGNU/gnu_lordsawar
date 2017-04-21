@@ -40,6 +40,11 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
+Fighter::Fighter(const Fighter &f)
+ : army(f.army), pos(f.pos), terrain_strength(f.terrain_strength)
+{
+}
+
 Fighter::Fighter(Army* a, Vector<int> p)
     :army(a), pos(p)
 {
@@ -89,7 +94,7 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
          * on the tile of the selected stack, which could be in a city.
          */
         std::vector<Stack*> stacks = city->getDefenders();
-        for (std::vector<Stack*>::iterator it = stacks.begin(); 
+        for (std::vector<Stack*>::iterator it = stacks.begin();
              it != stacks.end(); it++)
           {
             Stack *s = *it;
@@ -102,9 +107,9 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
              defender->getOwner() != Playerlist::getInstance()->getNeutral())
       {
         Vector<int> pos = defender->getPos();
-        std::list<Stack*> stacks = 
+        std::vector<Stack*> stacks =
           GameMap::getStacks(pos)->getEnemyStacks(attacker->getOwner());
-        for (std::list<Stack*>::iterator it = stacks.begin(); 
+        for (std::vector<Stack*>::iterator it = stacks.begin();
              it != stacks.end(); it++)
           {
             Stack *s = *it;
@@ -136,6 +141,10 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
       }
 
   fillInInitialHPs();
+  for (auto f : d_att_close)
+    d_initial_att_close.push_back(new Fighter(*f));
+  for (auto f : d_def_close)
+    d_initial_def_close.push_back(new Fighter(*f));
 
   // Before the battle starts, calculate the bonuses
   // bonuses remain even if the unit providing a stackwide bonus dies
@@ -171,6 +180,18 @@ Fight::~Fight()
     {
       delete (*d_def_close.begin());
       d_def_close.erase(d_def_close.begin());
+    }
+
+  while (!d_initial_att_close.empty())
+    {
+      delete (*d_initial_att_close.begin());
+      d_initial_att_close.erase(d_initial_att_close.begin());
+    }
+
+  while (!d_initial_def_close.empty())
+    {
+      delete (*d_initial_def_close.begin());
+      d_initial_def_close.erase(d_initial_def_close.begin());
     }
 }
 
@@ -539,7 +560,7 @@ void Fight::calculateBonus()
   // naval units always have a strength of 4
   bool tower = false;
   if (d_def_close.size())
-    tower = 
+    tower =
       d_def_close.front()->army->getStat(Army::ARMY_BONUS) & Army::FORTIFY;
   calculateTerrainModifiers (d_att_close, tower);
   calculateTerrainModifiers (d_def_close, tower);

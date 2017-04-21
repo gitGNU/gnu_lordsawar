@@ -107,12 +107,12 @@ bool Stacklist::check()
       {
         if ((*it)->getOwner()->isComputer() == false)
           continue;
-        std::list<Stack*> f = GameMap::getFriendlyStacks((*it)->getPos());
+        std::vector<Stack*> f = GameMap::getFriendlyStacks((*it)->getPos());
         if (f.size() > 1)
           {
 	      fprintf (stderr, "%lu stacks found on %d,%d\n", f.size(),
                        (*it)->getPos().x, (*it)->getPos().y);
-              for (std::list<Stack*>::iterator t = f.begin(); t != f.end(); t++)
+              for (std::vector<Stack*>::iterator t = f.begin(); t != f.end(); t++)
                 {
                   Stack *stack = *t;
                   if (stack)
@@ -164,9 +164,9 @@ std::vector<Stack*> Stacklist::getDefendersInCity(const City *city)
         for (unsigned int j = pos.y; j < pos.y + city->getSize(); j++)
         {
 	    Vector<int> p = Vector<int>(i,j);
-	    std::list<Stack *>stacks = 
+	    std::vector<Stack *>stacks =
 	      GameMap::getFriendlyStacks(p, city->getOwner());
-	    for (std::list<Stack*>::iterator it = stacks.begin(); 
+	    for (std::vector<Stack*>::iterator it = stacks.begin();
 		 it != stacks.end(); it++)
 		stackvector.push_back(*it);
         }

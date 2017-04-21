@@ -219,11 +219,20 @@ class Action_Move : public Action
 	guint32 getStackId() const {return d_stack;};
 	Vector<int> getEndingPosition() const {return d_dest;};
 	Vector<int> getPositionDelta() const {return d_delta;};
+        void setMovesLeft(guint32 mp) {d_moves_left = mp;}
+        guint32 getMovesLeft() const {return d_moves_left;};
+        void setHasShip(bool s) {d_has_ship = s;}
+        bool getHasShip() const {return d_has_ship;};
+        void setHadShip(bool s) {d_had_ship = s;}
+        bool getHadShip() const {return d_had_ship;};
 
         private:
         guint32 d_stack;
         Vector<int> d_dest;
 	Vector<int> d_delta;
+        guint32 d_moves_left;
+        bool d_has_ship;
+        bool d_had_ship;
 };
 
 //-----------------------------------------------------------------------------
@@ -335,14 +344,18 @@ class Action_Fight : public Action
 	std::list<FightItem> getBattleHistory() const {return d_history;};
 	std::list<guint32> getAttackerStackIds() const {return d_attackers;};
 	std::list<guint32> getDefenderStackIds() const {return d_defenders;};
+	std::list<guint32> getAttackerArmyIds() const {return d_attacker_army_ids;};
+	std::list<guint32> getDefenderArmyIds() const {return d_defender_army_ids;};
 
+        bool is_army_id_in_stacks(guint32 id, std::list<guint32> stack_ids) const;
         private:
         
         std::list<FightItem> d_history;
         std::list<guint32> d_attackers;
         std::list<guint32> d_defenders;
+        std::list<guint32> d_attacker_army_ids;
+        std::list<guint32> d_defender_army_ids;
 
-        bool is_army_id_in_stacks(guint32 id, std::list<guint32> stack_ids) const;
         bool stack_ids_to_stacks(std::list<guint32> stack_ids, std::list<Stack*> &stacks, guint32 &stack_id) const;
 
         bool loadItem(XML_Helper* helper);
@@ -1711,7 +1724,7 @@ class Action_CollectTaxesAndPayUpkeep: public Action
 {
     public:
 	//! Make a new collect taxes and pay upkeep action.
-        Action_CollectTaxesAndPayUpkeep();
+        Action_CollectTaxesAndPayUpkeep(int toGold, int fromGold);
 	//! Copy constructor
 	Action_CollectTaxesAndPayUpkeep(const Action_CollectTaxesAndPayUpkeep &action);
 	//! Load a new collect taxes and pay upkeep action from a saved-game file.
@@ -1722,8 +1735,14 @@ class Action_CollectTaxesAndPayUpkeep: public Action
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
 
+        int getFromGold () const {return d_from_gold;}
+        int getToGold () const {return d_to_gold;}
+
 	//! Save this collect taxes and pay upkeep action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
+    private:
+        int d_from_gold;
+        int d_to_gold;
 };
 
 //-----------------------------------------------------------------------------

@@ -543,8 +543,8 @@ bool AI_Smart::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 m
         dist = abs(diff.x);
       else
         dist = abs(diff.y);
-      std::list<Stack*> stacks = GameMap::getNearbyFriendlyStacks(dest, dist);
-      for (std::list<Stack*>::iterator it = stacks.begin(); it != stacks.end(); 
+      std::vector<Stack*> stacks = GameMap::getNearbyFriendlyStacks(dest, dist);
+      for (std::vector<Stack*>::iterator it = stacks.begin(); it != stacks.end();
            it++)
         {
           if ((*it)->hasHero() && (*it)->getId() != stack->getId())

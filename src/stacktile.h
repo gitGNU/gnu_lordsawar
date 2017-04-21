@@ -103,16 +103,16 @@ public:
     Stack *getFriendlyStack(Player *owner) const;
 
     //! Return all of the stacks on this tile belonging to the given player.
-    std::list<Stack *> getFriendlyStacks(Player *owner) const;
+    std::vector<Stack *> getFriendlyStacks(Player *owner) const;
 
     //! Return all stacks on this tile.
-    std::list<Stack *> getStacks() const;
+    std::vector<Stack *> getStacks() const;
 
     //! Return the first stack on this tile not belonging to the given player.
     Stack *getEnemyStack(Player *notowner) const;
 
     //! Return all of the stacks on this tile not belonging to the given player.
-    std::list<Stack *> getEnemyStacks(Player *owner) const;
+    std::vector<Stack *> getEnemyStacks(Player *owner) const;
 
     //! Return the first stack on this tile.
     Stack *getStack() const;

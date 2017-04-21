@@ -351,12 +351,15 @@ Action* Action::copy(const Action* a)
 
 Action_Move::Action_Move(Stack* s, Vector<int> dest)
     :Action(Action::STACK_MOVE), d_stack(s->getId()), d_dest(dest),
-    d_delta(dest - s->getPos())
+    d_delta(dest - s->getPos()), d_moves_left(s->getMoves()),
+    d_has_ship(s->hasShip()), d_had_ship (s->hasShip())
 {
 }
 
 Action_Move::Action_Move (const Action_Move &a)
-:Action(a), d_stack(a.d_stack), d_dest(a.d_dest), d_delta(a.d_delta)
+:Action(a), d_stack(a.d_stack), d_dest(a.d_dest), d_delta(a.d_delta),
+    d_moves_left(a.d_moves_left), d_has_ship (a.d_has_ship),
+    d_had_ship (a.d_had_ship)
 {
 }
 
@@ -368,12 +371,16 @@ Action_Move::Action_Move(XML_Helper* helper)
     helper->getData(d_dest.y, "y");
     helper->getData(d_delta.x, "delta_x");
     helper->getData(d_delta.y, "delta_y");
+    helper->getData(d_moves_left, "moves_left");
+    helper->getData(d_has_ship, "has_ship");
+    helper->getData(d_had_ship, "had_ship");
 }
 
 Glib::ustring Action_Move::dump() const
 {
-  return String::ucompose("Stack %1 moved to %2,%3\n", d_stack, 
-                          d_dest.x, d_dest.y);
+  return String::ucompose("Stack %1 moved to %2,%3 w/ %4 mp left, ship=%5 (was %6)\n",
+                          d_stack, d_dest.x, d_dest.y, d_moves_left,
+                          d_has_ship, d_had_ship);
 }
 
 bool Action_Move::doSave(XML_Helper* helper) const
@@ -385,6 +392,9 @@ bool Action_Move::doSave(XML_Helper* helper) const
     retval &= helper->saveData("y", d_dest.y);
     retval &= helper->saveData("delta_x", d_delta.x);
     retval &= helper->saveData("delta_y", d_delta.y);
+    retval &= helper->saveData("moves_left", d_moves_left);
+    retval &= helper->saveData("has_ship", d_has_ship);
+    retval &= helper->saveData("had_ship", d_had_ship);
 
     return retval;
 }
@@ -476,12 +486,17 @@ Action_Fight::Action_Fight(const Fight* f)
   for (it = list.begin(); it != list.end(); it++)
     d_defenders.push_back((*it)->getId());
 
+  for (auto fighter : f->getAttackerFighters())
+    d_attacker_army_ids.push_back(fighter->army->getId());
+  for (auto fighter : f->getDefenderFighters())
+    d_defender_army_ids.push_back(fighter->army->getId());
   d_history = f->getCourseOfEvents();
 }
 
 Action_Fight::Action_Fight(const Action_Fight &a)
 : Action(a), d_history(a.d_history), d_attackers(a.d_attackers), 
-    d_defenders(a.d_defenders)
+    d_defenders(a.d_defenders), d_attacker_army_ids(a.d_attacker_army_ids),
+    d_defender_army_ids(a.d_defender_army_ids)
 {
 }
 
@@ -516,6 +531,28 @@ Action_Fight::Action_Fight(XML_Helper* helper)
         if (ival != -1)
           d_defenders.push_back((guint32) ival);
       }
+    // get attacking and defending army ids
+    si.clear();
+    helper->getData(s, "attacker_army_ids");
+    si.str(s);
+    while (si.eof() == false)
+      {
+        ival = -1;
+        si >> ival;
+        if (ival != -1)
+          d_attacker_army_ids.push_back((guint32)ival);
+      }
+    si.clear();
+    helper->getData(s, "defender_army_ids");
+    si.str(s);
+    while (si.eof() == false)
+      {
+        ival = -1;
+        si >> ival;
+        if (ival != -1)
+          d_defender_army_ids.push_back((guint32)ival);
+      }
+    si.clear();
 }
 
 Glib::ustring Action_Fight::dump() const
@@ -527,6 +564,15 @@ Glib::ustring Action_Fight::dump() const
   s += "\n Defending stacks: ";
   for (uit = d_defenders.begin(); uit != d_defenders.end(); uit++)
     s += String::ucompose("%1 ", (*uit));
+  s +="\n Attacking armies: ";
+  for (auto i : d_attacker_army_ids)
+    s += String::ucompose("%1 ", i);
+  s +="\n Defending armies: ";
+  for (auto i : d_defender_army_ids)
+    s += String::ucompose("%1 ", i);
+  s +="\n Armies hit: ";
+  for (auto h : d_history)
+    s += String::ucompose ("%1, ", h.id);
   s +="\n";
   return s;
 }
@@ -546,6 +592,16 @@ bool Action_Fight::doSave(XML_Helper* helper) const
     for (uit = d_defenders.begin(); uit != d_defenders.end(); uit++)
       s += String::ucompose("%1 ", (*uit));
     retval &= helper->saveData("defenders", s);
+
+    s = "";
+    for (auto i : d_attacker_army_ids)
+      s += String::ucompose("%1 ", i);
+    retval &= helper->saveData("attacker_army_ids", s);
+
+    s = "";
+    for (auto i : d_defender_army_ids)
+      s += String::ucompose("%1 ", i);
+    retval &= helper->saveData("defender_army_ids", s);
 
     // save what happened
     for (std::list<FightItem>::const_iterator fit = d_history.begin(); 
@@ -2195,31 +2251,35 @@ bool Action_ResetRuins::doSave(XML_Helper* helper) const
 //-----------------------------------------------------------------------------
 // Action_CollectTaxesAndPayUpkeep
 
-Action_CollectTaxesAndPayUpkeep::Action_CollectTaxesAndPayUpkeep()
-:Action(Action::COLLECT_TAXES_AND_PAY_UPKEEP)
+Action_CollectTaxesAndPayUpkeep::Action_CollectTaxesAndPayUpkeep(int fromGold, int toGold)
+:Action(Action::COLLECT_TAXES_AND_PAY_UPKEEP), d_from_gold(fromGold),
+    d_to_gold(toGold)
 {
 }
 
 Action_CollectTaxesAndPayUpkeep::Action_CollectTaxesAndPayUpkeep(const Action_CollectTaxesAndPayUpkeep &action)
-: Action(action)
+: Action(action), d_from_gold(action.d_from_gold), d_to_gold(action.d_to_gold)
 {
 }
 
 Action_CollectTaxesAndPayUpkeep::Action_CollectTaxesAndPayUpkeep(XML_Helper* helper)
 :Action(helper)
 {
+  helper->getData(d_from_gold, "from_gold");
+  helper->getData(d_to_gold, "to_gold");
 }
 
 Glib::ustring Action_CollectTaxesAndPayUpkeep::dump() const
 {
-  return "Collecting taxes from cities and paying the troops.\n";
+  return String::ucompose("went from %1 to %2 gp after collecting taxes from cities and paying the troops.\n", d_from_gold, d_to_gold);
 }
 
 bool Action_CollectTaxesAndPayUpkeep::doSave(XML_Helper* helper) const
 {
-  if (helper)
-    return true;
-  return false;
+  bool retval = true;
+  retval &= helper->saveData("from_gold", d_from_gold);
+  retval &= helper->saveData("to_gold", d_to_gold);
+  return retval;
 }
 
 //-----------------------------------------------------------------------------

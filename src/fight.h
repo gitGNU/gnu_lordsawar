@@ -137,6 +137,10 @@ class Fight
         //! Returns the participating defender stacks.
         std::list<Stack*> getDefenders() const {return d_defenders;}
         
+        //! Returns the participating attacker armies.
+        std::list<Fighter*> getAttackerFighters() const { return d_initial_att_close;};
+        //! Returns the participating defender armies.
+        std::list<Fighter*> getDefenderFighters() const { return d_initial_def_close;};
 	//! Get the modified strength bonus of the given Army unit.
 	guint32 getModifiedStrengthBonus(Army *a);
 
@@ -211,11 +215,15 @@ class Fight
 	//! The defenders.
         std::list<Stack*> d_defenders;
         
-	//!The attackers in the fight.
+	//!The attackers in the fight, afterwards.
         std::list<Fighter*> d_att_close;
+	//!The attackers in the fight, beforehand.
+        std::list<Fighter*> d_initial_att_close;
 
-	//! The defenders in the fight.
+	//! The defenders in the fight, afterwards.
         std::list<Fighter*> d_def_close;
+	//! The defenders in the fight, beforehand.
+        std::list<Fighter*> d_initial_def_close;
 
         std::map<guint32, guint32> initial_hps;
         
@@ -243,6 +251,7 @@ class Fighter
 {
     public:
         Fighter(Army* a, Vector<int> p);
+        Fighter(const Fighter &f);
         
         Army* army;
         Vector<int> pos;       // location on the map (needed to calculate boni)

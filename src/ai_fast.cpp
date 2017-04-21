@@ -21,6 +21,7 @@
 //  02110-1301, USA.
 
 #include <fstream>
+#include <vector>
 
 #include "AI_Diplomacy.h"
 #include "AI_Analysis.h"
@@ -107,12 +108,29 @@ void AI_Fast::abortTurn()
 
 bool AI_Fast::startTurn()
 {
+
     sbusy.emit();
 
     sbusy.emit();
     if (getStacklist()->getHeroes().size() == 0 &&
         Citylist::getInstance()->countCities(this) == 1)
-      AI_maybeBuyScout(getFirstCity());
+      {
+        City *first = getFirstCity();
+        if (first)
+          AI_maybeBuyScout(first);
+        else
+          {
+            fprintf(stderr,"%s : we have 1 city but no first city?  impossible\n", getName().c_str());
+            for (auto c: *Citylist::getInstance())
+              {
+                if (c->getOwner() == this)
+                  {
+                    fprintf(stderr, "Our city is %d\n", c->getId());
+                  }
+              }
+            exit (0);
+          }
+      }
     sbusy.emit();
 
     debug(getName() << ": AI_Fast::start_turn")
@@ -333,45 +351,39 @@ void AI_Fast::heroGainsLevel(Hero * a)
     addAction(new Action_Level(a, stat));
 }
 
-Stack *AI_Fast::findNearOwnStackToJoin(Stack *s, int max_distance)
+Stack *AI_Fast::findNearOwnStackToJoin(Stack *src, int max_distance)
 {
   int min_mp = -1;
-  std::list<Stack*> stks;
-  stks = GameMap::getNearbyFriendlyStacks(s->getPos(), max_distance);
-  if (stks.size() <= 0)
+  std::vector<Stack*> stks =
+    GameMap::getNearbyFriendlyStacks(src->getPos(), max_distance);
+  if (stks.size() <= 1)
     return NULL;
-  PathCalculator pc(s);
+  PathCalculator pc(src);
   Stack* target = NULL;
-  for (std::list<Stack*>::iterator it = stks.begin(); it != stks.end(); it++)
+  for (auto dest : stks)
     {
       //is this us?
-      if (s == (*it))
-	continue;
-      //is this a stack that is co-located?
-      if (s->getPos() == (*it)->getPos())
-	return s;
+      if (src == dest)
+        continue;
 
       //does the destination have few enough army units to join?
-      if (GameMap::canJoin(s, (*it)) == false)
-	continue;
+      if (GameMap::canJoin(src, dest) == false)
+        continue;
 
-      //is the tile distance under the threshold?
-      int distance = dist(s->getPos(), (*it)->getPos());
+      //is this a stack that is co-located?
+      if (src->getPos() == dest->getPos())
+        return dest;
 
-      if (distance <= max_distance)
-	{
-	  //can we actually get there?
-	  int mp = pc.calculate((*it)->getPos());
-	  if (mp <= 0)
-	    continue;
-	  if (mp < min_mp || min_mp == -1)
-	    {
-	      target = (*it);
-	      min_mp = mp;
-	    }
-	}
+      //can we actually get there?
+      int mp = pc.calculate(dest->getPos());
+      if (mp <= 0)
+        continue;
 
-
+      if (mp < min_mp || min_mp == -1)
+        {
+          target = dest;
+          min_mp = mp;
+        }
     }
   return target;
 }

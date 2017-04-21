@@ -205,11 +205,11 @@ void StackInfoDialog::fill_stack_info()
   bonus->set_attributes(attrs);
   stack_table->attach(*manage(bonus), 6, 0, 1, 1);
 
-  std::list<Stack*> stks;
+  std::vector<Stack*> stks;
   stks = stile->getFriendlyStacks(Playerlist::getActiveplayer());
   if (currently_selected_stack == NULL)
     currently_selected_stack = stks.front();
-  for (std::list<Stack *>::iterator i = stks.begin(); i != stks.end(); i++)
+  for (std::vector<Stack *>::iterator i = stks.begin(); i != stks.end(); i++)
     addStack(*i, idx);
   stack_table->show_all();
 }

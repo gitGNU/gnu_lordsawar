@@ -366,6 +366,27 @@ void NetworkPlayer::decodeActionMove(const Action_Move *action)
 
   assert (stack->getPos() == (action->getEndingPosition() - action->getPositionDelta()));
 
+  if (stack->hasShip() != action->getHadShip())
+    {
+      printf("expected %d for hadship, but got %d\n", action->getHadShip(), stack->hasShip());
+    }
+  assert (stack->hasShip() == action->getHadShip());
+  /*
+    {
+      Vector<int> dest= action->getEndingPosition();
+  Maptile::Building dst_building = GameMap::getInstance()->getBuilding(dest);
+  Maptile::Building src_building = GameMap::getInstance()->getBuilding(stack->getPos());
+  bool to_city = dst_building == Maptile::CITY;
+  bool on_port = src_building == Maptile::PORT;
+  bool on_bridge = src_building == Maptile::BRIDGE;
+  bool on_water = (GameMap::getInstance()->getTerrainType(stack->getPos()) == Tile::WATER);
+  bool to_water = (GameMap::getInstance()->getTerrainType(dest) == Tile::WATER);
+      printf("has ship is %d\n", stack->hasShip());
+      printf("to_city is %d, on_water is %d\n", to_city, on_water);
+      printf("on_port is %d, on_bridge is %d\n", on_port, on_bridge);
+      printf("to_water is %d\n", to_water);
+            }
+  */
   bool skipping = false;
   if (!stack->isFlying())
     {
@@ -375,12 +396,24 @@ void NetworkPlayer::decodeActionMove(const Action_Move *action)
           //are we skipping?
           if (GameMap::countArmyUnits(action->getEndingPosition()) + stack->size() > MAX_STACK_SIZE && GameMap::getFriendlyStack(action->getEndingPosition()) != NULL)
             skipping = true;
-          else
-            stack->updateShipStatus(action->getEndingPosition());
         }
     }
+
   Playerlist::getActiveplayer()->setActivestack (stack);
+
   stack->moveToDest(action->getEndingPosition(), skipping);
+  if (stack->hasShip() != action->getHasShip())
+    {
+      printf("expected %d for ship, but we got %d\n", action->getHasShip(), stack->hasShip());
+    }
+  assert (stack->hasShip() == action->getHasShip());
+  if (stack->getMoves () != action->getMovesLeft())
+    {
+
+      printf("expected %d moves left, but we got %d\n", action->getMovesLeft(), stack->getMoves());
+      printf("it is on a tile of type %d, with a building of %d\n", GameMap::getInstance()->getTile(action->getEndingPosition())->getType(), GameMap::getInstance()->getTile(action->getEndingPosition())->getBuilding());
+    }
+  assert (stack->getMoves() == action->getMovesLeft());
   supdatingStack.emit(stack);
 }
 
@@ -418,6 +451,42 @@ void NetworkPlayer::decodeActionFight(const Action_Fight *action)
   for (std::list<guint32>::const_iterator i = defender_stack_ids.begin(),
          end = defender_stack_ids.end(); i != end; ++i)
     defenders.push_back(Playerlist::getInstance()->getStackById(*i));
+
+  if (action->getAttackerStackIds().empty())
+    printf("expected the attacker stack to be non empty!\n");
+  assert (action->getAttackerStackIds().empty() == false);
+  if (action->getAttackerArmyIds().empty())
+    printf("expected the attacker armies to be non empty!\n");
+  assert (action->getAttackerArmyIds().empty() == false);
+
+  for (auto f: action->getBattleHistory())
+    {
+      bool attacker = action->is_army_id_in_stacks(f.id, attacker_stack_ids);
+      bool defender = action->is_army_id_in_stacks(f.id, defender_stack_ids);
+      if (!attacker && ! defender)
+        {
+          printf("army id %d is not in attackers or defenders.\n", f.id);
+        }
+      assert (attacker || defender);
+    }
+  for (auto f: action->getAttackerArmyIds())
+    {
+      bool attacker = action->is_army_id_in_stacks(f, attacker_stack_ids);
+      if (!attacker)
+        {
+          printf("army id %d is not in attackers!\n", f);
+        }
+      assert (action->is_army_id_in_stacks(f, attacker_stack_ids) == true);
+    }
+  for (auto f: action->getDefenderArmyIds())
+    {
+      bool defender = action->is_army_id_in_stacks(f, defender_stack_ids);
+      if (!defender)
+        {
+          printf("army id %d is not in defenders!\n", f);
+        }
+      assert (action->is_army_id_in_stacks(f, defender_stack_ids) == true);
+    }
 
   Fight fight(attackers, defenders, action->getBattleHistory());
   Fight::Result result = fight.battleFromHistory();

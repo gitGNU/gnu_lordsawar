@@ -235,7 +235,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      if (double_clicked == true && is_control_key_down() == false)
 		{
 		  StackTile *stile = GameMap::getStacks(stack->getPos());
-		  std::list<Stack *> stks= stile->getFriendlyStacks(active);
+		  std::vector<Stack *> stks= stile->getFriendlyStacks(active);
 		  if (stks.size() == 1)
 		    stile->ungroup(active);
 		  else

@@ -559,8 +559,8 @@ int AI_Allocation::oldPickupItems()
   for (std::vector<Vector<int> >::iterator i = items.begin(); i != items.end();
        i++)
     {
-      std::list<Stack*> stks = GameMap::getNearbyFriendlyStacks(*i, 8);
-      for (std::list<Stack*>::iterator j = stks.begin(); j != stks.end(); j++)
+      std::vector<Stack*> stks = GameMap::getNearbyFriendlyStacks(*i, 8);
+      for (std::vector<Stack*>::iterator j = stks.begin(); j != stks.end(); j++)
         {
           Stack *s = *j;
           if (s->hasHero() == false)
@@ -1008,10 +1008,10 @@ Vector<int> AI_Allocation::getFreeOtherSpotInCity(City *city, Stack *stack)
           continue;
 	if (GameMap::canAddArmies(pos, stack->size()) == false)
 	  continue;
-        std::list<Stack*> f = GameMap::getFriendlyStacks(pos);
+        std::vector<Stack*> f = GameMap::getFriendlyStacks(pos);
         if (f.size() > 0)
           {
-            for (std::list<Stack*>::iterator k = f.begin(); k != f.end(); k++)
+            for (std::vector<Stack*>::iterator k = f.begin(); k != f.end(); k++)
               {
                 if ((*k)->size() > size)
                   {
@@ -1360,7 +1360,7 @@ bool AI_Allocation::shuffleStacksWithinCity(City *city, Stack *stack,
   if (stack->getPos() == target)
     {
       debug("stack " << stack->getId() <<" at ("<<stack->getPos().x<<","<<stack->getPos().y<<") already in preferred position.");
-      std::list<Stack*> f = GameMap::getFriendlyStacks(target);
+      std::vector<Stack*> f = GameMap::getFriendlyStacks(target);
       if (f.size() > 1)
         {
           groupStacks(stack);
@@ -1370,12 +1370,12 @@ bool AI_Allocation::shuffleStacksWithinCity(City *city, Stack *stack,
       return false;
     }
 
-  std::list<Stack*> f = GameMap::getFriendlyStacks(target);
+  std::vector<Stack*> f = GameMap::getFriendlyStacks(target);
   if (f.size() > 1)
     {
       printf("i am stack %d at %d,%d\n", stack->getId(), stack->getPos().x, stack->getPos().y);
       printf("crap.  there are %lu stacks at %d,%d\n", f.size(), target.x, target.y);
-      for (std::list<Stack*>::iterator it = f.begin(); it != f.end(); it++)
+      for (std::vector<Stack*>::iterator it = f.begin(); it != f.end(); it++)
         {
           Stack *n = *it;
           if (n)
@@ -1534,7 +1534,7 @@ bool AI_Allocation::groupStacks(Stack *stack)
   Stack *s = stack;
   debug("groupStacks on stack id " << stack->getId() << " at pos (" << s->getPos().x <<"," <<s->getPos().y<<")");
   //which friendly stacks are on that tile that aren't us?
-  std::list<Stack*> stks = GameMap::getFriendlyStacks(s->getPos());
+  std::vector<Stack*> stks = GameMap::getFriendlyStacks(s->getPos());
   if (stks.size() <= 1)
     {
       if (stks.front()->getId() != stack->getId())

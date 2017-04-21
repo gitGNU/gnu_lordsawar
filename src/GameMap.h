@@ -442,9 +442,9 @@ class GameMap: public sigc::trackable
          * @param player Stacks owned by this Player will be returned.
          *
          * @return Returns an empty list if no stacks are found, otherwise a 
-         * list of pointers to Stack objects is returned.
+         * vector of pointers to Stack objects is returned.
          */
-	static std::list<Stack*> getFriendlyStacks(Vector<int> pos, Player *player = NULL);
+	static std::vector<Stack*> getFriendlyStacks(Vector<int> pos, Player *player = NULL);
 
         /** Return a pointer to a Stack at the given position not belonging to the active player.
          *
@@ -463,9 +463,9 @@ class GameMap: public sigc::trackable
          * @param player Stacks not owned by this Player will be returned.
          *
          * @return Returns an empty list if no stacks are found, otherwise a 
-         * list of pointers to Stack objects is returned.
+         * vector of pointers to Stack objects is returned.
          */
-	static std::list<Stack*> getEnemyStacks(Vector<int> pos, Player *player = NULL);
+	static std::vector<Stack*> getEnemyStacks(Vector<int> pos, Player *player = NULL);
 
         /** Returns all stacks not belonging to the active player at the given positions.
          *
@@ -475,7 +475,7 @@ class GameMap: public sigc::trackable
          * @return Returns an empty list if no stacks are found, otherwise a 
          * list of pointers to Stack objects is returned.
          */
-	static std::list<Stack*> getEnemyStacks(std::list<Vector<int> > posns);
+	static std::vector<Stack*> getEnemyStacks(std::list<Vector<int> > posns);
 
         /** Returns all stacks belonging to the active player that are within a given distance from a given position.
          *
@@ -488,9 +488,9 @@ class GameMap: public sigc::trackable
          * \note The returned list of Stack objects is sorted by their distance
          * away from pos.
          * @return Returns an empty list if no stacks are found, otherwise a 
-         * list of pointers to Stack objects is returned.
+         * vector of pointers to Stack objects is returned.
          */
-	static std::list<Stack*> getNearbyFriendlyStacks(Vector<int> pos, int dist);
+	static std::vector<Stack*> getNearbyFriendlyStacks(Vector<int> pos, int dist);
 
         /** Returns all stacks not belonging to the active player that are within a given distance from a given position.
          *
@@ -506,7 +506,7 @@ class GameMap: public sigc::trackable
          * @return Returns an empty list if no stacks are found, otherwise a 
          * list of pointers to Stack objects is returned.
          */
-	static std::list<Stack*> getNearbyEnemyStacks(Vector<int> pos, int dist);
+	static std::vector<Stack*> getNearbyEnemyStacks(Vector<int> pos, int dist);
 
         /** Returns a list of positions that are within a given distance from a given position.
          *
@@ -516,7 +516,7 @@ class GameMap: public sigc::trackable
          * \note When dist is 1, the size of the box is 3x3.
          * \note The returned list of positions is sorted by their distance away from pos (the center).
          *
-         * @return Returns a list of valid map positions.
+         * @return Returns a vector of valid map positions.
          */
         static std::list<Vector<int> > getNearbyPoints(Vector<int> pos, int dist);
 
@@ -1446,7 +1446,7 @@ class GameMap: public sigc::trackable
 
         static void relocateLocation(Location *location, Maptile::Building building_type, guint32 tile_width);
 
-	static std::list<Stack*> getNearbyStacks(Vector<int> pos, int dist, bool friendly);
+	static std::vector<Stack*> getNearbyStacks(Vector<int> pos, int dist, bool friendly);
 
 	static bool offmap(int x, int y);
 

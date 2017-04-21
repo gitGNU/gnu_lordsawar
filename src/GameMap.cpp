@@ -78,8 +78,8 @@ Cityset* GameMap::s_cityset = 0;
 Shieldset* GameMap::s_shieldset = 0;
 
 
-GameMap* GameMap::getInstance(Glib::ustring TilesetName, 
-			      Glib::ustring ShieldsetName, 
+GameMap* GameMap::getInstance(Glib::ustring TilesetName,
+			      Glib::ustring ShieldsetName,
 			      Glib::ustring CitysetName)
 {
     if (s_instance == 0)
@@ -635,84 +635,84 @@ TileStyle *GameMap::calculatePreferredStyle(int i, int j)
 	box[k+1][l+1] = 1;
 	if (offmap(j+l, i+k))
 	  continue;
-	box[k+1][l+1] = 
+	box[k+1][l+1] =
           are_those_tiles_similar(getTile(j+l, i+k)->getType(),
                                   mtile->getType(), false);
       }
   if (box[0][0] && box[0][1] && box[0][2] &&
       box[1][0] && box[1][1] && box[1][2] &&
       box[2][0] && box[2][1] && box[2][2])
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::INNERMIDDLECENTER);
   else if (box[0][0] && box[0][1] && !box[0][2] && 
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   !box[2][0] && box[2][1] && box[2][2])
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::TOPLEFTTOBOTTOMRIGHTDIAGONAL);
   else if (!box[0][0] && box[0][1] && box[0][2] && 
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   box[2][0] && box[2][1] && !box[2][2])
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::BOTTOMLEFTTOTOPRIGHTDIAGONAL);
   else if (/*box[0][0] &&*/ !box[0][1] && /*box[0][2] &&*/
 	   !box[1][0] && box[1][1] && box[1][2] &&
 	   /*!box[2][0] &&*/ box[2][1] && box[2][2])
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::OUTERTOPLEFT);
   else if (/*box[0][0] &&*/ !box[0][1] && /*box[0][2] &&*/
 	   box[1][0] && box[1][1] && !box[1][2] &&
 	   box[2][0] && box[2][1] /*&& !box[2][2] */)
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::OUTERTOPRIGHT);
   else if (/*box[0][0] &&*/ box[0][1] && box[0][2] &&
 	   !box[1][0] && box[1][1] && box[1][2] &&
 	   /*box[2][0] &&*/ !box[2][1] /*&& box[2][2]*/)
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::OUTERBOTTOMLEFT);
   else if (box[0][0] && box[0][1] && /*!box[0][2] &&*/
 	   box[1][0] && box[1][1] && !box[1][2] && 
 	   /*box[2][0] &&*/ !box[2][1] /*&& box[2][2]*/)
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::OUTERBOTTOMRIGHT);
   else if (/*box[0][0] &&*/ box[0][1] && /*box[0][2] && */
 	   !box[1][0] && box[1][1] && box[1][2] &&
 	   /*box[2][0] &&*/ box[2][1] /*&& box[2][2]*/)
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::OUTERMIDDLELEFT);
   else if (/*box[0][0] &&*/ box[0][1] && /*box[0][2] && */
 	   box[1][0] && box[1][1] && !box[1][2] &&
 	   /*box[2][0] &&*/ box[2][1] /*&& box[2][2] */)
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::OUTERMIDDLERIGHT);
   else if (box[0][0] && box[0][1] && /*box[0][2] && */
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   box[2][0] && box[2][1] && !box[2][2])
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::INNERTOPLEFT);
   else if (/*box[0][0] &&*/ box[0][1] && box[0][2] && 
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   !box[2][0] && box[2][1] && box[2][2])
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::INNERTOPRIGHT);
   else if (box[0][0] && box[0][1] && !box[0][2] && 
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   box[2][0] && box[2][1] /*&& box[2][2]*/)
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::INNERBOTTOMLEFT);
   else if (!box[0][0] && box[0][1] && box[0][2] && 
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   /*box[2][0] &&*/ box[2][1] && box[2][2])
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::INNERBOTTOMRIGHT);
   else if (/*!box[0][0] &&*/ !box[0][1] && /*!box[0][2] &&*/
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   /*!box[2][0] &&*/ box[2][1] /*&& box[2][2]*/)
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::OUTERTOPCENTER);
   else if (/*box[0][0] &&*/ box[0][1] && /*box[0][2] &&*/
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   /*!box[2][0] &&*/ !box[2][1] /*&& !box[2][2]*/)
-    return tileset->getRandomTileStyle(mtile->getIndex(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(),
 				       TileStyle::OUTERBOTTOMCENTER);
   return NULL;
 }
@@ -800,7 +800,7 @@ bool GameMap::are_those_tiles_similar(Tile::Type outer_tile,Tile::Type inner_til
             // Mountain surrounded by hills is perfectly correct.
             return true;
         return outer_tile == inner_tile;
-    } 
+    }
     else 
     { // to pick correct tile picture for a mountain we treat hills as a tile
       // different than mountain.
@@ -817,7 +817,7 @@ int GameMap::tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, int 
       {
 	if (offmap(j+l,i+k))
 	  continue;
-	box[k+1][l+1] = are_those_tiles_similar(getTile(j+l, i+k)->getType(), 
+	box[k+1][l+1] = are_those_tiles_similar(getTile(j+l, i+k)->getType(),
                                                 tile, true);
       }
   if (box[0][0] && box[0][1] && box[1][0] && box[1][1])
@@ -831,7 +831,7 @@ int GameMap::tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, int 
   return 0;
 }
 
-void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy, 
+void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy,
 			       Tile::Type intype, Tile::Type outtype)
 {
   Tileset *tileset = GameMap::getTileset();
@@ -866,7 +866,7 @@ void GameMap::applyTileStyles (Rectangle r, bool smooth_terrain)
   applyTileStyles (r.y, r.x, r.y + r.h, r.x + r.w, smooth_terrain);
 }
 
-void GameMap::applyTileStyles (int minx, int miny, int maxx, int maxy, 
+void GameMap::applyTileStyles (int minx, int miny, int maxx, int maxy,
 			       bool smooth_terrain)
 {
 
@@ -947,10 +947,10 @@ void GameMap::applyTileStyle (int i, int j)
 
   TileStyle *style = calculatePreferredStyle(i, j);
   if (!style)
-    style = tileset->getRandomTileStyle(mtile->getIndex(), 
+    style = tileset->getRandomTileStyle(mtile->getIndex(),
 					TileStyle::LONE);
   if (!style)
-    style = tileset->getRandomTileStyle(mtile->getIndex(), 
+    style = tileset->getRandomTileStyle(mtile->getIndex(),
 					TileStyle::INNERMIDDLECENTER);
   if (!style)
     printf ("applying null tile style at %d,%d for tile of kind %d\n", i, j,
@@ -1078,7 +1078,7 @@ Stack* GameMap::getFriendlyStack(Vector<int> pos)
   return getStacks(pos)->getFriendlyStack(Playerlist::getActiveplayer());
 }
 
-std::list<Stack*> GameMap::getFriendlyStacks(Vector<int> pos, Player *player)
+std::vector<Stack*> GameMap::getFriendlyStacks(Vector<int> pos, Player *player)
 {
   if (player == NULL)
     player = Playerlist::getActiveplayer();
@@ -1090,9 +1090,9 @@ Stack* GameMap::getEnemyStack(Vector<int> pos)
   return getStacks(pos)->getEnemyStack(Playerlist::getActiveplayer());
 }
 	
-std::list<Stack*> GameMap::getEnemyStacks(std::list<Vector<int> > positions)
+std::vector<Stack*> GameMap::getEnemyStacks(std::list<Vector<int> > positions)
 {
-  std::list<Stack*> enemy_stacks;
+  std::vector<Stack*> enemy_stacks;
   std::list<Vector<int> >::iterator it = positions.begin();
   for (; it != positions.end(); it++)
     {
@@ -1103,11 +1103,11 @@ std::list<Stack*> GameMap::getEnemyStacks(std::list<Vector<int> > positions)
   return enemy_stacks;
 }
 
-std::list<Stack*> GameMap::getEnemyStacks(Vector<int> pos, Player *player)
+std::vector<Stack*> GameMap::getEnemyStacks(Vector<int> pos, Player *player)
 {
   if (!getStacks(pos))
     {
-      std::list<Stack*> empty;
+      std::vector<Stack*> empty;
       return empty;
     }
 
@@ -1137,10 +1137,10 @@ bool GameMap::compareStackStrength(Stack *lhs, Stack *rhs)
 Stack* GameMap::getStrongestStack(Vector<int> pos)
 {
   StackTile *s = getStacks(pos);
-  std::list<Stack*> stacks = s->getStacks();
+  std::vector<Stack*> stacks = s->getStacks();
   if (stacks.empty())
     return NULL;
-  stacks.sort(compareStackStrength);
+  std::sort (stacks.begin(), stacks.end(), compareStackStrength);
   return stacks.front();
 }
 
@@ -1281,14 +1281,14 @@ void GameMap::switchCityset(Cityset *cityset)
 
   if (Templelist::getInstance()->size())
     {
-      guint32 tiles = 
+      guint32 tiles =
         GameMap::getInstance()->countBuildings(Maptile::TEMPLE) / 
         Templelist::getInstance()->size();
       double old_tile_width = sqrt ((double)tiles);
       if (old_tile_width != cityset->getTempleTileWidth())
         Templelist::getInstance()->resizeLocations
-          (Maptile::TEMPLE, cityset->getTempleTileWidth(), old_tile_width, 
-           (void (*)(Location*, Maptile::Building, guint32)) changeFootprintToSmallerCityset, 
+          (Maptile::TEMPLE, cityset->getTempleTileWidth(), old_tile_width,
+           (void (*)(Location*, Maptile::Building, guint32)) changeFootprintToSmallerCityset,
            (void (*)(Location*, Maptile::Building, guint32)) relocateLocation);
     }
     
@@ -1299,8 +1299,8 @@ void GameMap::switchCityset(Cityset *cityset)
       double old_tile_width = sqrt ((double)tiles);
       if (old_tile_width != cityset->getRuinTileWidth())
         Ruinlist::getInstance()->resizeLocations
-          (Maptile::RUIN, cityset->getRuinTileWidth(), old_tile_width, 
-           (void (*)(Location*, Maptile::Building, guint32)) changeFootprintToSmallerCityset, 
+          (Maptile::RUIN, cityset->getRuinTileWidth(), old_tile_width,
+           (void (*)(Location*, Maptile::Building, guint32)) changeFootprintToSmallerCityset,
            (void (*)(Location*, Maptile::Building, guint32)) relocateLocation);
     }
   if (Citylist::getInstance()->size())
@@ -1310,8 +1310,8 @@ void GameMap::switchCityset(Cityset *cityset)
       double old_tile_width = sqrt ((double)tiles);
       if (old_tile_width != cityset->getCityTileWidth())
         Citylist::getInstance()->resizeLocations
-          (Maptile::CITY, cityset->getCityTileWidth(), old_tile_width, 
-           (void (*)(Location*, Maptile::Building, guint32)) changeFootprintToSmallerCityset, 
+          (Maptile::CITY, cityset->getCityTileWidth(), old_tile_width,
+           (void (*)(Location*, Maptile::Building, guint32)) changeFootprintToSmallerCityset,
            (void (*)(Location*, Maptile::Building, guint32)) relocateLocation);
     }
 }
@@ -1455,7 +1455,7 @@ bool GameMap::canPutBuilding(Maptile::Building bldg, guint32 size, Vector<int> t
 	break;
       case Maptile::PORT: 
 	if (getTerrainType(to) == Tile::WATER &&
-	    getTile(to)->getTileStyle()->getType() != 
+	    getTile(to)->getTileStyle()->getType() !=
 	    TileStyle::INNERMIDDLECENTER)
 	  return can_move;
 	else
@@ -1463,13 +1463,13 @@ bool GameMap::canPutBuilding(Maptile::Building bldg, guint32 size, Vector<int> t
 	break;
       case Maptile::BRIDGE: 
 	if (getTerrainType(to) == Tile::WATER &&
-	    (getTile(to)->getTileStyle()->getType() == 
+	    (getTile(to)->getTileStyle()->getType() ==
 	     TileStyle::OUTERTOPCENTER || 
-	    getTile(to)->getTileStyle()->getType() == 
+	    getTile(to)->getTileStyle()->getType() ==
 	    TileStyle::OUTERBOTTOMCENTER || 
-	    getTile(to)->getTileStyle()->getType() == 
+	    getTile(to)->getTileStyle()->getType() ==
 	    TileStyle::OUTERMIDDLELEFT || 
-	    getTile(to)->getTileStyle()->getType() == 
+	    getTile(to)->getTileStyle()->getType() ==
 	    TileStyle::OUTERMIDDLERIGHT ))
 	  return can_move;
 	else
@@ -2019,8 +2019,8 @@ bool GameMap::putCity(City *c, bool keep_owner)
 //the ground changed, and now we need all stacks on a tile to react.
 void GameMap::updateShips(Vector<int> pos)
 {
-  std::list<Stack*> stks = getStacks(pos)->getStacks();
-  for (std::list<Stack *>::iterator it = stks.begin(); it != stks.end(); it++)
+  std::vector<Stack*> stks = getStacks(pos)->getStacks();
+  for (std::vector<Stack *>::iterator it = stks.begin(); it != stks.end(); it++)
     {
       for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
 	{
@@ -2075,29 +2075,29 @@ guint32 GameMap::countArmyUnits(Vector<int> pos)
   return 0;
 }
 
-std::list<Stack*> GameMap::getNearbyFriendlyStacks(Vector<int> pos, int dist)
+std::vector<Stack*> GameMap::getNearbyFriendlyStacks(Vector<int> pos, int dist)
 {
   return getNearbyStacks(pos, dist, true);
 }
 
-std::list<Stack*> GameMap::getNearbyEnemyStacks(Vector<int> pos, int dist)
+std::vector<Stack*> GameMap::getNearbyEnemyStacks(Vector<int> pos, int dist)
 {
   return getNearbyStacks(pos, dist, false);
 }
 
-std::list<Stack*> GameMap::getNearbyStacks(Vector<int> pos, int dist, bool friendly)
+std::vector<Stack*> GameMap::getNearbyStacks(Vector<int> pos, int dist, bool friendly)
 {
   std::list<Vector<int> > points = getNearbyPoints(pos, dist);
-  std::list<Stack*> stks;
-  std::list<Stack *> stacks;
-  for (std::list<Vector<int> >::iterator it = points.begin(); 
+  std::vector<Stack*> stks;
+  std::vector<Stack *> stacks;
+  for (std::list<Vector<int> >::iterator it = points.begin();
        it != points.end(); it++)
     {
       if (friendly)
         stks = GameMap::getFriendlyStacks(*it);
       else
         stks = GameMap::getEnemyStacks(*it);
-      stacks.merge(stks);
+      stacks.insert(std::end(stacks), std::begin(stks), std::end(stks));
     }
 
   return stacks;
@@ -2212,7 +2212,7 @@ void GameMap::relocateLocation(Location *location, Maptile::Building building_ty
   //look for a suitable place for this building
   //remove our buildingness so it can find where we are now.
   GameMap::getInstance()->removeBuilding(location);
-  Vector<int> dest = 
+  Vector<int> dest =
     GameMap::getInstance()->findNearestAreaForBuilding(building_type, location->getPos(), tile_width);
   GameMap::getInstance()->putBuilding (location, building_type);
   if (dest == Vector<int>(-1, -1))
@@ -2276,7 +2276,7 @@ bool GameMap::eraseTiles(Rectangle r)
   return erased;
 }
 
-bool GameMap::eraseTile(Vector<int> tile) 
+bool GameMap::eraseTile(Vector<int> tile)
 {
   bool erased = false;
   // first stack, it's above everything else
@@ -2430,7 +2430,7 @@ bool GameMap::can_plant_flag(Stack *stack)
                       MapBackpack *backpack;
                       Vector<int> pos = stack->getPos();
                       backpack = getInstance()->getTile(pos)->getBackpack();
-                      bool standard_already_planted = 
+                      bool standard_already_planted =
                         backpack->getFirstPlantedItem() != NULL;
                       //are there any other standards here?
                       if (standard_already_planted == false)
@@ -2453,18 +2453,18 @@ bool GameMap::burnBridge(Vector<int> pos)
       Vector<int> src = bridge->getPos();
       GameMap::getInstance()->removeBridge(src);
       Vector<int> dest = Vector<int>(-1, -1);
-      std::list<Stack*> stacks;
+      std::vector<Stack*> stacks;
       if (other)
         {
           dest = other->getPos();
           GameMap::getInstance()->removeBridge(dest);
-          std::list<Stack*> s = GameMap::getStacks(src)->getStacks();
-          stacks.merge(s);
+          std::vector<Stack*> s = GameMap::getStacks(src)->getStacks();
+          stacks.insert(std::end(stacks), std::begin(s), std::end(s));
         }
-      std::list<Stack*> s = 
+      std::vector<Stack*> s =
         GameMap::getFriendlyStacks(src, Playerlist::getActiveplayer());
-      stacks.merge(s);
-      for (std::list<Stack*>::iterator i = stacks.begin(); 
+      stacks.insert(std::end(stacks), std::begin(s), std::end(s));
+      for (std::vector<Stack*>::iterator i = stacks.begin();
            i != stacks.end(); i++)
         {
           (*i)->setDefending(false);
@@ -2472,7 +2472,7 @@ bool GameMap::burnBridge(Vector<int> pos)
           (*i)->clearPath();
           (*i)->drainMovement();
         }
-      std::list<Vector<int> > r = 
+      std::list<Vector<int> > r =
         Bridgelist::getInstance()->getRoadEntryPoints(bridge);
       for (std::list<Vector<int> >::iterator i = r.begin(); i != r.end(); i++)
         {

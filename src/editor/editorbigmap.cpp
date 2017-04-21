@@ -328,7 +328,7 @@ void EditorBigMap::change_map_under_cursor()
               if (gm->canPutStack(s->size(), s->getOwner(), tile) == true &&
                   enemy_stacks.empty() == true)
                 {
-                  std::list<Stack*> friendly_stacks = gm->getFriendlyStacks(tile, s->getOwner());
+                  std::vector<Stack*> friendly_stacks = gm->getFriendlyStacks(tile, s->getOwner());
                   if (friendly_stacks.empty() == true)
                     gm->moveStack(s, tile);
                   else
@@ -679,7 +679,7 @@ void EditorBigMap::after_draw()
                     Stack *s = gm->getStack(from);
                     if (!s)
                       s = gm->getStack(from);
-                    std::list<Stack *> enemy_stacks = 
+                    std::vector<Stack *> enemy_stacks =
                       gm->getEnemyStacks(tile, s->getOwner());
                     if (gm->canPutStack(s->size(), s->getOwner(), tile) == true &&
                         enemy_stacks.empty() == true)

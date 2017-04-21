@@ -123,17 +123,17 @@ Player::Player(Glib::ustring name, guint32 armyset, Gdk::RGBA color, int width,
 }
 
 Player::Player(const Player& player)
-    :sigc::trackable(player), d_color(player.d_color), d_name(player.d_name), 
+    :sigc::trackable(player), d_color(player.d_color), d_name(player.d_name),
     d_armyset(player.d_armyset), d_gold(player.d_gold), d_dead(player.d_dead),
-    d_immortal(player.d_immortal), d_type(player.d_type), d_id(player.d_id), 
-    d_fight_order(player.d_fight_order), d_upkeep(player.d_upkeep), 
+    d_immortal(player.d_immortal), d_type(player.d_type), d_id(player.d_id),
+    d_fight_order(player.d_fight_order), d_upkeep(player.d_upkeep),
     d_income(player.d_income), d_observable(player.d_observable),
     surrendered(player.surrendered),abort_requested(player.abort_requested)
 {
   // as the other player is propably dumped somehow, we need to deep copy
   // everything.
   d_stacklist = new Stacklist();
-  for (Stacklist::iterator it = player.d_stacklist->begin(); 
+  for (Stacklist::iterator it = player.d_stacklist->begin();
        it != player.d_stacklist->end(); it++)
     {
       Stack* mine = new Stack(**it, true);
@@ -307,7 +307,7 @@ void Player::initTurn()
       //printf("\t%s %s\n", Action::actionTypeToString(i->getType()).c_str(), i->dump().c_str());
     //}
 
-  GameActionlist::getInstance()->add (this, d_actions);
+  GameActionlist::getInstance()->add(this, d_actions);
   clearActionlist();
   History_StartTurn* item = new History_StartTurn();
   addHistory(item);
@@ -473,7 +473,7 @@ bool Player::save(XML_Helper* helper) const
       {
 	diplomatic_proposals << d_diplomatic_proposal[i] << " ";
       }
-    retval &= helper->saveData("diplomatic_proposals", 
+    retval &= helper->saveData("diplomatic_proposals",
 			       diplomatic_proposals.str());
 
     // save the diplomatic scores, one score per player
@@ -665,8 +665,8 @@ Stack *Player::stackSplitArmy(Stack *stack, Army *a)
 
 void Player::doStackJoin(Stack* receiver, Stack* joining)
 {
-    receiver->join(joining);
-   deleteStack(joining); 
+   receiver->join(joining);
+   deleteStack(joining);
     //d_stacklist->flRemove(joining);
     
     d_stacklist->setActivestack(receiver);
@@ -683,9 +683,10 @@ bool Player::stackJoin(Stack* receiver, Stack* joining)
     if (GameMap::canJoin(joining, receiver) == false)
       return false;
     
-    addAction(new Action_Join (receiver, joining));
+    Action_Join *action = new Action_Join (receiver, joining);
 
     doStackJoin(receiver, joining);
+    addAction(action);
       
     addAction(new Action_ReorderArmies(receiver));
  
@@ -893,7 +894,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	    bool treachery = false;
 	    if (this->getDiplomaticState (city->getOwner()) != AT_WAR)
 	      {
-		if (streacheryStack.emit (s, city->getOwner(), 
+		if (streacheryStack.emit (s, city->getOwner(),
 					  city->getPos()) == false)
 		  {
 		    //we decided not to be treacherous
@@ -987,7 +988,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	  bool treachery = false;
 	  if (this->getDiplomaticState (target->getOwner()) == AT_PEACE)
 	    {
-	      if (streacheryStack.emit (s, target->getOwner(), 
+	      if (streacheryStack.emit (s, target->getOwner(),
 					target->getPos()) == false)
 		{
 		  s->getPath()->clear();
@@ -1090,9 +1091,11 @@ bool Player::stackMoveOneStepOverTooLargeFriendlyStacks(Stack *s)
   if (d_stacklist->canJumpOverTooLargeStack(s) == false)
     return false;
 
-  addAction(new Action_Move(s, dest));
-
+  Action_Move *a = new Action_Move(s, dest);
   s->moveOneStep(true);
+  a->setMovesLeft(s->getMoves());
+  a->setHasShip(s->hasShip());
+  addAction(a);
   return true;
 }
 
@@ -1132,7 +1135,7 @@ bool Player::computerSearch(Stack *s, MoveResult *r)
           if (computerChooseVisitTempleForBlessing(s, s->getPos(), 0, 0) == true)
             {
               r->setComputerSearchedTemple(true);
-              bool got_quest = 
+              bool got_quest =
                 svisitingTemple.emit(GameMap::getTemple(s->getPos()), s);
               r->setComputerGotQuest(got_quest);
             }
@@ -1146,7 +1149,7 @@ bool Player::computerSearch(Stack *s, MoveResult *r)
             {
               r->setComputerSearchedRuin(true);
               guint32 oldsize = s->size();
-              stack_died = 
+              stack_died =
                 ssearchingRuin.emit(GameMap::getRuin(s->getPos()), s);
               if (stack_died)
                 r->setRuinFightResult(Fight::DEFENDER_WON);
@@ -1191,9 +1194,12 @@ bool Player::stackMoveOneStep(Stack* s)
 	}
 
     }
-  addAction(new Action_Move(s, dest));
+  Action_Move *a = new Action_Move(s, dest);
 
   s->moveOneStep();
+  a->setMovesLeft(s->getMoves());
+  a->setHasShip(s->hasShip());
+  addAction(a);
 
 
   return true;
@@ -1273,11 +1279,11 @@ void Player::finishStackFight (Fight *fight, Stack **attacker, Stack **defender)
          i != defender_history.end(); i++)
       addHistory(*i);
   
-    for (std::list<Stack*>::iterator i = attackers.begin(); 
+    for (std::list<Stack*>::iterator i = attackers.begin();
          i != attackers.end(); i++)
       addAction(new Action_ReorderArmies(*i));
 
-    for (std::list<Stack*>::iterator i = defenders.begin(); 
+    for (std::list<Stack*>::iterator i = defenders.begin();
          i != defenders.end(); i++)
       addAction(new Action_ReorderArmies(*i));
     
@@ -1301,8 +1307,8 @@ void Player::finishStackFight (Fight *fight, Stack **attacker, Stack **defender)
     // ...then the defender.
     exists = false;
     if (pd)
-      exists = 
-	std::find(pd->getStacklist()->begin(), pd->getStacklist()->end(), 
+      exists =
+	std::find(pd->getStacklist()->begin(), pd->getStacklist()->end(),
 		  *defender) != pd->getStacklist()->end();
     else
         exists = true;
@@ -1377,8 +1383,8 @@ Fight::Result ruinfight (Stack **attacker, Stack **defender)
 }
 
 Fight::Result Player::stackRuinFight (Stack **attacker, Stack **defender,
-                                      bool &stackdied, 
-                                      std::list<History*> &attacker_history, 
+                                      bool &stackdied,
+                                      std::list<History*> &attacker_history,
                                       std::list<History*> &defender_history)
 {
     Fight::Result result = Fight::DRAW;
@@ -1493,7 +1499,7 @@ int Player::stackVisitTemple(Stack* s, Temple* t)
 
 Quest* Player::doHeroGetQuest(Hero *hero, bool except_raze)
 {
-  std::vector<Quest*> quests = 
+  std::vector<Quest*> quests =
     QuestsManager::getInstance()->getPlayerQuests(Playerlist::getActiveplayer());
   if (quests.size() > 0 && GameScenarioOptions::s_play_with_quests == GameParameters::ONE_QUEST_PER_PLAYER)
     return NULL;
@@ -1525,7 +1531,7 @@ Quest* Player::heroGetQuest(Hero *hero, Temple* t, bool except_raze)
   return q;
 }
 
-float Player::stackFightAdvise(Stack* s, Vector<int> tile, 
+float Player::stackFightAdvise(Stack* s, Vector<int> tile,
                                bool intense_combat)
 {
   float percent = 0.0;
@@ -1613,10 +1619,19 @@ void Player::conquerAllCities()
 
 void Player::conquerCity(City *city, Stack *stack)
 {
+  /*
+     fixme:
+     there is some weirdness here where we conquer the initial cities twice.
+     we have to make sure it works with the city history report dialog,
+     and getFirstCity.
+     i guess the histories are getting erased somewhere after we conquer
+     the city the first time.
+   */
   Player *original_owner = city->getOwner();
-  addAction(new Action_ConquerCity(city));
+  Action_ConquerCity *action = new Action_ConquerCity(city);
 
   doConquerCity(city);
+  addAction(action);
   addHistory(new History_CityWon(city));
   if (stack && stack->hasHero())
   {
@@ -2154,7 +2169,7 @@ bool Player::doChangeVectorDestination(Vector<int> src, Vector<int> dest,
   //check to see if the destination has enough room to accept all of the
   //cities we want to send to it.
   std::list<City*> sources = Citylist::getInstance()->getCitiesVectoringTo(src);
-  std::list<City*> alreadyvectored = 
+  std::list<City*> alreadyvectored =
     Citylist::getInstance()->getCitiesVectoringTo(dest);
 
   if (alreadyvectored.size() + sources.size() > MAX_CITIES_VECTORED_TO_ONE_CITY)
@@ -2235,7 +2250,7 @@ guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
   return removeDeadArmies(stacks, culprits, history);
 }
 
-guint32 Player::removeDeadArmies(std::list<Stack*>& stacks, 
+guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
                                  std::vector<guint32>& culprits,
                                  std::list<History*> &history)
 {
@@ -2388,7 +2403,7 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
 		    // Gives the medal for good defense. The more negative the 
 		    // number the more blows the unit evaded. n means roughly 
 		    // avoid n hits from an equally strong unit. Since we want 
-		    // to punish the case of the unit hiding among many others, 
+		    // to punish the case of the unit hiding among many others,
 		    // we set this value quite high.
 		    if((army->getNumberHasBeenHit() < -100) && !army->getMedalBonus(1))
 		      {
@@ -2448,7 +2463,7 @@ Hero* Player::doRecruitHero(HeroProto* herotemplate, City *city, int cost, int a
 
   if (alliesCount > 0)
     {
-      Reward_Allies::addAllies(this, city->getPos(), ally, alliesCount, 
+      Reward_Allies::addAllies(this, city->getPos(), ally, alliesCount,
                                stacks);
       hero_arrives_with_allies.emit(alliesCount);
     }
@@ -2527,7 +2542,7 @@ void Player::doProposeDiplomacy (DiplomaticProposal proposal, Player *player)
     return;
   if (proposal == PROPOSE_PEACE)
     {
-      Glib::ustring s = 
+      Glib::ustring s =
         String::ucompose(_("Peace negotiated with %1."),player->getName());
       if (getDiplomaticState(player) == AT_PEACE ||
 	  getDiplomaticProposal(player) == PROPOSE_PEACE)
@@ -2535,7 +2550,7 @@ void Player::doProposeDiplomacy (DiplomaticProposal proposal, Player *player)
     }
   else if (proposal == PROPOSE_WAR)
     {
-      Glib::ustring s = 
+      Glib::ustring s =
         String::ucompose(_("War declared with %1."), player->getName());
       if (getDiplomaticState(player) == AT_WAR ||
 	  getDiplomaticProposal(player) == PROPOSE_WAR)
@@ -2761,7 +2776,7 @@ void Player::AI_maybeBuyScout(City *c)
       int free_slot = c->getFreeSlot();
       if (free_slot == -1)
         free_slot = 0;
-      ArmyProto *scout = 
+      ArmyProto *scout =
         Armysetlist::getInstance()->lookupWeakestQuickestArmy(getArmyset());
       cityBuyProduction(c, free_slot, scout->getId());
     }
@@ -2784,7 +2799,7 @@ bool Player::AI_maybeContinueQuest(Stack *s, Quest *quest, bool &completed_quest
 	old_dest = s->getLastPointInPath();
       guint32 moves = 0, turns = 0, left = 0;
       s->getPath()->calculate(s, quest_tile, moves, turns, left);
-      bool go_there = computerChooseContinueQuest(s, quest, quest_tile, moves, 
+      bool go_there = computerChooseContinueQuest(s, quest, quest_tile, moves,
                                                   turns);
       if (!go_there)
         {
@@ -2811,7 +2826,7 @@ bool Player::AI_maybeContinueQuest(Stack *s, Quest *quest, bool &completed_quest
   return stack_moved;
 }
 
-bool Player::AI_maybePickUpItems(Stack *s, int max_dist, 
+bool Player::AI_maybePickUpItems(Stack *s, int max_dist,
 				 bool &picked_up, bool &stack_died)
 {
   int min_dist = -1;
@@ -2901,11 +2916,11 @@ bool Player::AI_maybeVisitTempleForQuest(Stack *s, int dist, bool &got_quest, bo
   //if the player already has a hero who has a quest, then we can't get a
   //quest with this stack when playing one quest per player.
   if (QuestsManager::getInstance()->getPlayerQuests(this).size() > 0 &&
-      GameScenarioOptions::s_play_with_quests == 
+      GameScenarioOptions::s_play_with_quests ==
       GameParameters::ONE_QUEST_PER_PLAYER)
     return false;
 
-  Temple *temple = 
+  Temple *temple =
     Templelist::getInstance()->getNearestVisibleTemple(s->getPos(), dist);
   if (!temple)
     return false;
@@ -3014,7 +3029,7 @@ bool Player::AI_maybeVisitRuin(Stack *s, int dist, bool &visited_ruin, bool &sta
 }
 
 bool Player::AI_maybeVisitTempleForBlessing(Stack *s, int dist,
-					    double percent_can_be_blessed, 
+					    double percent_can_be_blessed,
 					    bool &blessed, bool &stack_died)
 {
   bool stack_moved = false;
@@ -3124,7 +3139,7 @@ bool Player::AI_maybeDisband(Stack *s, int safe_mp, bool &stack_killed)
   return disbanded;
 }
 
-bool Player::AI_maybeDisband(Stack *s, City *city, guint32 min_defenders, 
+bool Player::AI_maybeDisband(Stack *s, City *city, guint32 min_defenders,
 			     int safe_mp, bool &stack_killed)
 {
   bool disbanded = false;
@@ -3183,7 +3198,7 @@ bool Player::AI_maybeVector(City *c, guint32 safe_mp, guint32 min_defenders,
     return false;
 
   //get the nearest city to the enemy city that can accept vectored units
-  City *near_city = 
+  City *near_city =
     Citylist::getInstance()->getNearestFriendlyVectorableCity(target->getPos());
   if (!near_city)
     return false;
@@ -3295,7 +3310,7 @@ void Player::AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
       //if the city isn't already vectoring
       if (c->getVectoring() == Vector<int>(-1,-1))
 	{
-	  bool vectored = AI_maybeVector(c, safe_mp, min_defenders, enemy_city, 
+	  bool vectored = AI_maybeVector(c, safe_mp, min_defenders, enemy_city,
 					 &vector_city);
 	  if (vectored)
             {
@@ -3345,7 +3360,7 @@ bool Player::cityProducesArmy(City *city)
         {
           //send vectoring action.
           const ArmyProdBase *source_army = city->getActiveProductionBase();
-          addAction(new Action_Produce(source_army, city, true, 
+          addAction(new Action_Produce(source_army, city, true,
                                        city->getVectoring(), 0, 0));
         }
     }
@@ -3367,7 +3382,7 @@ bool Player::vectoredUnitArrives(VectoredUnit *unit)
       printf("this was supposed to be impossible because of operations on the vectoredunitlist after the city is conquered.\n");
       printf("whooops... this vectored unit failed to show up.\n");
       City *dest = GameMap::getCity(unit->getDestination());
-      printf("the unit was being vectored to: %s, from %s by %s\n", 
+      printf("the unit was being vectored to: %s, from %s by %s\n",
              dest->getName().c_str(),
              GameMap::getCity(unit->getPos())->getName().c_str(), getName().c_str());
       printf("Army is a %s, turns is %d + 1\n", unit->getArmy()->getName().c_str(), unit->getArmy()->getProduction());
@@ -3613,7 +3628,7 @@ bool Player::searchedRuin(Ruin *r) const
     {
       if ((*it)->getType() == History::HERO_RUIN_EXPLORED)
 	{
-	  History_HeroRuinExplored *event = 
+	  History_HeroRuinExplored *event =
             dynamic_cast<History_HeroRuinExplored*>(*it);
 	  if (event->getRuinId() == r->getId())
 	    return true;
@@ -3886,9 +3901,9 @@ Vector<int> Player::AI_getQuestDestination(Quest *quest, Stack *stack) const
         {
           QuestEnemyArmytype *q = dynamic_cast<QuestEnemyArmytype*>(quest);
           guint32 army_type = q->getArmytypeToKill();
-          std::list<Stack*> s = 
+          std::vector<Stack*> s =
             GameMap::getNearbyEnemyStacks(stack->getPos(), GameMap::getWidth());
-          for (std::list<Stack*>::iterator i = s.begin(); i != s.end(); i++)
+          for (std::vector<Stack*>::iterator i = s.begin(); i != s.end(); i++)
             {
               if ((*i)->hasArmyType(army_type) == true)
                 {
@@ -3903,7 +3918,7 @@ Vector<int> Player::AI_getQuestDestination(Quest *quest, Stack *stack) const
           QuestEnemyArmies *q = dynamic_cast<QuestEnemyArmies*>(quest);
           auto enemy = Playerlist::getInstance()->getPlayer(q->getVictimPlayerId());
           auto s = GameMap::getNearbyEnemyStacks(stack->getPos(), GameMap::getWidth());
-          for (std::list<Stack*>::iterator i = s.begin(); i != s.end(); i++)
+          for (std::vector<Stack*>::iterator i = s.begin(); i != s.end(); i++)
             {
               if ((*i)->getOwner() != enemy)
                 continue;
@@ -4009,7 +4024,7 @@ bool Player::maybeRecruitHero ()
     {
       bool exists = false;
       if (getHeroes().size() > 0)
-	  exists = true; 
+        exists = true;
 
       gold_needed = (Rnd::rand() % 500) + 1000;
       if (exists == false)
@@ -4018,7 +4033,7 @@ bool Player::maybeRecruitHero ()
 
   if ((((Rnd::rand() % 6) == 0 && gold_needed < getGold()) || gold_needed == 0))
     {
-      HeroProto *heroproto = 
+      HeroProto *heroproto =
         HeroTemplates::getInstance()->getRandomHero(getId());
       if (gold_needed == 0)
 	{
@@ -4074,7 +4089,7 @@ bool Player::setPathOfStackToPreviousDestination(Stack *stack)
   if (moves.size() > 0)
     {
       Vector<int> dest = Vector<int>(-1,-1);
-      std::list<Action*>::const_reverse_iterator it = 
+      std::list<Action*>::const_reverse_iterator it =
         moves.rbegin();
       for (;it != moves.rend(); it++)
         {
@@ -4162,7 +4177,7 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
       std::list<History*> history;
       for (auto j: *Playerlist::getInstance())
         {
-          std::list<Stack*> affected = 
+          std::list<Stack*> affected =
             j->getStacklist()->killArmies(item->getArmyTypeToKill());
           if (affected.size())
             num_worms_killed += removeDeadArmies(affected, history);
@@ -4214,7 +4229,7 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
       if (enemy_city)
         {
           std::list<History*> history;
-          std::list<Stack*> affected = 
+          std::list<Stack*> affected =
             enemy_city->diseaseDefenders(item->getPercentArmiesToKill());
           guint32 num_armies_killed = removeDeadArmies(affected, history);
           city_diseased.emit(hero, enemy_city->getName(), num_armies_killed);
@@ -4240,7 +4255,7 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
           neutral_city->persuadeDefenders(this);
           takeCityInPossession(neutral_city);
           QuestsManager::getInstance()->cityOccupied(neutral_city, stack);
-          city_persuaded.emit(hero, neutral_city->getName(), 
+          city_persuaded.emit(hero, neutral_city->getName(),
                               neutral_city->countDefenders());
         }
     }
@@ -4270,15 +4285,15 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
 }
 
 bool Player::heroUseItem(Hero *hero, Item *item, Player *victim,
-                         City *friendly_city, City *enemy_city, 
+                         City *friendly_city, City *enemy_city,
                          City *neutral_city, City *city)
 {
-  if (doHeroUseItem(hero, item, victim, friendly_city, enemy_city, 
+  if (doHeroUseItem(hero, item, victim, friendly_city, enemy_city,
                     neutral_city, city))
     {
-      addAction(new Action_UseItem(hero, item, victim, friendly_city, 
+      addAction(new Action_UseItem(hero, item, victim, friendly_city,
                                    enemy_city, neutral_city, city));
-      addHistory (new History_HeroUseItem(hero, item, victim, friendly_city, 
+      addHistory (new History_HeroUseItem(hero, item, victim, friendly_city,
                                           enemy_city, neutral_city, city));
       return true;
     }
@@ -4360,7 +4375,7 @@ void Player::handleDeadHeroes(std::list<Stack*> &stacks, std::list<History*> &hi
           //now record the details of the death
       
           bool splash = false;
-          doHeroDropAllItems (static_cast<Hero*>(*sit), (*it)->getPos(), 
+          doHeroDropAllItems (static_cast<Hero*>(*sit), (*it)->getPos(),
                               splash);
           Maptile *tile = GameMap::getInstance()->getTile((*it)->getPos());
 
@@ -4373,7 +4388,7 @@ void Player::handleDeadHeroes(std::list<Stack*> &stacks, std::list<History*> &hi
   return;
 }
 
-void Player::handleDeadArmiesForQuests(std::list<Stack*> &stacks, 
+void Player::handleDeadArmiesForQuests(std::list<Stack*> &stacks,
                                        std::vector<guint32> &culprits)
 {
   std::list<Stack*>::iterator it;
@@ -4461,8 +4476,11 @@ void Player::collectTaxesAndPayUpkeep()
 {
   if (hasAlreadyCollectedTaxesAndPaidUpkeep())
     return;
+  int prev_gold = getGold();
   doCollectTaxesAndPayUpkeep();
-  addAction(new Action_CollectTaxesAndPayUpkeep());
+  Action_CollectTaxesAndPayUpkeep *a =
+    new Action_CollectTaxesAndPayUpkeep (prev_gold, getGold());
+  addAction(a);
 }
 
 void Player::doStackDefend(Stack *s)
