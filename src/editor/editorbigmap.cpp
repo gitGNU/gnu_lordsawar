@@ -57,6 +57,7 @@
 
 
 EditorBigMap::EditorBigMap()
+ : BigMap(false)
 {
     mouse_pos = Vector<int>(-1, -1);
     prev_mouse_pos = Vector<int>(0, 0);

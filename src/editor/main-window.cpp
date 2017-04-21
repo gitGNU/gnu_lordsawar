@@ -1317,7 +1317,7 @@ void MainWindow::init_maps()
     // init the smallmap
     if (smallmap)
       delete smallmap;
-    smallmap =new SmallMap;
+    smallmap =new SmallMap (false);
     smallmap->resize();
     smallmap->map_changed.connect(sigc::hide(method(on_smallmap_changed)));
 

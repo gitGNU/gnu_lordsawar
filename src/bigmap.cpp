@@ -51,8 +51,8 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-BigMap::BigMap()
-    : d_renderer(0), buffer(0), d_fighting(LocationBox(Vector<int>(-1,-1)))
+BigMap::BigMap(bool headless)
+    : d_headless (headless), d_renderer(0), buffer(0), d_fighting(LocationBox(Vector<int>(-1,-1)))
 {
     // note: we are not fully initialized before set_view is called
     view.x = view.y = 0;
@@ -150,7 +150,7 @@ void BigMap::clip_viewable_buffer(Cairo::RefPtr<Cairo::Surface> pixmap, Vector<i
 void BigMap::draw(bool redraw_buffer)
 {
     // no size and buffer yet, return
-    if (!buffer)
+    if (!buffer || d_headless)
         return;
     //Playerlist::getInstance()->setViewingplayer(player);
 

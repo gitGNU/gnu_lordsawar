@@ -846,7 +846,6 @@ void GameServer::sendMap(Participant *part)
       Playerlist::getInstance()->swap(i, new_p);
     }
 
-
   // send the map, and save it to a file somewhere temporarily
   Glib::ustring tmpfile = File::get_tmp_file();
   File::erase(tmpfile);
@@ -856,15 +855,30 @@ void GameServer::sendMap(Participant *part)
 
   std::cerr << "sending map" << std::endl;
   network_server->sendFile(part->conn, MESSAGE_TYPE_SENDING_MAP, tmpfile);
-  //file get erased in NetworkConnection::sendFileMessage
+  //file gets erased in NetworkConnection::sendFileMessage
 
   // unhack the players
-  std::vector<Player*>::iterator j = players.begin();
-  for (auto &i: *Playerlist::getInstance())
+  std::vector<Player*> deletables;
+  for (auto i : players)
     {
-      Playerlist::getInstance()->swap(i, *j);
+      Player *p = Playerlist::getInstance()->getPlayer(i->getId());
+      deletables.push_back(p);
+      Playerlist::getInstance()->swap(p, i);
+    }
+
+  /*
+  std::vector<Player*>::iterator j = players.begin();
+  for (Playerlist::iterator i = Playerlist::getInstance()->begin();
+       i != Playerlist::getInstance()->end(); ++i)
+    {
+      Playerlist::getInstance()->swap(*i, *j);
       j++;
-      //delete *i;
+    }
+    */
+  for (auto i : deletables)
+    {
+      NetworkPlayer *p = dynamic_cast<NetworkPlayer*>(i);
+      delete p;
     }
 }
 

@@ -47,8 +47,10 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
-		       bool see_opponents_stacks, bool military_advisor)
+GameBigMap::GameBigMap(bool headless, bool intense_combat,
+                       bool see_opponents_production,
+                       bool see_opponents_stacks, bool military_advisor)
+ :BigMap(headless)
 {
   path_calculator = NULL;
   d_intense_combat = intense_combat;
@@ -61,10 +63,10 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
 
   prev_mouse_pos = Vector<int>(0, 0);
 
-  // setup timeout
-  selection_timeout_handler = Timing::instance().register_timer
-    (sigc::mem_fun(*this, &GameBigMap::on_selection_timeout),
-     TIMER_BIGMAP_SELECTOR);
+  if (!d_headless)
+    selection_timeout_handler = Timing::instance().register_timer
+      (sigc::mem_fun(*this, &GameBigMap::on_selection_timeout),
+       TIMER_BIGMAP_SELECTOR);
   shift_key_is_down = false;
   control_key_is_down = false;
 }

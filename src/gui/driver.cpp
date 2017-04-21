@@ -188,7 +188,7 @@ void Driver::serve (GameScenario *game_scenario)
 
   game_server->notifyClientsGameMayBeginNow();
   Configuration::s_autosave_policy = Configuration::NO_SAVING;
-  Game *game = new Game(game_scenario, next_turn);
+  Game *game = new Game(game_scenario, next_turn, true);
   game->game_over.connect (sigc::bind (sigc::mem_fun (this, &Driver::on_game_over_for_headless_server), game_scenario));
   if (game)
     game_server->player_sits.connect(sigc::hide(sigc::hide(method(on_client_sits_down_in_headless_server_game))));
@@ -1299,7 +1299,7 @@ void Driver::on_game_scenario_received_for_robots(Glib::ustring path)
       GameClient::getInstance()->listenForLocalEvents(*it);
 
   Configuration::s_autosave_policy = Configuration::NO_SAVING;
-  Game *game = new Game(game_scenario, next_turn);
+  Game *game = new Game(game_scenario, next_turn, true);
   game->get_smallmap().set_slide_speed(0);
   game_client->request_seat_manifest();
 }

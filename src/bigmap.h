@@ -53,7 +53,7 @@ class Location;
 class BigMap: public sigc::trackable
 {
  public:
-    BigMap();
+    BigMap(bool headless);
     virtual ~BigMap();
 
     // draw everything
@@ -91,6 +91,7 @@ class BigMap: public sigc::trackable
     
     Cairo::RefPtr<Cairo::Surface> get_surface() const {return outgoing;}
  protected:
+    bool d_headless;
     MapRenderer* d_renderer;
 
     Rectangle view;		// approximate view of screen, in tiles

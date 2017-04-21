@@ -43,7 +43,7 @@ class PathCalculator;
 class GameBigMap: public BigMap
 {
  public:
-    GameBigMap(bool intense_combat, bool see_opponents_production, bool see_opponents_stacks, bool military_advisor);
+    GameBigMap(bool headless, bool intense_combat, bool see_opponents_production, bool see_opponents_stacks, bool military_advisor);
     virtual ~GameBigMap();
 
     // will center the bigmap on the stack

@@ -42,9 +42,10 @@
 #include "bridge.h"
 #include "rnd.h"
 
-OverviewMap::OverviewMap()
+OverviewMap::OverviewMap(bool headless)
 {
   blank_screen = false;
+  d_headless = headless;
   map_tiles_per_tile = GameMap::calculateTilesPerOverviewMapTile();
   pixels_per_tile = 2.0;
 }
@@ -523,6 +524,8 @@ void OverviewMap::after_draw()
 
 void OverviewMap::draw()
 {
+  if (d_headless)
+    return;
     Tileset *ts = GameMap::getTileset();
     //Playerlist::getInstance()->setViewingplayer(player);
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;

@@ -257,7 +257,6 @@ Player::~Player()
     d_triumphs = NULL;
     clearActionlist();
     clearHistorylist();
-    d_fight_order.clear();
 }
 
 Player* Player::create(Glib::ustring name, guint32 armyset, Gdk::RGBA color, int width, int height, Type type)

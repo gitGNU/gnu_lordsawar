@@ -2,7 +2,7 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2004 Thomas Plonka
-// Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014, 2017 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -46,7 +46,7 @@ class SmallMap: public OverviewMap
 {
 public:
     //! Default constructor.  Make a new SmallMap.
-    SmallMap();
+    SmallMap(bool headless);
 
     //! Destructor.
     ~SmallMap() {};

@@ -56,7 +56,7 @@ class OverviewMap : public sigc::trackable
       * This constructor is not normally called by itself, usually it is
       * called by a derived class.
       */
-     OverviewMap();
+     OverviewMap(bool headless = false);
 
      //! Destructor.
      virtual ~OverviewMap() {};
@@ -255,6 +255,7 @@ class OverviewMap : public sigc::trackable
     void draw_radial_gradient(Gdk::RGBA inner, Gdk::RGBA outer, int width, int height);
 
     bool blank_screen;
+    bool d_headless;
 
 };
 

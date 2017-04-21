@@ -29,7 +29,8 @@
 #include "GameMap.h"
 #include "playerlist.h"
 
-SmallMap::SmallMap()
+SmallMap::SmallMap(bool headless)
+ : OverviewMap(headless)
 {
     input_locked = false;
     sliding = false;

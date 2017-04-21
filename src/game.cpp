@@ -72,6 +72,7 @@
 #include "Item.h"
 #include "rnd.h"
 #include "gui/main.h"
+#include "game-server.h"
 
 Game *Game::current_game = 0;
 
@@ -239,9 +240,8 @@ void Game::on_stack_grouped(Stack *stack)
   //tell gamebigmap that we just grouped/ungrouped a stack.
   return;
 }
-#include "game-server.h"
 
-Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
+Game::Game(GameScenario* gameScenario, NextTurn *nextTurn, bool headless)
     : d_gameScenario(gameScenario), d_nextTurn(nextTurn)
 {
     current_game = this;
@@ -249,7 +249,7 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 
     // init the bigmap
     bigmap.reset(new GameBigMap
-		 (GameScenario::s_intense_combat, 
+		 (headless, GameScenario::s_intense_combat, 
 		  GameScenario::s_see_opponents_production, 
 		  GameScenario::s_see_opponents_stacks, 
 		  GameScenario::s_military_advisor));
@@ -281,7 +281,7 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 	sigc::mem_fun(popup_stack_actions_menu, &sigc::signal<void, Stack*>::emit));
 
     // init the smallmap
-    smallmap.reset(new SmallMap);
+    smallmap.reset(new SmallMap(headless));
     // pass map changes directly through 
     smallmap->resize();
     smallmap->map_changed.connect(
