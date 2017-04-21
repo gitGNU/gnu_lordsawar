@@ -572,16 +572,16 @@ void City::persuadeDefenders(Player *new_owner)
   std::vector<Stack*> stacks = getDefenders();
   for (unsigned int i = 0; i < stacks.size(); i++)
     getOwner()->getStacklist()->changeOwnership(stacks[i], new_owner);
-    switch (GameScenarioOptions::s_build_production_mode)
-      {
-      case GameParameters::BUILD_PRODUCTION_ALWAYS:
-      case GameParameters::BUILD_PRODUCTION_NEVER:
-        break;
-      case GameParameters::BUILD_PRODUCTION_USUALLY:
-      case GameParameters::BUILD_PRODUCTION_SELDOM:
-        setBuildProduction(true);
-        break;
-      }
+  switch (GameScenarioOptions::s_build_production_mode)
+    {
+    case GameParameters::BUILD_PRODUCTION_ALWAYS:
+    case GameParameters::BUILD_PRODUCTION_NEVER:
+      break;
+    case GameParameters::BUILD_PRODUCTION_USUALLY:
+    case GameParameters::BUILD_PRODUCTION_SELDOM:
+      setBuildProduction(true);
+      break;
+    }
   conquer(new_owner);
 }
 // End of file
