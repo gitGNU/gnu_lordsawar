@@ -43,12 +43,12 @@ class NameList : public std::vector<Glib::ustring>, public sigc::trackable
 	 */
         NameList(Glib::ustring filename, Glib::ustring item_tag);
 
+        //! Destructor.
+        ~NameList() {};
+
 	Glib::ustring popRandomName();
 
     private:
-        
-        //! Destructor.
-        ~NameList() {};
 
         //! Callback for loading names into the NameList.
 	bool load(Glib::ustring tag, XML_Helper *helper);
