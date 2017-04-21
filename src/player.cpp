@@ -150,7 +150,7 @@ Player::Player(const Player& player)
   for (auto pit: player.d_history)
     d_history.push_back(History::copy(pit));
 
-  // copy fogmap; TBD
+  // copy fogmap
   d_fogmap = new FogMap(*player.getFogMap());
 
   // copy diplomatic states
