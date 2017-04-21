@@ -1195,6 +1195,7 @@ void Driver::stress_test()
   if (broken)
     return;
 
+  Configuration::s_autosave_policy = Configuration::NO_SAVING;
   NextTurnHotseat *nextTurn;
   nextTurn = new NextTurnHotseat(game_scenario->getTurnmode(),
 				 game_scenario->s_random_turns);
@@ -1306,7 +1307,6 @@ void Driver::on_game_scenario_received_for_robots(Glib::ustring path)
 void Driver::on_game_over_for_headless_server (Player *p, GameScenario *g)
 {
   printf("all done!  player '%s' was the winner on turn %d\n", p->getName().c_str(), g->getRound());
-  //g->saveGame("/tmp/run.sav");
   GameServer::deleteInstance();
   exit(0);
 }
