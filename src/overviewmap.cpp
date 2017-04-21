@@ -526,71 +526,71 @@ void OverviewMap::draw()
 {
   if (d_headless)
     return;
-    Tileset *ts = GameMap::getTileset();
-    //Playerlist::getInstance()->setViewingplayer(player);
-    int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
-    assert(surface);
+  Tileset *ts = GameMap::getTileset();
+  //Playerlist::getInstance()->setViewingplayer(player);
+  int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
+  assert(surface);
 
 
-    // During the whole drawing stuff, ALWAYS consider that
-    // there is an offset of 1 between map coordinates and coordinates
-    // of the surface when drawing. I will implcitely assume this during this
-    // function.
+  // During the whole drawing stuff, ALWAYS consider that
+  // there is an offset of 1 between map coordinates and coordinates
+  // of the surface when drawing. I will implcitely assume this during this
+  // function.
 
-    //put the static surface on the surface
-    surface_gc->set_source(static_surface, 0, 0);
-    surface_gc->paint();
+  //put the static surface on the surface
+  surface_gc->set_source(static_surface, 0, 0);
+  surface_gc->paint();
 
-    // Draw ruins as a white dot
-	
-    Gdk::RGBA ruindotcolor = ts->getRuinColor();
-    for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
-        it != Ruinlist::getInstance()->end(); it++)
+  // Draw ruins as a white dot
+
+  Gdk::RGBA ruindotcolor = ts->getRuinColor();
+  for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
+       it != Ruinlist::getInstance()->end(); it++)
     {
-        Ruin *r = *it;
-        if (r->isHidden() == true &&
-	    r->getOwner() != Playerlist::getViewingplayer())
-          continue;
-        if (r->isVisible(Playerlist::getViewingplayer()) == false)
-          continue;
-        Vector<int> pos = r->getPos();
-        pos = mapToSurface(pos);
+      Ruin *r = *it;
+      if (r->isHidden() == true &&
+          r->getOwner() != Playerlist::getViewingplayer())
+        continue;
+      if (r->isVisible(Playerlist::getViewingplayer()) == false)
+        continue;
+      Vector<int> pos = r->getPos();
+      pos = mapToSurface(pos);
 
-	draw_filled_rect(true, pos.x, pos.y, size, size, ruindotcolor);
+      draw_filled_rect(true, pos.x, pos.y, size, size, ruindotcolor);
     }
 
-    // Draw temples as a white dot
-    Gdk::RGBA templedotcolor = ts->getTempleColor();
-    for (Templelist::iterator it = Templelist::getInstance()->begin();
-        it != Templelist::getInstance()->end(); it++)
+  // Draw temples as a white dot
+  Gdk::RGBA templedotcolor = ts->getTempleColor();
+  for (Templelist::iterator it = Templelist::getInstance()->begin();
+       it != Templelist::getInstance()->end(); it++)
     {
       Temple *t = *it;
-        if (t->isVisible(Playerlist::getViewingplayer()) == false)
-          continue;
-        Vector<int> pos = t->getPos();
-        pos = mapToSurface(pos);
+      if (t->isVisible(Playerlist::getViewingplayer()) == false)
+        continue;
+      Vector<int> pos = t->getPos();
+      pos = mapToSurface(pos);
 
-	draw_filled_rect(true, pos.x, pos.y, size, size, templedotcolor);
+      draw_filled_rect(true, pos.x, pos.y, size, size, templedotcolor);
     }
 
-    //fog it up
-    if (GameScenarioOptions::s_hidden_map == true)
-      {
-        for (int i = 0; i < GameMap::getWidth(); i++)
-          for (int j = 0; j < GameMap::getHeight(); j++)
-            {
-              Vector <int> pos = Vector<int>(i, j);
-              if (Playerlist::getViewingplayer()->getFogMap()->isFogged(pos) == true)
-                {
-                  pos = mapToSurface(pos);
-                  draw_filled_rect(true, pos.x, pos.y, size, size, FOG_COLOUR);
-                  if (i == 0)
-                    draw_filled_rect(true, pos.x-size, pos.y, size, size, FOG_COLOUR);
-                  if (j == 0)
-                    draw_filled_rect(true, pos.x, pos.y-size, size, size, FOG_COLOUR);
-                }
-            }
-      }
+  //fog it up
+  if (GameScenarioOptions::s_hidden_map == true)
+    {
+      for (int i = 0; i < GameMap::getWidth(); i++)
+        for (int j = 0; j < GameMap::getHeight(); j++)
+          {
+            Vector <int> pos = Vector<int>(i, j);
+            if (Playerlist::getViewingplayer()->getFogMap()->isFogged(pos) == true)
+              {
+                pos = mapToSurface(pos);
+                draw_filled_rect(true, pos.x, pos.y, size, size, FOG_COLOUR);
+                if (i == 0)
+                  draw_filled_rect(true, pos.x-size, pos.y, size, size, FOG_COLOUR);
+                if (j == 0)
+                  draw_filled_rect(true, pos.x, pos.y-size, size, size, FOG_COLOUR);
+              }
+          }
+    }
 
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
       GameScenarioOptions::s_hidden_map == true)
@@ -608,8 +608,8 @@ void OverviewMap::draw()
       surface_gc->rectangle(0,0,width, height);
       surface_gc->fill();
     }
-    // let derived classes do their job
-    after_draw();
+  // let derived classes do their job
+  after_draw();
 }
 
 Cairo::RefPtr<Cairo::Surface> OverviewMap::get_surface()

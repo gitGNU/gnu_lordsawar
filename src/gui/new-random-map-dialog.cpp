@@ -53,27 +53,27 @@ NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
   xml->get_widget("grass_scale", grass_scale);
   ActiveTerrainType terrain = GRASS;
   grass_scale->signal_value_changed().connect
-    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain, grass_scale));
+    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain));
   xml->get_widget("water_scale", water_scale);
   terrain = WATER;
   water_scale->signal_value_changed().connect
-    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain, water_scale));
+    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain));
   xml->get_widget("swamp_scale", swamp_scale);
   terrain = SWAMP;
   swamp_scale->signal_value_changed().connect
-    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain, swamp_scale));
+    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain));
   xml->get_widget("forest_scale", forest_scale);
   terrain = FOREST;
   forest_scale->signal_value_changed().connect
-    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain, forest_scale));
+    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain));
   xml->get_widget("hills_scale", hills_scale);
   terrain = HILLS;
   hills_scale->signal_value_changed().connect
-    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain, hills_scale));
+    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain));
   xml->get_widget("mountains_scale", mountains_scale);
   terrain = MOUNTAINS;
   mountains_scale->signal_value_changed().connect
-    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain, mountains_scale));
+    (sigc::bind(sigc::mem_fun (this, &NewRandomMapDialog::on_value_changed), terrain));
   xml->get_widget("cities_scale", cities_scale);
   xml->get_widget("progressbar", progressbar);
   xml->get_widget("accept2_button", accept_button);
@@ -820,7 +820,7 @@ void NewRandomMapDialog::alter_terrain (ActiveTerrainType type)
     augment_scale_value_by_type (ActiveTerrainType(p.first), -p.second);
 }
 
-void NewRandomMapDialog::on_value_changed (ActiveTerrainType type, Gtk::Scale *scale)
+void NewRandomMapDialog::on_value_changed (ActiveTerrainType type)
 {
   if (d_inhibit_scales)
     return;

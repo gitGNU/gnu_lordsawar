@@ -67,74 +67,74 @@ bool AI_Smart::startTurn()
   if (getStacklist()->getHeroes().size() == 0 &&
       Citylist::getInstance()->countCities(this) == 1)
     AI_maybeBuyScout(getFirstCity());
-  
-    debug("Player " << getName() << " starts a turn.")
 
-    AI_Diplomacy diplomacy (this);
+  debug("Player " << getName() << " starts a turn.");
 
-    diplomacy.considerCuspOfWar();
+  AI_Diplomacy diplomacy (this);
 
-    if (getGold() < 500 && getUpkeep() > getIncome())
-      d_mustmakemoney = 1;
-    else
-      d_mustmakemoney = 0;
+  diplomacy.considerCuspOfWar();
 
-    // the real stuff
-    examineCities();
+  if (getGold() < 500 && getUpkeep() > getIncome())
+    d_mustmakemoney = 1;
+  else
+    d_mustmakemoney = 0;
 
-    AI_setupVectoring(10, 3, 20);
+  // the real stuff
+  examineCities();
 
-    sbusy.emit();
-    //int loopCount = 0;
-        
-    AI_Analysis *analysis = new AI_Analysis(this);
-    const Threatlist *threats = analysis->getThreatsInOrder();
-    City *first_city = getFirstCity();
-    bool build_capacity = false;
-    if (first_city)
-      {
-        Vector<int> pos = first_city->getPos();
-        City *first_neutral = 
-          Citylist::getInstance()->getNearestNeutralCity(pos);
-        if (first_neutral)
-          {
-            if (dist (pos, first_neutral->getPos()) <= 50)
-              build_capacity = true;
-          }
-      }
-    if (getGold() < 30)
-      build_capacity = true;
-    while (true)
+  AI_setupVectoring(10, 3, 20);
+
+  sbusy.emit();
+  //int loopCount = 0;
+
+  AI_Analysis *analysis = new AI_Analysis(this);
+  const Threatlist *threats = analysis->getThreatsInOrder();
+  City *first_city = getFirstCity();
+  bool build_capacity = false;
+  if (first_city)
     {
-        sbusy.emit();
-        
-        AI_Allocation *allocation = new AI_Allocation(analysis, threats, this);
-	allocation->sbusy.connect 
-          (sigc::mem_fun (sbusy, &sigc::signal<void>::emit));
-        int moveCount = allocation->move(first_city, build_capacity);
-        
-        // tidying up
-        delete allocation;
-        
-        // stop when no more stacks move
-        if (moveCount == 0)
-            break;
-	if (abort_requested)
-	  break;
+      Vector<int> pos = first_city->getPos();
+      City *first_neutral = 
+        Citylist::getInstance()->getNearestNeutralCity(pos);
+      if (first_neutral)
+        {
+          if (dist (pos, first_neutral->getPos()) <= 50)
+            build_capacity = true;
+        }
+    }
+  if (getGold() < 30)
+    build_capacity = true;
+  while (true)
+    {
+      sbusy.emit();
+
+      AI_Allocation *allocation = new AI_Allocation(analysis, threats, this);
+      allocation->sbusy.connect 
+        (sigc::mem_fun (sbusy, &sigc::signal<void>::emit));
+      int moveCount = allocation->move(first_city, build_capacity);
+
+      // tidying up
+      delete allocation;
+
+      // stop when no more stacks move
+      if (moveCount == 0)
+        break;
+      if (abort_requested)
+        break;
     }
 
-    delete analysis;
-    d_stacklist->setActivestack(0);
+  delete analysis;
+  d_stacklist->setActivestack(0);
 
-    diplomacy.makeProposals();
-    
-    if (abort_requested)
-      aborted_turn.emit();
-    else
-      {
-        if (getStacklist()->check() == false)
-          exit(1);
-      }
+  diplomacy.makeProposals();
+
+  if (abort_requested)
+    aborted_turn.emit();
+  else
+    {
+      if (getStacklist()->check() == false)
+        exit(1);
+    }
   return !(Playerlist::getInstance()->getNoOfPlayers() <= 1);
 }
 

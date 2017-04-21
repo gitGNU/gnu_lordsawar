@@ -103,7 +103,7 @@ static Glib::ustring create_and_dump_scenario(const Glib::ustring &file,
     void on_cities_random_toggled();
     void on_accept_clicked();
     void on_cancel_clicked();
-    void on_value_changed (ActiveTerrainType type, Gtk::Scale *scale);
+    void on_value_changed (ActiveTerrainType type);
     void on_tile_size_changed();
 
     //helpers

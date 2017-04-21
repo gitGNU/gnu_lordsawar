@@ -588,13 +588,29 @@ bool Stack::load(Glib::ustring tag, XML_Helper* helper)
 void Stack::flClear()
 {
   for (iterator it = begin(); it != end(); it++)
-    delete (*it);
+    {
+      Army *a = *it;
+      if (a->isHero())
+        {
+          Hero *h = dynamic_cast<Hero*>(a);
+          delete h;
+        }
+      else
+        delete a;
+    }
   clear();
 }
 
 Stack::iterator Stack::flErase(Stack::iterator object)
 {
-  delete (*object);
+  Army *a = *object;
+  if (a->isHero())
+    {
+      Hero *h = dynamic_cast<Hero*>(a);
+      delete h;
+    }
+  else
+    delete (a);
   return erase(object);
 }
 

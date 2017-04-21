@@ -616,10 +616,14 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   int attack_moved = 0, defensive_moved = 0, capacity_moved = 0, offensive_moved = 0, default_moved= 0;
   int temple_alloc = 0, ruin_alloc = 0, pickup_alloc = 0, attack_alloc = 0, quest_alloc = 0, immediate_alloc = 0, defensive_alloc = 0, capacity_alloc = 0, offensive_alloc = 0, default_alloc= 0;
   int moved;
+  (void) attack_moved;
+  (void) defensive_moved;
+  (void) capacity_moved;
+  (void) offensive_moved;
+  (void) default_moved;
   // move stacks
   d_stacks = new StackReflist(d_owner->getStacklist(), true);
 
-  int total = d_stacks->size();
   debug("Player " << d_owner->getName() << " starts with " << d_stacks->size() << " stacks to do something with");
 
   int count = 0;
@@ -1438,7 +1442,6 @@ bool AI_Allocation::shuffleStack(Stack *stack, Vector<int> dest, bool split_if_n
     s->getPath()->setMovesExhaustedAtPoint(1);
   else
     s->getPath()->setMovesExhaustedAtPoint(0);
-  Vector<int> src = s->getPos();
   bool moved;
 
   if (split_if_necessary)
@@ -1471,11 +1474,9 @@ bool AI_Allocation::shuffleStack(Stack *stack, Vector<int> dest, bool split_if_n
 
 bool AI_Allocation::moveStack(Stack *stack, bool &stack_died)
 {
-  guint32 stack_id = stack->getId();
   Stack *s = stack;
   assert (s != NULL);
   d_owner->getStacklist()->setActivestack(s);
-  Vector<int> src = s->getPos();
   bool moved;
 
   //printf("going in, size of path for stack: %d\n", s->getPath()->size());
