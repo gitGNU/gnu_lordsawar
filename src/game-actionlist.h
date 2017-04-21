@@ -21,27 +21,29 @@
 
 #include <gtkmm.h>
 #include <list>
-#include "network-action.h"
+#include "turn-actionlist.h"
 #include <sigc++/trackable.h>
 
 class Action;
 
-//! A list of network actions
+//! A list of actions, stored by turn.
 /** 
  * All actions taken by players are stored here.
  * The actions are piled up in the player object, but at the start of the
  * turn, the actions from the previous turn get dumped here.
+ * They get dumped into this store as a single set of actions, called a
+ * turnactionlist.
+ * This object is equivalent to a <turnlist> object in the saved-game file.
  *
  * Implemented as a singleton.
  */
-class GameActionlist : public std::list<NetworkAction*>, public sigc::trackable
+class GameActionlist : public std::list<TurnActionlist*>, public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.
 	static Glib::ustring d_tag; 
 
-        void add(Player *player, std::list<Action*> &actions);
-        void add(Player *player, const Action* action);
+        void add(TurnActionlist *t);
 
 	// Methods that operate on the class data but do not modify the class.
 

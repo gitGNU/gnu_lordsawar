@@ -214,12 +214,11 @@ void NetworkPlayer::decodeActions(std::list<Action *> actions)
   std::list<Action*>::iterator it = actions.begin();
   pruneActionlist();
   for (; it != actions.end(); it++)
-     decodeAction(*it);
+    decodeAction(*it);
 }
 
 void NetworkPlayer::decodeAction(const Action *a)
 {
-  GameActionlist::getInstance()->add(this, a);
   sbusy.emit ();
   d_actions.push_back(Action::copy(a));
   switch(a->getType())
@@ -879,6 +878,8 @@ void NetworkPlayer::decodeActionInitTurn(const Action_InitTurn*action)
     {
       debug ("\t" << Action::actionTypeToString((*i)->getType()) << " " << (*i)->dump().c_str());
     }
+
+  GameActionlist::getInstance()->add(new TurnActionlist(this, d_actions));
   clearActionlist();
 }
 

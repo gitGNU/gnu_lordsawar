@@ -88,7 +88,8 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
 	PixMask.cpp PixMask.h \
 	PixMaskCache.h ImageCache.cpp ImageCache.h \
 	file-compat.cpp file-compat.h \
-	rnd.cpp rnd.h game-actionlist.cpp game-actionlist.h
+	rnd.cpp rnd.h game-actionlist.cpp game-actionlist.h \
+	turn-actionlist.cpp turn-actionlist.h
 
 liblordsawarnet_la_SOURCES = \
 	game-client.cpp game-client.h \

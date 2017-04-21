@@ -21,7 +21,7 @@
 #include "network-action.h"
 #include "xmlhelper.h"
 
-Glib::ustring GameActionlist::d_tag = "gameactionlist";
+Glib::ustring GameActionlist::d_tag = "turnlist";
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
@@ -65,10 +65,7 @@ GameActionlist::~GameActionlist()
 
 GameActionlist::GameActionlist(XML_Helper* helper)
 {
-  helper->registerTag(NetworkAction::d_tag, sigc::mem_fun(this, &GameActionlist::load));
-    
-  helper->registerTag(Action::d_tag, sigc::mem_fun(this, &GameActionlist::load));
-
+  helper->registerTag(TurnActionlist::d_tag, sigc::mem_fun(this, &GameActionlist::load));
 }
 
 bool GameActionlist::save(XML_Helper* helper) const
@@ -87,28 +84,17 @@ bool GameActionlist::save(XML_Helper* helper) const
 
 bool GameActionlist::load(Glib::ustring tag, XML_Helper* helper)
 {
-  if (tag == NetworkAction::d_tag)
+  if (tag == TurnActionlist::d_tag)
     {
-      NetworkAction *r = new NetworkAction(helper);
-      push_back(r);
-      return true;
-    }
-  if (tag == Action::d_tag)
-    {
-      back()->setAction(Action::handle_load(helper));
+      TurnActionlist *t = new TurnActionlist(helper);
+      push_back(t);
       return true;
     }
 
     return false;
 }
 
-void GameActionlist::add(Player *player, std::list<Action*> &actions)
+void GameActionlist::add(TurnActionlist *t)
 {
-  for (auto a : actions)
-    add (player, a);
-}
-
-void GameActionlist::add(Player *player, const Action* action)
-{
-  push_back (new NetworkAction (action, player->getId()));
+  push_back(t);
 }
