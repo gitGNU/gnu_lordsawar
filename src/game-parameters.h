@@ -141,6 +141,7 @@ public:
         return 8;
       else if (param == GameParameters::Player::OFF)
         return 0; //no equiv.
+      return 0;
     }
   static GameParameters::Player::Type player_param_string_to_player_param(Glib::ustring s)
     {
