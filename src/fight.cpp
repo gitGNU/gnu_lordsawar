@@ -630,7 +630,7 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 	  defender_roll >= defender->terrain_strength)
 	{
 	  //hit defender
-	  if (d_type != FOR_KEEPS)
+	  if (d_type == FOR_KEEPS)
 	    {
 	      a->setNumberHasHit(a->getNumberHasHit() + (1/xp_factor));
 	      d->setNumberHasBeenHit(d->getNumberHasBeenHit() + (1/xp_factor));
@@ -643,7 +643,7 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 	       attacker_roll >= attacker->terrain_strength)
 	{
 	  //hit attacker
-	  if (d_type != FOR_KEEPS)
+	  if (d_type == FOR_KEEPS)
 	    {
 	      d->setNumberHasHit(d->getNumberHasHit() + (1/xp_factor));
 	      a->setNumberHasBeenHit(a->getNumberHasBeenHit() + (1/xp_factor));
