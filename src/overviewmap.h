@@ -150,8 +150,6 @@ class OverviewMap : public sigc::trackable
     int get_width();
     int get_height();
 
-    //! Draw a hero icon at the given location.  white or black.
-    void draw_hero(Vector<int> pos, bool white);
  private:
 
     //! Returns whether or not the given pixel appears sunken (Tile::SUNKEN).
@@ -231,6 +229,9 @@ class OverviewMap : public sigc::trackable
      * @param all_razed  Show each city as if it were razed.
      */
     void draw_cities(bool all_razed);
+
+    //! Draw a hero icon at the given location.  white or black.
+    void draw_hero(Vector<int> pos, bool white);
 
     //! Redraw the specified region.
     void draw_terrain_tiles(Rectangle r);
