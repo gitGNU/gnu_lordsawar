@@ -53,7 +53,7 @@ RuinReportDialog::RuinReportDialog(Gtk::Window &parent, Vector<int> pos)
   else
     l = ruin;
 
-  ruinmap = new RuinMap(l);
+  ruinmap = new RuinMap(l, NULL);
   ruinmap->map_changed.connect(method(on_map_changed));
 
   Gtk::EventBox *map_eventbox;

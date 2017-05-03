@@ -41,7 +41,7 @@ class RuinMap : public OverviewMap
       * @param ruin  The Ruin or Temple object that is selected initially when
       *              the miniature map graphic is created.
       */
-     RuinMap(NamedLocation *ruin);
+     RuinMap(NamedLocation *ruin, Stack *stack);
 
      //! Destructor.
      ~RuinMap() {};
@@ -97,6 +97,9 @@ class RuinMap : public OverviewMap
 
      //! The currently selected Ruin or Temple object.
      NamedLocation *ruin;
+
+     //! The stack doing the searching.
+     Stack *stack;
 
 };
 

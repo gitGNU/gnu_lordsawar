@@ -38,7 +38,8 @@ RuinRewardedDialog::RuinRewardedDialog(Gtk::Window &parent, Reward_Ruin *reward)
 {
   xml->get_widget("map_image", map_image);
 
-  ruinmap = new RuinMap(reward->getRuin());
+  ruinmap = new RuinMap(reward->getRuin(), 
+                        Playerlist::getActiveplayer()->getActivestack());
   ruinmap->map_changed.connect (method(on_map_changed));
 
   Gtk::EventBox *map_eventbox;
@@ -69,7 +70,7 @@ void RuinRewardedDialog::run()
   else if (reward->getType() == Reward::MAP)
     s += _("where a map can be found!");
   else if (reward->getType() == Reward::RUIN)
-    s += _("where nothing can be found!");
+    s += _("where the location of a special place can be found!");
   else if (reward->getType() == Reward::GOLD)
     s += _("where gold can be found!");
   else //this one shouldn't happen

@@ -25,9 +25,10 @@
 #include "templelist.h"
 #include "GameMap.h"
 
-RuinMap::RuinMap(NamedLocation *r)
+RuinMap::RuinMap(NamedLocation *r, Stack *s)
 {
   ruin = r;
+  stack = s;
 }
 
 void RuinMap::draw_ruins (bool show_selected)
@@ -60,11 +61,14 @@ void RuinMap::draw_ruins (bool show_selected)
         {
           if ((*it)->getId() == ruin->getId()) //is this the selected ruin?
             {
-	      Gdk::RGBA box_color = Gdk::RGBA();
-	      box_color.set_rgba(100,100,100);
-              draw_rect(pos.x - (tmp->get_width()/2), 
-			pos.y - (tmp->get_height()/2), 
-			tmp->get_width(), tmp->get_height(), box_color);
+              for (int i = 0; i <= 4; i += 2)
+                {
+                  draw_rect(pos.x - (tmp->get_width()/2) - i, 
+                            pos.y - (tmp->get_height()/2) - i, 
+                            tmp->get_width() + (i * 2),
+                            tmp->get_height() + (i * 2),
+                            ACTIVE_RUIN_BOX);
+                }
             }
         }
   }
@@ -86,12 +90,15 @@ void RuinMap::draw_temples (bool show_selected)
         {
           if (it->getId() == ruin->getId()) //is this the selected ruin?
             {
-	      Gdk::RGBA box_color = Gdk::RGBA();
-	      box_color.set_rgba(100,100,100);
-              draw_rect(pos.x - (templepic->get_width()/2), 
-			pos.y - (templepic->get_height()/2), 
-			templepic->get_width(), templepic->get_height(), 
-			box_color);
+              for (int i = 0; i <= 4; i += 2)
+                {
+                  PixMask *tmp = templepic;
+                  draw_rect(pos.x - (tmp->get_width()/2) - i, 
+                            pos.y - (tmp->get_height()/2) - i, 
+                            tmp->get_width() + (i * 2),
+                            tmp->get_height() + (i * 2),
+                            ACTIVE_RUIN_BOX);
+                }
             }
         }
   }
@@ -105,6 +112,8 @@ void RuinMap::after_draw()
     show_selected = false;
   draw_ruins (show_selected);
   draw_temples (show_selected);
+  if (stack)
+    draw_hero (stack->getPos(), true);
   map_changed.emit(surface);
 }
 

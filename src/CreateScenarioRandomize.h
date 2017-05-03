@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2014 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ class CreateScenarioRandomize
 	Glib::ustring getDynamicSignpost(Signpost *signpost);
 	int getNumSignposts() {return d_signposts->size();}
 	Army * getRandomRuinKeeper(Player *p);
-	Reward *getNewRandomReward(bool hidden_ruins);
+	Reward *getNewRandomReward();
 
 
 	//! Based on the difficulty, get how much gold each player should

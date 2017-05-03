@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009, 2011, 2014, 2015 Ben Asselstine
+// Copyright (C) 2007-2009, 2011, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -221,8 +221,19 @@ void QuestsManager::questCompleted(guint32 heroId)
     p->heroCompletesQuest(quest->getHero());
     Stack *stack = p->getStacklist()->getArmyStackById(heroId);
 
-    Reward *reward = p->giveQuestReward(quest, stack);
+    Reward *reward = Reward::createRandomReward(true, true);
+    StackReflist *stacks = new StackReflist();
+    p->giveReward(stack, reward, stacks, true);
     quest_completed.emit(quest, reward);
+    if (reward->getType() == Reward::ALLIES)
+      p->addHistory(new History_HeroFindsAllies(quest->getHero()));
+    else if (reward->getType() == Reward::RUIN)
+      {
+        Ruin *r = dynamic_cast<Reward_Ruin*>(reward)->getRuin();
+        p->addHistory(new History_HeroRewardRuin(dynamic_cast<Hero*>(quest->getHero()), r));
+      }
+    delete reward;
+    delete stacks;
 
     //debug("deactivate quest");
     //deactivateQuest(heroId);

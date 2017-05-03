@@ -149,6 +149,9 @@ class OverviewMap : public sigc::trackable
 
     int get_width();
     int get_height();
+
+    //! Draw a hero icon at the given location.  white or black.
+    void draw_hero(Vector<int> pos, bool white);
  private:
 
     //! Returns whether or not the given pixel appears sunken (Tile::SUNKEN).
@@ -246,9 +249,6 @@ class OverviewMap : public sigc::trackable
     //! The surface containing the drawn map.
     Cairo::RefPtr<Cairo::Surface> surface;
     Cairo::RefPtr<Cairo::Context> surface_gc;
-
-    //! Draw a hero icon at the given location.  white or black.
-    void draw_hero(Vector<int> pos, bool white);
 
     void draw_target_box(Vector<int> pos, const Gdk::RGBA colour);
     void draw_square_around_city(City *c, const Gdk::RGBA colour);

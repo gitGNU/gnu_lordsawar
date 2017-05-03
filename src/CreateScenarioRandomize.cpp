@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2014 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -156,52 +156,9 @@ Glib::ustring CreateScenarioRandomize::getDynamicSignpost(Signpost *signpost)
   return String::ucompose(_("%1 lies to the %2"), nearCity->getName(), dir);
 }
   
-Reward *CreateScenarioRandomize::getNewRandomReward(bool hidden_ruins)
+Reward *CreateScenarioRandomize::getNewRandomReward()
 {
-  int max_reward_types = 5;
-  if (!hidden_ruins)
-    max_reward_types--;
-  int num = Rnd::rand() % max_reward_types;
-  Reward *reward = 0;
-
-  switch (num)
-    {
-    case 0: //Gold
-      reward = new Reward_Gold(Reward_Gold::getRandomGoldPieces());
-      break;
-    case 1: //Item
-      reward = new Reward_Item(Reward_Item::getRandomItem());
-      break;
-    case 2: //Allies
-	{
-	  const ArmyProto *a = Reward_Allies::randomArmyAlly();
-	  if (a)
-	    reward = new Reward_Allies 
-	      (a, Reward_Allies::getRandomAmountOfAllies());
-	  else
-	    reward = new Reward_Gold(Reward_Gold::getRandomGoldPieces());
-	}
-      break;
-    case 3: //Map
-	{
-	  int x, y, width, height;
-	  Reward_Map::getRandomMap(&x, &y, &width, &height);
-	  reward = new Reward_Map (Vector<int>(x, y), "", height, width);
-	  reward->setName(reward->getDescription());
-	}
-      break;
-    case 4: //Hidden Ruin
-	{
-	  Ruin *r = Reward_Ruin::getRandomHiddenRuin();
-	  reward = new Reward_Ruin (r);
-	  reward->setName(reward->getDescription());
-	}
-      break;
-    }
-      
-  if (reward)
-    reward->setName(reward->getDescription());
-  return reward;
+  return Reward::createRandomReward(false, false);
 }
 
 int CreateScenarioRandomize::adjustBaseGold (int base_gold)

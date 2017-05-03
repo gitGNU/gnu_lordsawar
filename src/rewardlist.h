@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -45,14 +45,8 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
         //! deletes a reward from the list
         void deleteReward(Reward* s);
 
-	//! remove one item reward from the list and return it
-	Reward *popRandomItemReward();
-
-	//! remove one ruin reward from the list and return it
-	Reward *popRandomRuinReward();
-
-	//! remove one ruin reward from the list and return it
-	Reward *popRandomMapReward();
+	//! Return a random reward from the list and remove it.
+        Reward *pop (Reward::Type type);
 
         //! Behaves like std::list::clear(), but frees pointers as well
         void flClear();
@@ -98,9 +92,6 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
     private:
         //! Callback function for loading rewards.
         bool load(Glib::ustring tag, XML_Helper* helper);
-
-	//! Return a random reward from the list of the given type.
-        Reward *popRandomReward(Reward::Type type);
 
 	// DATA
 

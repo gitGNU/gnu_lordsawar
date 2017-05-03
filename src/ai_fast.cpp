@@ -822,10 +822,17 @@ Reward *AI_Fast::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
   (void) ruin;
   (void) stack;
   //always pick the money.
+  Reward *reward;
   for (Sage::iterator it = sage->begin(); it != sage->end(); it++)
     if ((*it)->getType() == Reward::GOLD)
-      return (*it);
-  return sage->front();
+      {
+        reward = (*it);
+        break;
+      }
+  if (!reward)
+    reward = sage->front();
+  sage->selectReward(reward);
+  return reward;
 }
 
 Army::Stat AI_Fast::chooseStat(Hero *hero)

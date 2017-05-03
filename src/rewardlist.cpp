@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -169,7 +169,7 @@ bool Rewardlist::load(Glib::ustring tag, XML_Helper* helper)
     return false;
 }
 
-Reward *Rewardlist::popRandomReward(Reward::Type type)
+Reward *Rewardlist::pop (Reward::Type type)
 {
   Rewardlist::iterator iter;
   std::vector<Reward*> rewards;
@@ -186,19 +186,5 @@ Reward *Rewardlist::popRandomReward(Reward::Type type)
     }
   else
     return NULL;
-}
-Reward *Rewardlist::popRandomItemReward()
-{
-  return popRandomReward(Reward::ITEM);
-}
-
-Reward *Rewardlist::popRandomMapReward()
-{
-  return popRandomReward(Reward::MAP);
-}
-
-Reward *Rewardlist::popRandomRuinReward()
-{
-  return popRandomReward(Reward::RUIN);
 }
 // End of file

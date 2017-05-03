@@ -6,7 +6,7 @@
  * Version 1.0.4.
  *
  * Copyright (c) 2002, 03, 04 Ole Laursen <olau@hardworking.dk>.
- * Copyright (C) 2015 Ben Asselstine
+ * Copyright (C) 2015, 2017 Ben Asselstine
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -316,6 +316,13 @@ namespace String
     return Glib::ustring (str, start, finish - start + 1);
   }
 
+  inline Glib::ustring capitalize(Glib::ustring str)
+  {
+    Glib::ustring u = str.uppercase();
+    Glib::ustring out = u.substr(0, 1);
+    out += str.substr (1);
+    return out;
+  }
 }
 
 

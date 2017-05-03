@@ -136,7 +136,7 @@ class Ruin : public NamedLocation, public sigc::trackable
         void setHidden (bool hidden) {d_hidden = hidden;}
 
 	//! Sets whether or not this ruin has a sage.
-	void setSage(bool sage) {if (sage) d_type = SAGE; else d_type = RUIN;}
+	void setSage(bool sage);
 
 	//! Sets the player that owns this hidden ruin.
 	void setOwner(Player *owner) {d_owner = owner;}

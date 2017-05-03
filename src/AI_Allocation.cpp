@@ -1,6 +1,6 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005, 2006, 2007 Ulf Lorenz
-// Copyright (C) 2008, 2009, 2010, 2014, 2015 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -45,6 +45,7 @@
 #include "QEnemyArmies.h"
 #include "QEnemyArmytype.h"
 #include "rnd.h"
+#include "reward.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 #define debug(x)
@@ -1344,7 +1345,8 @@ void AI_Allocation::searchRuin(Stack *stack, Ruin *ruin)
   if (reward && ruin->isSearched() == true && stack_died == false)
     {
       StackReflist *stacks = new StackReflist();
-      d_owner->giveReward(stack, reward, stacks);
+      d_owner->giveReward(stack, reward, stacks, false);
+      delete reward;
       delete stacks;
     }
   // what to do if the ruin search fails?

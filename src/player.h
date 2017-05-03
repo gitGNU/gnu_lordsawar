@@ -1076,6 +1076,8 @@ class Player: public sigc::trackable
 	 * location of a new ruin.  It could also be that a stack has been 
 	 * given a number of powerful allies.  It could also be that a stack 
 	 * contains a Hero, and the Reward is an Item for the Hero to carry.
+         *
+         * The caller needs to free the stackreflist and the reward.
 	 *
 	 * This callback must result in an Action_Reward element being 
 	 * given to the addAction method.
@@ -1084,14 +1086,14 @@ class Player: public sigc::trackable
          * @param reward           A pointer for storing the Reward being 
 	 *                         given to the player.
          * @param stacks           Where the allies ended up (if any).
+         * @param quest            true/false if we're giving this out
+         *                         as a quest reward or not.
 	 *
          * @return False on error, true otherwise.
          */
 	//! Callback to give a Reward to the Player or the player's Stack.
-        bool giveReward (Stack *stack, Reward *reward, StackReflist *stacks);
-
-        //! A method to make a reward, give it, and record a history item.
-        Reward* giveQuestReward(Quest *quest, Stack *stack);
+        bool giveReward (Stack *stack, Reward *reward, StackReflist *stacks,
+                         bool quest);
 
 	//! Give the player a new name.
 	void rename (Glib::ustring name);

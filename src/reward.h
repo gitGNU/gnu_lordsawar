@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2011, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007-2009, 2011, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -167,6 +167,17 @@ class Reward
 	//! deep copy a reward into another one
 	static Reward* copy(const Reward* r);
 
+        //! get a random reward type.  (when not hidden map, we don't get maps)
+        static Type getRandomRewardType(bool no_ruins);
+
+        //! Make a random reward. (like for when we complete a quest)
+        /**
+         * Usually rewards come from the rewardlist object, which is
+         * exhaustible, but this method can create a brand new reward.
+         * It won't give a map reward if we're not playing with a hidden map.
+         *
+         */
+        static Reward* createRandomReward(bool take_from_list, bool no_ruins);
     protected:
 
 	// DATA
@@ -221,6 +232,11 @@ class Reward_Gold : public Reward
 	 * reward in the game.
 	 */
 	static guint32 getRandomGoldPieces();
+
+	//! Return a random number of gold pieces that a Sage gives out.
+	static guint32 getRandomSageGoldPieces();
+
+        static Reward_Gold *createRandomReward();
     private:
 
 	// DATA
@@ -283,6 +299,9 @@ class Reward_Allies: public Reward
 
 	//! A static method that returns a number of allies between 1 and 8.
 	static guint32 getRandomAmountOfAllies();
+
+        //! A static method that makes some allies.
+        static Reward_Allies *createRandomReward();
 
 	//! A static method for adding allies to the game map.
 	/**
@@ -369,7 +388,7 @@ class Reward_Item: public Reward
 	Reward_Item(const Reward_Item& orig);
 
 	//! Destructor.
-        ~Reward_Item();
+        virtual ~Reward_Item();
 
 
 	// Get Methods
@@ -579,6 +598,9 @@ class Reward_Map: public Reward
 	 */
 	static void getRandomMap(int *x, int *y, int *width, int *height);
 
+        static Reward_Map *createRandomReward();
+
+        static Glib::ustring getRandomName();
 
     private:
 

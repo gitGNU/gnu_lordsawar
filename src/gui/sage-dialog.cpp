@@ -30,14 +30,17 @@
 #include "playerlist.h"
 #include "Item.h"
 #include "rnd.h"
+#include "ucompose.hpp"
+#include "armyproto.h"
 
 #define method(x) sigc::mem_fun(*this, &SageDialog::x)
 
-SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Hero *h, Ruin *r)
+SageDialog::SageDialog(Gtk::Window &parent, Sage *s, Hero *h, Ruin *r)
  : LwDialog(parent, "sage-dialog.ui")
 {
   ruin = r;
   hero = h;
+  sage = s;
 
   rewards_list = Gtk::ListStore::create(rewards_columns);
   xml->get_widget("rewardtreeview", rewards_treeview);
@@ -49,7 +52,7 @@ SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Hero *h, Ruin *r)
   xml->get_widget("map_image", map_image);
   xml->get_widget("continue_button", continue_button);
 
-  ruinmap = new RuinMap(ruin);
+  ruinmap = new RuinMap(ruin, NULL);
   ruinmap->map_changed.connect(method(on_map_changed));
 
   Gtk::EventBox *map_eventbox;
@@ -80,26 +83,9 @@ Reward *SageDialog::run()
   dialog->show_all();
   dialog->run();
   Snd::getInstance()->halt();
-  //okay, we have a reward selected
-  //now we return it (somehow)
 
-  Reward *reward = grabSelectedReward();
-  //is this in our one-time list anywhere?
-
-  Rewardlist *rlist = Rewardlist::getInstance();
-  Rewardlist::iterator it = 
-    std::find (rlist->begin(), rlist->end(), reward);
-  if (it != rlist->end())
-    {
-      //yes, it's something on our one-time reward list!
-      //take if off our list, so we can't award it again
-      rlist->erase(it);
-    }
-
-  // fixme: remove all common rewards that isn't the one we selected
-  // the contents of the common rewards are a memory leak
-
-  return reward;
+  sage->selectReward(grabSelectedReward());
+  return sage->getSelectedReward();
 }
 
 void SageDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
@@ -117,59 +103,32 @@ void SageDialog::addReward(Reward *reward)
       (*i)[rewards_columns.name] = _("Gold");
       break;
     case Reward::ITEM:
+      {
+        Reward_Item *item = static_cast<Reward_Item*>(reward);
+        (*i)[rewards_columns.name] = item->getItem()->getName();
+      }
+      break;
     case Reward::ALLIES:
+      (*i)[rewards_columns.name] = _("Allies");
       break;
     case Reward::MAP:
 	{
 	  Reward_Map *m = static_cast<Reward_Map*>(reward);
-	  Glib::ustring name = m->getName();
-	  if (name == "")
-	    {
-	      switch (Rnd::rand() % 6)
-		{
-		case 0: name = _("parchment map"); break;
-		case 1: name = _("vellum map"); break;
-		case 2: name = _("paper map"); break;
-		case 3: name = _("torn paper map"); break;
-		case 4: name = _("dusty map"); break;
-		case 5: name = _("blood-stained map"); break;
-		}
-	    }
-	  (*i)[rewards_columns.name] = name;
+	  (*i)[rewards_columns.name] = String::capitalize(m->getName());
 	}
-
       break;
     case Reward::RUIN:
-	{
-	  Ruin *r = static_cast<Reward_Ruin*>(reward)->getRuin();
-	  if (r->getReward() == NULL)
-	    {
-	      Reward *rew  = NULL;
-	      if (Rnd::rand() % 2 == 0)
-		{
-		  rew = Rewardlist::getInstance()->popRandomItemReward();
-		  if (!rew)
-		    rew = Rewardlist::getInstance()->popRandomMapReward();
-		}
-	      else
-		{
-		  rew = Rewardlist::getInstance()->popRandomMapReward();
-		  if (!rew)
-		    rew = Rewardlist::getInstance()->popRandomItemReward();
-		}
-	      if (!rew)
-		r->populateWithRandomReward();
-	      else
-		r->setReward(rew);
-	    }
-	  if (r->getReward()->getType() == Reward::ITEM)
-	    (*i)[rewards_columns.name] = 
-	      static_cast<Reward_Item*>(r->getReward())->getItem()->getName();
-	  else if (r->getReward()->getType() == Reward::ALLIES)
-	    (*i)[rewards_columns.name] = _("Allies");
-	  else if (r->getReward()->getType() == Reward::MAP)
-	    (*i)[rewards_columns.name] = r->getReward()->getName();
-	}
+        {
+	  Reward_Ruin *rr = static_cast<Reward_Ruin*>(reward);
+          Ruin *r = rr->getRuin();
+          if (r->getReward()->getType() == Reward::ITEM)
+            (*i)[rewards_columns.name] =
+              static_cast<Reward_Item*>(r->getReward())->getItem()->getName();
+          else if (r->getReward()->getType() == Reward::ALLIES)
+            (*i)[rewards_columns.name] = _("Allies");
+          else if (r->getReward()->getType() == Reward::MAP)
+            (*i)[rewards_columns.name] = r->getReward()->getName();
+        }
       break;
     }
   (*i)[rewards_columns.reward] = reward;

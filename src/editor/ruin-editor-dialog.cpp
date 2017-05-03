@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -292,7 +292,7 @@ void RuinEditorDialog::on_clear_reward_clicked()
 void RuinEditorDialog::on_randomize_reward_clicked()
 {
   on_clear_reward_clicked();
-  reward = d_randomizer->getNewRandomReward(false);
+  reward = d_randomizer->getNewRandomReward();
   set_reward_name();
 }
 

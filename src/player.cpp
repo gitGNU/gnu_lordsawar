@@ -1460,7 +1460,7 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
   else
     doStackSearchRuin(s, r, Fight::ATTACKER_WON);
 
-  if (r->getReward() == NULL)
+  if (r->getReward() == NULL && r->hasSage() == false)
     r->populateWithRandomReward();
   reward = r->getReward();
   r->setReward(0);
@@ -1469,9 +1469,7 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
   if (r->isSearched())
     {
       if (r->hasSage())
-        {
-          addHistory(new History_FoundSage(dynamic_cast<Hero *>(s->getFirstHero())));
-        }
+        addHistory(new History_FoundSage(dynamic_cast<Hero *>(s->getFirstHero())));
       addHistory(new History_HeroRuinExplored(dynamic_cast<Hero*>(s->getFirstHero()), r));
     }
   supdatingStack.emit(0);
@@ -1890,8 +1888,11 @@ void Player::doGiveReward(Stack *s, Reward *reward, StackReflist *stacks)
         }
       break;
     case Reward::ITEM:
-      static_cast<Hero*>(s->getFirstHero())->getBackpack()->addToBackpack
-	(dynamic_cast<Reward_Item*>(reward)->getItem());
+        {
+          Item *i = new Item (*dynamic_cast<Reward_Item*>(reward)->getItem());
+          Hero *hero = static_cast<Hero*>(s->getFirstHero());
+          hero->getBackpack()->addToBackpack(i);
+        }
       break;
     case Reward::RUIN:
         {
@@ -1911,24 +1912,21 @@ void Player::doGiveReward(Stack *s, Reward *reward, StackReflist *stacks)
     }
 }
 
-bool Player::giveReward(Stack *s, Reward *reward, StackReflist *stacks)
+bool Player::giveReward(Stack *s, Reward *reward, StackReflist *stacks, bool quest)
 {
   debug("Player::give_reward");
 
+  Action_Reward *action = new Action_Reward(s, reward);
   doGiveReward(s, reward, stacks);
   
-  addAction(new Action_Reward(s, reward));
+  addAction(action);
 
-  if (reward->getType() == Reward::RUIN)
+  if (reward->getType() == Reward::RUIN && !quest)
     {
       Ruin *r = dynamic_cast<Reward_Ruin*>(reward)->getRuin();
       addHistory(new History_HeroRewardRuin(dynamic_cast<Hero*>(s->getFirstHero()), r));
     }
-          
   schangingStats.emit();
-  //FIXME: get rid of this reward now that we're done with it
-  //but we need to show it still... (in the case of quest completions)
-
   return true;
 }
 
@@ -4219,7 +4217,9 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
           StackReflist *stacks = new StackReflist();
           //okay we're going to add some allies now.
           const ArmyProto *a = Armysetlist::getInstance()->getArmy(Playerlist::getActiveplayer()->getArmyset(), item->getArmyTypeToSummon());
-          giveReward(stack, new Reward_Allies(a, 1), stacks);
+          Reward *reward = new Reward_Allies(a, 1);
+          giveReward(stack, reward, stacks, false);
+          delete reward;
           delete stacks;
           monster_summoned.emit(hero, a->getName());
         }
@@ -4559,87 +4559,6 @@ void Player::reportEndOfTurn()
 {
   addHistory(new History_EndTurn);
   addAction(new Action_EndTurn);
-}
-
-Reward* Player::giveQuestReward(Quest *quest, Stack *stack)
-{
-  StackReflist *stacks = new StackReflist();
-  Reward::Type reward_type = Reward::Type(Rnd::rand() % 4);
-  switch (reward_type)
-    {
-    case Reward::GOLD:
-        {
-          int gold = Reward_Gold::getRandomGoldPieces();
-          Reward_Gold *reward = new Reward_Gold(gold);
-          giveReward(stack, reward, stacks);
-          delete stacks;
-          return reward;
-        }
-      break;
-    case Reward::ALLIES:
-        {
-          int num = (Rnd::rand() % 8) + 1;
-          const ArmyProto *a = Reward_Allies::randomArmyAlly();
-          Reward_Allies *reward = new Reward_Allies(a, num);
-          giveReward(stack, reward, stacks);
-
-          addHistory(new History_HeroFindsAllies(quest->getHero()));
-          delete stacks;
-          return reward;
-        }
-      break;
-    case Reward::ITEM:
-        {
-          Reward *itemReward = Rewardlist::getInstance()->popRandomItemReward();
-          if (itemReward)
-            {
-              giveReward(stack, itemReward, stacks);
-              delete stacks;
-              return itemReward;
-            }
-          else //no items left to give!
-            {
-              int gold = Reward_Gold::getRandomGoldPieces();
-              Reward_Gold * reward = new Reward_Gold(gold);
-              giveReward(stack, reward, stacks);
-              delete stacks;
-              return reward;
-            }
-        }
-      break;
-    case Reward::RUIN:
-        {
-          Reward *ruinReward = Rewardlist::getInstance()->popRandomRuinReward();
-          if (ruinReward)
-            {
-              giveReward(stack, ruinReward, stacks);
-              delete stacks;
-              return ruinReward;
-            }
-          else //no ruins left to give!
-            {
-              int gold = Reward_Gold::getRandomGoldPieces();
-              Reward_Gold* reward = new Reward_Gold(gold);
-              giveReward(stack, reward, stacks);
-              delete stacks;
-              return reward;
-            }
-        }
-      break;
-    case Reward::MAP: //not hit.
-        {
-          int x = 0, y = 0, width = 0, height = 0;
-          Reward_Map::getRandomMap(&x, &y, &width, &height);
-          Reward_Map *reward = new Reward_Map(Vector<int>(x,y),
-                                              _("old map"), height, width);
-          giveReward(stack, reward, stacks);
-          delete stacks;
-          return reward;
-        }
-      break;
-    }
-  delete stacks;
-  return NULL;
 }
 
 City *Player::getFirstCity() const

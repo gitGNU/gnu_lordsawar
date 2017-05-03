@@ -1,6 +1,6 @@
 // Copyright (C) 2001, 2003 Michael Bartl
 // Copyright (C) 2002, 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009, 2014, 2015 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -166,26 +166,8 @@ bool Ruin::load(Glib::ustring tag, XML_Helper* helper)
 
 void Ruin::populateWithRandomReward()
 {
-  int num;
-  if (getType() == Ruin::STRONGHOLD)
-    num = 1 + (Rnd::rand() % 2);
-  else
-    num = Rnd::rand() % 3;
-  if (num == 0)
-    setReward(new Reward_Gold(Reward_Gold::getRandomGoldPieces()));
-  else if (num == 1)
-    {
-      const ArmyProto *a = Reward_Allies::randomArmyAlly();
-      setReward(new Reward_Allies(a, Reward_Allies::getRandomAmountOfAllies()));
-    }
-  else if (num == 2)
-    {
-      Reward *reward = Rewardlist::getInstance()->popRandomItemReward();
-      if (reward)
-	setReward(reward);
-      else //no items left to give!
-	setReward(new Reward_Gold(Reward_Gold::getRandomGoldPieces()));
-    }
+  Reward *reward = Reward::createRandomReward(true, false);
+  setReward (reward);
 }
 
 Glib::ustring Ruin::ruinTypeToString(const Ruin::Type type)
@@ -212,5 +194,14 @@ Ruin::Type Ruin::ruinTypeFromString(const Glib::ustring str)
 Sage* Ruin::generateSage() const
 {
   return new Sage();
+}
+	
+void Ruin::setSage(bool sage)
+{
+  d_sage = sage;
+  if (sage)
+    d_type = SAGE;
+  else
+    d_type = RUIN;
 }
 // End of file

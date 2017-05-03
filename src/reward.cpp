@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2011, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007-2009, 2011, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@
 #include "stackreflist.h"
 #include "xmlhelper.h"
 #include "rnd.h"
+#include "GameScenarioOptions.h"
 
 Glib::ustring Reward::d_tag = "reward";
 
@@ -77,6 +78,93 @@ Reward* Reward::handle_load(XML_Helper* helper)
     return 0;
 }
 
+Reward::Type Reward::getRandomRewardType(bool exclude_ruins)
+{
+  std::vector<Reward::Type> types;
+  types.push_back(Reward::GOLD);
+  types.push_back(Reward::ALLIES);
+  types.push_back(Reward::ITEM);
+  if (!exclude_ruins)
+    types.push_back(Reward::RUIN);
+  if (GameScenarioOptions::s_hidden_map)
+    types.push_back(Reward::MAP);
+  return types[Rnd::rand() % types.size()];
+}
+
+Reward* Reward::createRandomReward(bool take_from_list, bool exclude_ruins)
+{
+  Reward::Type reward_type = Reward::getRandomRewardType (exclude_ruins);
+  switch (reward_type)
+    {
+    case Reward::GOLD:
+        {
+          Reward *goldReward;
+          if (take_from_list)
+            {
+              goldReward = Rewardlist::getInstance()->pop (Reward::GOLD);
+              if (goldReward)
+                return goldReward;
+            }
+          goldReward = Reward_Gold::createRandomReward();
+          return goldReward;
+        }
+      break;
+    case Reward::ALLIES:
+        {
+          Reward *alliesReward;
+          if (take_from_list)
+            {
+              alliesReward = Rewardlist::getInstance()->pop (Reward::ALLIES);
+              if (alliesReward)
+                return alliesReward;
+            }
+          alliesReward = Reward_Allies::createRandomReward();
+          return alliesReward;
+        }
+      break;
+    case Reward::ITEM:
+        {
+          Reward *itemReward;
+          if (take_from_list)
+            {
+              itemReward = Rewardlist::getInstance()->pop(Reward::ITEM);
+              if (itemReward)
+                return itemReward;
+            }
+          itemReward = Reward_Gold::createRandomReward();
+          return itemReward;
+        }
+      break;
+    case Reward::RUIN:
+        {
+          Reward *ruinReward;
+          if (take_from_list)
+            {
+              ruinReward = Rewardlist::getInstance()->pop (Reward::RUIN);
+              if (ruinReward)
+                return ruinReward;
+            }
+          ruinReward = Reward_Gold::createRandomReward();
+          return ruinReward;
+        }
+      break;
+    case Reward::MAP:
+        {
+          Reward *mapReward;
+          if (take_from_list)
+            {
+              mapReward = Rewardlist::getInstance()->pop (Reward::MAP);
+              if (mapReward)
+                return mapReward;
+            }
+          mapReward = Reward_Map::createRandomReward();
+          return mapReward;
+        }
+      break;
+    }
+  return NULL;
+}
+
 Reward_Gold::Reward_Gold(guint32 gold)
     :Reward(Reward::GOLD), d_gold(gold)
 {
@@ -109,9 +197,20 @@ Reward_Gold::~Reward_Gold()
 {
 }
 
+Reward_Gold *Reward_Gold::createRandomReward()
+{
+  int gold = Reward_Gold::getRandomGoldPieces();
+  return new Reward_Gold(gold);
+}
+
 guint32 Reward_Gold::getRandomGoldPieces()
 {
   return 310 + (Rnd::rand() % 1000);
+}
+
+guint32 Reward_Gold::getRandomSageGoldPieces()
+{
+  return 600 + (Rnd::rand() % 1500);
 }
 
 Reward_Allies::Reward_Allies(guint32 army_type, guint32 army_set, guint32 count)
@@ -230,9 +329,21 @@ Reward_Allies::~Reward_Allies()
 {
 }
 
-Reward_Item::Reward_Item(Item *item)
-    :Reward(Reward::ITEM), d_item(item)
+Reward_Allies * Reward_Allies::createRandomReward()
 {
+  int num = (Rnd::rand() % 8) + 1;
+  const ArmyProto *a = Reward_Allies::randomArmyAlly();
+  Reward_Allies *reward = new Reward_Allies(a, num);
+  return reward;
+}
+
+Reward_Item::Reward_Item(Item *item)
+    :Reward(Reward::ITEM)
+{
+  if (item)
+    d_item = new Item (*item);
+  else
+    d_item = NULL;
 }
 
 bool Reward_Item::loadItem(Glib::ustring tag, XML_Helper* helper)
@@ -242,19 +353,23 @@ bool Reward_Item::loadItem(Glib::ustring tag, XML_Helper* helper)
       d_item = new Item(helper);
       return true;
     }
-    
+
   return false;
 }
 
 Reward_Item::Reward_Item(XML_Helper* helper)
-    :Reward(helper)
+ : Reward(helper)
 {
   helper->registerTag(Item::d_tag, sigc::mem_fun(this, &Reward_Item::loadItem));
 }
 
 Reward_Item::Reward_Item (const Reward_Item& orig)
-	:Reward(orig), d_item(orig.d_item)
+ : Reward(orig)
 {
+  if (orig.d_item)
+    d_item = new Item(*orig.d_item);
+  else
+    d_item = NULL;
 }
 
 bool Reward_Item::save(XML_Helper* helper) const
@@ -370,7 +485,7 @@ bool Reward_Map::loadMap(Glib::ustring tag, XML_Helper* helper)
       d_sightmap = new SightMap(helper);
       return true;
     }
-    
+
   return false;
 }
 
@@ -412,6 +527,14 @@ Reward_Map::~Reward_Map()
 {
   if (d_sightmap)
     delete d_sightmap;
+}
+
+Reward_Map *Reward_Map::createRandomReward()
+{
+  int x = 0, y = 0, width = 0, height = 0;
+  Reward_Map::getRandomMap(&x, &y, &width, &height);
+  return new Reward_Map(Vector<int>(x,y),
+                        Reward_Map::getRandomName(), height, width);
 }
 
 Glib::ustring Reward::getDescription() const
@@ -522,4 +645,18 @@ Vector<int> Reward_Map::getLocation() const
 void Reward_Map::setMapName(Glib::ustring name)
 {
   d_sightmap->setName(name);
+}
+
+Glib::ustring Reward_Map::getRandomName()
+{
+  std::vector<Glib::ustring> names;
+  names.push_back(_("old map"));
+  names.push_back(_("old dusty map"));
+  names.push_back(_("parchment map"));
+  names.push_back(_("vellum map"));
+  names.push_back(_("paper map"));
+  names.push_back(_("torn paper map"));
+  names.push_back(_("dusty map"));
+  names.push_back(_("blood-stained map"));
+  return names[Rnd::rand() % names.size()];
 }

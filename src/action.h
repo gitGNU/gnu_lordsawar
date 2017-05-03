@@ -1,6 +1,6 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
-// Copyright (C) 2007, 2008, 2010, 2011, 2014, 2015 Ben Asselstine
+// Copyright (C) 2007, 2008, 2010, 2011, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -749,7 +749,7 @@ class Action_Reward : public Action
 	//! Load a new player rewarded action from a saved-game file.
         Action_Reward(XML_Helper* helper);
 	//! Destroy a player rewarded action.
-        ~Action_Reward() {};
+        ~Action_Reward();
         
 	//! Return some debug information about this action.
         Glib::ustring dump() const;

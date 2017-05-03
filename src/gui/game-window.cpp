@@ -1610,11 +1610,8 @@ void GameWindow::on_ruin_rewarded (Reward_Ruin *reward)
 
 void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
 {
-  if (ruin->hasSage())
-    {
-      if (reward->getType() == Reward::RUIN)
-	return on_ruin_rewarded(static_cast<Reward_Ruin*>(reward));
-    }
+  if (reward->getType() == Reward::RUIN && ruin->getType() == Ruin::SAGE)
+    return on_ruin_rewarded(static_cast<Reward_Ruin*>(reward));
   LwDialog dialog(*window, "ruin-searched-dialog.ui");
   dialog.set_title(ruin->getName());
   Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
@@ -1624,26 +1621,54 @@ void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
 
   Glib::ustring s = label->get_text();
   s += "\n\n";
-  s += String::ucompose(_("%1 finds "), stack->getFirstHero()->getName());
-  if (reward->getType() == Reward::GOLD)
+  Glib::ustring hero = stack->getFirstHero()->getName();
+  switch (reward->getType())
     {
-      Reward_Gold *gold = dynamic_cast<Reward_Gold*>(reward);
-      s += String::ucompose(_("%1 gold pieces."), gold->getGold());
-    }
-  else if (reward->getType() == Reward::ALLIES)
-    {
-      Reward_Allies *allies = dynamic_cast<Reward_Allies*>(reward);
-      s += String::ucompose(_("%1 allies!"), allies->getNoOfAllies());
-    }
-  else if (reward->getType() == Reward::ITEM)
-    {
-      Reward_Item *item = dynamic_cast<Reward_Item*>(reward);
-      s += String::ucompose(_("the %1!"), item->getItem()->getName());
-    }
-  else if (reward->getType() == Reward::MAP)
-    {
-      Reward_Map *map = dynamic_cast<Reward_Map*>(reward);
-      s += String::ucompose(_("a map!"), map->getName());
+    case Reward::GOLD:
+        {
+          Reward_Gold *gold = dynamic_cast<Reward_Gold*>(reward);
+          if (ruin->hasSage())
+            s += String::ucompose(_("%1 is given %2 gold pieces."), hero,
+                                  gold->getGold());
+          else
+            s += String::ucompose(_("%1 finds %2 gold pieces."), hero,
+                                  gold->getGold());
+        }
+      break;
+    case Reward::ALLIES:
+        {
+          Reward_Allies *allies = dynamic_cast<Reward_Allies*>(reward);
+          if (ruin->hasSage())
+            s += String::ucompose(_("%1 is given %2 allies!"), hero,
+                                  allies->getNoOfAllies());
+          else
+            s += String::ucompose(_("%1 finds %2 allies!"), hero,
+                                  allies->getNoOfAllies());
+        }
+      break;
+    case Reward::ITEM:
+        {
+          Reward_Item *item = dynamic_cast<Reward_Item*>(reward);
+          if (ruin->hasSage())
+            s += String::ucompose(_("%1 is given the %2!"), hero,
+                                  item->getItem()->getName());
+          else
+            s += String::ucompose(_("%1 finds the %2!"), hero,
+                                  item->getItem()->getName());
+        }
+      break;
+    case Reward::MAP:
+        {
+          Reward_Map *map = dynamic_cast<Reward_Map*>(reward);
+          if (ruin->hasSage())
+            s += String::ucompose(_("%1 is given a %2!"), hero, map->getName());
+          else
+            s += String::ucompose(_("%1 finds a %2!"), hero, map->getName());
+        }
+      break;
+    case Reward::RUIN:
+      //ruins are not populated with ruin-rewards.
+      break;
     }
 
   label->set_text(s);

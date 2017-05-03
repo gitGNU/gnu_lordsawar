@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2014, 2015 Ben Asselstine
+//  Copyright (C) 2007-2009, 2014, 2015, 2017 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -58,6 +58,7 @@ class SageDialog: public LwDialog
     Gtk::Image *map_image;
     Gtk::Button *continue_button;
     
+    Sage *sage;
     Hero *hero;
     Ruin *ruin;
 

@@ -511,30 +511,32 @@ void Game::search_stack(Stack *stack, bool &gotquest, bool &stackdied)
       ((ruin->isHidden() == true && ruin->getOwner() == player) ||
        ruin->isHidden() == false))
     {
-      Reward *reward;
-      reward = player->stackSearchRuin(stack, ruin, stackdied);
+      Reward *reward = player->stackSearchRuin(stack, ruin, stackdied);
       if (stackdied)
         return;
       if (ruin->hasSage() == true)
 	{
+          if (reward)
+            delete reward;
           Sage *sage = ruin->generateSage();
           if (player->isComputer() == false)
             reward = sage_visited.emit(ruin, sage, stack);
           else
             reward = player->chooseReward(ruin, sage, stack);
+          delete sage;
 	}
 	  
       if (reward)
 	{
           StackReflist *stacks = new StackReflist();
-	  player->giveReward(stack, reward, stacks);
+	  player->giveReward(stack, reward, stacks, false);
           delete stacks;
-	  //FIXME: delete this reward, but don't delete the item, or map
 	  redraw();
 	  update_stack_info();
 	  update_control_panel();
           if (player->isComputer() == false)
             ruin_searched.emit(ruin, stack, reward);
+          delete reward;
 	}
       else
 	{

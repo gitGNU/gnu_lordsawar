@@ -1,6 +1,6 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
-// Copyright (C) 2007, 2008, 2010, 2011, 2014, 2015 Ben Asselstine
+// Copyright (C) 2007, 2008, 2010, 2011, 2014, 2015, 2017 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -1026,8 +1026,14 @@ bool Action_Production::doSave(XML_Helper* helper) const
 //Action_Reward
 
 Action_Reward::Action_Reward(Stack *s, Reward* r)
-    :Action(Action::REWARD), d_reward(r), d_stack(s->getId())
+    :Action(Action::REWARD), d_stack(s->getId())
 {
+  d_reward = Reward::copy (r);
+}
+
+Action_Reward::~Action_Reward()
+{
+  delete d_reward;
 }
 
 bool Action_Reward::load(Glib::ustring tag, XML_Helper *helper)
@@ -1076,7 +1082,32 @@ Action_Reward::Action_Reward(XML_Helper* helper)
 
 Glib::ustring Action_Reward::dump() const
 {
-  return String::ucompose("Got a reward of type %1.\n", d_reward->getType());
+  if (d_reward->getType() == Reward::GOLD)
+    {
+      Reward_Gold *r = dynamic_cast<Reward_Gold*>(d_reward);
+      return String::ucompose("Stack %1 got a reward of type %2: %3 gp.\n", d_stack, Reward::rewardTypeToString(d_reward->getType()), r->getGold());
+    }
+  else if (d_reward->getType() == Reward::ALLIES)
+    {
+      Reward_Allies*r = dynamic_cast<Reward_Allies*>(d_reward);
+      return String::ucompose("Stack %1 got a reward of type %2: %3 %4.\n", d_stack, Reward::rewardTypeToString(d_reward->getType()), r->getNoOfAllies(), r->getArmy()->getName());
+    }
+  else if (d_reward->getType() == Reward::ITEM)
+    {
+      Reward_Item *r = dynamic_cast<Reward_Item*>(d_reward);
+      return String::ucompose("Stack %1 got a reward of type %2: %3.\n", d_stack, Reward::rewardTypeToString(d_reward->getType()), r->getItem()->getName());
+    }
+  else if (d_reward->getType() == Reward::RUIN)
+    {
+      Reward_Ruin *r = dynamic_cast<Reward_Ruin*>(d_reward);
+      return String::ucompose("Stack %1 got a reward of type %2: %3,%4 %5.\n", d_stack, Reward::rewardTypeToString(d_reward->getType()), r->getRuin()->getPos().x, r->getRuin()->getPos().y, r->getRuin()->getName());
+    }
+  else if (d_reward->getType() == Reward::MAP)
+    {
+      Reward_Map*r = dynamic_cast<Reward_Map*>(d_reward);
+      return String::ucompose("Stack %1 got a reward of type %2: %3,%4 %5.\n", d_stack, Reward::rewardTypeToString(d_reward->getType()), r->getLocation().x, r->getLocation().y, r->getMapName());
+    }
+  return String::ucompose("Stack %1 got a reward of type %2.\n", d_stack, Reward::rewardTypeToString(d_reward->getType()));
 }
 
 bool Action_Reward::doSave(XML_Helper* helper) const
