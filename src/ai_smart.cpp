@@ -478,7 +478,7 @@ Reward *AI_Smart::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
   (void) ruin;
   (void) stack;
   //always pick the money.
-  Reward *reward;
+  Reward *reward = NULL;
   for (Sage::iterator it = sage->begin(); it != sage->end(); it++)
     if ((*it)->getType() == Reward::GOLD)
       {
