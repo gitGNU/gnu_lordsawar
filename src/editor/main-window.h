@@ -71,8 +71,6 @@ class MainWindow: public sigc::trackable
     Gtk::MenuItem *save_map_menuitem;
     Gtk::MenuItem *save_map_as_menuitem;
     Gtk::MenuItem *import_map_from_sav_menuitem;
-    Gtk::MenuItem *export_as_bitmap_menuitem;
-    Gtk::MenuItem *export_as_bitmap_no_game_objects_menuitem;
     Gtk::MenuItem *validate_menuitem;
     Gtk::MenuItem *quit_menuitem;
     Gtk::MenuItem *edit_players_menuitem;
@@ -90,6 +88,7 @@ class MainWindow: public sigc::trackable
     Gtk::MenuItem *edit_items_menuitem ;
     Gtk::MenuItem *edit_rewards_menuitem;
     Gtk::MenuItem *edit_smallmap_menuitem;
+    Gtk::MenuItem *edit_remove_all_stacks_menuitem;
     Gtk::MenuItem *random_all_cities_menuitem;
     Gtk::MenuItem *random_unnamed_cities_menuitem;
     Gtk::MenuItem *random_all_ruins_menuitem;
@@ -126,8 +125,6 @@ class MainWindow: public sigc::trackable
     void on_load_map_activated();
     void on_save_map_activated();
     void on_import_map_activated();
-    void on_export_as_bitmap_activated();
-    void on_export_as_bitmap_no_game_objects_activated();
     void on_validate_activated();
     void on_save_map_as_activated();
     void on_quit_activated();
@@ -149,6 +146,7 @@ class MainWindow: public sigc::trackable
     void on_edit_items_activated();
     void on_edit_rewards_activated();
     void on_edit_fight_order_activated();
+    void on_remove_all_stacks_activated();
 
     void on_fullscreen_activated();
     void on_grid_toggled();

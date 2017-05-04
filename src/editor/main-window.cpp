@@ -91,6 +91,7 @@
 #include "fight-order-editor-dialog.h"
 #include "road-editor-tip.h"
 #include "rnd.h"
+#include "stacklist.h"
 
 #define method(x) sigc::mem_fun(*this, &MainWindow::x)
 
@@ -204,9 +205,6 @@ MainWindow::MainWindow(Glib::ustring load_filename)
     xml->get_widget("import_map_from_sav_menuitem", import_map_from_sav_menuitem);
     import_map_from_sav_menuitem->signal_activate().connect
       (method(on_import_map_activated));
-    xml->get_widget("export_as_bitmap_menuitem", export_as_bitmap_menuitem);
-    export_as_bitmap_menuitem->signal_activate().connect
-      (method(on_export_as_bitmap_activated));
     xml->get_widget("validate_menuitem", validate_menuitem);
     validate_menuitem->signal_activate().connect (method(on_validate_activated));
     xml->get_widget("quit_menuitem", quit_menuitem);
@@ -233,6 +231,10 @@ MainWindow::MainWindow(Glib::ustring load_filename)
     xml->get_widget("edit_smallmap_menuitem", edit_smallmap_menuitem);
     edit_smallmap_menuitem->signal_activate().connect
       (method(on_edit_smallmap_activated));
+    xml->get_widget("edit_remove_all_stacks_menuitem",
+                    edit_remove_all_stacks_menuitem);
+    edit_remove_all_stacks_menuitem->signal_activate().connect
+      (method(on_remove_all_stacks_activated));
     xml->get_widget("edit_fight_order_menuitem", edit_fight_order_menuitem);
     edit_fight_order_menuitem->signal_activate().connect
       (method(on_edit_fight_order_activated));
@@ -834,38 +836,6 @@ void MainWindow::on_save_map_activated()
           {
             needs_saving = false;
             update_window_title();
-          }
-    }
-}
-
-void MainWindow::on_export_as_bitmap_activated()
-{
-    Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
-				   Gtk::FILE_CHOOSER_ACTION_SAVE);
-    Glib::RefPtr<Gtk::FileFilter> png_filter = Gtk::FileFilter::create();
-    png_filter->set_name(_("PNG files (*.png)"));
-    png_filter->add_pattern("*.png");
-    chooser.add_filter(png_filter);
-    chooser.set_current_folder(Glib::get_home_dir());
-    chooser.set_do_overwrite_confirmation();
-
-    chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
-    chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
-    
-    chooser.show_all();
-    int res = chooser.run();
-    
-    if (res == Gtk::RESPONSE_ACCEPT)
-    {
-	current_save_filename = chooser.get_filename();
-	chooser.hide();
-
-	bool success = bigmap->saveAsBitmap(current_save_filename);
-	if (!success)
-          {
-            TimedMessageDialog dialog(*window, _("Map was not exported!"), 0);
-            dialog.run_and_hide();
           }
     }
 }
@@ -1700,7 +1670,6 @@ void MainWindow::clear_save_file_of_scenario_specific_data()
     {
       (*i)->clearActionlist();
       (*i)->clearHistorylist();
-      (*i)->clearStacklist();
       (*i)->clearFogMap();
       (*i)->setGold(1000);
       (*i)->revive();
@@ -1863,13 +1832,46 @@ void MainWindow::on_bag_selected(Vector<int> tile)
   d.run();
 }
 
+void MainWindow::on_remove_all_stacks_activated()
+{
+  int num_stacks = 0;
+  for (auto p: *Playerlist::getInstance())
+    num_stacks += p->getStacklist()->size();
+  bool remove_stacks = false;
+  if (num_stacks)
+    {
+      Gtk::Dialog *dialog = new Gtk::Dialog();
+      dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+      dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_ACCEPT);
+      Gtk::Box *box = dialog->get_content_area ();
+      Gtk::Label l =
+        Gtk::Label(String::ucompose(ngettext("This will remove %1 stack.\nAre you sure?", "This will remove %1 stacks.\nAre you sure?", num_stacks), num_stacks));
+      l.set_margin_left (10);
+      l.set_margin_right (10);
+      l.set_margin_top (10);
+      l.set_margin_bottom (10);
+      box->add(l);
+      box->show_all();
+      int response = dialog->run();
+      if (response == Gtk::RESPONSE_ACCEPT)
+        remove_stacks = true;
+      delete dialog;
+    }
+  if (remove_stacks)
+    {
+      for (auto p: *Playerlist::getInstance())
+        p->clearStacklist();
+      redraw();
+      needs_saving = true;
+    }
+}
+
 void MainWindow::on_edit_fight_order_activated()
 {
   FightOrderEditorDialog d(*window);
   d.run();
   if (d.get_modified())
     needs_saving = true;
-
 }
 
 bool MainWindow::on_bigmap_scrolled(GdkEventScroll* event)
