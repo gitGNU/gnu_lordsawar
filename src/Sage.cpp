@@ -188,8 +188,8 @@ Sage::~Sage ()
   for (iterator i = begin(); i != end(); i++)
     {
       if (*i != d_gold_reward  &&
-          *i != d_allies_reward &&
-          *i != d_item_reward &&
+          *i != d_allies_ruin &&
+          *i != d_item_ruin &&
           *i != d_map_reward &&
           *i != d_reward)
         Rewardlist::getInstance()->push_back(*i);
