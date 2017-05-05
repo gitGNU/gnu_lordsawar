@@ -117,7 +117,7 @@ void SelectArmyDialog::fill_in_army_toggles()
     toggles_table->foreach(sigc::mem_fun(toggles_table, &Gtk::Container::remove));
     toggles_table->insert_row (0);
     toggles_table->insert_column (0);
-    const int no_columns = 4;
+    const int no_columns = 6;
     for (unsigned int i = 0; i < selectable.size(); ++i)
       {
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
